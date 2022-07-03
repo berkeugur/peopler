@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
@@ -20,6 +21,10 @@ void main() async {
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp();
   }
+
+  /// Request IOS Notification
+  await FirebaseMessaging.instance.requestPermission();
+
   setupLocator();
 
   runApp(MyApp());
@@ -42,12 +47,18 @@ class MyApp extends StatelessWidget {
                 BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
                 BlocProvider<UserBloc>(create: (context) => UserBloc(mainKey)),
                 BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
-                BlocProvider<LocationUpdateBloc>(create: (context) => LocationUpdateBloc()),
-                BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
-                BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
-                BlocProvider<NotificationTransmittedBloc>(create: (context) => NotificationTransmittedBloc()),
-                BlocProvider<NotificationReceivedBloc>(create: (context) => NotificationReceivedBloc()),
-                BlocProvider<NotificationBloc>(create: (context) => NotificationBloc()),
+                BlocProvider<LocationUpdateBloc>(
+                    create: (context) => LocationUpdateBloc()),
+                BlocProvider<LocationPermissionBloc>(
+                    create: (context) => LocationPermissionBloc()),
+                BlocProvider<FloatingActionButtonCubit>(
+                    create: (context) => FloatingActionButtonCubit()),
+                BlocProvider<NotificationTransmittedBloc>(
+                    create: (context) => NotificationTransmittedBloc()),
+                BlocProvider<NotificationReceivedBloc>(
+                    create: (context) => NotificationReceivedBloc()),
+                BlocProvider<NotificationBloc>(
+                    create: (context) => NotificationBloc()),
                 BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
               ],
               child: MaterialApp(
