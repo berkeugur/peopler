@@ -1,0 +1,46 @@
+firebase de kayıtlı kullanıcı sayısını çekme gibi bir özellik yok sanırım
+bunu çözmek için firestore databasede uygulama istatistiklerinin yer aldığı bir collection oluşturup
+bir integer bir değer verip her yeni bir kullanıcı kayıt olduğunda +1 yapabiliriz. bir nevi counter
+yani yine pplName değerini de oradan alırız
+
+
+pplName ayarlanması gerekiyor
+
+pplName de Name yerine 5 haneli bir sayı olacak ilk kullanıcı ppl00001 mi olsun yoksa ppl10001 mi
+ppl00001 olurması daha mantıklı geldi
+
+okul e postası ile kayıt olurken profil resmini kaydetmedi
+linkedin ile kayıtta profil resmini kayıt ediyordu
+
+ilçe seçme yerine arama kutusu özelliği getir.
+
+image cropper türkçeleştirme ve renkleri düzenleme işlemleri yapılacak
+
+fotoğraf seçme bölümünde kamera logosu svg ile değişecek
+
+kayıt olurken e posta ve şifre seçme ekranında tüm bilgiler girildikten sonra devam et butonuna tıklanınca bir circular progress döndürülsün bir daha butona tıklanamasın
+butona 2 kere tıklanıp 2 kere servera istek yollanamasın
+
+kayıt olurken e posta ve şifre seçme ekranında tüm bilgiler girildikten sonra devam et butonuna tıklanınca verification page e geçerken verification page 2 kere oluşuyor gibi
+acaba bir yerde kod tekrarı mı var
+
+feed sayfasında üst menünün animasyonu çalışmıyor
+
+feed ekleme bölümünde profil resmi beyaz olduğunda ve tema da beyaz olduğunda ayırt etmek zor oluyor bir border veya shadow vermek gerek
+
+zaten manuel olarak okul e postasıyla kaydolmuş kişi, linkedin de de aynı e postayı kullanıyorsa ve uygulamaya hem normal e posta ile giriş yapıp daha sonra linkedin ile
+giriş yapmak istediğinde linkedin ile giriş yap butonu hataya düşüyor bu durumu kontrol etmemiz gerekiyor.
+
+ana sayfadan sonra kayıt ekranlarına geri dönmesi kullanıcının engellenmeli
+
+sorun bildirme bölümünde kullanıcının sorununu daha iyi anlamak ve analiz etmek için
+device name, device width, device height, device safe are top padding, device safe area bottom padding, app version,date, gibi bilgileri alabiliriz.
+
+name surname ve gender ekranındaki vektörler svg ye çevrilecek
+
+https://pub.dev/packages/liquid_pull_to_refresh
+feed ekranında eklenebilir bir özellik
+
+https://www.joypixels.com/emoji/animated
+mesajlarda feedlerde veya uygulamanın farklı yerlerinde kullanabileceğimiz $200 lık bir paket
+

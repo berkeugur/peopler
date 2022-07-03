@@ -1,0 +1,19 @@
+- Kayıt ekranı 6 yapılacak (mail ve şifre girişi)
+- Kayıt tamamlandı ekranı yapılacak
+- Login ekranı yapılacak
+- Şifreyi unuttum ekranı yapılacak
+- profil sayfasında profil fotoğrafı ekleme kısmı kodlanacak
+- Kayıt ve giriş ekranlarının hepsinin responsive olup olmadığı kontrol edilecek
+- kodlarda gerekli klasörleme ve düzenlemeler yapılacak
+- alert dialoglar tasarlanacak ve kodlanacak
+- linkedin ile giriş işlemleri yapılacak
+- İnstagram ile giriş işlemleri yapılacak
+- Üniversite maili ile kayıt işlemlerinin tamamlanması yapılacak
+- üniversite maili ile giriş işlemleri tamamlanacak
+- şifreyi sıfırlama işlemleri yapılacak
+- email girişlerinde edu.tr uzantısı var mı yok mu doğrula
+
+
+
+
+

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "697187577737",
+    "project_id": "peopler-2376c",
+    "storage_bucket": "peopler-2376c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:697187577737:android:e4d93a00369f312c10bb58",
+        "android_client_info": {
+          "package_name": "app.peopler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "697187577737-6poinpka2nh8k5mt1kac5kapv4saghcn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.peopler",
+            "certificate_hash": "48102a6cb5a89281274bcf926e70750f199e707f"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDObx-3csGYCg5rwymxDHPboLpEFtpdx4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "697187577737-vafgfgksssqhfqp031tbdeampntdcr2u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.peopler",
+                "app_store_id": "1632756311"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

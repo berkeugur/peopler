@@ -1,0 +1,2 @@
+enum TabItem { feed, search, saved, notifications, profile }
+enum ScreenItem { feedScreen, addFeedScreen, settingsScreen, chatScreen, searchNearByScreen, searchCityScreen, savedScreen, notificationScreen, invitationsReceivedScreen,  invitationsTransmittedScreen, profileScreen, profileEditScreen }
