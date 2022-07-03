@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/data/model/user.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../tab_item.dart';
 
@@ -21,7 +22,16 @@ op_message_icon(context) {
   _homeScreen.navigatorKeys[TabItem.feed]!.currentState!.pushNamed('/chat');
 }
 
-tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation) {
+tripleDotOnPressed(
+  BuildContext context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -41,7 +51,8 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation) 
               ),
               onTap: () {
                 Navigator.pop(context);
-                _showReportBottomSheet(context, feedId, feedExplanation);
+                _showReportBottomSheet(
+                    context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
               },
             ),
           ],
@@ -49,7 +60,16 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation) 
       });
 }
 
-Future<void> _showReportBottomSheet(context, String feedId, String feedExplanation) async {
+Future<void> _showReportBottomSheet(
+  context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) async {
   await showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -130,25 +150,47 @@ Future<void> _showReportBottomSheet(context, String feedId, String feedExplanati
                   ),
                 ),
               ),
-              _reportItem("Spam", context, feedId, feedExplanation),
-              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation),
-              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation),
-              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation),
-              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation),
-              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation),
-              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation),
-              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation),
-              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation),
-              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation),
-              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation),
-              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation),
+              _reportItem("Spam", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt,
+                  userPhotoUrl),
+              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, userDisplayName, userGender,
+                  createdAt, userPhotoUrl),
+              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, userDisplayName, userGender,
+                  createdAt, userPhotoUrl),
+              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation,
+                  userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, userDisplayName,
+                  userGender, createdAt, userPhotoUrl),
+              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, userDisplayName, userGender,
+                  createdAt, userPhotoUrl),
             ])
           ],
         );
       });
 }
 
-InkWell _reportItem(String text, BuildContext context, String feedId, String feedExplanation) {
+InkWell _reportItem(
+  String text,
+  BuildContext context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) {
   return InkWell(
     onTap: () {
       CollectionReference _reports = FirebaseFirestore.instance.collection('reports');
@@ -156,6 +198,13 @@ InkWell _reportItem(String text, BuildContext context, String feedId, String fee
         "type": text,
         "feedID": feedId,
         "feedExplanation": feedExplanation,
+        "userID": userID,
+        "userDisplayName": userDisplayName,
+        "userGender": userGender,
+        "createdAt": createdAt,
+        "userPhotoUrl": userPhotoUrl,
+        "fromUserId": MyUser().userID,
+        "fromUserDisplayName": MyUser().displayName,
       }).then((value) {
         print("then");
       }).catchError((error) => print("Failed to add feed: $error"));

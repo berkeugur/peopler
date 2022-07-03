@@ -53,12 +53,12 @@ Center continueWithButton(BuildContext context,
     {required Widget? icon, required String text, required VoidCallback onPressed}) {
   return Center(
     child: InkWell(
+      borderRadius: BorderRadius.circular(99),
       onTap: () => onPressed(),
       child: Container(
         width: 285,
         height: 43,
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-        margin: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(92),

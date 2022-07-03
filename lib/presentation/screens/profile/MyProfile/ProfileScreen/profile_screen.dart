@@ -13,6 +13,13 @@ import '../../../../../../others/locator.dart';
 import '../../../../../../others/strings.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 
+//tam bir profil için olması gerekenler
+//En az 1 tane deneyim eklenmeli.
+//En az 1 tane bağlantınız olsun
+//En az 2 tane fotoğraf paylaşın.
+//En az 1 tane feed paylaşın.
+//Mesleğinizi ekleyin
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 

@@ -86,6 +86,11 @@ class eachFeedWidget extends StatelessWidget {
                                           context,
                                           myFeed.feedID,
                                           myFeed.feedExplanation,
+                                          myFeed.userID,
+                                          myFeed.userDisplayName,
+                                          myFeed.userGender,
+                                          myFeed.createdAt,
+                                          myFeed.userPhotoUrl,
                                         );
                                       },
                                       icon: Icon(
