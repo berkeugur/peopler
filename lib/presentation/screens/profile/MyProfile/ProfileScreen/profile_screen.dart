@@ -1,17 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/data/model/activity.dart';
-import 'package:peopler/data/model/user.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../../others/locator.dart';
 import '../../../../../../others/strings.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
+
+//tam bir profil için olması gerekenler
+//En az 1 tane deneyim eklenmeli.
+//En az 1 tane bağlantınız olsun
+//En az 2 tane fotoğraf paylaşın.
+//En az 1 tane feed paylaşın.
+//Mesleğinizi ekleyin
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
