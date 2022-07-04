@@ -32,6 +32,16 @@ tripleDotOnPressed(
     DateTime createdAt,
     String userPhotoUrl,
     ) {
+tripleDotOnPressed(
+  BuildContext context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -52,6 +62,8 @@ tripleDotOnPressed(
               onTap: () {
                 Navigator.pop(context);
                 _showReportBottomSheet(context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
+                _showReportBottomSheet(
+                    context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
               },
             ),
           ],
@@ -69,6 +81,16 @@ Future<void> _showReportBottomSheet(
     DateTime createdAt,
     String userPhotoUrl,
     ) async {
+Future<void> _showReportBottomSheet(
+  context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) async {
   await showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -190,6 +212,17 @@ InkWell _reportItem(
     DateTime createdAt,
     String userPhotoUrl,
     ) {
+InkWell _reportItem(
+  String text,
+  BuildContext context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) {
   return InkWell(
     onTap: () {
       CollectionReference _reports = FirebaseFirestore.instance.collection('reports');
