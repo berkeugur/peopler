@@ -23,7 +23,7 @@ void main() async {
   }
 
   /// Request IOS Notification
-  await FirebaseMessaging.instance.requestPermission();
+  await FirebaseMessaging.instance.requestPermission(provisional: true);
 
   setupLocator();
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -11,7 +12,8 @@ import 'bloc.dart';
 
 class LocationUpdateBloc
     extends Bloc<LocationUpdateEvent, LocationUpdateState> {
-  static final LocationRepository _locationRepository = locator<LocationRepository>();
+  static final LocationRepository _locationRepository =
+      locator<LocationRepository>();
 
   static Position? _position;
   static Position? get position => _position;
@@ -20,28 +22,31 @@ class LocationUpdateBloc
 
   static Future<String> updateLocationMethod() async {
     try {
-      LocationPermission _permission = await _locationRepository.checkPermissions();
-      if(!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
+      LocationPermission _permission =
+          await _locationRepository.checkPermissions();
+      if (!(_permission == LocationPermission.whileInUse ||
+          _permission == LocationPermission.always)) {
         /// For debug purposes
         // _myNotification.showNotificationForDebugPurposes("not while in use nor always");
         return 'PositionNotGetState';
       }
 
       bool locationStatus = await _locationRepository.checkLocationSetting();
-      if(locationStatus == false) {
+      if (locationStatus == false) {
         /// For debug purposes
         // _myNotification.showNotificationForDebugPurposes("location setting is closed");
         return 'PositionNotGetState';
       }
 
-      _position =  await _locationRepository.getCurrentPosition();
+      _position = await _locationRepository.getCurrentPosition();
       if (_position == null) {
         /// For debug purposes
         // _myNotification.showNotificationForDebugPurposes("Position cannot be get");
         return 'PositionNotGetState';
       }
 
-      bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
+      bool isUpdated =
+          await _locationRepository.updateUserLocationAtDatabase(_position!);
       if (isUpdated == false) {
         /// For debug purposes
         // _myNotification.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
@@ -56,12 +61,10 @@ class LocationUpdateBloc
       UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
       UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
 
-
       // For debug purposes
       // _myNotification.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
 
       return 'PositionUpdatedState';
-
     } catch (e) {
       debugPrint("Blocta location update hata:" + e.toString());
       return 'Error';
@@ -87,10 +90,15 @@ class LocationUpdateBloc
         if (UserBloc.user != null) {
           const storage = FlutterSecureStorage();
 
-          await storage.write(key: 'sharedUserID', value: UserBloc.user!.userID);
-          await storage.write(key: 'sharedRegion', value: UserBloc.user!.region);
-          await storage.write(key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
-          await storage.write(key: 'sharedLongitude', value: UserBloc.user!.longitude.toString());
+          await storage.write(
+              key: 'sharedUserID', value: UserBloc.user!.userID);
+          await storage.write(
+              key: 'sharedRegion', value: UserBloc.user!.region);
+          await storage.write(
+              key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
+          await storage.write(
+              key: 'sharedLongitude',
+              value: UserBloc.user!.longitude.toString());
 
           add(UpdateLocationEvent());
 
@@ -108,18 +116,26 @@ class LocationUpdateBloc
 
     ///--------------- WORK MANAGER - BACKGROUND ----------------------------//
     on<StartLocationUpdatesBackground>((event, emit) async {
+      if (Platform.isAndroid) {
         if (UserBloc.user != null) {
           const storage = FlutterSecureStorage();
 
-          await storage.write(key: 'sharedUserID', value: UserBloc.user!.userID);
-          await storage.write(key: 'sharedRegion', value: UserBloc.user!.region);
-          await storage.write(key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
-          await storage.write(key: 'sharedLongitude', value: UserBloc.user!.longitude.toString());
+          await storage.write(
+              key: 'sharedUserID', value: UserBloc.user!.userID);
+          await storage.write(
+              key: 'sharedRegion', value: UserBloc.user!.region);
+          await storage.write(
+              key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
+          await storage.write(
+              key: 'sharedLongitude',
+              value: UserBloc.user!.longitude.toString());
 
           // Start work manager fetch location on background
           MyWorkManager.fetchLocationBackground();
         }
+      }
     });
+
     ///---------------------------------------------------------//
   }
 }

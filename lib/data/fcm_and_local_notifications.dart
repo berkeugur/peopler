@@ -17,11 +17,11 @@ import 'model/chat.dart';
 /// AWESOME NOTIFICATIONS
 Future<void> myBackgroundMessageHandler(RemoteMessage message) {
   Map<String, dynamic> _message = message.data;
-  if(_message['notificationType'] == Strings.sendRequest) {
+  if (_message['notificationType'] == Strings.sendRequest) {
     FCMAndLocalNotifications.showSendRequestNotification(_message);
-  } else if(_message['notificationType'] == Strings.receiveRequest) {
+  } else if (_message['notificationType'] == Strings.receiveRequest) {
     FCMAndLocalNotifications.showReceivedRequestNotification(_message);
-  } else if(_message['notificationType'] == Strings.message) {
+  } else if (_message['notificationType'] == Strings.message) {
     FCMAndLocalNotifications.showIncomingMessage(_message);
   }
   return Future<void>.value();
@@ -31,11 +31,14 @@ class FCMAndLocalNotifications {
   static BuildContext? myContext;
 
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  static final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
-  static final AwesomeNotifications awesomeNotificationsPlugin = AwesomeNotifications();
+  static final GeolocatorPlatform _geolocatorPlatform =
+      GeolocatorPlatform.instance;
+  static final AwesomeNotifications awesomeNotificationsPlugin =
+      AwesomeNotifications();
 
   /// Make this class singleton
-  static final FCMAndLocalNotifications _singleton = FCMAndLocalNotifications._internal();
+  static final FCMAndLocalNotifications _singleton =
+      FCMAndLocalNotifications._internal();
   factory FCMAndLocalNotifications() {
     return _singleton;
   }
@@ -45,17 +48,17 @@ class FCMAndLocalNotifications {
   static void initializeAwesomeNotifications() async {
     /// Initialize Awesome Notifications
     awesomeNotificationsPlugin.initialize(
-      // set the icon to null if you want to use the default app icon
+        // set the icon to null if you want to use the default app icon
         'resource://drawable/ic_launcher',
         [
           NotificationChannel(
-              channelKey: Strings.keyDebug,
-              channelName: 'Debug notifications',
-              channelDescription: 'Notification channel for debug purposes',
-              defaultColor: Colors.transparent,
-              ledColor: Colors.transparent,
-              playSound: true,
-              enableVibration: true,
+            channelKey: Strings.keyDebug,
+            channelName: 'Debug notifications',
+            channelDescription: 'Notification channel for debug purposes',
+            defaultColor: Colors.transparent,
+            ledColor: Colors.transparent,
+            playSound: true,
+            enableVibration: true,
           ),
           NotificationChannel(
             channelKey: Strings.keyPermission,
@@ -76,39 +79,36 @@ class FCMAndLocalNotifications {
             enableVibration: true,
           ),
         ],
-        debug: true
-    );
+        debug: true);
   }
 
   /// Called in home_screen because local FCM notifications require user to logged in
   void initializeFCMNotifications(BuildContext? context) async {
     myContext = context;
 
-    /*
-      _fcm.subscribeToTopic("sport");
-      String? token = await _fcm.getToken();
-      print("token :" + token!);
-       */
-
     /// Get token and save it to database
     String? _token = await _fcm.getToken();
     User? _currentUser = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.doc("tokens/" + _currentUser!.uid).set({"token": _token});
+    await FirebaseFirestore.instance
+        .doc("tokens/" + _currentUser!.uid)
+        .set({"token": _token});
 
     /// If current user's token is refreshed because of some reason, then update it on database also.
     _fcm.onTokenRefresh.listen((newToken) async {
       User? _currentUser = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance.doc("tokens/" + _currentUser!.uid).set({"token": newToken});
+      await FirebaseFirestore.instance
+          .doc("tokens/" + _currentUser!.uid)
+          .set({"token": newToken});
     });
 
     /// For foreground notification, firebase cloud messaging
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       Map<String, dynamic> _message = message.data;
-      if(_message['notificationType'] == Strings.sendRequest) {
+      if (_message['notificationType'] == Strings.sendRequest) {
         showSendRequestNotification(_message);
-      } else if(_message['notificationType'] == Strings.receiveRequest) {
+      } else if (_message['notificationType'] == Strings.receiveRequest) {
         showReceivedRequestNotification(_message);
-      } else if(_message['notificationType'] == Strings.message) {
+      } else if (_message['notificationType'] == Strings.message) {
         showIncomingMessage(_message);
       }
     });
@@ -125,20 +125,21 @@ class FCMAndLocalNotifications {
             title: 'Location for Debug Purposes',
             body: error,
             payload: {'payload': ''},
-            summary: 'summary'    // To prevent error
-        ));
+            summary: 'summary' // To prevent error
+            ));
   }
 
-  static Future showNotificationForLocationPermissions(String title, String body, String payloadType) async {
+  static Future showNotificationForLocationPermissions(
+      String title, String body, String payloadType) async {
     await awesomeNotificationsPlugin.createNotification(
         content: NotificationContent(
-          id: 1,
-          channelKey: Strings.keyPermission,
-          title: title,
-          body: body,
-          payload: {'payload': payloadType},
-          summary: 'summary'    // To prevent error
-        ));
+            id: 1,
+            channelKey: Strings.keyPermission,
+            title: title,
+            body: body,
+            payload: {'payload': payloadType},
+            summary: 'summary' // To prevent error
+            ));
   }
 
   /// If a user sent a connection request to you
@@ -146,38 +147,38 @@ class FCMAndLocalNotifications {
     // message["displayName"] // message["message"] // message["profileURL"] // message["userID"]
     await awesomeNotificationsPlugin.createNotification(
         content: NotificationContent(
-          id: 2,
-          channelKey: Strings.keyMain,
-          title: '',
-          body: message["displayName"] +  ' size bağlantı isteği gönderdi',
-          showWhen: true,
-          displayOnForeground: true,
-          displayOnBackground: true,
-          notificationLayout: NotificationLayout.Messaging,
-          roundedLargeIcon: true,
-          largeIcon: message["profileURL"],
-          payload: {'payload': Strings.sendRequest},
-          summary: 'Yeni Bağlantı İsteği'    // To prevent error
-        ));
+            id: 2,
+            channelKey: Strings.keyMain,
+            title: '',
+            body: message["displayName"] + ' size bağlantı isteği gönderdi',
+            showWhen: true,
+            displayOnForeground: true,
+            displayOnBackground: true,
+            notificationLayout: NotificationLayout.Messaging,
+            roundedLargeIcon: true,
+            largeIcon: message["profileURL"],
+            payload: {'payload': Strings.sendRequest},
+            summary: 'Yeni Bağlantı İsteği' // To prevent error
+            ));
   }
 
   /// If a user accepted your connection request
-  static void showReceivedRequestNotification(Map<String, dynamic> message) async {
+  static void showReceivedRequestNotification(
+      Map<String, dynamic> message) async {
     await awesomeNotificationsPlugin.createNotification(
         content: NotificationContent(
-          id: 3,
-          channelKey: Strings.keyMain,
-          title: '',
-          body: message["displayName"] +  ' bağlantı isteğinizi kabul etti.',
-          showWhen: true,
-          displayOnForeground: true,
-          displayOnBackground: true,
-          notificationLayout: NotificationLayout.Messaging,
-          roundedLargeIcon: true,
-          largeIcon: message["profileURL"],
-          payload: {'payload': Strings.receiveRequest},
-          summary: 'Yeni Bağlantı'
-        ));
+            id: 3,
+            channelKey: Strings.keyMain,
+            title: '',
+            body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
+            showWhen: true,
+            displayOnForeground: true,
+            displayOnBackground: true,
+            notificationLayout: NotificationLayout.Messaging,
+            roundedLargeIcon: true,
+            largeIcon: message["profileURL"],
+            payload: {'payload': Strings.receiveRequest},
+            summary: 'Yeni Bağlantı'));
   }
 
   /// If your connection send you a message
@@ -195,71 +196,81 @@ class FCMAndLocalNotifications {
             notificationLayout: NotificationLayout.Messaging,
             roundedLargeIcon: true,
             largeIcon: message["profileURL"],
-            payload: {'payload': Strings.message,
+            payload: {
+              'payload': Strings.message,
               'userID': message['userID'],
               'displayName': message['displayName'],
               'profileURL': message['profileURL']
             },
-            summary: message["displayName"]    // To prevent error
-        ));
+            summary: message["displayName"] // To prevent error
+            ));
   }
 
   static void listenNotification() async {
-      awesomeNotificationsPlugin.actionStream.listen((receivedAction) async {
-        var payloadType = receivedAction.payload!['payload'];
+    awesomeNotificationsPlugin.actionStream.listen((receivedAction) async {
+      var payloadType = receivedAction.payload!['payload'];
 
-        if(receivedAction.channelKey == Strings.keyDebug){
-          // Nothing
+      if (receivedAction.channelKey == Strings.keyDebug) {
+        // Nothing
+      }
+
+      if (receivedAction.channelKey == Strings.keyPermission) {
+        if (payloadType == Strings.permissionSettings) {
+          _geolocatorPlatform.openAppSettings();
+        } else if (payloadType == Strings.requestPermission) {
+          _geolocatorPlatform.requestPermission();
+        } else if (payloadType == Strings.googleDialog) {
+          const locationChannel = MethodChannel('mertsalar/location_setting');
+
+          /// This is the same name where we have defined in Native side
+          await locationChannel.invokeMethod('requestLocationSetting', []);
+
+          /// This method name is the same as Native side, we call this method from Kotlin
+        } else {
+          debugPrint('No payload');
         }
+      }
 
-        if(receivedAction.channelKey == Strings.keyPermission){
-          if (payloadType == Strings.permissionSettings) {
-            _geolocatorPlatform.openAppSettings();
-          } else if (payloadType == Strings.requestPermission) {
-            _geolocatorPlatform.requestPermission();
-          } else if (payloadType == Strings.googleDialog) {
-            const locationChannel = MethodChannel('mertsalar/location_setting');  /// This is the same name where we have defined in Native side
-            await locationChannel.invokeMethod('requestLocationSetting', []);     /// This method name is the same as Native side, we call this method from Kotlin
-          } else {
-            debugPrint('No payload');
-          }
+      if (receivedAction.channelKey == Strings.keyMain) {
+        if (payloadType == Strings.sendRequest) {
+          final FloatingActionButtonCubit _homeScreen =
+              BlocProvider.of<FloatingActionButtonCubit>(myContext!);
+          _homeScreen.currentTab = TabItem.notifications;
+          _homeScreen.changeFloatingActionButtonEvent();
+          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!
+              .pushNamed('/invitations');
+        } else if (payloadType == Strings.receiveRequest) {
+          final FloatingActionButtonCubit _homeScreen =
+              BlocProvider.of<FloatingActionButtonCubit>(myContext!);
+          _homeScreen.currentTab = TabItem.notifications;
+          _homeScreen.changeFloatingActionButtonEvent();
+          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!
+              .pushNamed('/');
+        } else if (payloadType == Strings.message) {
+          Chat currentChat = Chat(
+              hostID: receivedAction.payload!['userID']!,
+              isLastMessageFromMe: false,
+              isLastMessageReceivedByHost: true,
+              isLastMessageSeenByHost: true,
+              lastMessageCreatedAt: DateTime.now(),
+              lastMessage: "",
+              numberOfMessagesThatIHaveNotOpened: 0);
+
+          currentChat.hostUserProfileUrl =
+              receivedAction.payload!['profileURL']!;
+          currentChat.hostUserName = receivedAction.payload!['displayName']!;
+
+          UserBloc _userBloc = BlocProvider.of<UserBloc>(myContext!);
+          _userBloc.mainKey.currentState?.push(
+            MaterialPageRoute(
+                builder: (context) => MessageScreen(
+                      currentChat: currentChat,
+                    )),
+          );
+        } else {
+          debugPrint('No payload');
         }
-
-        if(receivedAction.channelKey == Strings.keyMain){
-          if(payloadType == Strings.sendRequest) {
-            final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(myContext!);
-            _homeScreen.currentTab =  TabItem.notifications;
-            _homeScreen.changeFloatingActionButtonEvent();
-            _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed('/invitations');
-          } else if(payloadType == Strings.receiveRequest) {
-            final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(myContext!);
-            _homeScreen.currentTab =  TabItem.notifications;
-            _homeScreen.changeFloatingActionButtonEvent();
-            _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed('/');
-          } else if(payloadType == Strings.message) {
-            Chat currentChat =  Chat(
-                hostID: receivedAction.payload!['userID']!,
-                isLastMessageFromMe: false,
-                isLastMessageReceivedByHost: true,
-                isLastMessageSeenByHost: true,
-                lastMessageCreatedAt: DateTime.now(),
-                lastMessage: "",
-                numberOfMessagesThatIHaveNotOpened: 0);
-
-            currentChat.hostUserProfileUrl = receivedAction.payload!['profileURL']!;
-            currentChat.hostUserName = receivedAction.payload!['displayName']!;
-
-            UserBloc _userBloc = BlocProvider.of<UserBloc>(myContext!);
-            _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(
-                  builder: (context) => MessageScreen(
-                    currentChat: currentChat,
-                  )),
-            );
-          } else {
-            debugPrint('No payload');
-          }
-        }
-      });
+      }
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +9,7 @@ import 'package:workmanager/workmanager.dart';
 
 import 'fcm_and_local_notifications.dart';
 
-const String taskFetchBackground =  "fetchBackground";
+const String taskFetchBackground = "fetchBackground";
 
 class MyWorkManager {
   /// To call constructor operations only once, we use this variable to check if class instantiated already.
@@ -25,7 +27,7 @@ class MyWorkManager {
   /// The only way to create an object is with this function, which performs proper async initialization
   static Future<MyWorkManager> create() async {
     /// If the class is not instantiated yet, then run this block and then never run again for any instantiation
-    if(isClassInstantiated == false) {
+    if (isClassInstantiated == false) {
       /// Do initialization that requires async
       await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
@@ -37,12 +39,14 @@ class MyWorkManager {
   }
 
   static void fetchLocationBackground() async {
-    await Workmanager().registerPeriodicTask("1", taskFetchBackground,
-        frequency: const Duration(minutes: 15),
-        constraints: Constraints(
-          networkType: NetworkType.connected,
-        ),
-        existingWorkPolicy: ExistingWorkPolicy.keep);
+    if (Platform.isAndroid) {
+      await Workmanager().registerPeriodicTask("1", taskFetchBackground,
+          frequency: const Duration(minutes: 15),
+          constraints: Constraints(
+            networkType: NetworkType.connected,
+          ),
+          existingWorkPolicy: ExistingWorkPolicy.keep);
+    }
   }
 }
 
@@ -51,15 +55,19 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     switch (task) {
       case taskFetchBackground:
-        return await fetchBackgroundFunction();
-      default:
-        return Future.value(true);
+        await fetchBackgroundFunction();
+        break;
+      case Workmanager.iOSBackgroundTask:
+        await fetchBackgroundFunction();
+        break;
     }
+
+    return Future.value(true);
   });
 }
 
 Future<bool> fetchBackgroundFunction() async {
-  if(Firebase.apps.isEmpty) {
+  if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp();
   }
 
@@ -71,10 +79,12 @@ Future<bool> fetchBackgroundFunction() async {
   /// CHECK LOCATION PERMISSION
   /// *********************************************************************************************************
   LocationPermission _permission = await Geolocator.checkPermission();
-  if (!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
+  if (!(_permission == LocationPermission.whileInUse ||
+      _permission == LocationPermission.always)) {
     /// For debug purposes
     debugPrint("WorkManager: not while in use nor always");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: not while in use nor always");
+    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+        "WorkManager: not while in use nor always");
     return Future.value(false);
   }
 
@@ -84,13 +94,15 @@ Future<bool> fetchBackgroundFunction() async {
   if (locationStatus == false) {
     /// For debug purposes
     debugPrint("WorkManager: location setting is closed");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: location setting is closed");
+    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+        "WorkManager: location setting is closed");
     return Future.value(false);
   }
 
   /// GET LOCATION
   /// *********************************************************************************************************
-  _position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  _position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best);
 
   const int UPDATE_WIDTH = 20; // 20 meters
   const int QUERY_WIDTH = 100; // 100 meters
@@ -121,7 +133,8 @@ Future<bool> fetchBackgroundFunction() async {
   /// DELETE USER FROM regions COLLECTIONS IF EXISTS (old region)
   /// *********************************************************************************************************
   try {
-    DocumentSnapshot _readRegion = await _firebaseDB.collection('regions').doc(sharedRegion).get();
+    DocumentSnapshot _readRegion =
+        await _firebaseDB.collection('regions').doc(sharedRegion).get();
 
     /// if a region exists with this region on regions collections, then delete userID from array field of users document of regions collections
     if (_readRegion.data() != null) {
@@ -130,13 +143,16 @@ Future<bool> fetchBackgroundFunction() async {
       });
     } else {
       /// For debug purposes
-      debugPrint("WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
-      await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
+      debugPrint(
+          "WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
+      await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+          "WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
     }
   } catch (e) {
     /// For debug purposes
     debugPrint("WorkManager: ERROR in deleteUserFromRegion function: $e");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in deleteUserFromRegion function: $e");
+    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+        "WorkManager: ERROR in deleteUserFromRegion function: $e");
     return Future.value(false);
   }
 
@@ -154,9 +170,15 @@ Future<bool> fetchBackgroundFunction() async {
 
   /// UPDATE user DOCUMENT LOCATION PARAMETERS IF EXISTS
   /// *********************************************************************************************************
-  DocumentSnapshot _readUser = await _firebaseDB.collection('users').doc(sharedUserID).get();
+  DocumentSnapshot _readUser =
+      await _firebaseDB.collection('users').doc(sharedUserID).get();
   if (_readUser.data() != null) {
-    await _firebaseDB.collection('users').doc(sharedUserID).collection('private').doc('private').update({
+    await _firebaseDB
+        .collection('users')
+        .doc(sharedUserID)
+        .collection('private')
+        .doc('private')
+        .update({
       'latitude': latitude,
       'longitude': longitude,
       'region': _region,
@@ -164,13 +186,15 @@ Future<bool> fetchBackgroundFunction() async {
   } else {
     /// For debug purposes
     debugPrint("WorkManager: ERROR: update user location");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: update user location");
+    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+        "WorkManager: ERROR: update user location");
   }
 
   /// UPDATE regions COLLECTIONS IF EXISTS, SET IF NOT EXISTS
   /// *********************************************************************************************************
   try {
-    DocumentSnapshot _readRegion = await _firebaseDB.collection('regions').doc(_region).get();
+    DocumentSnapshot _readRegion =
+        await _firebaseDB.collection('regions').doc(_region).get();
 
     /// if a region exists with this region on regions collections, then add userID to array field of users
     if (_readRegion.data() != null) {
@@ -181,20 +205,25 @@ Future<bool> fetchBackgroundFunction() async {
       await _firebaseDB.collection('regions').doc(_region).set({
         "users": FieldValue.arrayUnion([sharedUserID])
       });
+
       /// For debug purposes
       debugPrint("WorkManager: Document does not exist, so regionID created");
-      await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: Document does not exist, so regionID created");
+      await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+          "WorkManager: Document does not exist, so regionID created");
     }
   } catch (e) {
     /// For debug purposes
     debugPrint("WorkManager: ERROR in setUserInRegion function: $e");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in setUserInRegion function: $e");
+    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+        "WorkManager: ERROR in setUserInRegion function: $e");
     return Future.value(false);
   }
+
   /// *********************************************************************************************************
 
   /// For debug purposes
   debugPrint("Basarili ${_position.toString()}");
-  await FCMAndLocalNotifications.showNotificationForDebugPurposes("Basarili ${_position.toString()}");
+  await FCMAndLocalNotifications.showNotificationForDebugPurposes(
+      "Basarili ${_position.toString()}");
   return Future.value(true);
 }
