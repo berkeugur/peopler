@@ -32,16 +32,6 @@ tripleDotOnPressed(
     DateTime createdAt,
     String userPhotoUrl,
     ) {
-tripleDotOnPressed(
-  BuildContext context,
-  String feedId,
-  String feedExplanation,
-  String userID,
-  String userDisplayName,
-  String userGender,
-  DateTime createdAt,
-  String userPhotoUrl,
-) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -61,7 +51,6 @@ tripleDotOnPressed(
               ),
               onTap: () {
                 Navigator.pop(context);
-                _showReportBottomSheet(context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
                 _showReportBottomSheet(
                     context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
               },
@@ -81,16 +70,6 @@ Future<void> _showReportBottomSheet(
     DateTime createdAt,
     String userPhotoUrl,
     ) async {
-Future<void> _showReportBottomSheet(
-  context,
-  String feedId,
-  String feedExplanation,
-  String userID,
-  String userDisplayName,
-  String userGender,
-  DateTime createdAt,
-  String userPhotoUrl,
-) async {
   await showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -139,12 +118,12 @@ Future<void> _showReportBottomSheet(
                 )
               ],
             ),
-            const Divider(
+            Divider(
               color: Colors.white,
               height: 1,
             ),
             Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               Padding(
@@ -212,17 +191,6 @@ InkWell _reportItem(
     DateTime createdAt,
     String userPhotoUrl,
     ) {
-InkWell _reportItem(
-  String text,
-  BuildContext context,
-  String feedId,
-  String feedExplanation,
-  String userID,
-  String userDisplayName,
-  String userGender,
-  DateTime createdAt,
-  String userPhotoUrl,
-) {
   return InkWell(
     onTap: () {
       CollectionReference _reports = FirebaseFirestore.instance.collection('reports');
@@ -249,11 +217,11 @@ InkWell _reportItem(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text(
+              title: Text(
                 'Talebiniz Alındı',
                 textScaleFactor: 1,
               ),
-              content: const Text(
+              content: Text(
                 'En kısa sürede şikayetiniz incelenecektir! Bizi bilgilendirdiğiniz için teşekkür ederiz.',
                 textScaleFactor: 1,
               ),
@@ -262,7 +230,7 @@ InkWell _reportItem(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text(
+                    child: Text(
                       'Kapat',
                       textScaleFactor: 1,
                     )),
@@ -284,7 +252,7 @@ InkWell _reportItem(
               color: Colors.white,
             ),
           ),
-          const Icon(
+          Icon(
             Icons.arrow_forward_ios,
             color: Colors.white,
             size: 14,

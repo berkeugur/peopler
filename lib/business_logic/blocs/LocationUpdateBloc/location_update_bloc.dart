@@ -7,13 +7,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/my_work_manager.dart';
 import 'package:peopler/data/repository/location_repository.dart';
+import '../../../data/fcm_and_local_notifications.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
 
-class LocationUpdateBloc
-    extends Bloc<LocationUpdateEvent, LocationUpdateState> {
-  static final LocationRepository _locationRepository =
-      locator<LocationRepository>();
+class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> {
+  static final LocationRepository _locationRepository = locator<LocationRepository>();
 
   static Position? _position;
   static Position? get position => _position;
@@ -22,34 +21,31 @@ class LocationUpdateBloc
 
   static Future<String> updateLocationMethod() async {
     try {
-      LocationPermission _permission =
-          await _locationRepository.checkPermissions();
-      if (!(_permission == LocationPermission.whileInUse ||
-          _permission == LocationPermission.always)) {
+      LocationPermission _permission = await _locationRepository.checkPermissions();
+      if (!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
         /// For debug purposes
-        // _myNotification.showNotificationForDebugPurposes("not while in use nor always");
+        FCMAndLocalNotifications.showNotificationForDebugPurposes("not while in use nor always");
         return 'PositionNotGetState';
       }
 
       bool locationStatus = await _locationRepository.checkLocationSetting();
       if (locationStatus == false) {
         /// For debug purposes
-        // _myNotification.showNotificationForDebugPurposes("location setting is closed");
+        FCMAndLocalNotifications.showNotificationForDebugPurposes("location setting is closed");
         return 'PositionNotGetState';
       }
 
       _position = await _locationRepository.getCurrentPosition();
       if (_position == null) {
         /// For debug purposes
-        // _myNotification.showNotificationForDebugPurposes("Position cannot be get");
+        FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be get");
         return 'PositionNotGetState';
       }
 
-      bool isUpdated =
-          await _locationRepository.updateUserLocationAtDatabase(_position!);
+      bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
       if (isUpdated == false) {
         /// For debug purposes
-        // _myNotification.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
+        FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
         return 'PositionNotUpdatedState';
       }
 
@@ -62,7 +58,7 @@ class LocationUpdateBloc
       UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
 
       // For debug purposes
-      // _myNotification.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
+      FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
 
       return 'PositionUpdatedState';
     } catch (e) {
@@ -116,7 +112,6 @@ class LocationUpdateBloc
 
     ///--------------- WORK MANAGER - BACKGROUND ----------------------------//
     on<StartLocationUpdatesBackground>((event, emit) async {
-      if (Platform.isAndroid) {
         if (UserBloc.user != null) {
           const storage = FlutterSecureStorage();
 
@@ -127,13 +122,11 @@ class LocationUpdateBloc
           await storage.write(
               key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
           await storage.write(
-              key: 'sharedLongitude',
-              value: UserBloc.user!.longitude.toString());
+              key: 'sharedLongitude', value: UserBloc.user!.longitude.toString());
 
           // Start work manager fetch location on background
           MyWorkManager.fetchLocationBackground();
         }
-      }
     });
 
     ///---------------------------------------------------------//
