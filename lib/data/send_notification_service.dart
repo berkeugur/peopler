@@ -16,6 +16,8 @@ class SendNotificationService {
     String json =
         '{ '
           '"to" : "$token", '
+          '"priority": "high", '        // This line and this line are too important
+	        '"content_available": true, ' // for IOS. Without them, not working. 3 sleepless night.
           '"data" : { '
             '"notificationType" : "$notificationType", '
             '"message" : "$message", '
