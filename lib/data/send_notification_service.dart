@@ -4,7 +4,7 @@ import '../others/strings.dart';
 
 class SendNotificationService {
   Future<void> sendNotification(String notificationType, String token, String message, String displayName, String profileURL, String userID) async {
-    String endURL = "https://fcm.googleapis.com/fcm/send";
+    String endURL = " ";
 
     String firebaseKey = Strings.firebaseServerKey;
 

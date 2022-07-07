@@ -88,6 +88,7 @@ class FCMAndLocalNotifications {
 
     /// Get token and save it to database
     String? _token = await _fcm.getToken();
+    debugPrint(_token!);
     User? _currentUser = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance
         .doc("tokens/" + _currentUser!.uid)
@@ -101,14 +102,22 @@ class FCMAndLocalNotifications {
           .set({"token": newToken});
     });
 
+    await _fcm.setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+
     /// For foreground notification, firebase cloud messaging
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      debugPrint("notification geldi");
       Map<String, dynamic> _message = message.data;
       if (_message['notificationType'] == Strings.sendRequest) {
         showSendRequestNotification(_message);
       } else if (_message['notificationType'] == Strings.receiveRequest) {
         showReceivedRequestNotification(_message);
       } else if (_message['notificationType'] == Strings.message) {
+        debugPrint("Incoming message");
         showIncomingMessage(_message);
       }
     });

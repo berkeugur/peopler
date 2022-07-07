@@ -31,14 +31,14 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>Uygulamanız arka plandayken diğer kullanıcıların sizi bulabilmesi için izniniz gerekiyor. </string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>PreciseLocationPurposeKey</key>
-		<string>The example App requires temporary access to the device's precise location.</string>
+		<string>Yakınızdaki kişileri en doğru şekilde bulmak için hassas konum bilginiz gerekiyor.</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>Yakınınızdaki kişileri görebilmeniz için konum izni vermeniz gerekiyor.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -63,5 +63,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>peopler uygulamasındaki profilinize galerinizden fotoğraf eklemek için izin vermeniz gerekiyor.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>peopler uygulamasındaki profilinize fotoğraf eklemek için kameraya erişim izni vermeniz gerekiyor.</string>
 </dict>
 </plist>
