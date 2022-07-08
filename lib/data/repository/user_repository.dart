@@ -13,16 +13,11 @@ import '../services/storage/firebase_storage_service.dart';
 import 'dart:io' as i;
 
 class UserRepository {
-  final FirebaseAuthService _firebaseAuthService =
-      locator<FirebaseAuthService>();
-  final FirestoreDBServiceUsers _firestoreDBServiceUsers =
-      locator<FirestoreDBServiceUsers>();
-  final FirestoreDBServiceFeeds _firestoreDBServiceFeeds =
-  locator<FirestoreDBServiceFeeds>();
-  final FirebaseStorageService _firebaseStorageService =
-      locator<FirebaseStorageService>();
-  final FirestoreDBServiceCommon _firestoreDBServiceCommon =
-  locator<FirestoreDBServiceCommon>();
+  final FirebaseAuthService _firebaseAuthService = locator<FirebaseAuthService>();
+  final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
+  final FirestoreDBServiceFeeds _firestoreDBServiceFeeds = locator<FirestoreDBServiceFeeds>();
+  final FirebaseStorageService _firebaseStorageService = locator<FirebaseStorageService>();
+  final FirestoreDBServiceCommon _firestoreDBServiceCommon = locator<FirestoreDBServiceCommon>();
 
   Future<MyUser?> getCurrentUser() async {
     MyUser? currentUser = await _firebaseAuthService.getCurrentUser();
@@ -118,10 +113,8 @@ class UserRepository {
     return null;
   }
 
-  Future<bool> updateAccountConfirmed(
-      String userID, bool newAccountConfirmed) async {
-    return await _firestoreDBServiceUsers.updateAccountConfirmed(
-        userID, newAccountConfirmed);
+  Future<bool> updateAccountConfirmed(String userID, bool newAccountConfirmed) async {
+    return await _firestoreDBServiceUsers.updateAccountConfirmed(userID, newAccountConfirmed);
   }
 
   Future<bool> updateUser(MyUser myUser) async {
@@ -131,7 +124,8 @@ class UserRepository {
 
   Future<String> uploadFile(String userID, String fileType, String fileName, i.File profilePhoto) async {
     // File type is type of dart:io not dart:html
-    var profilePhotoURL = await _firebaseStorageService.uploadFile(userID, fileType, fileName, profilePhoto);
+    String _filePath = userID + "/" + fileType;
+    String profilePhotoURL = await _firebaseStorageService.uploadFile(_filePath, fileName, profilePhoto);
     return profilePhotoURL;
   }
 
@@ -185,29 +179,33 @@ class UserRepository {
   }
 
   Future<void> deleteUser(String userID) async {
-    _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/activities");
-    _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/notifications");
-    _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/liked");
-    _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/disliked");
-    _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/savedUsers");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/activities");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/notifications");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/liked");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/disliked");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/savedUsers");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/private");
 
-    // Delete all messages
-    List<String> chats = await _firestoreDBServiceCommon.getAllDocuments("users/" + userID + "/chats");
-    for (String chatID in chats) {
-      _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/chats" + chatID + "/messages");
+    /// Delete all messages
+    List<String> chatIDList = await _firestoreDBServiceCommon.getAllDocumentIDs("users/" + userID + "/chats");
+    for (String chatID in chatIDList) {
+      await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/chats/" + chatID + "/messages");
     }
 
-    // Delete all chats after messages (subcollections of chats) deleted
-    _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/chats");
+    /// Delete all chats after messages (subcollections of chats) deleted
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/chats");
 
-    // Delete user from firestore
-    _firestoreDBServiceUsers.deleteUser(userID);
+    /// Delete user from firestore
+    await _firestoreDBServiceUsers.deleteUser(userID);
 
-    // Delete user from firebase authentication
-    _firebaseAuthService.deleteUser();
+    /// Delete userID's folder from Storage
+    await _firebaseStorageService.deleteFolder(userID);
 
-    // Delete photo from storage
-    _firebaseStorageService.deleteFile(userID, "profile_photo", "profile_photo.png");
+    await _firestoreDBServiceUsers.deleteToken(userID);
+
+    /// Following command must be the last one because without authentication, Firebase is inaccessible.
+    /// Delete user from firebase authentication
+    await _firebaseAuthService.deleteUser();
 
     UserBloc.user = null;
   }

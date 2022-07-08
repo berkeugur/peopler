@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../business_logic/blocs/UserBloc/user_event.dart';
+import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../tab_item.dart';
 
@@ -65,11 +63,12 @@ op_open_the_everyone(){
   }
 }
 
-
-op_change_password(){
+op_change_password(context){
   if (kDebugMode) {
     print("pressed  op_change_password");
   }
+  UserBloc _userBloc = BlocProvider.of(context);
+  _userBloc.add(deleteUser());
 }
 
 op_suggestion_or_complaint(){

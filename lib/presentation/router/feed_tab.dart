@@ -30,62 +30,76 @@ class _FeedScreenNavigatorState extends State<FeedScreenNavigator> with Automati
 
   @override
   Widget build(BuildContext context) {
-    var _feedBloc = BlocProvider.of<FeedBloc>(context);
-    var _addAnFeedBloc = BlocProvider.of<AddFeedBloc>(context);
-    var _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+    FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
 
-    return ValueListenableBuilder(
-        valueListenable: setTheme,
-        builder: (context, x, y) {
-          return Navigator(
-            key: _homeScreen.navigatorKeys[TabItem.feed],
-            initialRoute: '/',
-            onGenerateRoute: (routeSettings) {
-              switch (routeSettings.name) {
-                case '/':
-                  _homeScreen.currentScreen = {TabItem.feed: ScreenItem.feedScreen};
-                  _homeScreen.changeFloatingActionButtonEvent();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FeedBloc>(
+          create: (context) => FeedBloc(),
+        ),
+        BlocProvider<AddFeedBloc>(
+          create: (context) => AddFeedBloc(),
+        ),
+      ],
+      child: Builder(
+        builder: (BuildContext context) {
+          FeedBloc _feedBloc = BlocProvider.of<FeedBloc>(context);
+          AddFeedBloc _addAnFeedBloc = BlocProvider.of<AddFeedBloc>(context);
 
-                  return MaterialPageRoute(
-                      builder: (context) => MultiBlocProvider(
-                          child: FeedScreen(
-                            key: widget.feedListKey,
-                          ),
-                          providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
-                case '/addFeed':
-                  _homeScreen.currentScreen = {TabItem.feed: ScreenItem.addFeedScreen};
-                  _homeScreen.changeFloatingActionButtonEvent();
+          return ValueListenableBuilder(
+            valueListenable: setTheme,
+            builder: (context, x, y) {
+              return Navigator(
+                key: _homeScreen.navigatorKeys[TabItem.feed],
+                initialRoute: '/',
+                onGenerateRoute: (routeSettings) {
+                  switch (routeSettings.name) {
+                    case '/':
+                      _homeScreen.currentScreen = {TabItem.feed: ScreenItem.feedScreen};
+                      _homeScreen.changeFloatingActionButtonEvent();
 
-                  return MaterialPageRoute(
-                    builder: (context) => MultiBlocProvider(providers: [
-                      BlocProvider.value(value: _feedBloc),
-                      BlocProvider.value(value: _addAnFeedBloc),
-                    ], child: const FeedShareScreen()),
-                  );
+                      return MaterialPageRoute(
+                          builder: (context) => MultiBlocProvider(
+                              child: FeedScreen(
+                                key: widget.feedListKey,
+                              ),
+                              providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
+                    case '/addFeed':
+                      _homeScreen.currentScreen = {TabItem.feed: ScreenItem.addFeedScreen};
+                      _homeScreen.changeFloatingActionButtonEvent();
 
-                case '/settings':
-                  _homeScreen.currentScreen = {TabItem.feed: ScreenItem.settingsScreen};
-                  _homeScreen.changeFloatingActionButtonEvent();
+                      return MaterialPageRoute(
+                        builder: (context) => MultiBlocProvider(providers: [
+                          BlocProvider.value(value: _feedBloc),
+                          BlocProvider.value(value: _addAnFeedBloc),
+                        ], child: const FeedShareScreen()),
+                      );
 
-                  return MaterialPageRoute(
-                    builder: (context) => SettingsScreen(),
-                  );
+                    case '/settings':
+                      _homeScreen.currentScreen = {TabItem.feed: ScreenItem.settingsScreen};
+                      _homeScreen.changeFloatingActionButtonEvent();
 
-                case '/chat':
-                  _homeScreen.currentScreen = {TabItem.feed: ScreenItem.chatScreen};
-                  _homeScreen.changeFloatingActionButtonEvent();
+                      return MaterialPageRoute(
+                        builder: (context) => SettingsScreen(),
+                      );
 
-                  return MaterialPageRoute(
-                    builder: (context) => const ChatScreen(),
-                  );
+                    case '/chat':
+                      _homeScreen.currentScreen = {TabItem.feed: ScreenItem.chatScreen};
+                      _homeScreen.changeFloatingActionButtonEvent();
 
-                default:
-                  debugPrint('ERROR: Event Tab Router unknown route');
-                  return null;
-              }
-            },
-          );
-        });
+                      return MaterialPageRoute(
+                        builder: (context) => const ChatScreen(),
+                      );
+
+                    default:
+                      debugPrint('ERROR: Event Tab Router unknown route');
+                      return null;
+                  }
+                },
+              );
+            }); },
+      ),
+    );
   }
 
   @override

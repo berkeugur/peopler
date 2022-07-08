@@ -6,7 +6,7 @@ import '../../../../others/locator.dart';
 import '../settings.dart';
 import '../settings_page_functions.dart';
 
-changePasswordField() {
+changePasswordField(context) {
   final Mode _mode = locator<Mode>();
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -14,7 +14,7 @@ changePasswordField() {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         Text(
@@ -26,11 +26,11 @@ changePasswordField() {
             color: _mode.settings_setting_title(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         InkWell(
-          onTap: () => op_change_password(),
+          onTap: () => op_change_password(context),
           child: Row(
             children: [
               SvgPicture.asset(
@@ -42,7 +42,7 @@ changePasswordField() {
                     : _mode.settings_custom_1(),
                 fit: BoxFit.contain,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Text(

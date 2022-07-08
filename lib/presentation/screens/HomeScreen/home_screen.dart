@@ -60,37 +60,29 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   return BlocBuilder<FloatingActionButtonCubit, bool>(
                       bloc: _homeScreen,
                       builder: (_, trig) {
-                        return Scaffold(
-                          backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
-                          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                          floatingActionButton: const MyFloatingActionButtons(),
-                          body: IndexedStack(
-                            index: _homeScreen.currentTab.index,
-                            children: [
-                              MultiBlocProvider(
-                                providers: [
-                                  BlocProvider<FeedBloc>(
-                                    create: (context) => FeedBloc(),
+                        return SafeArea(
+                          child: Scaffold(
+                            backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
+                            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                            floatingActionButton: const MyFloatingActionButtons(),
+                            body: IndexedStack(
+                              index: _homeScreen.currentTab.index,
+                              children: [
+                                FeedScreenNavigator(
+                                    feedListKey: feedListKey,
                                   ),
-                                  BlocProvider<AddFeedBloc>(
-                                    create: (context) => AddFeedBloc(),
-                                  ),
-                                ],
-                                child: FeedScreenNavigator(
-                                  feedListKey: feedListKey,
-                                ),
-                              ),
-                              SearchScreenNavigator(),
-                              SavedScreenNavigator(),
-                              NotificationScreenNavigator(),
-                              ProfileScreenNavigator()
-                            ],
+                                SearchScreenNavigator(),
+                                SavedScreenNavigator(),
+                                NotificationScreenNavigator(),
+                                ProfileScreenNavigator()
+                              ],
+                            ),
+                            bottomNavigationBar: MyBottomNavigationBar(
+                                // Callback Function, when another tab is clicked, this method will run
+                                onBottomTabTapped: (index) {
+                              _buildOnBottomTabTapped(index);
+                            }),
                           ),
-                          bottomNavigationBar: MyBottomNavigationBar(
-                              // Callback Function, when another tab is clicked, this method will run
-                              onBottomTabTapped: (index) {
-                            _buildOnBottomTabTapped(index);
-                          }),
                         );
                       });
                 }),

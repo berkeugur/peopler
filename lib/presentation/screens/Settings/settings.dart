@@ -60,7 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         height: 30,
                       ),
                       toggleSwitches(context, setState: setState),
-                      changePasswordField(),
+                      changePasswordField(context),
                       about_field(context),
                       const SizedBox(
                         height: 30,
