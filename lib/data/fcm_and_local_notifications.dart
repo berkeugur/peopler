@@ -50,14 +50,14 @@ class FCMAndLocalNotifications {
     /// Initialize Awesome Notifications
     awesomeNotificationsPlugin.initialize(
         // set the icon to null if you want to use the default app icon
-        'resource://drawable/ic_launcher',
+        'resource://mipmap/ic_launcher_adaptive_fore',
         [
           NotificationChannel(
             channelKey: Strings.keyDebug,
             channelName: 'Debug notifications',
             channelDescription: 'Notification channel for debug purposes',
-            defaultColor: Colors.transparent,
-            ledColor: Colors.transparent,
+            defaultColor: Colors.green,
+            ledColor: Colors.white,
             playSound: true,
             enableVibration: true,
           ),
@@ -65,8 +65,8 @@ class FCMAndLocalNotifications {
             channelKey: Strings.keyPermission,
             channelName: 'Permission notifications',
             channelDescription: 'Notification channel for permissions',
-            defaultColor: Colors.transparent,
-            ledColor: Colors.transparent,
+            defaultColor: const Color(0xFF0A58EF),
+            ledColor: Colors.white,
             playSound: true,
             enableVibration: true,
           ),
@@ -74,8 +74,8 @@ class FCMAndLocalNotifications {
             channelKey: Strings.keyMain,
             channelName: 'Message and Connection Request notifications',
             channelDescription: 'Notification channel for main purposes',
-            defaultColor: Colors.transparent,
-            ledColor: Colors.transparent,
+            defaultColor: const Color(0xFF0A58EF),
+            ledColor: Colors.white,
             playSound: true,
             enableVibration: true,
           ),
@@ -103,10 +103,11 @@ class FCMAndLocalNotifications {
           .set({"token": newToken});
     });
 
+    /// For IOS, foreground notifications
     await _fcm.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
-      sound: true,
+      sound: false,
     );
 
     /// For foreground notification, firebase cloud messaging
