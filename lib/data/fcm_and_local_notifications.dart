@@ -174,7 +174,7 @@ class FCMAndLocalNotifications {
           content: NotificationContent(
               id: 2,
               channelKey: Strings.keyMain,
-              title: 'Yeni Bağlantı İsteği',
+              title: '',
               body: message["displayName"] + ' size bağlantı isteği gönderdi',
               showWhen: true,
               displayOnForeground: true,
@@ -209,7 +209,7 @@ class FCMAndLocalNotifications {
           content: NotificationContent(
               id: 3,
               channelKey: Strings.keyMain,
-              title: 'Yeni Bağlantı',
+              title: '',
               body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
               showWhen: true,
               displayOnForeground: true,
