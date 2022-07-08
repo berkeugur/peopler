@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -110,14 +111,12 @@ class FCMAndLocalNotifications {
 
     /// For foreground notification, firebase cloud messaging
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint("notification geldi");
       Map<String, dynamic> _message = message.data;
       if (_message['notificationType'] == Strings.sendRequest) {
         showSendRequestNotification(_message);
       } else if (_message['notificationType'] == Strings.receiveRequest) {
         showReceivedRequestNotification(_message);
       } else if (_message['notificationType'] == Strings.message) {
-        debugPrint("Incoming message");
         showIncomingMessage(_message);
       }
     });
@@ -134,7 +133,7 @@ class FCMAndLocalNotifications {
             title: 'Location for Debug Purposes',
             body: error,
             payload: {'payload': ''},
-            summary: 'summary' // To prevent error
+            summary: 'debug'
             ));
   }
 
@@ -147,14 +146,15 @@ class FCMAndLocalNotifications {
             title: title,
             body: body,
             payload: {'payload': payloadType},
-            summary: 'summary' // To prevent error
+            summary: 'Permission'
             ));
   }
 
   /// If a user sent a connection request to you
   static void showSendRequestNotification(Map<String, dynamic> message) async {
     // message["displayName"] // message["message"] // message["profileURL"] // message["userID"]
-    await awesomeNotificationsPlugin.createNotification(
+    if(Platform.isAndroid) {
+      await awesomeNotificationsPlugin.createNotification(
         content: NotificationContent(
             id: 2,
             channelKey: Strings.keyMain,
@@ -167,52 +167,103 @@ class FCMAndLocalNotifications {
             roundedLargeIcon: true,
             largeIcon: message["profileURL"],
             payload: {'payload': Strings.sendRequest},
-            summary: 'Yeni Bağlantı İsteği' // To prevent error
+            summary: 'Yeni Bağlantı İsteği'
             ));
+    } else if(Platform.isIOS) {
+      await awesomeNotificationsPlugin.createNotification(
+          content: NotificationContent(
+              id: 2,
+              channelKey: Strings.keyMain,
+              title: 'Yeni Bağlantı İsteği',
+              body: message["displayName"] + ' size bağlantı isteği gönderdi',
+              showWhen: true,
+              displayOnForeground: true,
+              displayOnBackground: true,
+              notificationLayout: NotificationLayout.Messaging,
+              payload: {'payload': Strings.sendRequest},
+              summary: ''
+          ));
+    }
   }
 
   /// If a user accepted your connection request
   static void showReceivedRequestNotification(
       Map<String, dynamic> message) async {
-    await awesomeNotificationsPlugin.createNotification(
-        content: NotificationContent(
-            id: 3,
-            channelKey: Strings.keyMain,
-            title: '',
-            body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
-            showWhen: true,
-            displayOnForeground: true,
-            displayOnBackground: true,
-            notificationLayout: NotificationLayout.Messaging,
-            roundedLargeIcon: true,
-            largeIcon: message["profileURL"],
-            payload: {'payload': Strings.receiveRequest},
-            summary: 'Yeni Bağlantı'));
+    if(Platform.isAndroid) {
+      await awesomeNotificationsPlugin.createNotification(
+          content: NotificationContent(
+              id: 3,
+              channelKey: Strings.keyMain,
+              title: '',
+              body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
+              showWhen: true,
+              displayOnForeground: true,
+              displayOnBackground: true,
+              notificationLayout: NotificationLayout.Messaging,
+              roundedLargeIcon: true,
+              largeIcon: message["profileURL"],
+              payload: {'payload': Strings.receiveRequest},
+              summary: 'Yeni Bağlantı'));
+    } else if(Platform.isIOS) {
+      await awesomeNotificationsPlugin.createNotification(
+          content: NotificationContent(
+              id: 3,
+              channelKey: Strings.keyMain,
+              title: 'Yeni Bağlantı',
+              body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
+              showWhen: true,
+              displayOnForeground: true,
+              displayOnBackground: true,
+              notificationLayout: NotificationLayout.Messaging,
+              payload: {'payload': Strings.receiveRequest},
+              summary: ''));
+    }
   }
 
   /// If your connection send you a message
   static void showIncomingMessage(Map<String, dynamic> message) async {
     // message["displayName"] // message["message"] // message["profileURL"] // message["userID"]
-    await awesomeNotificationsPlugin.createNotification(
-        content: NotificationContent(
-            id: 4,
-            channelKey: Strings.keyMain,
-            title: '',
-            body: message["message"],
-            showWhen: true,
-            displayOnForeground: true,
-            displayOnBackground: true,
-            notificationLayout: NotificationLayout.Messaging,
-            roundedLargeIcon: true,
-            largeIcon: message["profileURL"],
-            payload: {
-              'payload': Strings.message,
-              'userID': message['userID'],
-              'displayName': message['displayName'],
-              'profileURL': message['profileURL']
-            },
-            summary: message["displayName"] // To prevent error
-            ));
+    if(Platform.isAndroid) {
+      await awesomeNotificationsPlugin.createNotification(
+          content: NotificationContent(
+              id: 4,
+              channelKey: Strings.keyMain,
+              title: '',
+              body: message["message"],
+              showWhen: true,
+              displayOnForeground: true,
+              displayOnBackground: true,
+              notificationLayout: NotificationLayout.Messaging,
+              roundedLargeIcon: true,
+              largeIcon: message["profileURL"],
+              payload: {
+                'payload': Strings.message,
+                'userID': message['userID'],
+                'displayName': message['displayName'],
+                'profileURL': message['profileURL']
+              },
+              summary: message["displayName"]
+          ));
+    } else if(Platform.isIOS) {
+      await awesomeNotificationsPlugin.createNotification(
+          content: NotificationContent(
+              id: 4,
+              channelKey: Strings.keyMain,
+              title: message["displayName"],
+              body: message["message"],
+              showWhen: true,
+              displayOnForeground: true,
+              displayOnBackground: true,
+              notificationLayout: NotificationLayout.Messaging,
+              payload: {
+                'payload': Strings.message,
+                'userID': message['userID'],
+                'displayName': message['displayName'],
+                'profileURL': message['profileURL']
+              },
+              summary: ''
+          ));
+    }
   }
 
   static void listenNotification() async {
