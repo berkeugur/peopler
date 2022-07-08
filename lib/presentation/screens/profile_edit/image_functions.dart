@@ -140,7 +140,7 @@ void photosAddCrop({required File photo, required StateSetter stateSetter}) asyn
     //croppedPhoto;
     //.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile);
   }
-  Future.delayed(Duration(seconds: 1), () {
+  Future.delayed(const Duration(seconds: 1), () {
     setStateEditProfile.value = !setStateEditProfile.value;
   }).then((value) => setStateEditProfile.value = !setStateEditProfile.value);
 

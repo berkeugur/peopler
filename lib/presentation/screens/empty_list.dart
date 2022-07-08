@@ -12,7 +12,7 @@ class EmptyListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EmptyList(
+    return const EmptyList(
       emptyListType: EmptyListType.outgoingRequest,
     );
   }

@@ -406,6 +406,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                       bool _isEduDotTr = registerEmailController.text.replaceAll(" ", "")
                                           .toLowerCase().substring(registerEmailController.text.length - 7) == ".edu.tr" ? true : false;
 
+                                      /// DİKKAT
                                       /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
                                       _isEduDotTr = true;
                                       /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
