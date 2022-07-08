@@ -7,7 +7,6 @@ class MyUser {
   String displayName = "";
   String gender = "";
   String city = "";
-  String district = "";
   String biography = "";
   String schoolName = "";
   String currentJobName = "";
@@ -40,7 +39,6 @@ class MyUser {
       'displayName': displayName,
       'gender': gender,
       'city': city,
-      'district': district,
       'biography': biography,
       'schoolName': schoolName,
       'currentJobName': currentJobName,
@@ -61,7 +59,6 @@ class MyUser {
         displayName = map['displayName'],
         gender = map['gender'],
         city = map['city'],
-        district = map['district'],
         biography = map['biography'],
         schoolName = map['schoolName'],
         currentJobName = map['currentJobName'],
@@ -97,7 +94,6 @@ class MyUser {
         displayName = myPublicUser.displayName,
         gender = myPublicUser.gender,
         city = myPublicUser.city,
-        district = myPublicUser.district,
         biography = myPublicUser.biography,
         schoolName = myPublicUser.schoolName,
         currentJobName = myPublicUser.currentJobName,

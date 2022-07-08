@@ -31,10 +31,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
 
   @override
   Widget build(BuildContext context) {
-    var _menuItemHeight =
-        MediaQuery.of(context).size.width < 425 ? MediaQuery.of(context).size.width * 0.056 + 10 : 425 * 0.056 + 10;
-    var _menuItemWidth =
-        MediaQuery.of(context).size.width < 425 ? MediaQuery.of(context).size.width * 0.059 + 10 : 425 * 0.059 + 10;
+    double _menuItemHeight = MediaQuery.of(context).size.width < 425 ? MediaQuery.of(context).size.width * 0.056 + 10 : 425 * 0.056 + 10;
+    double _menuItemWidth = MediaQuery.of(context).size.width < 425 ? MediaQuery.of(context).size.width * 0.059 + 10 : 425 * 0.059 + 10;
 
     return ValueListenableBuilder(
         valueListenable: setTheme,

@@ -28,8 +28,7 @@ class FirestoreDBServiceFeeds {
 
     List<MyFeed> _allFeeds = [];
     for (DocumentSnapshot snap in _querySnapshot.docs) {
-      MyFeed _currentEvent =
-          MyFeed.fromMap(snap.data() as Map<String, dynamic>);
+      MyFeed _currentEvent = MyFeed.fromMap(snap.data() as Map<String, dynamic>);
       _allFeeds.add(_currentEvent);
     }
 
@@ -37,8 +36,7 @@ class FirestoreDBServiceFeeds {
   }
 
   Future<MyFeed?> readFeed(String feedID) async {
-    DocumentSnapshot documentSnapshot =
-        await _firebaseDB.collection('feeds').doc(feedID).get();
+    DocumentSnapshot documentSnapshot = await _firebaseDB.collection('feeds').doc(feedID).get();
 
     if (documentSnapshot.exists) {
       Map<String, dynamic> _readEventMap =
@@ -51,7 +49,7 @@ class FirestoreDBServiceFeeds {
   }
 
   Future<bool> createFeed(MyFeed feed) async {
-    var _feedID = _firebaseDB
+    String _feedID = _firebaseDB
         .collection('feeds')
         .doc()
         .id; // Free feed document created with ID.

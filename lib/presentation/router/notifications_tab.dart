@@ -24,7 +24,7 @@ class _NotificationScreenNavigatorState extends State<NotificationScreenNavigato
 
   @override
   Widget build(BuildContext context) {
-    var _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+    FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {

@@ -33,7 +33,6 @@ class ProfileScreenComponentsOthersProfile {
   }
 
   biographyField(context) {
-    double _width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +281,7 @@ class ProfileScreenComponentsOthersProfile {
           color: _mode.blackAndWhiteConversion(),
         ),
         Text(
-          "${profileData.city}/${profileData.district}",
+          "${profileData.city}",
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             color: _mode.blackAndWhiteConversion(),
@@ -295,8 +294,6 @@ class ProfileScreenComponentsOthersProfile {
   }
 
   sendRequestButton(BuildContext context, SendRequestButtonStatus status, MyUser otherUser) {
-    final Mode _mode = locator<Mode>();
-
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       height: 30,
@@ -467,17 +464,6 @@ class ProfileScreenComponentsOthersProfile {
   }
 
   mutualFriends(context) {
-    Size _size = MediaQuery.of(context).size;
-    double _customSmallTextSize() {
-      if (_size.width <= 320) {
-        return 10;
-      } else if (_size.width > 320 && _size.width < 480) {
-        return 11;
-      } else {
-        return 12;
-      }
-    }
-
     return Center(
       child: Column(
         children: [
@@ -589,8 +575,6 @@ class ProfileScreenComponentsOthersProfile {
   activityList(BuildContext context) {
     int minNumberOfActivity = 1;
     ValueNotifier<int> numberOfActivity = ValueNotifier(minNumberOfActivity + 1); //profileData.experiences.length+1;
-    double _photoSize = 50;
-
     return myActivities.isEmpty
         ? const SizedBox.shrink()
         : ValueListenableBuilder(

@@ -6,10 +6,10 @@ import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/locator.dart';
 
 Container bottomMenuForChannelList(BuildContext context) {
-  var _menuItemHeight = MediaQuery.of(context).size.width < 425
+  double _menuItemHeight = MediaQuery.of(context).size.width < 425
       ? MediaQuery.of(context).size.width * 0.056 + 10
       : 425 * 0.056 + 10;
-  var _menuItemWidth = MediaQuery.of(context).size.width < 425
+  double _menuItemWidth = MediaQuery.of(context).size.width < 425
       ? MediaQuery.of(context).size.width * 0.059 + 10
       : 425 * 0.059 + 10;
 

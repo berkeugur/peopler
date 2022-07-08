@@ -223,7 +223,7 @@ class LocationRepository {
         _lastSelectedUser = allUserList.last;
       }
 
-      var newList = await _firestoreDBServiceUsers.getUserCityWithPagination(city, _lastSelectedUser, 10);
+      List<MyUser> newList = await _firestoreDBServiceUsers.getUserCityWithPagination(city, _lastSelectedUser, 10);
 
       if (newList.length < _numberOfElementsWillBeSelected) {
         _hasMoreCity = false;

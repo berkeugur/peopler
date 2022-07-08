@@ -277,7 +277,7 @@ class ProfileScreenComponentsMyProfile {
           color: _mode.blackAndWhiteConversion(),
         ),
         Text(
-          "${profileData.city}/${profileData.district}",
+          "${profileData.city}",
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             color: _mode.blackAndWhiteConversion(),

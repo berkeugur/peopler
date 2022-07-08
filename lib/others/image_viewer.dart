@@ -55,8 +55,8 @@ class FullScreenPage extends StatefulWidget {
 class _FullScreenPageState extends State<FullScreenPage> {
   @override
   void initState() {
-    var brightness = widget.dark ? Brightness.light : Brightness.dark;
-    var color = widget.dark ? Colors.black12 : Colors.white70;
+    Brightness brightness = widget.dark ? Brightness.light : Brightness.dark;
+    Color color = widget.dark ? Colors.black12 : Colors.white70;
 
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -73,7 +73,7 @@ class _FullScreenPageState extends State<FullScreenPage> {
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         // Restore your settings here...
         ));
     super.dispose();

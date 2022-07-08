@@ -455,8 +455,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                               : const Color(0xFF0353EF),
                                           fontSize: 22,
                                           fontWeight: nameController.text.isEmpty ||
-                                                  UserBloc.user?.city == "" ||
-                                                  UserBloc.user?.district == ""
+                                                  UserBloc.user?.city == ""
                                               ? FontWeight.w300
                                               : FontWeight.w500),
                                     ),

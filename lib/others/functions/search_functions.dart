@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../others/classes/variables.dart';
-import '../../presentation/screens/LoginAndRegisterScreen/il_ilce_data.dart';
+import '../strings.dart';
 
 TextEditingController editingController = TextEditingController();
 
-final duplicateItems = List.generate(cityAndDistrictData.length, (i) => cityAndDistrictData[i][0][0]);
+final duplicateItems = List.generate(Strings.cityData.length, (i) => Strings.cityData[i]);
 var items = <String>[];
 
 void filterSearchResults(String query, StateSetter setState) {
@@ -14,7 +12,7 @@ void filterSearchResults(String query, StateSetter setState) {
   dummySearchList.addAll(duplicateItems);
   if (query.isNotEmpty) {
     List<String> dummyListData = <String>[];
-    for (var item in dummySearchList) {
+    for (String item in dummySearchList) {
       //[ "ğ", "Ğ", "ç", "Ç", "ş", "Ş", "ü", "Ü", "ö", "Ö", "ı", "İ" ]
       if (item
           .replaceAll(" ", "")
@@ -61,6 +59,4 @@ void filterSearchResults(String query, StateSetter setState) {
   }
 }
 
-var duplicateItems2 = List.generate(
-    cityAndDistrictData[selectedCityIndex][1].length, (i) => cityAndDistrictData[selectedCityIndex][1][i]);
 var items2 = <String>[];

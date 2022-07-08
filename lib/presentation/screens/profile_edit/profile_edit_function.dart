@@ -2,13 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/others/functions/search_functions.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/il_ilce_data.dart';
 import 'package:peopler/presentation/screens/profile_edit/image_functions.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit.dart';
 
+import '../../../others/strings.dart';
 import '../profile/MyProfile/ProfileScreen/profile_screen.dart';
 
 saveButtonFunction(String changedCity) async {
@@ -142,18 +141,18 @@ saveButtonFunction(String changedCity) async {
 }
 
 cityItemButton(String item, setStateBottomSheet) {
-  //changedCity = items[index];
-//items[index] = item
-  //UserBloc.user?.city = item;
-  //UserBloc.user?.district = "";
   editingController.clear();
   filterSearchResults("", setStateBottomSheet);
-  cityAndDistrictData.forEach((x) {
+
+  // DİKKAT - Yorum satırına alındı. 08/07/2022 MERT
+  /*
+  Strings.cityData.forEach((x) {
     if (x[0][0] == UserBloc.user!.city) {
       items2 = x[1];
       print(items2);
     }
   });
+   */
 
   print("$item değiştirildi:::::");
 }

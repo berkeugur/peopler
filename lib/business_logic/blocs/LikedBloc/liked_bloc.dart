@@ -22,7 +22,7 @@ class LikedBloc extends Bloc<LikedEvent, LikedState> {
     on<SwapLikedEvent>((event, emit) async {
       if (event.type == Strings.activityLiked) {
         if (event.setClear == true) {
-          var previousState = state;
+          LikedState previousState = state;
           emit(const LikeState());
           await _userRepository.addLikedDislikedFeed(event.userID, event.feedID, Strings.activityLiked);
           if (previousState is DislikeState) {
@@ -35,7 +35,7 @@ class LikedBloc extends Bloc<LikedEvent, LikedState> {
         }
       } else {
         if (event.setClear == true) {
-          var previousState = state;
+          LikedState previousState = state;
           emit(const DislikeState());
           await _userRepository.addLikedDislikedFeed(event.userID, event.feedID, Strings.activityDisliked);
           if (previousState is LikeState) {

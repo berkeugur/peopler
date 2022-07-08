@@ -122,7 +122,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
         DateTime _now = DateTime.now();
 
         String _channelListItemDate() {
-          var _subtractDay = _now.difference(_lastMessageDate).inDays;
+          int _subtractDay = _now.difference(_lastMessageDate).inDays;
 
           if (_subtractDay < 1) {
             return _lastMessageDate.hour.toString() + ":" + _lastMessageDate.minute.toString();

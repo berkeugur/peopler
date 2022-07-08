@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/il_ilce_data.dart';
+import '../strings.dart';
 
 // ignore: must_be_immutable
 class CreateFakeUsersAndFeeds extends StatelessWidget {
@@ -54,26 +54,25 @@ class CreateFakeUsersAndFeeds extends StatelessWidget {
       int _fakeFeedIndex = random(0, fakeFeedText.length);
 
       late int  _nameAndSurnameRandomIndex;
-      var  _genderRandomIndex = random(0, gender.length);
+      int  _genderRandomIndex = random(0, gender.length);
 
       int _cityIndex = random(0, 80);
-      int _districtIndex = random(0, cityAndDistrictData[_cityIndex][1].length);
 
       int _biographyIndex = random(0, biography.length);
 
       int _subtractDayIndex = random(0, 80);
       int _subtractSecongIndex = random(0, 80000);
 
-      if(_genderRandomIndex == 0 && femaleNameAndSurname.length>0){
+      if(_genderRandomIndex == 0 && femaleNameAndSurname.isNotEmpty){
         _nameAndSurnameRandomIndex = random(0, femaleNameAndSurname.length);
-      }else if(_genderRandomIndex == 0 && femaleNameAndSurname.length==0){
+      }else if(_genderRandomIndex == 0 && femaleNameAndSurname.isEmpty){
         _genderRandomIndex = 1;
       }
-      else if(_genderRandomIndex == 1 && maleNameAndSurname.length>0){
+      else if(_genderRandomIndex == 1 && maleNameAndSurname.isNotEmpty){
         _nameAndSurnameRandomIndex = random(0, maleNameAndSurname.length);
-      }else if(_genderRandomIndex == 1 && maleNameAndSurname.length==0){
+      }else if(_genderRandomIndex == 1 && maleNameAndSurname.isEmpty){
         _genderRandomIndex =2;
-      }else if(_genderRandomIndex == 2 && maleNameAndSurname.length>0){
+      }else if(_genderRandomIndex == 2 && maleNameAndSurname.isNotEmpty){
         _nameAndSurnameRandomIndex = random(0, maleNameAndSurname.length);
       }else{
         print("Listeler boşaldı listelere isim girin");
@@ -146,8 +145,7 @@ class CreateFakeUsersAndFeeds extends StatelessWidget {
           'displayName': nameAndSurnameFunction(), // John Doe
           'gender': gender[_genderRandomIndex].toString(), // Stokes and Sons
           'pplName': "ppl" + pplNameFunction().toString(), // 42
-          'city': cityAndDistrictData[_cityIndex][0][0],
-          'district' : cityAndDistrictData[_cityIndex][1][_districtIndex],
+          'city': Strings.cityData[_cityIndex],
           'biography' : biography[_biographyIndex],
           'email' : _subtractDayIndex.toString() + _subtractSecongIndex.toString() + nameAndSurnameFunction() + "@gmail.com",
           'createdAt' : DateTime.now().subtract(Duration(days: _subtractDayIndex,seconds: _subtractSecongIndex,)),
@@ -159,7 +157,7 @@ class CreateFakeUsersAndFeeds extends StatelessWidget {
 
           feeds.add({
             'createdAt' : DateTime.now().subtract(Duration(seconds: _subtractSecongIndex,)),
-            'feedExplanation' :fakeFeedText[_fakeFeedIndex] + "  \n  " + (cityAndDistrictData[_cityIndex][0][0] + "  " + cityAndDistrictData[_cityIndex][1][_districtIndex] + "  " + nameAndSurnameFunction())*3,
+            'feedExplanation' :fakeFeedText[_fakeFeedIndex] + "  \n  " + (Strings.cityData[_cityIndex] + "  " + nameAndSurnameFunction())*3,
             'feedID' : "",
             'updatedAt' : DateTime.now(),
             'userDisplayName' : nameAndSurnameFunction(),
@@ -168,7 +166,10 @@ class CreateFakeUsersAndFeeds extends StatelessWidget {
             'userPhotoUrl': profileURLFunction(),
           }).then((value) {
             value.update({"feedID" : value.id});
-          }).catchError((error) => print("Failed to add feed: $error"));
+          }).catchError((error) {
+            debugPrint("Failed to add feed: $error");
+          });
+
 
           if (_genderRandomIndex == 0) {
             print(femaleNameAndSurname);

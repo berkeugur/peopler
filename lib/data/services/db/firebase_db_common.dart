@@ -4,8 +4,8 @@ class FirestoreDBServiceCommon {
   final FirebaseFirestore _firebaseDB = FirebaseFirestore.instance;
 
   Future<void> deleteNestedSubCollections(String subCollectionPath) async {
-    var collection = _firebaseDB.collection(subCollectionPath);
-    var snapshots = await collection.get();
+    CollectionReference collection = _firebaseDB.collection(subCollectionPath);
+    QuerySnapshot snapshots = await collection.get();
     for (DocumentSnapshot doc in snapshots.docs) {
       await doc.reference.delete();
     }

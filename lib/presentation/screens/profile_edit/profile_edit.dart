@@ -1,25 +1,15 @@
-import 'dart:ffi';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:csc_picker/model/select_status_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
-import 'package:peopler/others/functions/image_picker_functions.dart';
 import 'package:peopler/others/functions/search_functions.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/il_ilce_data.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/presentation/screens/profile_edit/drag_drop_gridview.dart';
 import 'package:peopler/presentation/screens/profile_edit/image_functions.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit_function.dart';
-import '../../../others/classes/variables.dart';
 
 ValueNotifier<bool> setStateEditProfile = ValueNotifier(false);
 
@@ -146,23 +136,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ],
                         ),
                         selectCityButton(screenWidth, context, screenHeight, safePadding),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        /* Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                            child: Text(
-                              "Yaşadığınız İlçe",
-                              textAlign: TextAlign.left,
-                              style: GoogleFonts.rubik(
-                                  fontSize: 15, fontWeight: FontWeight.w700, color: Mode().blackAndWhiteConversion()),
-                            ),
-                          ),
-                        ],
-                      ),
-                      selectDistrictButton(screenWidth, context, screenHeight),*/
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Column(
@@ -180,7 +153,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       color: Mode().blackAndWhiteConversion()),
                                 ),
                               ),
-                              DragDropGridView(),
+                              const DragDropGridView(),
                             ],
                           ),
                         )

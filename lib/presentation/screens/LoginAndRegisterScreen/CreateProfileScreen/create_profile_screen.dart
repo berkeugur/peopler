@@ -6,7 +6,6 @@ import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
-import '../il_ilce_data.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/widgets/snack_bars.dart';
 import '../../../../others/functions/search_functions.dart';
@@ -24,7 +23,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   @override
   void initState() {
     items.addAll(duplicateItems);
-    items2.addAll(duplicateItems2);
     _userBloc = BlocProvider.of<UserBloc>(context);
     super.initState();
   }
@@ -165,10 +163,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   ),
                                 ),
                                 selectCityButton(screenWidth, context, screenHeight, safePadding),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                selectDistrictButton(screenWidth, context, screenHeight),
                               ],
                             ),
                           ),
@@ -193,7 +187,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     return Center(
       child: TextButton(
         onPressed: () {
-          if (UserBloc.user?.city != "" && UserBloc.user?.district != "" && bioController.text.isNotEmpty) {
+          if (UserBloc.user?.city != "" && bioController.text.isNotEmpty) {
             UserBloc.user?.biography = bioController.text;
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
@@ -207,7 +201,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             } else if (_userBloc.state == SignedOutState()) {
               Navigator.pushNamed(context, '/emailAndPasswordScreen');
             }
-          } else if (UserBloc.user?.city == "" && UserBloc.user?.district == "" && bioController.text.isEmpty) {
+          } else if (UserBloc.user?.city == "" && bioController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               customSnackBar(
                   context: context,
@@ -216,38 +210,20 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   textColor: const Color(0xFFFFFFFF),
                   bgColor: const Color(0xFF000B21)),
             );
-          } else if (UserBloc.user?.city != "" && UserBloc.user?.district == "" && bioController.text.isNotEmpty) {
+          } else if (UserBloc.user?.city == "" && bioController.text.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               customSnackBar(
                   context: context,
-                  title: "İlçe seçmeniz gerekiyor.",
+                  title: "Şehir seçmeniz gerekiyor.",
                   icon: Icons.warning_outlined,
                   textColor: const Color(0xFFFFFFFF),
                   bgColor: const Color(0xFF000B21)),
             );
-          } else if (UserBloc.user?.city == "" && UserBloc.user?.district != "" && bioController.text.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              customSnackBar(
-                  context: context,
-                  title: "İl seçmeniz gerekiyor.",
-                  icon: Icons.warning_outlined,
-                  textColor: const Color(0xFFFFFFFF),
-                  bgColor: const Color(0xFF000B21)),
-            );
-          } else if (UserBloc.user?.city != "" && UserBloc.user?.district != "" && bioController.text.isEmpty) {
+          } else if (UserBloc.user?.city != "" && bioController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               customSnackBar(
                   context: context,
                   title: "Biyogrofi alanını doldurunuz!",
-                  icon: Icons.warning_outlined,
-                  textColor: const Color(0xFFFFFFFF),
-                  bgColor: const Color(0xFF000B21)),
-            );
-          } else if (UserBloc.user?.city == "" && UserBloc.user?.district == "" && bioController.text.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              customSnackBar(
-                  context: context,
-                  title: "İl ve ilçe seçmelisiniz!",
                   icon: Icons.warning_outlined,
                   textColor: const Color(0xFFFFFFFF),
                   bgColor: const Color(0xFF000B21)),
@@ -259,7 +235,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           style: GoogleFonts.rubik(
               color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
               fontSize: 22,
-              fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" || UserBloc.user?.district == ""
+              fontWeight: nameController.text.isEmpty || UserBloc.user?.city == ""
                   ? FontWeight.w300
                   : FontWeight.w500),
         ),
@@ -354,15 +330,17 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                         onTap: () {
                                                           setState(() {
                                                             UserBloc.user?.city = items[index];
-                                                            UserBloc.user?.district = "";
                                                             editingController.clear();
                                                             filterSearchResults("", setStateBottomSheet);
-                                                            cityAndDistrictData.forEach((x) {
+                                                            // DİKKAT - Yorum satırına alındı. 08/07/2022 MERT
+                                                            /*
+                                                            Strings.cityData.forEach((x) {
                                                               if (x[0][0] == UserBloc.user!.city) {
                                                                 items2 = x[1];
                                                                 print(items2);
                                                               }
                                                             });
+                                                             */
                                                           });
                                                           Navigator.pop(context);
                                                         },
@@ -408,131 +386,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             },
             child: Text(
               UserBloc.user?.city != "" ? UserBloc.user!.city : "Şehir Seçin",
-              style: GoogleFonts.rubik(
-                  color: const Color(0xFFFFFFFF),
-                  fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16,
-                  fontWeight: FontWeight.w300),
-            )),
-      ),
-    );
-  }
-
-  Center selectDistrictButton(double screenWidth, BuildContext context, double screenHeight) {
-    return Center(
-      child: Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-        height: 40,
-        width: 220,
-        decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
-        child: TextButton(
-            onPressed: () {
-              if (UserBloc.user?.city != "") {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (BuildContext context) {
-                      double keybHeight = MediaQuery.of(context).viewInsets.bottom;
-                      double safePadding = MediaQuery.of(context).padding.top;
-                      return Container(
-                        color: Colors.transparent,
-                        height: 435 + keybHeight,
-                        margin: EdgeInsets.only(bottom: keybHeight, top: safePadding),
-                        child: StatefulBuilder(builder: (context, setStateBottomSheet) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10.0, top: 0.0),
-                                child: Container(
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                  height: 350,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 50,
-                                        width: MediaQuery.of(context).size.width,
-                                        child: Center(
-                                          child: LimitedBox(
-                                            child: Text(
-                                              UserBloc.user!.city,
-                                              style: GoogleFonts.rubik(fontWeight: FontWeight.w800, fontSize: 20),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          height: 300,
-                                          child: ListView.builder(
-                                              itemCount: items2.length,
-                                              itemBuilder: (BuildContext context, int index) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                    color: UserBloc.user?.district == items2[index]
-                                                        ? const Color(0xFF0353EF)
-                                                        : Colors.white,
-                                                    borderRadius: BorderRadius.circular(15),
-                                                  ),
-                                                  margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(10),
-                                                    child: Center(
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            UserBloc.user!.district = items2[index];
-                                                            print("seleced: $UserBloc.user?.district");
-                                                          });
-                                                          Navigator.pop(context);
-                                                        },
-                                                        child: Text(
-                                                          items2[index],
-                                                          style: UserBloc.user!.district == items2[index]
-                                                              ? const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Color(0xFF000B21))
-                                                              : const TextStyle(fontSize: 18),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              })),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
-                                child: Container(
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-                                  child: TextButton(
-                                    child: const Text("Vazgeç"),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                      );
-                    });
-              } else {
-                print("lütfen önce şehir seçin");
-              }
-            },
-            child: Text(
-              UserBloc.user!.district != "" ? UserBloc.user!.district : "İlçe Seçin",
               style: GoogleFonts.rubik(
                   color: const Color(0xFFFFFFFF),
                   fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16,

@@ -29,9 +29,9 @@ class _DragDropGridViewState extends State<DragDropGridView> {
           setTheme,
         ],
         builder: (context, x, y) {
-          print(images2.length);
-          print(UserBloc.user!.photosURL.length);
-          print("***************uzuadasdğ****************");
+          debugPrint(images2.length.toString());
+          debugPrint(UserBloc.user!.photosURL.length.toString());
+          debugPrint("***************uzuadasdğ****************");
           return images2.length == 0
               ? Container(
                   width: MediaQuery.of(context).size.width,
@@ -129,7 +129,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
                               )
                             ],
                           ));
-                  //print("delete button pressed ${_image}");
+                  //debugPrint("delete button pressed ${_image}");
                   //images2.removeAt(images2.indexWhere((i) => i == _image));
                   //setState(() {});
                 },
@@ -158,7 +158,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
             //
             onAccept: (selectedData) {
             PhotoData _data = selectedData;
-            print("onAccept data number ${_data.number}, _image number ${_image.number}");
+            debugPrint("onAccept data number ${_data.number}, _image number ${_image.number}");
 
             //alttaki fonksiyon images listesinin içinde seçilen resmin hangi indexte olduğunu söyler
             int selectedDataIsWhereImageList = images.indexWhere((i) => i.number == _data.number);
@@ -172,7 +172,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
             images[droppedDataIsWhereImageList] = images[selectedDataIsWhereImageList];
             images[selectedDataIsWhereImageList] = _droppedImageData;
 
-            print("selected: $selectedDataIsWhereImageList, dropped: $droppedDataIsWhereImageList");
+            debugPrint("selected: $selectedDataIsWhereImageList, dropped: $droppedDataIsWhereImageList");
 
             setState(() {});
           },
@@ -180,7 +180,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
             //
             onWillAccept: (PhotoData? data) {
             bool _isDataHere = data == null ? false : true;
-            print("onWillAccept : isDataHere $_isDataHere and data info: ${data != null ? data.number : 404}");
+            debugPrint("onWillAccept : isDataHere $_isDataHere and data info: ${data != null ? data.number : 404}");
             return _isDataHere;
           },
             //
@@ -218,7 +218,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
       child: InkWell(
         borderRadius: BorderRadius.circular(5),
         onTap: () {
-          print("yeni ekle...");
+          debugPrint("yeni ekle...");
           showPickerForAddPhotos(context, stateSetter: setState);
         },
         child: Center(
@@ -310,7 +310,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
         ),
         InkWell(
           onTap: () {
-            print("delete button pressed ${_image.number}");
+            debugPrint("delete button pressed ${_image.number}");
             images.removeAt(images.indexWhere((i) => i.number == _image.number));
             setState(() {});
           },

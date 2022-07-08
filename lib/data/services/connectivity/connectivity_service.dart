@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 class ConnectivityService {
   Future<bool> checkWifiOrMobileOpen() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
+    ConnectivityResult connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) return true;
     if (connectivityResult == ConnectivityResult.wifi) return true;
     return false;

@@ -23,8 +23,8 @@ class _SavedScreenNavigatorState extends State<SavedScreenNavigator> with Automa
 
   @override
   Widget build(BuildContext context) {
-    var _savedBloc = BlocProvider.of<SavedBloc>(context);
-    var _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+    SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
+    FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
 
     return ValueListenableBuilder(
         valueListenable: setTheme,

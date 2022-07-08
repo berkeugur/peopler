@@ -18,7 +18,7 @@ class FirebaseStorageService  {
   }
 
   Future<void> deleteFile(String filePath, String fileName) async {
-    var url = filePath + "/" + fileName;
+    String url = filePath + "/" + fileName;
     Reference _storageReference = _firebaseStorage.ref(url);
     try{
       _storageReference.delete();

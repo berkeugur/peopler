@@ -53,7 +53,7 @@ class _LinkedInPageState extends State<LinkedInPage> {
               onMessageReceived: (JavascriptMessage message) {
                 String pageBody = message.message;
                 String customToken = pageBody.substring(19); // Delete <body>
-                var arr = customToken.split('</p>');
+                List<String> arr = customToken.split('</p>');
                 customToken = arr[0];
 
                 _userBloc.add(signInWithLinkedInEvent(customToken: customToken));

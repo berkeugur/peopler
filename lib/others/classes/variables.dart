@@ -16,9 +16,9 @@ bool isVisiblePassword = true;
 bool isVisibleLoginPassword = true;
 bool isVisibleCheckPassword = true;
 
-var selectedCityIndex = 0;
+int selectedCityIndex = 0;
 bool isSelectedCityIndex = false;
-var selectedCityIndex2 = 0;
+int selectedCityIndex2 = 0;
 bool isSelectedCityIndex2 = false;
 
 int selectedIndex = 1;

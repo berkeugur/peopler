@@ -21,7 +21,7 @@ import '../profile/OthersProfile/profile/profile_screen_components.dart';
 import 'no_users_exist.dart';
 
 class NearbyTab extends StatefulWidget {
-  NearbyTab(
+  const NearbyTab(
       {Key? key,
       required this.screenHeight,
       required this.paddingTopSafeArea,

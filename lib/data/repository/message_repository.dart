@@ -61,7 +61,7 @@ class MessageRepository {
     return true;
     /*
     if (dbWriteProcess) {
-      var token = "";
+      String token = "";
       if (kullaniciToken.containsKey(message.kime)) {
         token = kullaniciToken[message.kime];
         //print("Localden geldi:" + token);

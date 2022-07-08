@@ -22,7 +22,7 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
 
   @override
   Widget build(BuildContext context) {
-    var _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+    FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {

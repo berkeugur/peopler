@@ -269,7 +269,7 @@ class FCMAndLocalNotifications {
 
   static void listenNotification() async {
     awesomeNotificationsPlugin.actionStream.listen((receivedAction) async {
-      var payloadType = receivedAction.payload!['payload'];
+      String? payloadType = receivedAction.payload!['payload'];
 
       if (receivedAction.channelKey == Strings.keyDebug) {
         // Nothing
