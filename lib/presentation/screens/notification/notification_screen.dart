@@ -92,7 +92,8 @@ class NotificationScreen extends StatelessWidget {
   }
 
   bool _listScrollListener() {
-    if (notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
+    if (notificationsScreenScrollController.hasClients &&
+        notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
       if (Variables.animatedNotificationHeaderBottom.value != 50) {
         Variables.animatedNotificationsHeaderTop.value = 70;
 
@@ -100,7 +101,8 @@ class NotificationScreen extends StatelessWidget {
           Variables.animatedNotificationHeaderBottom.value = 50;
         });
       }
-    } else if (notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
+    } else if (notificationsScreenScrollController.hasClients &&
+        notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
       if (Variables.animatedNotificationHeaderBottom.value != 0) {
         Variables.animatedNotificationHeaderBottom.value = 0;
         Future.delayed(const Duration(milliseconds: 450), () {

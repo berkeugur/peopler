@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:peopler/presentation/screens/Settings/settings_page_functions.dart';
 
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
@@ -29,9 +36,25 @@ bool is_selected_profile_open_to_everyone = true;
 class _SettingsScreenState extends State<SettingsScreen> {
   final Mode _mode = locator<Mode>();
 
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+  );
+
   @override
-  void initState() {
+  initState() {
     super.initState();
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 
   @override
@@ -65,6 +88,94 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(
                         height: 30,
                       ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      SizedBox.square(dimension: 50, child: Image.asset("assets/ic_launcher.png")),
+                      Text(
+                        "version: ${_packageInfo.version}",
+                        textScaleFactor: 1,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.rubik(
+                          color: Color(0xFF0353EF),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(5),
+                          onTap: () {
+                            showPlatformDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PlatformAlertDialog(
+                                    title: Text(
+                                      "Bu İşlem Geri Alınamaz!",
+                                      textScaleFactor: 1,
+                                      style: GoogleFonts.rubik(),
+                                    ),
+                                    content: Text(
+                                      "Hesabınızı kalıcı olarak silmek istediğinize emin misiniz?",
+                                      textScaleFactor: 1,
+                                      style: GoogleFonts.rubik(),
+                                    ),
+                                    actions: [
+                                      PlatformDialogAction(
+                                        onPressed: () {
+                                          op_delete_account(context);
+                                        },
+                                        child: Text(
+                                          "Hesabı Sil",
+                                          textScaleFactor: 1,
+                                          style: GoogleFonts.rubik(
+                                            color: Color(0xFF0353EF),
+                                          ),
+                                        ),
+                                      ),
+                                      PlatformDialogAction(
+                                        material: (_, __) => MaterialDialogActionData(),
+                                        cupertino: (_, __) => CupertinoDialogActionData(),
+                                        onPressed: () => Navigator.of(context).pop(),
+                                        child: Text(
+                                          "Vazgeç",
+                                          textScaleFactor: 1,
+                                          style: GoogleFonts.rubik(
+                                            color: Color(0xFF0353EF),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                            print("tapped");
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(13),
+                            decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                color: Color.fromARGB(255, 233, 233, 233).withOpacity(1),
+                                blurRadius: 0.5,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 0),
+                              ),
+                            ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Hesabı Sil",
+                                  textScaleFactor: 1,
+                                  style: GoogleFonts.rubik(color: Colors.grey[600], fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),

@@ -57,6 +57,16 @@ void photoCrop({required File photo, required StateSetter stateSetter}) async {
     aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
     cropStyle: CropStyle.circle,
     compressFormat: ImageCompressFormat.png,
+    iosUiSettings: IOSUiSettings(),
+    androidUiSettings: AndroidUiSettings(
+        //toolbarColor: Color(0xFF0353EF),
+        //toolbarWidgetColor: Colors.white,
+        //cropGridColor: Colors.white,
+        //cropFrameColor: Colors.white,
+        //statusBarColor: Color(0xFF0353EF),
+        //hideBottomControls: false,
+        //backgroundColor: Colors.grey[850],
+        ),
   );
   if (croppedPhoto != null) {
     stateSetter(() {

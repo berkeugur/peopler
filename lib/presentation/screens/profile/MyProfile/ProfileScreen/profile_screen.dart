@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../../others/locator.dart';
@@ -62,6 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         children: [
           header(context),
+
           _profileScreenComponents.photos(context),
           _profileScreenComponents.nameField(),
           const SizedBox(
@@ -108,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _profileScreenComponents.locationText(),
           const SizedBox(height: 15),
           _profileScreenComponents.biographyField(context),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           _profileScreenComponents.activityList(context),
           const SizedBox(height: 10),
           _profileScreenComponents.experiencesList(context),
@@ -137,23 +140,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: _mode.bottomMenuBackground(),
       ),
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       height: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(
-            width: 25,
-            height: 25,
+          InkWell(
+            onTap: () => op_settings_icon(context),
+            child: SvgPicture.asset(
+              "assets/images/svg_icons/settings.svg",
+              width: 25,
+              height: 25,
+              color: _mode.homeScreenIconsColor(),
+              fit: BoxFit.contain,
+            ),
           ),
           Text(
-            txt.peoplerTXT,
+            "peopler",
             textScaleFactor: 1,
-            style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 24),
+            style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
           ),
-          const SizedBox.square(
-            dimension: 25,
-          )
+          InkWell(
+            onTap: () => op_message_icon(context),
+            child: SvgPicture.asset(
+              "assets/images/svg_icons/message_icon.svg",
+              width: 25,
+              height: 25,
+              color: _mode.homeScreenIconsColor(),
+              fit: BoxFit.contain,
+            ),
+          ),
         ],
       ),
     );

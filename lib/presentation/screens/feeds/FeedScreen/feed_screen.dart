@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/presentation/screens/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/tutorial/constants.dart';
 import 'package:peopler/presentation/screens/tutorial/onboardingscreen.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_bloc.dart';
@@ -191,30 +192,38 @@ class FeedScreenState extends State<FeedScreen> {
                     const SizedBox(
                       width: 5,
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      height: 30,
-                      width: screenWidth > 600 ? 298 : (screenWidth - 50) / 2,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF0353EF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/svg_icons/ppl_mini_logo.svg",
-                            width: 20,
-                            height: 20,
-                            fit: BoxFit.contain,
-                          ),
-                          Text(
-                            " Ayrıcalıkları Keşfet",
-                            textScaleFactor: 1,
-                            style: GoogleFonts.rubik(color: Colors.white, fontSize: 12),
-                          ),
-                        ],
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SubscriptionsPage()),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        height: 30,
+                        width: screenWidth > 600 ? 298 : (screenWidth - 50) / 2,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF0353EF),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/images/svg_icons/ppl_mini_logo.svg",
+                              width: 20,
+                              height: 20,
+                              fit: BoxFit.contain,
+                            ),
+                            Text(
+                              " Ayrıcalıkları Keşfet",
+                              textScaleFactor: 1,
+                              style: GoogleFonts.rubik(color: Colors.white, fontSize: 12),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
