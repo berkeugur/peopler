@@ -32,6 +32,7 @@ dependencies:
   awesome_notifications: ^0.6.21
   cached_network_image: ^3.2.1
   camera: ^0.9.8
+  carousel_slider: ^4.1.1
   cloud_firestore: ^3.2.1
   connectivity_plus: ^2.3.5
   csc_picker: ^0.2.6

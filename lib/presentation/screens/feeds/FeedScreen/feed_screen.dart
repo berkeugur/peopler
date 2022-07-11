@@ -196,7 +196,7 @@ class FeedScreenState extends State<FeedScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const SubscriptionsPage()),
+                          MaterialPageRoute(builder: (context) => SubscriptionsPage()),
                         );
                       },
                       child: Container(
