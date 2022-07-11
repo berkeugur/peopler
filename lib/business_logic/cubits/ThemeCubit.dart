@@ -1,18 +1,15 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show ValueNotifier;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../others/classes/dark_light_mode_controller.dart';
-import '../../others/locator.dart';
 
 ValueNotifier<bool> setTheme = ValueNotifier(true);
 
 class ThemeCubit extends Cubit<bool> {
   ThemeCubit() : super(true);
 
-  final Mode _mode = locator<Mode>();
-
   Future<void> openLightMode() async {
     Mode.isEnableDarkMode = false;
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setTheme.value = !setTheme.value;
       Mode.isEnableDarkMode = false;
     }).then((value) {
@@ -24,7 +21,7 @@ class ThemeCubit extends Cubit<bool> {
 
   Future<void> openDarkMode() async {
     Mode.isEnableDarkMode = true;
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setTheme.value = !setTheme.value;
       Mode.isEnableDarkMode = true;
     }).then((value) {

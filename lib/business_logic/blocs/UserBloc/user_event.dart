@@ -21,8 +21,7 @@ class signOutEvent extends UserEvent {
 class signInWithLinkedInEvent extends UserEvent {
   String customToken;
 
-  signInWithLinkedInEvent(
-      {required this.customToken});
+  signInWithLinkedInEvent({required this.customToken});
 
   @override
   List<Object> get props => [customToken];
@@ -66,8 +65,7 @@ class createUserWithEmailAndPasswordEvent extends UserEvent {
   String email;
   String password;
 
-  createUserWithEmailAndPasswordEvent(
-      {required this.email, required this.password});
+  createUserWithEmailAndPasswordEvent({required this.email, required this.password});
 
   @override
 // TODO: implement props
@@ -87,8 +85,7 @@ class uploadProfilePhoto extends UserEvent {
 class signInWithEmailandPasswordEvent extends UserEvent {
   String email;
   String password;
-  signInWithEmailandPasswordEvent(
-      {required this.email, required this.password});
+  signInWithEmailandPasswordEvent({required this.email, required this.password});
 
   @override
 // TODO: implement props

@@ -7,6 +7,7 @@ import 'package:peopler/others/classes/hobbies.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/AllActivityListScreen/all_activity_list.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/hobby_functions.dart';
+import 'package:peopler/presentation/screens/profile/MyProfile/connections.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit.dart';
 import '../../../../../data/model/user.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
@@ -35,7 +36,7 @@ class ProfileScreenComponentsMyProfile {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                 child: Text(
                   "Hakkında",
                   textScaleFactor: 1,
@@ -69,6 +70,7 @@ class ProfileScreenComponentsMyProfile {
               style: GoogleFonts.rubik(
                 fontSize: 15,
                 color: Mode().blackAndWhiteConversion(),
+                fontWeight: FontWeight.w300,
               ),
             )
 
@@ -331,26 +333,35 @@ class ProfileScreenComponentsMyProfile {
     return Center(
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.people,
-                color: Colors.grey[500],
-              ),
-              UserBloc.user!.connectionUserIDs.isNotEmpty
-                  ? Text(
-                      "${UserBloc.user!.connectionUserIDs.length} bağlantı",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
-                        color: Colors.grey[500],
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ],
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ConnectionsScreen()),
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.people,
+                  color: Colors.grey[500],
+                ),
+                UserBloc.user!.connectionUserIDs.isNotEmpty
+                    ? Text(
+                        "${UserBloc.user!.connectionUserIDs.length} bağlantı",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          color: Colors.grey[500],
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            ),
           ),
           const SizedBox(
             height: 3,
@@ -604,11 +615,26 @@ class ProfileScreenComponentsMyProfile {
                 ),
               ),
               profileData.hobbies.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
-                      child: Text("Hiçbir hobiniz bulunmuyor. Sağdaki + butonuna tıklayarak ekleyebilirsiniz.",
-                          textScaleFactor: 1,
-                          style: GoogleFonts.rubik(fontSize: 16, color: Mode().blackAndWhiteConversion())))
+                  ? Container(
+                      decoration: BoxDecoration(
+                        color: _mode.bottomMenuBackground(),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Color(0xFF939393).withOpacity(0.6),
+                              blurRadius: 0.5,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 0))
+                        ],
+                        //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                          child: Text(
+                              "Hiç hobiniz bulunmuyor.\nHobilerinizi ekleyerek profilinizi tamamlayabilirsiniz.",
+                              textScaleFactor: 1,
+                              style: GoogleFonts.rubik(
+                                  fontSize: 16, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w300))),
+                    )
                   : ListView.builder(
                       scrollDirection: Axis.vertical,
                       //i use +1 because last index for less more see more widget
