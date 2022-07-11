@@ -1,11 +1,13 @@
 class Strings {
   /// LinkedIn Parameters (From LinkedIn Developer Page)
-  static const String redirectUrl = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
+  static const String redirectUrl =
+      'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
   static const String clientId = '86y9muk6ijz659';
 
   /// Firebase Parameters
   // Firebase Server Key for Cloud Messaging (Firebase Console -> Project Settings -> Cloud Messaging)
-  static const String firebaseServerKey = 'AAAAolOeL4k:APA91bHz6zy5WVSLFoAbYZAMv1vPN92IECllzNxgpjP7sN3Tx1eCKG6HlzHxjdPmpsA1fMQWY96XuhLh9JBnn2KLTIfLNG8fSBv0GJaQKN43hsN3bpc2u9toPpnvPo3kh6yQmgMkI_kh';
+  static const String firebaseServerKey =
+      'AAAAolOeL4k:APA91bHz6zy5WVSLFoAbYZAMv1vPN92IECllzNxgpjP7sN3Tx1eCKG6HlzHxjdPmpsA1fMQWY96XuhLh9JBnn2KLTIfLNG8fSBv0GJaQKN43hsN3bpc2u9toPpnvPo3kh6yQmgMkI_kh';
 
   /// Default Firebase Storage File Paths
   static const String defaultProfilePhotoUrl = "";
@@ -30,15 +32,15 @@ class Strings {
 
   static const List<String> cityData = [
     "Adana",
-    "Adiyaman",
+    "Adıyaman",
     "Afyonkarahisar",
-    "Ağri",
+    "Ağrı",
     "Amasya",
     "Ankara",
     "Antalya",
     "Artvin",
-    "Aydin",
-    "Balikesir",
+    "Aydın",
+    "Balıkesir",
     "Bilecik",
     "Bingöl",
     "Bitlis",
@@ -46,12 +48,12 @@ class Strings {
     "Burdur",
     "Bursa",
     "Çanakkale",
-    "Çankiri",
+    "Çankırı",
     "Çorum",
     "Denizli",
-    "Diyarbakir",
+    "Diyarbakır",
     "Edirne",
-    "Elaziğ",
+    "Elazığ",
     "Erzincan",
     "Erzurum",
     "Eskişehir",
@@ -62,13 +64,13 @@ class Strings {
     "Hatay",
     "Isparta",
     "Mersin",
-    "Istanbul",
-    "Izmir",
+    "İstanbul",
+    "İzmir",
     "Kars",
     "Kastamonu",
     "Kayseri",
-    "Kirklareli",
-    "Kirşehir",
+    "Kırklareli",
+    "Kırşehir",
     "Kocaeli",
     "Konya",
     "Kütahya",
@@ -91,7 +93,7 @@ class Strings {
     "Tokat",
     "Trabzon",
     "Tunceli",
-    "Şanliurfa",
+    "Şanlıurfa",
     "Uşak",
     "Van",
     "Yozgat",
@@ -99,12 +101,12 @@ class Strings {
     "Aksaray",
     "Bayburt",
     "Karaman",
-    "Kirikkale",
+    "Kırıkkale",
     "Batman",
-    "Şirnak",
-    "Bartin",
+    "Şırnak",
+    "Bartın",
     "Ardahan",
-    "Iğdir",
+    "Iğdır",
     "Yalova",
     "Karabük",
     "Kilis",
@@ -114,8 +116,13 @@ class Strings {
 }
 
 ProjectText txt = ProjectText();
-class ProjectText{
-  String get peoplerTXT {return "peopler";}
-  String get backArrowSvgTXT {return "assets/images/svg_icons/back_arrow.svg";}
 
+class ProjectText {
+  String get peoplerTXT {
+    return "peopler";
+  }
+
+  String get backArrowSvgTXT {
+    return "assets/images/svg_icons/back_arrow.svg";
+  }
 }
