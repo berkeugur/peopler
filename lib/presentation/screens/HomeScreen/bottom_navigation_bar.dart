@@ -41,7 +41,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
             decoration: BoxDecoration(
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: Color(0xFF939393).withOpacity(0.6),
+                    color: const Color(0xFF939393).withOpacity(0.6),
                     blurRadius: 2.0,
                     spreadRadius: 0,
                     offset: const Offset(0.0, 0.75))
@@ -55,10 +55,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildFeedBottomIcon(_menuItemHeight, _menuItemWidth),
-                _buildSearchBottomIcon(_menuItemHeight, _menuItemWidth),
-                _buildSavedBottomIcon(_menuItemHeight, _menuItemWidth),
-                _buildNotificationBottomIcon(_menuItemHeight, _menuItemWidth),
                 _buildProfileBottomIcon(_menuItemHeight, _menuItemWidth),
+                _buildSearchBottomIcon(_menuItemHeight, _menuItemWidth),
+                _buildNotificationBottomIcon(_menuItemHeight, _menuItemWidth),
+                _buildChatBottomIcon(_menuItemHeight, _menuItemWidth),
               ],
             ),
           );
@@ -66,11 +66,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
   }
 
   InkWell _buildFeedBottomIcon(double _menuItemHeight, double _menuItemWidth) {
+    int index = TabItem.feed.index;
     return InkWell(
       onTap: () {
         setState(() {
-          widget.onBottomTabTapped(0); // Index 0 Feed Screen
-          _homeScreen.currentTab = TabItem.values[0];
+          widget.onBottomTabTapped(index);
+          _homeScreen.currentTab = TabItem.feed;
         });
       },
       child: AnimatedContainer(
@@ -80,7 +81,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == 0
+          color: _homeScreen.currentTab.index == index
               ? _mode.enabledMenuItemBackground()
               : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
@@ -90,7 +91,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/home.svg",
-            color: _homeScreen.currentTab.index == 0
+            color: _homeScreen.currentTab.index == index
                 ? _mode.enabledBottomMenuItemAssetColor()
                 : _mode.disabledBottomMenuItemAssetColor(),
             fit: BoxFit.contain,
@@ -101,11 +102,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
   }
 
   InkWell _buildSearchBottomIcon(double _menuItemHeight, double _menuItemWidth) {
+    int index = TabItem.search.index;
     return InkWell(
       onTap: () {
         setState(() {
-          widget.onBottomTabTapped(1); // Index 1 Search Screen
-          _homeScreen.currentTab = TabItem.values[1];
+          widget.onBottomTabTapped(index); // Index 1 Search Screen
+          _homeScreen.currentTab = TabItem.search;
         });
 
         BlocProvider.of<LocationPermissionBloc>(context).add(GetLocationPermissionEvent());
@@ -117,7 +119,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == 1
+          color: _homeScreen.currentTab.index == index
               ? _mode.enabledMenuItemBackground()
               : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
@@ -127,7 +129,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/search.svg",
-            color: _homeScreen.currentTab.index == 1
+            color: _homeScreen.currentTab.index == index
                 ? _mode.enabledBottomMenuItemAssetColor()
                 : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
@@ -139,12 +141,13 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
     );
   }
 
-  InkWell _buildSavedBottomIcon(double _menuItemHeight, double _menuItemWidth) {
+  InkWell _buildChatBottomIcon(double _menuItemHeight, double _menuItemWidth) {
+    int index = TabItem.chat.index;
     return InkWell(
       onTap: () {
         setState(() {
-          widget.onBottomTabTapped(2); // Index 2 Saved Screen
-          _homeScreen.currentTab = TabItem.values[2];
+          widget.onBottomTabTapped(index); // Index 2 Saved Screen
+          _homeScreen.currentTab = TabItem.chat;
         });
       },
       child: AnimatedContainer(
@@ -154,7 +157,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == 2
+          color: _homeScreen.currentTab.index == index
               ? _mode.enabledMenuItemBackground()
               : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
@@ -163,8 +166,8 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           height: _menuItemHeight,
           width: _menuItemWidth,
           child: SvgPicture.asset(
-            "assets/images/svg_icons/saved.svg",
-            color: _homeScreen.currentTab.index == 2
+            "assets/images/svg_icons/message_icon.svg",
+            color: _homeScreen.currentTab.index == index
                 ? _mode.enabledBottomMenuItemAssetColor()
                 : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
@@ -177,11 +180,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
   }
 
   InkWell _buildNotificationBottomIcon(double _menuItemHeight, double _menuItemWidth) {
+    int index = TabItem.notifications.index;
     return InkWell(
       onTap: () {
         setState(() {
-          widget.onBottomTabTapped(3); // Index 3 Notification Screen
-          _homeScreen.currentTab = TabItem.values[3];
+          widget.onBottomTabTapped(index); // Index 3 Notification Screen
+          _homeScreen.currentTab = TabItem.notifications;
         });
       },
       child: AnimatedContainer(
@@ -191,7 +195,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == 3
+          color: _homeScreen.currentTab.index == index
               ? _mode.enabledMenuItemBackground()
               : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
@@ -201,7 +205,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/notification.svg",
-            color: _homeScreen.currentTab.index == 3
+            color: _homeScreen.currentTab.index == index
                 ? _mode.enabledBottomMenuItemAssetColor()
                 : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
@@ -214,11 +218,12 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
   }
 
   InkWell _buildProfileBottomIcon(double _menuItemHeight, double _menuItemWidth) {
+    int index = TabItem.profile.index;
     return InkWell(
       onTap: () {
         setState(() {
-          widget.onBottomTabTapped(4); // Index 4 Profile Screen
-          _homeScreen.currentTab = TabItem.values[4];
+          widget.onBottomTabTapped(index); // Index 4 Profile Screen
+          _homeScreen.currentTab = TabItem.profile;
         });
       },
       child: AnimatedContainer(
@@ -228,7 +233,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == 4
+          color: _homeScreen.currentTab.index == index
               ? _mode.enabledMenuItemBackground()
               : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
@@ -238,7 +243,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/profile_icon.svg",
-            color: _homeScreen.currentTab.index == 4
+            color: _homeScreen.currentTab.index == index
                 ? _mode.enabledBottomMenuItemAssetColor()
                 : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,

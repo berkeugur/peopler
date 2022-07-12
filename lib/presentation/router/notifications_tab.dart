@@ -45,6 +45,7 @@ class _NotificationScreenNavigatorState extends State<NotificationScreenNavigato
                   return MaterialPageRoute(
                     builder: (context) => ConnectionRequestScreen(),
                   );
+                /*
                 case '/chat':
                   _homeScreen.currentScreen = {TabItem.notifications: ScreenItem.chatScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
@@ -52,6 +53,7 @@ class _NotificationScreenNavigatorState extends State<NotificationScreenNavigato
                   return MaterialPageRoute(
                     builder: (context) => const ChatScreen(),
                   );
+                 */
                 default:
                   debugPrint('ERROR: Notification Tab Router unknown route');
                   return null;

@@ -48,6 +48,7 @@ Container topMenu(context) {
                 ),
               ),
             ),
+            /*
             InkWell(
               onTap: () {
                 FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
@@ -61,6 +62,7 @@ Container topMenu(context) {
                 fit: BoxFit.contain,
               ),
             ),
+            */
           ],
         ),
   );

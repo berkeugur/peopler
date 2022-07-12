@@ -45,68 +45,70 @@ class _SavedScreenState extends State<SavedScreen> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return SafeArea(
-      child: MultiValueListenableBuilder(
-          valueListenables: [
-            Variables.animatedSearchPeopleHeaderHeight,
-            setTheme,
-          ],
-          builder: (context, snapshot, _) {
-            double _maxWidth = _size.width > 400 ? 400 : _size.width;
+      child: Scaffold(
+        body: MultiValueListenableBuilder(
+            valueListenables: [
+              Variables.animatedSearchPeopleHeaderHeight,
+              setTheme,
+            ],
+            builder: (context, snapshot, _) {
+              double _maxWidth = _size.width > 400 ? 400 : _size.width;
 
-            return BlocBuilder<ThemeCubit, bool>(
-                bloc: _themeCubit,
-                builder: (_, state) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).padding.top,
-                        color: _mode.homeScreenScaffoldBackgroundColor(),
-                      ),
-                      Expanded(
-                        child: SizedBox(
-                          width: _maxWidth,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                saved_screen_header(context: context),
-                                BlocBuilder<SavedBloc, SavedState>(
-                                  key: showWidgetsKeySaved,
-                                  bloc: _savedBloc,
-                                  builder: (context, state) {
-                                    if (state is InitialSavedState) {
-                                      return _initialUsersStateWidget();
-                                    } else if (state is UserNotExistSavedState) {
-                                      return _noUserExistsWidget();
-                                    } else if (state is UsersLoadedSavedState) {
-                                      return _showSavedUsers(_size);
-                                    } else if (state is NoMoreUsersSavedState) {
-                                      return _showSavedUsers(_size);
-                                    } else if (state is NewUsersLoadingSavedState) {
-                                      return _showSavedUsers(_size);
-                                    } else {
-                                      return const Text("Impossible");
-                                    }
-                                  },
-                                ),
-                                BlocBuilder<SavedBloc, SavedState>(
+              return BlocBuilder<ThemeCubit, bool>(
+                  bloc: _themeCubit,
+                  builder: (_, state) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).padding.top,
+                          color: _mode.homeScreenScaffoldBackgroundColor(),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            width: _maxWidth,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  saved_screen_header(context: context),
+                                  BlocBuilder<SavedBloc, SavedState>(
+                                    key: showWidgetsKeySaved,
                                     bloc: _savedBloc,
                                     builder: (context, state) {
-                                      if (state is NewUsersLoadingSavedState) {
-                                        return _usersLoadingCircularButton();
+                                      if (state is InitialSavedState) {
+                                        return _initialUsersStateWidget();
+                                      } else if (state is UserNotExistSavedState) {
+                                        return _noUserExistsWidget();
+                                      } else if (state is UsersLoadedSavedState) {
+                                        return _showSavedUsers(_size);
+                                      } else if (state is NoMoreUsersSavedState) {
+                                        return _showSavedUsers(_size);
+                                      } else if (state is NewUsersLoadingSavedState) {
+                                        return _showSavedUsers(_size);
                                       } else {
-                                        return const SizedBox.shrink();
+                                        return const Text("Impossible");
                                       }
-                                    }),
-                              ],
+                                    },
+                                  ),
+                                  BlocBuilder<SavedBloc, SavedState>(
+                                      bloc: _savedBloc,
+                                      builder: (context, state) {
+                                        if (state is NewUsersLoadingSavedState) {
+                                          return _usersLoadingCircularButton();
+                                        } else {
+                                          return const SizedBox.shrink();
+                                        }
+                                      }),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                });
-          }),
+                      ],
+                    );
+                  });
+            }),
+      ),
     );
   }
 

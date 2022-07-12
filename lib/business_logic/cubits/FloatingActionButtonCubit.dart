@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../presentation/tab_item.dart';
 
 /*
-enum TabItem { feed, search, saved, notifications, profile }
-enum ScreenItem { feedScreen, searchScreen, savedScreen, notificationScreen, profileScreen }
+enum TabItem { feed, search, chat, notifications, profile }
+enum ScreenItem { feedScreen, searchScreen, chatScreen, notificationScreen, profileScreen }
  */
 
 class FloatingActionButtonCubit extends Cubit<bool> {
@@ -16,7 +16,7 @@ class FloatingActionButtonCubit extends Cubit<bool> {
   final Map<TabItem, ScreenItem> _currentScreen = {
     TabItem.feed: ScreenItem.feedScreen,
     TabItem.search: ScreenItem.searchNearByScreen,
-    TabItem.saved: ScreenItem.savedScreen,
+    TabItem.chat: ScreenItem.chatScreen,
     TabItem.notifications: ScreenItem.notificationScreen,
     TabItem.profile: ScreenItem.profileScreen,
   };
@@ -24,7 +24,7 @@ class FloatingActionButtonCubit extends Cubit<bool> {
   final Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
     TabItem.feed: GlobalKey<NavigatorState>(),
     TabItem.search: GlobalKey<NavigatorState>(),
-    TabItem.saved: GlobalKey<NavigatorState>(),
+    TabItem.chat: GlobalKey<NavigatorState>(),
     TabItem.notifications: GlobalKey<NavigatorState>(),
     TabItem.profile: GlobalKey<NavigatorState>(),
   };
@@ -33,7 +33,7 @@ class FloatingActionButtonCubit extends Cubit<bool> {
     return {
       TabItem.feed: _currentScreen[TabItem.feed]!,
       TabItem.search: _currentScreen[TabItem.search]!,
-      TabItem.saved: _currentScreen[TabItem.saved]!,
+      TabItem.chat: _currentScreen[TabItem.chat]!,
       TabItem.notifications: _currentScreen[TabItem.notifications]!,
       TabItem.profile: _currentScreen[TabItem.profile]!,
     };
@@ -43,7 +43,7 @@ class FloatingActionButtonCubit extends Cubit<bool> {
     return {
       TabItem.feed: _navigatorKeys[TabItem.feed]!,
       TabItem.search: _navigatorKeys[TabItem.search]!,
-      TabItem.saved: _navigatorKeys[TabItem.saved]!,
+      TabItem.chat: _navigatorKeys[TabItem.chat]!,
       TabItem.notifications: _navigatorKeys[TabItem.notifications]!,
       TabItem.profile: _navigatorKeys[TabItem.profile]!,
     };

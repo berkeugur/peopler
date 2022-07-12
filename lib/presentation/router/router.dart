@@ -24,21 +24,21 @@ class LoginRouter {
   Route? onGenerateRoute(RouteSettings routeSettings)  {
     switch (routeSettings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => SplashScreen());
+        return MaterialPageRoute(builder: (_) => const SplashScreen());
       case '/onBoardingScreen':
-        return MaterialPageRoute(builder: (_) => OnBoardingScreen());
+        return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
       case '/welcomeScreen':
-        return MaterialPageRoute(builder: (_) => WelcomeScreen());
+        return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       case '/nameScreen':
-        return MaterialPageRoute(builder: (_) => NameScreen());
+        return MaterialPageRoute(builder: (_) => const NameScreen());
       case '/loginScreen':
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/genderSelectScreen':
-        return MaterialPageRoute(builder: (_) => GenderSelectScreen());
+        return MaterialPageRoute(builder: (_) => const GenderSelectScreen());
       case '/resetPasswordScreen':
-        return MaterialPageRoute(builder: (_) => ResetPasswordScreen());
+        return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
       case '/begForPermissionScreen':
-        return MaterialPageRoute(builder: (_) => BegForPermissionScreen());
+        return MaterialPageRoute(builder: (_) => const BegForPermissionScreen());
       case '/homeScreen':
         return
             //MaterialPageRoute(builder: (_) =>  CreateFakeUsersAndFeeds());
@@ -47,15 +47,15 @@ class LoginRouter {
                 builder: (_) => MultiBlocProvider(providers: [
                   BlocProvider<FeedBloc>.value(value: _feedBloc),
                   BlocProvider<SavedBloc>.value(value: _savedBloc),
-                    ], child: HomeScreen()));
+                    ], child: const HomeScreen()));
       case '/verifyScreen':
-        return MaterialPageRoute(builder: (_) => VerificationScreen());
+        return MaterialPageRoute(builder: (_) => const VerificationScreen());
       case '/createProfileScreen':
-        return MaterialPageRoute(builder: (_) => CreateProfileScreen());
+        return MaterialPageRoute(builder: (_) => const CreateProfileScreen());
       case '/emailAndPasswordScreen':
-        return MaterialPageRoute(builder: (_) => EmailAndPasswordScreen());
+        return MaterialPageRoute(builder: (_) => const EmailAndPasswordScreen());
       case '/linkedInLoginScreen':
-        return MaterialPageRoute(builder: (_) => LinkedInPage());
+        return MaterialPageRoute(builder: (_) => const LinkedInPage());
 
 
       default:

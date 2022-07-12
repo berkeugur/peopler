@@ -7,8 +7,7 @@ import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'dart:io' show Platform;
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
-import '../../../business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
-import '../../../business_logic/blocs/FeedBloc/feed_bloc.dart';
+import 'package:peopler/presentation/router/chat_tab.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
@@ -17,7 +16,6 @@ import '../feeds/FeedScreen/feed_screen.dart';
 import '../../router/feed_tab.dart';
 import '../../router/notifications_tab.dart';
 import '../../router/profile_tab.dart';
-import '../../router/saved_tab.dart';
 import '../../router/search_tab.dart';
 import 'bottom_navigation_bar.dart';
 import 'floating_action_buttons.dart';
@@ -71,10 +69,10 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 FeedScreenNavigator(
                                     feedListKey: feedListKey,
                                   ),
-                                SearchScreenNavigator(),
-                                SavedScreenNavigator(),
-                                NotificationScreenNavigator(),
-                                ProfileScreenNavigator()
+                                const SearchScreenNavigator(),
+                                const ChatScreenNavigator(),
+                                const NotificationScreenNavigator(),
+                                const ProfileScreenNavigator()
                               ],
                             ),
                             bottomNavigationBar: MyBottomNavigationBar(
@@ -118,12 +116,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<bool> _buildWillPopScope() async {
-    if ([ScreenItem.addFeedScreen, ScreenItem.chatScreen, ScreenItem.settingsScreen]
-        .contains(_homeScreen.currentScreen[_homeScreen.currentTab])) {
-      _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.feedScreen};
-      _homeScreen.changeFloatingActionButtonEvent();
-      return !await _homeScreen.navigatorKeys[_homeScreen.currentTab]!.currentState!.maybePop();
-    } else if ([ScreenItem.invitationsReceivedScreen, ScreenItem.invitationsTransmittedScreen]
+    if ([ScreenItem.invitationsReceivedScreen, ScreenItem.invitationsTransmittedScreen]
         .contains(_homeScreen.currentScreen[_homeScreen.currentTab])) {
       _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};
       _homeScreen.changeFloatingActionButtonEvent();

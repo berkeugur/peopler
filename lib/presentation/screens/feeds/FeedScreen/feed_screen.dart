@@ -263,6 +263,7 @@ class FeedScreenState extends State<FeedScreen> {
                         color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
                   ),
                 ),
+                /*
                 InkWell(
                   onTap: () => op_message_icon(context),
                   child: SvgPicture.asset(
@@ -273,6 +274,7 @@ class FeedScreenState extends State<FeedScreen> {
                     fit: BoxFit.contain,
                   ),
                 ),
+                */
               ],
             ),
           );

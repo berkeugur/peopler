@@ -299,7 +299,7 @@ class ProfileScreenComponentsMyProfile {
         child: InkWell(
           onTap: () {
             UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-            _userBloc.mainKey.currentState?.push(MaterialPageRoute(builder: (context) => ProfileEditScreen()));
+            _userBloc.mainKey.currentState?.push(MaterialPageRoute(builder: (context) => const ProfileEditScreen()));
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

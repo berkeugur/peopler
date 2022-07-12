@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/data/model/user.dart';
+import 'package:peopler/presentation/screens/Settings/settings.dart';
+import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../tab_item.dart';
 
 // ignore: non_constant_identifier_names
 op_settings_icon(context) {
-  FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-  _homeScreen.navigatorKeys[TabItem.feed]!.currentState!.pushNamed('/settings');
+  UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+  _userBloc.mainKey.currentState?.push(
+    MaterialPageRoute(builder: (context) => const SettingsScreen()),
+  );
 }
 
 op_peopler_title(context, ScrollController _scrollController) {
@@ -19,7 +23,7 @@ op_peopler_title(context, ScrollController _scrollController) {
 
 op_message_icon(context) {
   FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-  _homeScreen.navigatorKeys[TabItem.feed]!.currentState!.pushNamed('/chat');
+  _homeScreen.navigatorKeys[TabItem.chat]!.currentState!.pushNamed('/chat');
 }
 
 tripleDotOnPressed(
@@ -34,7 +38,7 @@ tripleDotOnPressed(
     ) {
   showModalBottomSheet(
       context: context,
-      backgroundColor: Color(0xFF0353EF),
+      backgroundColor: const Color(0xFF0353EF),
       builder: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,

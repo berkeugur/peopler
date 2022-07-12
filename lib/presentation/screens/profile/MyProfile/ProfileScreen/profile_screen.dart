@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return Text(UserBloc.user!.company + " şirketinde çalışıyor.",
           textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 
@@ -160,6 +160,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textScaleFactor: 1,
             style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
           ),
+          /*
           InkWell(
             onTap: () => op_message_icon(context),
             child: SvgPicture.asset(
@@ -170,6 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               fit: BoxFit.contain,
             ),
           ),
+          */
         ],
       ),
     );

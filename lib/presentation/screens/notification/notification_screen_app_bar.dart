@@ -83,6 +83,7 @@ ValueListenableBuilder<double> notificationScreenTopAppBar(_scrollController) {
                   ),
                 ),
               ),
+              /*
               InkWell(
                 onTap: () {
                   FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
@@ -96,6 +97,7 @@ ValueListenableBuilder<double> notificationScreenTopAppBar(_scrollController) {
                   fit: BoxFit.contain,
                 ),
               ),
+              */
             ],
           ),
         );

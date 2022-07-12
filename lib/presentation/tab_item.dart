@@ -1,2 +1,2 @@
-enum TabItem { feed, search, saved, notifications, profile }
-enum ScreenItem { feedScreen, addFeedScreen, settingsScreen, chatScreen, searchNearByScreen, searchCityScreen, savedScreen, notificationScreen, invitationsReceivedScreen,  invitationsTransmittedScreen, profileScreen, profileEditScreen }
+enum TabItem { feed, search, chat, notifications, profile }
+enum ScreenItem { feedScreen, searchNearByScreen, searchCityScreen, savedScreen, chatScreen, notificationScreen, invitationsReceivedScreen,  invitationsTransmittedScreen, profileScreen}

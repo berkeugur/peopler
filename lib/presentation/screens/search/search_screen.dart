@@ -69,8 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
             bloc: _locationPermissionBloc,
             listener: (BuildContext context, state) {
               if (state is ReadyState) {
-                _locationBloc.add(
-                    GetInitialSearchUsersEvent(latitude: UserBloc.user!.latitude, longitude: UserBloc.user!.longitude));
+                _locationBloc.add(GetInitialSearchUsersEvent(latitude: UserBloc.user!.latitude, longitude: UserBloc.user!.longitude));
               }
             },
             child: ChangeNotifierProvider.value(
@@ -83,6 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 } else {
                   _homeScreen.currentScreen = {TabItem.search: ScreenItem.searchCityScreen};
                 }
+                _homeScreen.changeFloatingActionButtonEvent();
 
                 double _maxWidth = _size.width > 400 ? 400 : _size.width;
 
