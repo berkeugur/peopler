@@ -6,7 +6,6 @@ import '../../model/user.dart';
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  
   Future<MyUser?> getCurrentUser() async {
     try {
       User? user = _firebaseAuth.currentUser;
@@ -32,7 +31,6 @@ class FirebaseAuthService {
     }
   }
 
-  
   Future<bool> signOut() async {
     try {
       // await GoogleSignIn().signOut();
@@ -47,12 +45,12 @@ class FirebaseAuthService {
 
   Future<bool> deleteUser() async {
     try {
-      if(_firebaseAuth.currentUser != null) {
+      if (_firebaseAuth.currentUser != null) {
         await _firebaseAuth.currentUser!.delete();
       }
       return true;
     } catch (e) {
-      debugPrint("sign out hata:" + e.toString());
+      debugPrint("delete hata:" + e.toString());
       return false;
     }
   }
@@ -91,12 +89,10 @@ class FirebaseAuthService {
       rethrow;
     }
   }
-  
+
   Future<void> sendEmailVerification() async {
     try {
-      await _firebaseAuth.currentUser!
-          .sendEmailVerification()
-          .whenComplete(() => _firebaseAuth.currentUser!.reload());
+      await _firebaseAuth.currentUser!.sendEmailVerification().whenComplete(() => _firebaseAuth.currentUser!.reload());
     } on FirebaseAuthException {
       rethrow;
     } catch (e) {
@@ -104,13 +100,11 @@ class FirebaseAuthService {
     }
   }
 
-  
   Future<bool> listenForEmailVerification() async {
     await _firebaseAuth.currentUser!.reload();
     return _firebaseAuth.currentUser!.emailVerified;
   }
 
-  
   Future<MyUser?> signInWithEmailandPassword(String email, String password) async {
     try {
       UserCredential sonuc = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
@@ -122,7 +116,6 @@ class FirebaseAuthService {
     }
   }
 
-  
   Future<MyUser?> signInWithCustomToken(String customToken) async {
     try {
       UserCredential _result = await _firebaseAuth.signInWithCustomToken(customToken);
@@ -134,7 +127,6 @@ class FirebaseAuthService {
     }
   }
 
-  
   Future<void> resetPassword(String email) async {
     try {
       _firebaseAuth.sendPasswordResetEmail(email: email);

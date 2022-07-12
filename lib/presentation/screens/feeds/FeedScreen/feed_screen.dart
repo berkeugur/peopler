@@ -12,6 +12,7 @@ import 'package:peopler/presentation/screens/tutorial/onboardingscreen.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_bloc.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_event.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_state.dart';
+import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
@@ -73,8 +74,8 @@ class FeedScreenState extends State<FeedScreen> {
       child: ValueListenableBuilder(
           valueListenable: setTheme,
           builder: (context, x, y) {
-            print("~~~~~~~~~~~~~~~~feed~~~~~~~~~~~~~~~");
-            print(Mode.isEnableDarkMode);
+            debugPrint("~~~~~~~~~~~~~~~~feed~~~~~~~~~~~~~~~");
+            debugPrint(Mode.isEnableDarkMode.toString());
             return Stack(
               children: [
                 SizedBox(
@@ -148,7 +149,7 @@ class FeedScreenState extends State<FeedScreen> {
               return AnimatedContainer(
                 color: _mode.bottomMenuBackground(),
                 height: Variables.animatedContainerHeight.value,
-                duration: Duration(milliseconds: 250),
+                duration: const Duration(milliseconds: 250),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -157,9 +158,9 @@ class FeedScreenState extends State<FeedScreen> {
                         if (TutorialDataList.screen_list.length != 3) {
                           TutorialDataList.prepareDataList();
                         }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TutorialScreen()),
+                        UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                        _userBloc.mainKey.currentState?.push(
+                          MaterialPageRoute(builder: (context) => const TutorialScreen()),
                         );
                       },
                       child: Container(
@@ -194,13 +195,13 @@ class FeedScreenState extends State<FeedScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
+                        UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                        _userBloc.mainKey.currentState?.push(
                           MaterialPageRoute(builder: (context) => SubscriptionsPage()),
                         );
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
                         height: 30,
                         width: screenWidth > 600 ? 298 : (screenWidth - 50) / 2,
                         decoration: const BoxDecoration(
@@ -263,7 +264,7 @@ class FeedScreenState extends State<FeedScreen> {
                         color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
                   ),
                 ),
-                SizedBox.square(
+                const SizedBox.square(
                   dimension: 25,
                 ),
                 /*
