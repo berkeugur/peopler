@@ -6,43 +6,6 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/subscriptions/subscriptions_functions.dart';
 
-Column subscriptionFeatures({required String imgPath, required String title, required String subtitle}) {
-  return Column(
-    children: [
-      SvgPicture.asset(
-        imgPath,
-        width: 100,
-        height: 100,
-      ),
-      const SizedBox(
-        height: 20,
-      ),
-      Text(
-        title,
-        textScaleFactor: 1,
-        style: GoogleFonts.rubik(
-          fontSize: 16,
-          color: Colors.white,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      const SizedBox(
-        height: 15,
-      ),
-      Text(
-        subtitle,
-        textScaleFactor: 1,
-        textAlign: TextAlign.center,
-        style: GoogleFonts.rubik(
-          fontSize: 14,
-          color: Colors.white,
-          fontWeight: FontWeight.w400,
-        ),
-      ),
-    ],
-  );
-}
-
 class SubscriptionsPage extends StatefulWidget {
   @override
   _SubscriptionsPageState createState() => _SubscriptionsPageState();
@@ -57,9 +20,92 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
     _tabController.addListener(() {
       print('my index is' + _tabController.index.toString());
       setState(() {
-        scaffoldColor = _tabController.index == 0 ? Colors.purple : Color.fromARGB(255, 239, 97, 3);
+        premiumFeatures = [
+          subscriptionFeatures(
+            imgPath: "assets/images/hobby_badges/theater.svg",
+            title: "Seni kaydedenleri gör",
+            subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+            tabController: _tabController,
+          ),
+          subscriptionFeatures(
+            imgPath: "assets/images/hobby_badges/fitness.svg",
+            title: "Fitnatları gör",
+            subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+            tabController: _tabController,
+          ),
+          subscriptionFeatures(
+            imgPath: "assets/images/hobby_badges/origami.svg",
+            title: "Origami oyna",
+            subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+            tabController: _tabController,
+          ),
+        ];
+
+        plusFeatures = [
+          subscriptionFeatures(
+            imgPath: "assets/images/hobby_badges/theater.svg",
+            title: "Seni kaydedenleri gör",
+            subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+            tabController: _tabController,
+          ),
+          subscriptionFeatures(
+            imgPath: "assets/images/hobby_badges/fitness.svg",
+            title: "Fitnatları gör",
+            subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+            tabController: _tabController,
+          ),
+          subscriptionFeatures(
+            imgPath: "assets/images/hobby_badges/origami.svg",
+            title: "Origami oyna",
+            subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+            tabController: _tabController,
+          ),
+        ];
+        scaffoldColor = scaffoldColor = _tabController.index == 0 ? Colors.white : Color(0xFF0353EF);
       });
     });
+
+    premiumFeatures = [
+      subscriptionFeatures(
+        imgPath: "assets/images/hobby_badges/theater.svg",
+        title: "Seni kaydedenleri gör",
+        subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+        tabController: _tabController,
+      ),
+      subscriptionFeatures(
+        imgPath: "assets/images/hobby_badges/fitness.svg",
+        title: "Fitnatları gör",
+        subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+        tabController: _tabController,
+      ),
+      subscriptionFeatures(
+        imgPath: "assets/images/hobby_badges/origami.svg",
+        title: "Origami oyna",
+        subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+        tabController: _tabController,
+      ),
+    ];
+
+    plusFeatures = [
+      subscriptionFeatures(
+        imgPath: "assets/images/hobby_badges/theater.svg",
+        title: "Seni kaydedenleri gör",
+        subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+        tabController: _tabController,
+      ),
+      subscriptionFeatures(
+        imgPath: "assets/images/hobby_badges/fitness.svg",
+        title: "Fitnatları gör",
+        subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+        tabController: _tabController,
+      ),
+      subscriptionFeatures(
+        imgPath: "assets/images/hobby_badges/origami.svg",
+        title: "Origami oyna",
+        subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
+        tabController: _tabController,
+      ),
+    ];
     super.initState();
   }
 
@@ -69,60 +115,44 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
     _tabController.dispose();
   }
 
-  List<Widget> plusFeatures = [
-    subscriptionFeatures(
-      imgPath: "assets/images/hobby_badges/theater.svg",
-      title: "Seni kaydedenleri gör",
-      subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
-    ),
-    subscriptionFeatures(
-      imgPath: "assets/images/hobby_badges/fitness.svg",
-      title: "Fitnatları gör",
-      subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
-    ),
-    subscriptionFeatures(
-      imgPath: "assets/images/hobby_badges/origami.svg",
-      title: "Origami oyna",
-      subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
-    ),
-  ];
+  List<Widget> plusFeatures = [];
 
-  List<Widget> premiumFeatures = [
-    subscriptionFeatures(
-      imgPath: "assets/images/hobby_badges/theater.svg",
-      title: "Seni kaydedenleri gör",
-      subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
-    ),
-    subscriptionFeatures(
-      imgPath: "assets/images/hobby_badges/fitness.svg",
-      title: "Fitnatları gör",
-      subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
-    ),
-    subscriptionFeatures(
-      imgPath: "assets/images/hobby_badges/origami.svg",
-      title: "Origami oyna",
-      subtitle: "Listesine seni ekleyen kullanıcılar ile iletişime geç",
-    ),
-  ];
+  List<Widget> premiumFeatures = [];
 
   //1 aylık plan index 0, 3 aylık 1, 6 aylık 2,
   int selectedPlusPlanIndex = 1;
   int selectedPremiumPlanIndex = 1;
-  late Color? scaffoldColor = _tabController.index == 0 ? Colors.purple : Color.fromARGB(255, 239, 97, 3);
+  late Color? scaffoldColor = _tabController.index == 0 ? Colors.white : Color(0xFF0353EF);
   @override
   Widget build(BuildContext context) {
-    scaffoldColor = _tabController.index == 0 ? Colors.purple : Color.fromARGB(255, 239, 97, 3);
+    scaffoldColor = scaffoldColor = _tabController.index == 0 ? Colors.white : Color(0xFF0353EF);
+
     print(_tabController.index);
-    return Scaffold(
-      backgroundColor: scaffoldColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Column(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          shadowColor: Colors.transparent,
+          leading: Container(
+            padding: EdgeInsets.all(10),
+            child: InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: SvgPicture.asset(
+                "assets/images/svg_icons/back_arrow.svg",
+                width: 25,
+                height: 25,
+                color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+              ),
+            ),
+          ),
+          backgroundColor: _tabController.index == 0 ? Colors.white : Color(0xFF0353EF),
+        ),
+        backgroundColor: scaffoldColor,
+        body: Column(
           children: [
             // give the tab bar a height [can change hheight to preferred height]
             Container(
               height: 30,
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 60),
               decoration: BoxDecoration(
                 //color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(
@@ -139,10 +169,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   borderRadius: BorderRadius.circular(
                     25.0,
                   ),
-                  color: Colors.white,
+                  color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                 ),
                 labelColor: scaffoldColor,
-                unselectedLabelColor: Colors.white,
+                unselectedLabelColor: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                 tabs: [
                   // first tab [you can add an icon using the icon property]
                   Tab(
@@ -166,16 +196,21 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             ),
             // tab bar view here
             Expanded(
-              child: TabBarView(
-                physics: const ClampingScrollPhysics(),
-                controller: _tabController,
-                children: [
-                  // first tab [you can add an icon using the icon property]
-                  PlusTab(context),
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height - 70 - 45,
+                  child: TabBarView(
+                    physics: const BouncingScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      // first tab [you can add an icon using the icon property]
+                      PlusTab(context),
 
-                  // second tab [you can add an icon using the icon property]
-                  PremiumTab(context),
-                ],
+                      // second tab [you can add an icon using the icon property]
+                      PremiumTab(context),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
@@ -190,6 +225,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         height: 500,
         child: Column(
           children: [
+            SizedBox(
+              height: 10,
+            ),
             CarouselSlider(
               options: CarouselOptions(
                 viewportFraction: 1,
@@ -219,8 +257,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: selectedPremiumPlanIndex == 0 ? 2 : 1,
-                          color:
-                              selectedPremiumPlanIndex == 0 ? Colors.white : const Color.fromARGB(255, 194, 194, 194),
+                          color: selectedPremiumPlanIndex == 0
+                              ? _tabController.index == 0
+                                  ? Color(0xFF0353EF)
+                                  : Colors.white
+                              : const Color.fromARGB(255, 194, 194, 194),
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -231,10 +272,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                             decoration: BoxDecoration(
                               border: Border.all(
                                   width: selectedPremiumPlanIndex == 0 ? 4 : 1,
-                                  color: selectedPremiumPlanIndex == 0 ? Colors.white : Colors.transparent),
+                                  color: selectedPremiumPlanIndex == 0
+                                      ? _tabController.index == 0
+                                          ? Color(0xFF0353EF)
+                                          : Colors.white
+                                      : Colors.transparent),
                               borderRadius:
                                   BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
-                              color: selectedPremiumPlanIndex != 0 ? scaffoldColor : Colors.white,
+                              color: selectedPremiumPlanIndex != 0
+                                  ? scaffoldColor
+                                  : _tabController.index == 0
+                                      ? Color(0xFF0353EF)
+                                      : Colors.white,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +293,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
-                                    color: selectedPremiumPlanIndex == 0 ? scaffoldColor : Colors.white,
+                                    color: selectedPremiumPlanIndex == 0
+                                        ? scaffoldColor
+                                        : _tabController.index == 0
+                                            ? Color(0xFF0353EF)
+                                            : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -264,7 +317,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -273,7 +326,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -284,14 +337,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
-                                  decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(99), color: Colors.white),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(99),
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+                                  ),
                                   child: Text(
                                     "%12 indirim",
                                     textScaleFactor: 1,
@@ -307,7 +362,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 12,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -333,8 +388,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: selectedPremiumPlanIndex == 1 ? 2 : 1,
-                          color:
-                              selectedPremiumPlanIndex == 1 ? Colors.white : const Color.fromARGB(255, 194, 194, 194),
+                          color: selectedPremiumPlanIndex == 1
+                              ? _tabController.index == 0
+                                  ? Color(0xFF0353EF)
+                                  : Colors.white
+                              : const Color.fromARGB(255, 194, 194, 194),
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -345,10 +403,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                             decoration: BoxDecoration(
                               border: Border.all(
                                   width: selectedPremiumPlanIndex == 1 ? 4 : 1,
-                                  color: selectedPremiumPlanIndex == 1 ? Colors.white : Colors.transparent),
+                                  color: selectedPremiumPlanIndex == 1
+                                      ? _tabController.index == 0
+                                          ? Color(0xFF0353EF)
+                                          : Colors.white
+                                      : Colors.transparent),
                               borderRadius:
                                   BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
-                              color: selectedPremiumPlanIndex != 1 ? scaffoldColor : Colors.white,
+                              color: selectedPremiumPlanIndex != 1
+                                  ? scaffoldColor
+                                  : _tabController.index == 0
+                                      ? Color(0xFF0353EF)
+                                      : Colors.white,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -358,7 +424,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: selectedPremiumPlanIndex != 1 ? 12 : 13,
-                                    color: selectedPremiumPlanIndex == 1 ? scaffoldColor : Colors.white,
+                                    color: selectedPremiumPlanIndex == 1
+                                        ? scaffoldColor
+                                        : _tabController.index == 0
+                                            ? Color(0xFF0353EF)
+                                            : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -378,7 +448,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -387,7 +457,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -398,14 +468,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
-                                  decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(99), color: Colors.white),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(99),
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+                                  ),
                                   child: Text(
                                     "%12 indirim",
                                     textScaleFactor: 1,
@@ -421,7 +493,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 12,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -448,8 +520,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: selectedPremiumPlanIndex == 2 ? 2 : 1,
-                          color:
-                              selectedPremiumPlanIndex == 2 ? Colors.white : const Color.fromARGB(255, 194, 194, 194),
+                          color: selectedPremiumPlanIndex == 2
+                              ? _tabController.index == 0
+                                  ? Color(0xFF0353EF)
+                                  : Colors.white
+                              : const Color.fromARGB(255, 194, 194, 194),
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -488,7 +563,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -497,7 +572,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -508,7 +583,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -567,7 +642,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(99),
-                    color: Colors.white,
+                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -588,6 +663,63 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             )
           ],
         ));
+  }
+
+  Column subscriptionFeatures(
+      {required String imgPath,
+      required String title,
+      required String subtitle,
+      required TabController tabController}) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            boxShadow: [
+              BoxShadow(
+                color: tabController.index == 0 ? Color(0xFF0353EF).withOpacity(0.5) : Colors.white.withOpacity(0.5),
+                spreadRadius: 3.5,
+                blurRadius: 5,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          child: SvgPicture.asset(
+            imgPath,
+            width: 100,
+            height: 100,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Text(
+          title,
+          textScaleFactor: 1,
+          style: GoogleFonts.rubik(
+            fontSize: 16,
+            color: tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Text(
+          subtitle,
+          textScaleFactor: 1,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.rubik(
+            fontSize: 14,
+            color: tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget PlusTab(BuildContext context) {
@@ -625,7 +757,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: selectedPlusPlanIndex == 0 ? 2 : 1,
-                          color: selectedPlusPlanIndex == 0 ? Colors.white : const Color.fromARGB(255, 194, 194, 194),
+                          color: selectedPlusPlanIndex == 0
+                              ? _tabController.index == 0
+                                  ? Color(0xFF0353EF)
+                                  : Colors.white
+                              : const Color.fromARGB(255, 194, 194, 194),
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -636,10 +772,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                             decoration: BoxDecoration(
                               border: Border.all(
                                   width: selectedPlusPlanIndex == 0 ? 4 : 1,
-                                  color: selectedPlusPlanIndex == 0 ? Colors.white : Colors.transparent),
+                                  color: selectedPlusPlanIndex == 0
+                                      ? _tabController.index == 0
+                                          ? Color(0xFF0353EF)
+                                          : Colors.white
+                                      : Colors.transparent),
                               borderRadius:
                                   BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
-                              color: selectedPlusPlanIndex != 0 ? scaffoldColor : Colors.white,
+                              color: selectedPlusPlanIndex != 0
+                                  ? scaffoldColor
+                                  : _tabController.index == 0
+                                      ? Color(0xFF0353EF)
+                                      : Colors.white,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -649,7 +793,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
-                                    color: selectedPlusPlanIndex == 0 ? scaffoldColor : Colors.white,
+                                    color: selectedPlusPlanIndex == 0
+                                        ? scaffoldColor
+                                        : _tabController.index == 0
+                                            ? Color(0xFF0353EF)
+                                            : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -669,7 +817,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -678,7 +826,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -689,14 +837,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
-                                  decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(99), color: Colors.white),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(99),
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+                                  ),
                                   child: Text(
                                     "%12 indirim",
                                     textScaleFactor: 1,
@@ -712,7 +862,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 12,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -738,7 +888,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: selectedPlusPlanIndex == 1 ? 2 : 1,
-                          color: selectedPlusPlanIndex == 1 ? Colors.white : const Color.fromARGB(255, 194, 194, 194),
+                          color: selectedPlusPlanIndex == 1
+                              ? _tabController.index == 0
+                                  ? Color(0xFF0353EF)
+                                  : Colors.white
+                              : const Color.fromARGB(255, 194, 194, 194),
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -749,10 +903,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                             decoration: BoxDecoration(
                               border: Border.all(
                                   width: selectedPlusPlanIndex == 1 ? 4 : 1,
-                                  color: selectedPlusPlanIndex == 1 ? Colors.white : Colors.transparent),
+                                  color: selectedPlusPlanIndex == 1
+                                      ? _tabController.index == 0
+                                          ? Color(0xFF0353EF)
+                                          : Colors.white
+                                      : Colors.transparent),
                               borderRadius:
                                   BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
-                              color: selectedPlusPlanIndex != 1 ? scaffoldColor : Colors.white,
+                              color: selectedPlusPlanIndex != 1
+                                  ? scaffoldColor
+                                  : _tabController.index == 0
+                                      ? Color(0xFF0353EF)
+                                      : Colors.white,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -762,7 +924,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: selectedPlusPlanIndex != 1 ? 12 : 13,
-                                    color: selectedPlusPlanIndex == 1 ? scaffoldColor : Colors.white,
+                                    color: selectedPlusPlanIndex == 1
+                                        ? scaffoldColor
+                                        : _tabController.index == 0
+                                            ? Color(0xFF0353EF)
+                                            : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -782,7 +948,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -791,7 +957,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -802,14 +968,16 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Container(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
-                                  decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(99), color: Colors.white),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(99),
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
+                                  ),
                                   child: Text(
                                     "%12 indirim",
                                     textScaleFactor: 1,
@@ -825,7 +993,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 12,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -851,7 +1019,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: selectedPlusPlanIndex == 2 ? 2 : 1,
-                          color: selectedPlusPlanIndex == 2 ? Colors.white : const Color.fromARGB(255, 194, 194, 194),
+                          color: selectedPlusPlanIndex == 2
+                              ? _tabController.index == 0
+                                  ? Color(0xFF0353EF)
+                                  : Colors.white
+                              : const Color.fromARGB(255, 194, 194, 194),
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -890,7 +1062,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -899,7 +1071,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
                                         fontSize: 16,
-                                        color: Colors.white,
+                                        color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -910,7 +1082,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                                   textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
                                     fontSize: 16,
-                                    color: Colors.white,
+                                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -968,7 +1140,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(99),
-                    color: Colors.white,
+                    color: _tabController.index == 0 ? Color(0xFF0353EF) : Colors.white,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
