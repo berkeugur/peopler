@@ -11,7 +11,10 @@ import '../../tab_item.dart';
 
 class NotificationScreenFunctions {
   void pressedTitle(context, ScrollController _scrollController) {
-    _scrollController.animateTo(10, duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(10, duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
+    }
+
     return;
   }
 

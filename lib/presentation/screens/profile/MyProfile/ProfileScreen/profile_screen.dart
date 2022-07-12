@@ -160,6 +160,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             textScaleFactor: 1,
             style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
           ),
+          SizedBox.square(
+            dimension: 25,
+          ),
           /*
           InkWell(
             onTap: () => op_message_icon(context),

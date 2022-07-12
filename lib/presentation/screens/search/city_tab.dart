@@ -69,7 +69,7 @@ class CityTab extends StatelessWidget {
           return Container(
             color: Mode().homeScreenScaffoldBackgroundColor(),
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 0.0),
               child: SizedBox(
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollNotification) {
@@ -99,7 +99,6 @@ class CityTab extends StatelessWidget {
                             child: Column(
                               children: [
                                 Column(
-                                  mainAxisSize: MainAxisSize.max,
                                   children: [
                                     BlocBuilder<CityBloc, CityState>(
                                       key: showWidgetsKeyCity,
@@ -177,7 +176,7 @@ class CityTab extends StatelessWidget {
         child: ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.only(
-              top: 70,
+              top: 80,
               left: _size.width > 320
                   ? 60
                   : _size.width > 280
@@ -190,7 +189,7 @@ class CityTab extends StatelessWidget {
                       : 25,
             ),
             physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-            controller: _searchPeopleListControllerCity,
+            controller: ScrollController(),
             itemCount: _listLength,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
@@ -217,9 +216,9 @@ class CityTab extends StatelessWidget {
     } else {
       return ListView.builder(
           shrinkWrap: true,
-          padding: const EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 80),
           physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          controller: _searchPeopleListControllerCity,
+          controller: ScrollController(),
           itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
           itemBuilder: (BuildContext context, int index) {
             int _leftSideIndex = index * 2;
@@ -304,7 +303,8 @@ class CityTab extends StatelessWidget {
                         ),
                       ),
                       InkWell(
-                        onTap: () => openOthersProfile(context, _cityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
+                        onTap: () => openOthersProfile(
+                            context, _cityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           height: 100,
@@ -446,7 +446,8 @@ class CityTab extends StatelessWidget {
                                 _savedUser.biography = _cityBloc.allUserList[index].biography;
                                 _savedUser.hobbies = _cityBloc.allUserList[index].hobbies;
 
-                                _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+                                _savedBloc
+                                    .add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
                                 String _deletedUserID = _cityBloc.allUserList[index].userID;
                                 _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);

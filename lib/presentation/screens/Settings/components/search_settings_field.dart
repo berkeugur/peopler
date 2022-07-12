@@ -30,9 +30,7 @@ search_settings_field(context) {
                   onTap: () => op_in_the_same_environment(),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: is_selected_in_the_same_environment
-                          ? Color(0xFF0353EF)
-                          : Colors.transparent,
+                      color: is_selected_in_the_same_environment ? Color(0xFF0353EF) : Colors.transparent,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Padding(
@@ -41,9 +39,7 @@ search_settings_field(context) {
                         "Aynı Ortamımdaki",
                         textScaleFactor: 1,
                         style: GoogleFonts.rubik(
-                          color: is_selected_in_the_same_environment
-                              ? Colors.white
-                              : _mode.settings_custom_1(),
+                          color: is_selected_in_the_same_environment ? Colors.white : _mode.settings_custom_1(),
                         ),
                       ),
                     ),
@@ -56,9 +52,7 @@ search_settings_field(context) {
                   onTap: () => op_in_the_same_city(),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: is_selected_in_the_same_city
-                          ? Color(0xFF0353EF)
-                          : Colors.transparent,
+                      color: is_selected_in_the_same_city ? Color(0xFF0353EF) : Colors.transparent,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Padding(
@@ -67,9 +61,7 @@ search_settings_field(context) {
                         "Aynı Şehrimdeki",
                         textScaleFactor: 1,
                         style: GoogleFonts.rubik(
-                          color: is_selected_in_the_same_city
-                              ? Colors.white
-                              : _mode.settings_custom_1(),
+                          color: is_selected_in_the_same_city ? Colors.white : _mode.settings_custom_1(),
                         ),
                       ),
                     ),
@@ -85,9 +77,7 @@ search_settings_field(context) {
                   onTap: () => op_in_the_same_environment(),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: is_selected_in_the_same_environment
-                          ? Color(0xFF0353EF)
-                          : Colors.transparent,
+                      color: is_selected_in_the_same_environment ? Color(0xFF0353EF) : Colors.transparent,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Padding(
@@ -99,9 +89,7 @@ search_settings_field(context) {
                             "Aynı Ortamımdaki",
                             textScaleFactor: 1,
                             style: GoogleFonts.rubik(
-                              color: is_selected_in_the_same_environment
-                                  ? Colors.white
-                                  : _mode.settings_custom_1(),
+                              color: is_selected_in_the_same_environment ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
                         ],
@@ -116,9 +104,7 @@ search_settings_field(context) {
                   onTap: () => op_in_the_same_city(),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: is_selected_in_the_same_city
-                          ? Color(0xFF0353EF)
-                          : Colors.transparent,
+                      color: is_selected_in_the_same_city ? Color(0xFF0353EF) : Colors.transparent,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Padding(
@@ -130,9 +116,7 @@ search_settings_field(context) {
                             "Aynı Şehrimdeki",
                             textScaleFactor: 1,
                             style: GoogleFonts.rubik(
-                              color: is_selected_in_the_same_city
-                                  ? Colors.white
-                                  : _mode.settings_custom_1(),
+                              color: is_selected_in_the_same_city ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
                         ],

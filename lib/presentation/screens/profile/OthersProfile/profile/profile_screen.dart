@@ -81,7 +81,8 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
             if (state is InitialOtherUserState) {
               return _initialOtherUserStateWidget(context);
             } else if (state is OtherUserLoadedState) {
-              return _userLoadedStateWidget(context, state.otherUser, state.mutualConnectionUserIDs, state.myActivities, state.status);
+              return _userLoadedStateWidget(
+                  context, state.otherUser, state.mutualConnectionUserIDs, state.myActivities, state.status);
             } else {
               return const Text("Impossible");
             }
