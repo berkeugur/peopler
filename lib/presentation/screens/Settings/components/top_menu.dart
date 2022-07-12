@@ -48,21 +48,6 @@ Container topMenu(context) {
                 ),
               ),
             ),
-            /*
-            InkWell(
-              onTap: () {
-                FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-                _homeScreen.navigatorKeys[TabItem.feed]!.currentState!.pushNamed('/chat');
-              },
-              child: SvgPicture.asset(
-                "assets/images/svg_icons/message_icon.svg",
-                width: 25,
-                height: 25,
-                color: _mode.homeScreenIconsColor(),
-                fit: BoxFit.contain,
-              ),
-            ),
-            */
           ],
         ),
   );

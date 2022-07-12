@@ -8,9 +8,6 @@ import '../../tab_item.dart';
 ///op = On Pressed
 // ignore: non_constant_identifier_names
 op_settings_back_arrow(context) {
-  final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-  _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.feedScreen};
-  _homeScreen.changeFloatingActionButtonEvent();
   Navigator.pop(context);
 }
 

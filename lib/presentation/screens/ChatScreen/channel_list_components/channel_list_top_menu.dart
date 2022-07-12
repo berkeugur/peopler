@@ -17,24 +17,8 @@ Container channelListTopMenu (context){
     color: _mode.bottomMenuBackground(),
     height: 70,
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InkWell(
-          onTap: (){
-            op_settings_back_arrow(context);
-          },
-          child: SizedBox(
-            width: 25,
-            height: 25,
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/back_arrow.svg",
-              width: 25,
-              height: 25,
-              color: _mode.homeScreenIconsColor(),
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
         InkWell(
           onTap: () => op_settings_peopler_title(),
           child: AutoSizeText(

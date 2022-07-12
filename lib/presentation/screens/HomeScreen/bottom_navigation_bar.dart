@@ -55,10 +55,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildFeedBottomIcon(_menuItemHeight, _menuItemWidth),
-                _buildProfileBottomIcon(_menuItemHeight, _menuItemWidth),
-                _buildSearchBottomIcon(_menuItemHeight, _menuItemWidth),
                 _buildNotificationBottomIcon(_menuItemHeight, _menuItemWidth),
+                _buildSearchBottomIcon(_menuItemHeight, _menuItemWidth),
                 _buildChatBottomIcon(_menuItemHeight, _menuItemWidth),
+                _buildProfileBottomIcon(_menuItemHeight, _menuItemWidth),
               ],
             ),
           );
