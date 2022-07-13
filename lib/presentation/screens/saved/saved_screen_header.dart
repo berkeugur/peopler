@@ -32,7 +32,7 @@ Widget saved_screen_header({required BuildContext context}) {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Row(
@@ -48,7 +48,7 @@ Widget saved_screen_header({required BuildContext context}) {
                     fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 SizedBox(

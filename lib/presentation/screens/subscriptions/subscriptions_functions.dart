@@ -4,7 +4,7 @@ enum SubscriptionType { plus, premium }
 
 enum SubscriptionPlan { oneMonth, threeMonth, sixMonth }
 
-class SubscriotionService {
+class SubscriptionService {
   purchaseButton({required SubscriptionPlan plan, required SubscriptionType type}) {
     if (type == SubscriptionType.plus) {
       switch (plan) {

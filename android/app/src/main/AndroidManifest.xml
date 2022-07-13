@@ -13,6 +13,7 @@
         android:label="peopler"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        android:usesCleartextTraffic="true
         <activity android:name="com.android.camera.CropImage"/>
         <activity
         android:name="com.yalantis.ucrop.UCropActivity"
