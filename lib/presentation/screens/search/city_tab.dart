@@ -12,7 +12,6 @@ import '../../../business_logic/blocs/LocationBloc/location_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_event.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../data/fcm_and_local_notifications.dart';
 import '../../../others/classes/variables.dart';
 import '../../../data/model/saved_user.dart';
 import '../../../data/send_notification_service.dart';
@@ -88,54 +87,44 @@ class CityTab extends StatelessWidget {
                     }
                     return true;
                   },
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          color: Mode().homeScreenScaffoldBackgroundColor(),
-                          child: SingleChildScrollView(
-                            controller: _searchPeopleListControllerCity,
-                            physics: const ScrollPhysics(),
-                            child: Column(
-                              children: [
-                                Column(
-                                  children: [
-                                    BlocBuilder<CityBloc, CityState>(
-                                      key: showWidgetsKeyCity,
-                                      bloc: _cityBloc,
-                                      builder: (context, state) {
-                                        if (state is InitialCityState) {
-                                          return _initialUsersStateWidget();
-                                        } else if (state is UsersNotExistCityState) {
-                                          return _noUserExistsWidget();
-                                        } else if (state is UsersLoadedCityState) {
-                                          return _showUsers(size);
-                                        } else if (state is NoMoreUsersCityState) {
-                                          return _showUsers(size);
-                                        } else if (state is NewUsersLoadingCityState) {
-                                          return _showUsers(size);
-                                        } else {
-                                          return const Text("Impossible");
-                                        }
-                                      },
-                                    ),
-                                    BlocBuilder<CityBloc, CityState>(
-                                        bloc: _cityBloc,
-                                        builder: (context, state) {
-                                          if (state is NewUsersLoadingCityState) {
-                                            return _usersLoadingCircularButton();
-                                          } else {
-                                            return const SizedBox.shrink();
-                                          }
-                                        }),
-                                  ],
-                                ),
-                              ],
-                            ),
+                  child: Container(
+                    color: Mode().homeScreenScaffoldBackgroundColor(),
+                    child: SingleChildScrollView(
+                      controller: _searchPeopleListControllerCity,
+                      physics: const ScrollPhysics(),
+                      child: Column(
+                        children: [
+                          BlocBuilder<CityBloc, CityState>(
+                            key: showWidgetsKeyCity,
+                            bloc: _cityBloc,
+                            builder: (context, state) {
+                              if (state is InitialCityState) {
+                                return _initialUsersStateWidget();
+                              } else if (state is UsersNotExistCityState) {
+                                return _noUserExistsWidget();
+                              } else if (state is UsersLoadedCityState) {
+                                return _showUsers(size);
+                              } else if (state is NoMoreUsersCityState) {
+                                return _showUsers(size);
+                              } else if (state is NewUsersLoadingCityState) {
+                                return _showUsers(size);
+                              } else {
+                                return const Text("Impossible");
+                              }
+                            },
                           ),
-                        ),
+                          BlocBuilder<CityBloc, CityState>(
+                              bloc: _cityBloc,
+                              builder: (context, state) {
+                                if (state is NewUsersLoadingCityState) {
+                                  return _usersLoadingCircularButton();
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              }),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -172,47 +161,45 @@ class CityTab extends StatelessWidget {
   Widget _showUsers(Size _size) {
     int _listLength = _cityBloc.allUserList.length;
     if (_size.width < 335) {
-      return Container(
-        child: ListView.builder(
-            shrinkWrap: true,
-            padding: EdgeInsets.only(
-              top: 80,
-              left: _size.width > 320
-                  ? 60
-                  : _size.width > 280
-                      ? 45
-                      : 25,
-              right: _size.width > 320
-                  ? 60
-                  : _size.width > 280
-                      ? 45
-                      : 25,
-            ),
-            physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-            controller: ScrollController(),
-            itemCount: _listLength,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Container(
-                          decoration: buildBoxDecoration(),
-                          margin: const EdgeInsets.all(5),
-                          child: buildColumn(index, context),
-                        ),
+      return ListView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.only(
+            top: 80,
+            left: _size.width > 320
+                ? 60
+                : _size.width > 280
+                    ? 45
+                    : 25,
+            right: _size.width > 320
+                ? 60
+                : _size.width > 280
+                    ? 45
+                    : 25,
+          ),
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          controller: ScrollController(),
+          itemCount: _listLength,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Container(
+                        decoration: buildBoxDecoration(),
+                        margin: const EdgeInsets.all(5),
+                        child: buildColumn(index, context),
                       ),
                     ),
-                  ],
-                ),
-              );
-            }),
-      );
+                  ),
+                ],
+              ),
+            );
+          });
     } else {
       return ListView.builder(
           shrinkWrap: true,

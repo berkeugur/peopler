@@ -33,8 +33,8 @@ class FeedScreenState extends State<FeedScreen> {
 
   late ScrollController _scrollController;
 
-  late final load_more_offset;
-  late final feedHeight;
+  late final double loadMoreOffset;
+  late final double feedHeight;
 
   final Mode _mode = locator<Mode>();
 
@@ -61,7 +61,7 @@ class FeedScreenState extends State<FeedScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     feedHeight = MediaQuery.of(context).size.height / 4;
-    load_more_offset = feedHeight * 5;
+    loadMoreOffset = feedHeight * 5;
   }
 
   @override
@@ -82,44 +82,47 @@ class FeedScreenState extends State<FeedScreen> {
                   height: screenHeight - paddingTopSafeArea - 50,
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      physics: const ScrollPhysics(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          BlocBuilder<FeedBloc, FeedState>(
-                            bloc: _feedBloc,
-                            builder: (context, state) {
-                              if (state is InitialFeedState) {
-                                return _initialFeedsStateWidget();
-                              } else if (state is FeedNotExistState) {
-                                return _noFeedExistsWidget();
-                              } else if (state is FeedsLoadedState) {
-                                return _showFeedsWidget();
-                              } else if (state is NoMoreFeedsState) {
-                                return _showFeedsWidget();
-                              } else if (state is NewFeedsLoadingState) {
-                                return _showFeedsWidget();
-                              } else if (state is FeedRefreshIndicatorState) {
-                                return _showFeedsWidget();
-                              } else if (state is FeedRefreshingState) {
-                                return _showFeedsWidget();
-                              } else {
-                                return const Text("Impossible");
-                              }
-                            },
-                          ),
-                          BlocBuilder<FeedBloc, FeedState>(
+                    child: RefreshIndicator(
+                      displacement: 120.0,
+                      onRefresh: () async {
+                        /// Refresh feeds
+                        await _feedBloc.getRefreshIndicatorData();
+                      },
+                      child: SingleChildScrollView(
+                        controller: _scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            BlocBuilder<FeedBloc, FeedState>(
                               bloc: _feedBloc,
                               builder: (context, state) {
-                                if (state is NewFeedsLoadingState) {
-                                  return _feedsLoadingCircularButton();
+                                if (state is InitialFeedState) {
+                                  return _initialFeedsStateWidget();
+                                } else if (state is FeedNotExistState) {
+                                  return _noFeedExistsWidget();
+                                } else if (state is FeedsLoadedState) {
+                                  return _showFeedsWidget();
+                                } else if (state is NoMoreFeedsState) {
+                                  return _showFeedsWidget();
+                                } else if (state is NewFeedsLoadingState) {
+                                  return _showFeedsWidget();
                                 } else {
-                                  return const SizedBox.shrink();
+                                  return const Text("Impossible");
                                 }
-                              }),
-                        ],
+                              },
+                            ),
+                            BlocBuilder<FeedBloc, FeedState>(
+                                bloc: _feedBloc,
+                                builder: (context, state) {
+                                  if (state is NewFeedsLoadingState && _feedBloc.allFeedList.length > 5) {
+                                    return _feedsLoadingCircularButton();
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
+                                }),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -285,12 +288,12 @@ class FeedScreenState extends State<FeedScreen> {
         });
   }
 
-  // This function is triggered when the user presses the Event tab button when the currentTab is Event
+  /// This function is triggered when the user presses the Event tab button when the currentTab is Event
   void scrollToTop() {
-    // Scroll to Top
+    /// Scroll to Top
     _scrollController.animateTo(0, duration: const Duration(milliseconds: 100), curve: Curves.linear);
 
-    // Animate app bar
+    /// Animate app bar
     if (Variables.animatedContainerHeight.value != 30) {
       Variables.animatedAppBarHeight.value = 70;
 
@@ -299,7 +302,7 @@ class FeedScreenState extends State<FeedScreen> {
       });
     }
 
-    // Refresh users
+    /// Refresh users
     _feedBloc.add(GetRefreshDataEvent());
   }
 
@@ -322,19 +325,19 @@ class FeedScreenState extends State<FeedScreen> {
       }
     }
 
-    // When scroll position distance to bottom is less than load more offset,
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - load_more_offset &&
+    /// When scroll position distance to bottom is less than load more offset,
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - loadMoreOffset &&
         _scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      // If state is FeedsLoadedState
+      /// If state is FeedsLoadedState
       if (_feedBloc.state is FeedsLoadedState) {
         _feedBloc.add(GetMoreDataEvent());
       }
     }
 
-    // If scroll position exceed max scroll extent (bottom),
+    /// If scroll position exceed max scroll extent (bottom),
     if (_scrollController.offset > _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      // If state is NoMoreEventsState
+      /// If state is NoMoreEventsState
       if (_feedBloc.state is NoMoreFeedsState) {
         _feedBloc.add(GetMoreDataEvent());
       }

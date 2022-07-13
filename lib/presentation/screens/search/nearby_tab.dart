@@ -18,7 +18,6 @@ import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
-import 'no_users_exist.dart';
 
 class NearbyTab extends StatefulWidget {
   const NearbyTab(
@@ -70,8 +69,8 @@ class _NearbyTabState extends State<NearbyTab> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          print("~~~~~~~~~~~~~nearby~~~~~~~~~~~~~~~~~~");
-          print(Mode.isEnableDarkMode);
+          debugPrint("~~~~~~~~~~~~~nearby~~~~~~~~~~~~~~~~~~");
+          debugPrint(Mode.isEnableDarkMode.toString());
           return Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: SizedBox(
@@ -92,59 +91,66 @@ class _NearbyTabState extends State<NearbyTab> {
                   }
                   return true;
                 },
-                child: SingleChildScrollView(
-                  controller: _searchPeopleListControllerNearby,
-                  physics: const ScrollPhysics(),
-                  child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
-                    bloc: _locationPermissionBloc,
-                    builder: (context, state) {
-                      if (state is ReadyState) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            BlocBuilder<LocationBloc, LocationState>(
-                              key: widget.showWidgetsKeyNearby,
-                              bloc: _locationBloc,
-                              builder: (context, state) {
-                                if (state is InitialSearchState) {
-                                  // return _initialUsersStateWidget();
-                                  return const SearchingCase();
-                                } else if (state is UsersNotExistSearchState) {
-                                  return const EmptyList(
-                                    emptyListType: EmptyListType.environment,
-                                  );
-                                } else if (state is UsersLoadedSearchState) {
-                                  return _showUsers(widget.size);
-                                } else if (state is NoMoreUsersSearchState) {
-                                  return _showUsers(widget.size);
-                                } else if (state is NewUsersLoadingSearchState) {
-                                  return _showUsers(widget.size);
-                                } else {
-                                  return const Text("Impossible");
-                                }
-                              },
-                            ),
-                            BlocBuilder<LocationBloc, LocationState>(
+                child: RefreshIndicator(
+                  displacement: 80.0,
+                  onRefresh: () async {
+                  /// Refresh users
+                  await _locationBloc.getRefreshIndicatorData(UserBloc.user!.latitude, UserBloc.user!.longitude);
+                  },
+                  child: SingleChildScrollView(
+                    controller: _searchPeopleListControllerNearby,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
+                      bloc: _locationPermissionBloc,
+                      builder: (context, state) {
+                        if (state is ReadyState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              BlocBuilder<LocationBloc, LocationState>(
+                                key: widget.showWidgetsKeyNearby,
                                 bloc: _locationBloc,
                                 builder: (context, state) {
-                                  if (state is NewUsersLoadingSearchState) {
-                                    return _usersLoadingCircularButton();
+                                  if (state is InitialSearchState) {
+                                    // return _initialUsersStateWidget();
+                                    return const SearchingCase();
+                                  } else if (state is UsersNotExistSearchState) {
+                                    return const EmptyList(
+                                      emptyListType: EmptyListType.environment,
+                                    );
+                                  } else if (state is UsersLoadedSearchState) {
+                                    return _showUsers(widget.size);
+                                  } else if (state is NoMoreUsersSearchState) {
+                                    return _showUsers(widget.size);
+                                  } else if (state is NewUsersLoadingSearchState) {
+                                    return _showUsers(widget.size);
                                   } else {
-                                    return const SizedBox.shrink();
+                                    return const Text("Impossible");
                                   }
-                                }),
-                          ],
-                        );
-                      } else if (state is NoLocationState) {
-                        return _noLocationWidget();
-                      } else if (state is NoPermissionState) {
-                        return _noPermissionWidget();
-                      } else if (state is NoPermissionClickSettingsState) {
-                        return _noPermissionRefreshWidget();
-                      } else {
-                        return const Text("Impossible");
-                      }
-                    },
+                                },
+                              ),
+                              BlocBuilder<LocationBloc, LocationState>(
+                                  bloc: _locationBloc,
+                                  builder: (context, state) {
+                                    if (state is NewUsersLoadingSearchState && _locationBloc.allUserList.length > 4) {
+                                      return _usersLoadingCircularButton();
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                  }),
+                            ],
+                          );
+                        } else if (state is NoLocationState) {
+                          return _noLocationWidget();
+                        } else if (state is NoPermissionState) {
+                          return _noPermissionWidget();
+                        } else if (state is NoPermissionClickSettingsState) {
+                          return _noPermissionRefreshWidget();
+                        } else {
+                          return const Text("Impossible");
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -324,8 +330,8 @@ class _NearbyTabState extends State<NearbyTab> {
                     ? 45
                     : 25,
           ),
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          controller: _searchPeopleListControllerNearby,
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          controller: ScrollController(),
           itemCount: _listLength,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
@@ -352,8 +358,8 @@ class _NearbyTabState extends State<NearbyTab> {
       return ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 70),
-          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          controller: _searchPeopleListControllerNearby,
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          controller: ScrollController(),
           itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
           itemBuilder: (BuildContext context, int index) {
             int _leftSideIndex = index * 2;

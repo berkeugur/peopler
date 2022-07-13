@@ -57,7 +57,7 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
       UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
 
-      // For debug purposes
+      /// For debug purposes
       FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
 
       return 'PositionUpdatedState';
@@ -68,6 +68,7 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
   }
 
   LocationUpdateBloc() : super(InitialState()) {
+
     on<UpdateLocationEvent>((event, emit) async {
       String methodState = await updateLocationMethod();
       if (methodState == 'PositionNotUpdatedState') {

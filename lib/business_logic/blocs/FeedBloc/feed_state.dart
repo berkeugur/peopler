@@ -34,18 +34,4 @@ class FeedNotExistState extends FeedState {
   List<Object> get props => [];
 }
 
-class FeedRefreshingState extends FeedState {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
-
-class FeedRefreshIndicatorState extends FeedState {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
-
-
-
 

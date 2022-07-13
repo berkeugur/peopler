@@ -22,11 +22,21 @@ class GetRefreshDataEvent extends FeedEvent {
 }
 
 class AddMyFeedEvent extends FeedEvent {
-  MyFeed myFeed;
+  final MyFeed myFeed;
   AddMyFeedEvent({
     required this.myFeed,
   });
 
   @override
   List<Object> get props => [myFeed];
+}
+
+class TrigNewFeedsLoadingStateEvent extends FeedEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class TrigFeedsLoadedStateEvent extends FeedEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }

@@ -14,6 +14,51 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   List<String> _queryList = List.filled(9, '');
 
+  /// getRefreshDataFuture function is used in this Refresh Indicator function.
+  Future<void> getRefreshIndicatorData(int latitude, int longitude) async {
+    try {
+        add(TrigNewUsersLoadingSearchStateEvent());
+
+        _locationRepository.restartRepositoryCache();
+
+        _queryList = await _locationRepository.determineQueryList(latitude, longitude);
+        List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
+
+        /// Remove myself from list
+        userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
+
+        List<MyUser> tempList = [...userList];
+        for(MyUser tempUser in  tempList){
+          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
+            userList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
+            userList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+            userList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
+            userList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+        }
+
+        _allUserList = [];
+
+        if (userList.isNotEmpty) {
+          _allUserList.addAll(userList);
+          add(TrigUsersLoadedSearchStateEvent());
+        } else {
+          add(TrigUsersNotExistSearchStateEvent());
+        }
+    } catch (e) {
+      debugPrint("Blocta refresh event hata:" + e.toString());
+    }
+  }
+
   LocationBloc() : super(InitialSearchState()) {
     /******************************************************************************************/
     /**************************** NEARBY USERS ************************************************/
@@ -106,6 +151,19 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       } catch (e) {
         debugPrint("Blocta get more location event hata:" + e.toString());
       }
+    });
+
+
+    on<TrigNewUsersLoadingSearchStateEvent>((event, emit) async {
+      emit(NewUsersLoadingSearchState());
+    });
+
+    on<TrigUsersLoadedSearchStateEvent>((event, emit) async {
+      emit(UsersLoadedSearchState());
+    });
+
+    on<TrigUsersNotExistSearchStateEvent>((event, emit) async {
+      emit(UsersNotExistSearchState());
     });
   }
 }

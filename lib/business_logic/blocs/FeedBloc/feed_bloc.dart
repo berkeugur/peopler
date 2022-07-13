@@ -46,8 +46,9 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData() async {
     try {
-      emit(FeedRefreshIndicatorState());
+      add(TrigNewFeedsLoadingStateEvent());
       await getRefreshDataFuture();
+      add(TrigFeedsLoadedStateEvent());
     } catch (e) {
       debugPrint("Blocta refresh event hata:" + e.toString());
     }
@@ -149,7 +150,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     on<GetRefreshDataEvent>((event, emit) async {
       /// Since refresh indicator just wait for finishing future function, state mechanism does not work for it
       /// Therefore, EventRefreshingState not emitted inside Future function to prevent BlocBuilder-EventRefreshingState collide with RefreshIndicator indicator.
-      /// emit(FeedRefreshingState());
+      emit(NewFeedsLoadingState());
       String emitState = await getRefreshDataFuture();
       if(emitState == 'FeedsLoadedState') {
         emit(FeedsLoadedState());
@@ -157,5 +158,14 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         emit(FeedNotExistState());
       }
     });
+
+    on<TrigNewFeedsLoadingStateEvent>((event, emit) async {
+      emit(NewFeedsLoadingState());
+    });
+
+    on<TrigFeedsLoadedStateEvent>((event, emit) async {
+      emit(FeedsLoadedState());
+    });
+
   }
 }

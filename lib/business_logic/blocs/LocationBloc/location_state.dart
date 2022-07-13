@@ -28,4 +28,3 @@ class NoMoreUsersSearchState extends LocationState {
   @override
   List<Object> get props => [];
 }
-

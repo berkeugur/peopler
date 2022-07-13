@@ -27,3 +27,18 @@ class GetMoreSearchUsersEvent extends LocationEvent {
   @override
   List<Object> get props => [latitude, longitude];
 }
+
+class TrigNewUsersLoadingSearchStateEvent extends LocationEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class TrigUsersLoadedSearchStateEvent extends LocationEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class TrigUsersNotExistSearchStateEvent extends LocationEvent {
+  @override
+  List<Object> get props => [];
+}

@@ -15,15 +15,15 @@ class LocationRepository {
 
   static const UPDATE_WIDTH = 20; // 20 meters
   static const QUERY_WIDTH = 100; // 100 meters
-  static const PAGINATION_NUM_USERS = 3;  // number of query per 9 regions
+  static const PAGINATION_NUM_USERS = 10;  // number of query per 9 regions, very important parameter, please do not change
 
   final List<bool> _hasMore = List.filled(9, true);
   final List<String?> _lastUserElement = List.filled(9, null);
 
   bool _hasMoreCity = true;
 
-  // To reference the different list instances, List of List generated like this.
-  // https://stackoverflow.com/questions/25118921/how-do-i-handle-a-list-of-lists
+  /// To reference the different list instances, List of List generated like this.
+  /// https://stackoverflow.com/questions/25118921/how-do-i-handle-a-list-of-lists
   final List<List<String>> _userIDsInRegion = List.generate(9, (i) => []);
 
   bool _isAllUsersGotFromRegion = false;
@@ -33,7 +33,7 @@ class LocationRepository {
   }
 
   Future<void> requestLocationSetting() async {
-    // Different from requestPermission, app leaves this function when Google's location request dialog comes. Thus, the function does not return any value.
+    /// Different from requestPermission, app leaves this function when Google's location request dialog comes. Thus, the function does not return any value.
     await openLocationSettings();
   }
 
@@ -89,7 +89,7 @@ class LocationRepository {
   Future<bool> updateUserLocationAtDatabase(Position position) async {
     try{
 
-      // Obtain shared preferences.
+      /// Obtain shared preferences.
       const storage = FlutterSecureStorage();
       Map<String, String> allValues = await storage.readAll();
 
@@ -101,7 +101,7 @@ class LocationRepository {
       int latitude = (position.latitude * 1e5).round();
       int longitude = (position.longitude * 1e5).round();
 
-      // If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
+      /// If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
       if(latitude > sharedLatitude - UPDATE_WIDTH &&
           latitude < sharedLatitude + UPDATE_WIDTH &&
           longitude > sharedLongitude - UPDATE_WIDTH &&
@@ -109,10 +109,10 @@ class LocationRepository {
         return false;
       }
 
-      // Delete user from old region
+      /// Delete user from old region
       await _firestoreDBServiceLocation.deleteUserFromRegion(sharedUserID!, sharedRegion!);
 
-      // Query region bottom left corner coordinates
+      /// Query region bottom left corner coordinates
       int bottomLatitude = latitude - latitude % QUERY_WIDTH;
       int leftLongitude = longitude - longitude % QUERY_WIDTH;
 
@@ -124,7 +124,7 @@ class LocationRepository {
 
       await _firestoreDBServiceUsers.updateUserLocationAtDatabase(sharedUserID, latitude, longitude, _region);
 
-      // Update regions collection
+      /// Update regions collection
       await _firestoreDBServiceLocation.setUserInRegion(sharedUserID, _region);
 
       return true;
@@ -138,11 +138,11 @@ class LocationRepository {
     int _latitude = latitude;
     int _longitude = longitude;
 
-    // Query region bottom left corner coordinates
+    /// Query region bottom left corner coordinates
     int bottomLatitude = _latitude - _latitude % QUERY_WIDTH;
     int leftLongitude = _longitude - _longitude % QUERY_WIDTH;
 
-    // Create return variable queryList which keeps regions and subRegions
+    /// Create return variable queryList which keeps regions and subRegions
     List<String> queryList = [];
 
     String currentRegion =       bottomLatitude.toString() + ',' +                  leftLongitude.toString();
@@ -203,7 +203,7 @@ class LocationRepository {
 
       if(_tempUserIDList.isNotEmpty) _lastUserElement[i] = _tempUserIDList.last;
 
-      // If number of users get is smaller than the desired, there is no more data
+      /// If number of users get is smaller than the desired, there is no more data
       if(_tempUserIDList.length < PAGINATION_NUM_USERS) _hasMore[i] = false;
 
       List<MyUser> tempList = await _firestoreDBServiceUsers.getUsersWithUserIDs(_tempUserIDList);
