@@ -13,6 +13,7 @@ import 'business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dar
 import 'business_logic/blocs/LocationUpdateBloc/location_update_bloc.dart';
 import 'business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import 'business_logic/blocs/NotificationReceivedBloc/notification_received_bloc.dart';
+import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
 import 'business_logic/blocs/UserBloc/user_bloc.dart';
 import 'others/locator.dart';
 
@@ -25,7 +26,7 @@ void main() async {
   /// Request IOS Notification
   await FirebaseMessaging.instance.requestPermission();
 
-  setupLocator();
+  await setupLocator();
 
   runApp(MyApp());
 }
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
                 BlocProvider<NotificationBloc>(
                     create: (context) => NotificationBloc()),
                 BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
+                BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
               ],
               child: MaterialApp(
                   navigatorKey: mainKey,

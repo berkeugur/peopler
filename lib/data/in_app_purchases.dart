@@ -1,16 +1,25 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:purchases_flutter/models/offering_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchaseApi {
-  static const _apiKey = 'appl_ywiwctMGVJhMAvcwXcWpUHkUJOo';
+  static const _apiKeyIOS = 'appl_ywiwctMGVJhMAvcwXcWpUHkUJOo';
+  static const _apiKeyAndroid = 'goog_wckqWIasEAQgEuTWcHcmXFYgenh';
+  late final PurchaserInfo purchaserInfo;
 
-  static Future init() async {
+  Future<void> init() async {
     await Purchases.setDebugLogsEnabled(true);
-    await Purchases.setup(_apiKey);
+    if(Platform.isAndroid) {
+      await Purchases.setup(_apiKeyAndroid);
+    } else if(Platform.isIOS) {
+      await Purchases.setup(_apiKeyIOS);
+    }
+    purchaserInfo = await Purchases.getPurchaserInfo();
+    debugPrint(purchaserInfo.toJson().toString());
   }
 
+  /*
   static Future<Map<String, Offering>> fetchOffers() async {
     try {
       final Offerings offerings = await Purchases.getOfferings();
@@ -21,8 +30,9 @@ class PurchaseApi {
       return {};
     }
   }
+   */
 
-  static Future<Offering?> fetchCurrentOffer() async {
+  Future<Offering?> fetchCurrentOffer() async {
     try {
       final Offerings offerings = await Purchases.getOfferings();
       return offerings.current;
@@ -30,5 +40,34 @@ class PurchaseApi {
       debugPrint("Current offer cannot be retrieved");
       return null;
     }
+  }
+
+  Future<void> makePurchases(Package package) async {
+    try {
+      purchaserInfo = await Purchases.purchasePackage(package);
+    } on PlatformException catch (e) {
+      var errorCode = PurchasesErrorHelper.getErrorCode(e);
+      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+        debugPrint("User cancelled purchase");
+      } else {
+        debugPrint(e.message);
+      }
+    }
+  }
+
+  bool isUserPremium() {
+    if(purchaserInfo.entitlements.all["premium"] == null) {
+      debugPrint("There is no entitlement called premium");
+      return false;
+    }
+    return purchaserInfo.entitlements.all["premium"]!.isActive;
+  }
+
+  bool isUserPlus() {
+    if(purchaserInfo.entitlements.all["plus"] == null) {
+      debugPrint("There is no entitlement called plus");
+      return false;
+    }
+    return purchaserInfo.entitlements.all["plus"]!.isActive;
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../data/fcm_and_local_notifications.dart';
 
@@ -15,6 +16,10 @@ class SplashScreen extends StatelessWidget {
 
     /// Start to listen awesome notifications clickable
     FCMAndLocalNotifications.listenNotification();
+
+    /// Get offerings
+    PurchaseGetOfferBloc _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
+    _purchaseGetOfferBloc.add(GetInitialOfferEvent());
 
     // ACHTUNG !!!!!!!!!!!!! USE pushReplacementMethod when navigating if a page contains BlocListener
     // so that the page destroyed and BlocListener disposed.

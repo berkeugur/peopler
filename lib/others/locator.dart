@@ -11,6 +11,7 @@ import 'package:peopler/data/services/db/firebase_db_service_message.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/OnBoardingScreen/constants.dart';
+import '../data/in_app_purchases.dart';
 import '../data/repository/connectivity_repository.dart';
 import '../data/repository/feed_repository.dart';
 import '../data/repository/location_repository.dart';
@@ -26,7 +27,7 @@ import '../data/services/location/location_service.dart';
 
 GetIt locator = GetIt.I;
 
-void setupLocator() {
+Future<void> setupLocator() async {
   OnBoardingScreenDataList.prepareDataList();
   /// Custom Services
   locator.registerLazySingleton(() => FirebaseAuthService());
@@ -58,10 +59,15 @@ void setupLocator() {
   FCMAndLocalNotifications.initializeAwesomeNotifications();
 
   /// Work Manager
-  MyWorkManager.create();
+  await MyWorkManager.create();
 
   /// Send Notification Service
   locator.registerLazySingleton(() => SendNotificationService());
+
+  /// Purchase API,
+  locator.registerLazySingleton(() => PurchaseApi());
+  final PurchaseApi _purchaseApi = locator<PurchaseApi>();
+  await _purchaseApi.init();
 
   /// Theme
   locator.registerLazySingleton(() => Mode());
