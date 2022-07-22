@@ -24,28 +24,28 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       LocationPermission _permission = await _locationRepository.checkPermissions();
       if (!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
         /// For debug purposes
-        FCMAndLocalNotifications.showNotificationForDebugPurposes("not while in use nor always");
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("not while in use nor always");
         return 'PositionNotGetState';
       }
 
       bool locationStatus = await _locationRepository.checkLocationSetting();
       if (locationStatus == false) {
         /// For debug purposes
-        FCMAndLocalNotifications.showNotificationForDebugPurposes("location setting is closed");
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("location setting is closed");
         return 'PositionNotGetState';
       }
 
       _position = await _locationRepository.getCurrentPosition();
       if (_position == null) {
         /// For debug purposes
-        FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be get");
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be get");
         return 'PositionNotGetState';
       }
 
       bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
       if (isUpdated == false) {
         /// For debug purposes
-        FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
         return 'PositionNotUpdatedState';
       }
 
@@ -58,7 +58,7 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
 
       /// For debug purposes
-      FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
+      /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
 
       return 'PositionUpdatedState';
     } catch (e) {

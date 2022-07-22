@@ -18,6 +18,7 @@ class MyUser {
   List<String> hobbies = [];
   List<String> photosURL = [];
   List<String> connectionUserIDs = [];
+  List<String> receivedRequestUserIDs = [];
 
   /// Firebase Rules private fields
   String email = "";
@@ -28,7 +29,7 @@ class MyUser {
   int longitude = 0;
   List<String> savedUserIDs = [];
   List<String> transmittedRequestUserIDs = [];
-  List<String> receivedRequestUserIDs = [];
+
 
   MyUser();
 
@@ -50,6 +51,7 @@ class MyUser {
       'hobbies': hobbies,
       'photosURL': photosURL,
       'connectionUserIDs': connectionUserIDs,
+      'receivedRequestUserIDs': receivedRequestUserIDs,
     };
   }
 
@@ -71,6 +73,9 @@ class MyUser {
         photosURL = map['photosURL'].map<String>((data) => data.toString()).toList(),
         connectionUserIDs = map['connectionUserIDs']
             .map<String>((data) => data.toString())
+            .toList(),
+        receivedRequestUserIDs = map['receivedRequestUserIDs']
+            .map<String>((data) => data.toString())
             .toList();
 
   Map<String, dynamic> toPrivateMap() {
@@ -84,7 +89,6 @@ class MyUser {
       'longitude': longitude,
       'savedUserIDs': savedUserIDs,
       'transmittedRequestUserIDs': transmittedRequestUserIDs,
-      'receivedRequestUserIDs': receivedRequestUserIDs,
     };
   }
 
@@ -114,9 +118,6 @@ class MyUser {
         longitude = map['longitude'],
         savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList(),
         transmittedRequestUserIDs = map['transmittedRequestUserIDs']
-            .map<String>((data) => data.toString())
-            .toList(),
-        receivedRequestUserIDs = map['receivedRequestUserIDs']
             .map<String>((data) => data.toString())
             .toList();
 

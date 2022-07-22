@@ -669,7 +669,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             onTap: () async {
               await saveButtonFunction(changedCity);
 
-              Future.delayed(Duration(milliseconds: 500), (() {
+              Future.delayed(const Duration(milliseconds: 500), (() {
                 setStateValue.value = false;
               })).then((value) => setStateValue.value = true);
               numberOfNewPhotos = 0;

@@ -400,8 +400,6 @@ class FirestoreDBServiceUsers {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection("private")
-          .doc("private")
           .update({"receivedRequestUserIDs": FieldValue.arrayUnion([requestUserID])});
       return true;
     } catch (e) {
@@ -445,8 +443,6 @@ class FirestoreDBServiceUsers {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection("private")
-          .doc("private")
           .update({"receivedRequestUserIDs": FieldValue.arrayRemove([requestUserID])});
       return true;
     } catch (e) {

@@ -18,8 +18,8 @@ import '../screens/OnBoardingScreen/onboardingscreen.dart';
 import '../screens/SplashScreen/splash_screen.dart';
 
 class LoginRouter {
-  final FeedBloc _feedBloc = FeedBloc();
-  final SavedBloc _savedBloc = SavedBloc();
+  // final FeedBloc _feedBloc = FeedBloc();
+  // final SavedBloc _savedBloc = SavedBloc();
 
   Route? onGenerateRoute(RouteSettings routeSettings)  {
     switch (routeSettings.name) {
@@ -40,14 +40,15 @@ class LoginRouter {
       case '/begForPermissionScreen':
         return MaterialPageRoute(builder: (_) => const BegForPermissionScreen());
       case '/homeScreen':
-        return
-            //MaterialPageRoute(builder: (_) =>  CreateFakeUsersAndFeeds());
+        return MaterialPageRoute(builder: (_) =>  const HomeScreen());
 
+            /*
             MaterialPageRoute(
                 builder: (_) => MultiBlocProvider(providers: [
                   BlocProvider<FeedBloc>.value(value: _feedBloc),
                   BlocProvider<SavedBloc>.value(value: _savedBloc),
                     ], child: const HomeScreen()));
+             */
       case '/verifyScreen':
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
       case '/createProfileScreen':

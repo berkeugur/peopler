@@ -573,8 +573,7 @@ class _NearbyTabState extends State<NearbyTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                _savedBloc.add(ClickSaveButtonEvent(
-                                    savedUser: _locationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
+                                _savedBloc.add(ClickSaveButtonEvent(savedUser: _locationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
                                 String _deletedUserID = _locationBloc.allUserList[index].userID;
 
                                 _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);

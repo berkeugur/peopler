@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/CityBloc/city_bloc.dart';
+import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/hobbies.dart';
@@ -10,8 +12,16 @@ import 'package:peopler/presentation/screens/profile/OthersProfile/profile/all_a
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../../others/locator.dart';
 import '../../../../../../others/strings.dart';
+import '../../../../../business_logic/blocs/ChatBloc/bloc.dart';
+import '../../../../../business_logic/blocs/NotificationBloc/bloc.dart';
+import '../../../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../../data/model/chat.dart';
+import '../../../../../data/model/notifications.dart';
+import '../../../../../data/model/saved_user.dart';
+import '../../../../../data/repository/user_repository.dart';
+import '../../../../../data/send_notification_service.dart';
+import '../../../../../data/services/db/firestore_db_service_users.dart';
 import '../../../MessageScreen/message_screen.dart';
 
 class ProfileScreenComponentsOthersProfile {
@@ -58,7 +68,7 @@ class ProfileScreenComponentsOthersProfile {
               color: Mode().homeScreenScaffoldBackgroundColor(),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: Color(0xFF939393).withOpacity(0.6),
+                    color: const Color(0xFF939393).withOpacity(0.6),
                     blurRadius: 0.5,
                     spreadRadius: 0,
                     offset: const Offset(0, 0))
@@ -171,7 +181,7 @@ class ProfileScreenComponentsOthersProfile {
                     ),
                     itemBuilder: (context, index) {
                       return index == _itemCount.value - 1 && _itemCount.value == _numberOfPhoto + 1
-                          ? Container(
+                          ? SizedBox(
                               height: _photoHeight,
                               width: _photoWidth,
                               child: Center(
@@ -204,7 +214,7 @@ class ProfileScreenComponentsOthersProfile {
                                 ),
                               ))
                           : index == _itemCount.value - 1 && _itemCount.value == profileData.photosURL.length + 1
-                              ? Container(
+                              ? SizedBox(
                                   height: _photoHeight,
                                   width: _photoWidth,
                                   child: Center(
@@ -281,7 +291,7 @@ class ProfileScreenComponentsOthersProfile {
           color: _mode.blackAndWhiteConversion(),
         ),
         Text(
-          "${profileData.city}",
+          profileData.city,
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             color: _mode.blackAndWhiteConversion(),
@@ -302,8 +312,8 @@ class ProfileScreenComponentsOthersProfile {
         borderRadius: BorderRadius.circular(999),
         border: Border.all(width: 1, color: const Color(0xFF0353EF)),
         color: status == SendRequestButtonStatus.saved
-            ? Color(0xFF0353EF) //,_mode.inActiveColor()
-            : Color(0xFF0353EF),
+            ? const Color(0xFF0353EF) //,_mode.inActiveColor()
+            : const Color(0xFF0353EF),
       ),
       child: Center(child: buttonContent(context, status, otherUser)),
     );
@@ -312,15 +322,15 @@ class ProfileScreenComponentsOthersProfile {
   Widget buttonContent(BuildContext context, SendRequestButtonStatus status, MyUser otherUser) {
     switch (status) {
       case SendRequestButtonStatus.save:
-          return _buildSaveStatus();
+          return _buildSaveStatus(context, otherUser.userID);
       case SendRequestButtonStatus.saved:
         return _buildSavedStatus();
       case SendRequestButtonStatus.connect:
-        return _buildConnectStatus();
+        return _buildConnectStatus(context, otherUser.userID);
       case SendRequestButtonStatus.requestSent:
         return _buildRequestSentStatus();
       case SendRequestButtonStatus.accept:
-        return _buildAcceptStatus();
+        return _buildAcceptStatus(context, otherUser.userID);
       case SendRequestButtonStatus.connected:
         return _buildConnectedStatus(otherUser, context);
       default:
@@ -329,9 +339,20 @@ class ProfileScreenComponentsOthersProfile {
   }
 
 
-  InkWell _buildSaveStatus() {
+  InkWell _buildSaveStatus(BuildContext context, String otherUserID) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
+        CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
+        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+
+        MyUser otherUser = _locationBloc.allUserList.singleWhere((element) => element.userID == otherUserID);
+        _savedBloc.add(ClickSaveButtonEvent(savedUser: otherUser, myUserID: UserBloc.user!.userID));
+
+        String _deletedUserID = otherUser.userID;
+        _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+        _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -366,9 +387,38 @@ class ProfileScreenComponentsOthersProfile {
     );
   }
 
-  InkWell _buildConnectStatus() {
+  InkWell _buildConnectStatus(BuildContext context, String otherUserID) {
     return InkWell(
-      onTap: () {},
+      onTap: () async {
+        SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
+        CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
+        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+
+        final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
+        final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
+
+        final UserRepository _userRepository = locator<UserRepository>();
+        MyUser? otherUser = await _userRepository.getUserWithUserId(otherUserID);
+
+        SavedUser _savedUser = SavedUser();
+        _savedUser.userID = otherUser!.userID;
+        _savedUser.pplName = otherUser.pplName!;
+        _savedUser.displayName = otherUser.displayName;
+        _savedUser.gender = otherUser.gender;
+        _savedUser.profileURL = otherUser.profileURL;
+        _savedUser.biography = otherUser.biography;
+        _savedUser.hobbies = otherUser.hobbies;
+
+        _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+
+        String _deletedUserID = otherUser.userID;
+        _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+        _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+
+        String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
+        _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
+            UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+      },
       child: Text(
         "Bağlantı Kur",
         textScaleFactor: 1,
@@ -377,38 +427,49 @@ class ProfileScreenComponentsOthersProfile {
     );
   }
 
-  InkWell _buildRequestSentStatus() {
-    return InkWell(
-      onTap: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(2.5),
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/saved.svg",
-              color: Colors.white,
-              matchTextDirection: true,
-              fit: BoxFit.contain,
-            ),
+  Row _buildRequestSentStatus() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(2.5),
+          child: SvgPicture.asset(
+            "assets/images/svg_icons/saved.svg",
+            color: Colors.white,
+            matchTextDirection: true,
+            fit: BoxFit.contain,
           ),
-          Text(
-            "İstek Gönderildi",
-            textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
-          ),
-          const SizedBox.square(
-            dimension: 5,
-          )
-        ],
-      ),
+        ),
+        Text(
+          "İstek Gönderildi",
+          textScaleFactor: 1,
+          style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+        ),
+        const SizedBox.square(
+          dimension: 5,
+        )
+      ],
     );
   }
 
-  InkWell _buildAcceptStatus() {
+  InkWell _buildAcceptStatus(BuildContext context, String otherUserID) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+        Notifications _notification = _notificationBloc.allNotificationList.singleWhere((element) => element.requestUserID == otherUserID);
+
+        ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
+
+        _notificationBloc.add(ClickAcceptEvent(requestUserID: otherUserID));
+        _notification.didAccepted = true;
+
+        String? _hostUserID = _notification.requestUserID;
+        String? _hostUserName = _notification.requestDisplayName;
+        String? _hostUserProfileUrl = _notification.requestProfileURL;
+
+        _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -627,7 +688,7 @@ class ProfileScreenComponentsOthersProfile {
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
-                                      color: Color(0xFF939393).withOpacity(0.6),
+                                      color: const Color(0xFF939393).withOpacity(0.6),
                                       blurRadius: 0.5,
                                       spreadRadius: 0,
                                       offset: const Offset(0, 0))
@@ -651,7 +712,7 @@ class ProfileScreenComponentsOthersProfile {
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
                                 BoxShadow(
-                                    color: Color(0xFF939393).withOpacity(0.6),
+                                    color: const Color(0xFF939393).withOpacity(0.6),
                                     blurRadius: 0.5,
                                     spreadRadius: 0,
                                     offset: const Offset(0, 0))
@@ -682,7 +743,7 @@ class ProfileScreenComponentsOthersProfile {
                                   ],
                                 ),
                                 MediaQuery.of(context).size.width < 320
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
@@ -789,7 +850,7 @@ class ProfileScreenComponentsOthersProfile {
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
-                                      color: Color(0xFF939393).withOpacity(0.6),
+                                      color: const Color(0xFF939393).withOpacity(0.6),
                                       blurRadius: 0.5,
                                       spreadRadius: 0,
                                       offset: const Offset(0, 0))
@@ -813,7 +874,7 @@ class ProfileScreenComponentsOthersProfile {
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
                                 BoxShadow(
-                                    color: Color(0xFF939393).withOpacity(0.6),
+                                    color: const Color(0xFF939393).withOpacity(0.6),
                                     blurRadius: 0.5,
                                     spreadRadius: 0,
                                     offset: const Offset(0, 0))
@@ -836,7 +897,7 @@ class ProfileScreenComponentsOthersProfile {
                                                   color: _mode.search_peoples_scaffold_background() as Color,
                                                 )),
                                             child: CircleAvatar(
-                                              backgroundColor: Color(0xFF0353EF),
+                                              backgroundColor: const Color(0xFF0353EF),
                                               child: Text("ppl$index",
                                                   textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
                                             ),

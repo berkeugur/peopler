@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/services/db/firebase_db_common.dart';
+import 'package:peopler/data/services/db/firebase_db_service_location.dart';
 import 'package:peopler/data/services/db/firestore_db_service_feeds.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../others/locator.dart';
@@ -18,6 +19,7 @@ class UserRepository {
   final FirestoreDBServiceFeeds _firestoreDBServiceFeeds = locator<FirestoreDBServiceFeeds>();
   final FirebaseStorageService _firebaseStorageService = locator<FirebaseStorageService>();
   final FirestoreDBServiceCommon _firestoreDBServiceCommon = locator<FirestoreDBServiceCommon>();
+  final FirestoreDBServiceLocation _firestoreDBServiceLocation= locator<FirestoreDBServiceLocation>();
 
   Future<MyUser?> getCurrentUser() async {
     MyUser? currentUser = await _firebaseAuthService.getCurrentUser();
@@ -178,7 +180,7 @@ class UserRepository {
     return await _firestoreDBServiceUsers.deleteToken(userID);
   }
 
-  Future<void> deleteUser(String userID) async {
+  Future<void> deleteUser(String userID, String region) async {
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/activities");
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/notifications");
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/liked");
@@ -194,6 +196,9 @@ class UserRepository {
 
     /// Delete all chats after messages (subcollections of chats) deleted
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/chats");
+
+    /// Delete user from his/her last region
+    _firestoreDBServiceLocation.deleteUserFromRegion(userID, region);
 
     /// Delete user from firestore
     await _firestoreDBServiceUsers.deleteUser(userID);

@@ -46,18 +46,29 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
         _permission = await _locationRepository.checkPermissions();
         bool _locationStatus = await _locationRepository.checkLocationSetting();
 
-        if (_permission == LocationPermission.whileInUse) {
-          // await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Uygulamanız arka planda çalışırken bulunabilir olmanız için ayarlardan Her zaman İzin Ver seçiniz.', Strings.permissionSettings);
+
+        if (_permission == LocationPermission.always) {
+          /// Since permission already given, no problem, then check for location
+          add(LocationSettingListener());
+
+        } else if (_permission == LocationPermission.whileInUse) {
           /// When notification button clicked, open Permission Settings
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Uygulamanız arka planda çalışırken bulunabilir olmanız için ayarlardan Her zaman İzin Ver seçiniz.', Strings.permissionSettings);
+
+          /// Since permission already given, no problem, then check for location
+          add(LocationSettingListener());
+
         } else if(_permission == LocationPermission.denied){
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için Uygulamayı Kullanırken seçiniz.', Strings.requestPermission);
           /// When notification button clicked, requestPermission dialog opens
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için Uygulamayı Kullanırken seçiniz.', Strings.requestPermission);
+
         } else if(_permission == LocationPermission.deniedForever ){
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için ayarlardan Uygulamayı Kullanırken seçiniz.', Strings.permissionSettings);
           /// When notification button clicked, open Permission Settings window because requestPermission does not run
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için ayarlardan Uygulamayı Kullanırken seçiniz.', Strings.permissionSettings);
+
         } else if(_locationStatus == false){
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('Konum', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için konum özelliğini açmanız gerekir.', Strings.googleDialog);
           /// When notification button clicked, open Google's location setting dialog window.
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('Konum', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için konum özelliğini açmanız gerekir.', Strings.googleDialog);
         }
       } catch (e) {
         debugPrint("Blocta location permission hata:" + e.toString());
