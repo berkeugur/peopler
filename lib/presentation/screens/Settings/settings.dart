@@ -57,130 +57,134 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            topMenu(context),
-            Expanded(
-              child: Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width > 400 ? 400 : MediaQuery.of(context).size.width,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ppl_photo(context),
-                      ppl_user_name(context),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      toggleSwitches(context, setState: setState),
-                      changePasswordField(context),
-                      about_field(context),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      SizedBox.square(dimension: 50, child: Image.asset("assets/ic_launcher.png")),
-                      Text(
-                        "version: ${_packageInfo.version}",
-                        textScaleFactor: 1,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.rubik(
-                          color: Color(0xFF0353EF),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(5),
-                          onTap: () {
-                            showPlatformDialog(
-                                context: context,
-                                builder: (context) {
-                                  return PlatformAlertDialog(
-                                    title: Text(
-                                      "Bu İşlem Geri Alınamaz!",
-                                      textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(),
-                                    ),
-                                    content: Text(
-                                      "Hesabınızı kalıcı olarak silmek istediğinize emin misiniz?",
-                                      textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(),
-                                    ),
-                                    actions: [
-                                      PlatformDialogAction(
-                                        onPressed: () {
-                                          op_delete_account(context);
-                                        },
-                                        child: Text(
-                                          "Hesabı Sil",
-                                          textScaleFactor: 1,
-                                          style: GoogleFonts.rubik(
-                                            color: Color(0xFF0353EF),
+      child: ValueListenableBuilder(
+          valueListenable: Mode.isEnableDarkModeNotifier,
+          builder: (context, x, u) {
+            return Scaffold(
+              backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  topMenu(context),
+                  Expanded(
+                    child: Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width > 400 ? 400 : MediaQuery.of(context).size.width,
+                        child: ListView(
+                          physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ppl_photo(context),
+                            ppl_user_name(context),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            toggleSwitches(context, setState: setState),
+                            changePasswordField(context),
+                            about_field(context),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            SizedBox.square(dimension: 50, child: Image.asset("assets/ic_launcher.png")),
+                            Text(
+                              "version: ${_packageInfo.version}",
+                              textScaleFactor: 1,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.rubik(
+                                color: Color(0xFF0353EF),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(20),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(5),
+                                onTap: () {
+                                  showPlatformDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return PlatformAlertDialog(
+                                          title: Text(
+                                            "Bu İşlem Geri Alınamaz!",
+                                            textScaleFactor: 1,
+                                            style: GoogleFonts.rubik(),
                                           ),
-                                        ),
-                                      ),
-                                      PlatformDialogAction(
-                                        material: (_, __) => MaterialDialogActionData(),
-                                        cupertino: (_, __) => CupertinoDialogActionData(),
-                                        onPressed: () => Navigator.of(context).pop(),
-                                        child: Text(
-                                          "Vazgeç",
-                                          textScaleFactor: 1,
-                                          style: GoogleFonts.rubik(
-                                            color: Color(0xFF0353EF),
+                                          content: Text(
+                                            "Hesabınızı kalıcı olarak silmek istediğinize emin misiniz?",
+                                            textScaleFactor: 1,
+                                            style: GoogleFonts.rubik(),
                                           ),
-                                        ),
+                                          actions: [
+                                            PlatformDialogAction(
+                                              onPressed: () {
+                                                op_delete_account(context);
+                                              },
+                                              child: Text(
+                                                "Hesabı Sil",
+                                                textScaleFactor: 1,
+                                                style: GoogleFonts.rubik(
+                                                  color: Color(0xFF0353EF),
+                                                ),
+                                              ),
+                                            ),
+                                            PlatformDialogAction(
+                                              material: (_, __) => MaterialDialogActionData(),
+                                              cupertino: (_, __) => CupertinoDialogActionData(),
+                                              onPressed: () => Navigator.of(context).pop(),
+                                              child: Text(
+                                                "Vazgeç",
+                                                textScaleFactor: 1,
+                                                style: GoogleFonts.rubik(
+                                                  color: Color(0xFF0353EF),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                  print("tapped");
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(13),
+                                  decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      color: Color.fromARGB(255, 233, 233, 233).withOpacity(1),
+                                      blurRadius: 0.5,
+                                      spreadRadius: 1,
+                                      offset: const Offset(0, 0),
+                                    ),
+                                  ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Hesabı Sil",
+                                        textScaleFactor: 1,
+                                        style: GoogleFonts.rubik(color: Colors.grey[600], fontSize: 15),
                                       ),
                                     ],
-                                  );
-                                });
-                            print("tapped");
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(13),
-                            decoration: BoxDecoration(boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: Color.fromARGB(255, 233, 233, 233).withOpacity(1),
-                                blurRadius: 0.5,
-                                spreadRadius: 1,
-                                offset: const Offset(0, 0),
-                              ),
-                            ], color: Colors.white, borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Hesabı Sil",
-                                  textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(color: Colors.grey[600], fontSize: 15),
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 }

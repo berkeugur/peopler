@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Mode {
   static bool isEnableDarkMode = false;
+  static ValueNotifier<bool> isEnableDarkModeNotifier = ValueNotifier(false);
   Color? alertColor = Colors.redAccent[700];
 
   ///dark mode => white

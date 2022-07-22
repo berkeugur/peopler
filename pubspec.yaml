@@ -94,7 +94,12 @@ flutter:
     - assets/images/svg_icons/
     - assets/images/hobby_badges/
     - assets/empty_list_images/
+    - assets/profile_banners/
+    - assets/profile_banners/banner1.png
+    - assets/profile_banners/banner2.png
+    - assets/premiumfeatures_icons/
     - assets/
+   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

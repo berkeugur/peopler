@@ -71,17 +71,15 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                               ),
                               Text(
                                 "Bulunabilir ol ve",
+                                textScaleFactor: 1,
                                 style: GoogleFonts.rubik(
-                                    color: const Color(0xFF000B21),
-                                    fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
-                                    fontWeight: FontWeight.w300),
+                                    color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                               ),
                               Text(
                                 "Bul",
+                                textScaleFactor: 1,
                                 style: GoogleFonts.rubik(
-                                    color: const Color(0xFF0353EF),
-                                    fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
-                                    fontWeight: FontWeight.w300),
+                                    color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                               ),
                               SizedBox(
                                 height: screenHeight < 630 ? 30 : 60,
@@ -113,10 +111,8 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                                     child: Text(
                                       "Cinsiyetin ?",
-                                      style: GoogleFonts.rubik(
-                                          color: Colors.black,
-                                          fontSize: ResponsiveSize().gs2(context),
-                                          fontWeight: FontWeight.w300),
+                                      textScaleFactor: 1,
+                                      style: GoogleFonts.rubik(color: Colors.black, fontSize: ResponsiveSize().gs2(context), fontWeight: FontWeight.w300),
                                     ),
                                   ),
                                   SizedBox(
@@ -155,9 +151,9 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                             },
                             child: Text(
                               "Devam",
+                              textScaleFactor: 1,
                               style: GoogleFonts.rubik(
-                                  color:
-                                      UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
+                                  color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                                   fontSize: 22,
                                   fontWeight: UserBloc.user?.gender == "" ? FontWeight.w300 : FontWeight.w500),
                             ),

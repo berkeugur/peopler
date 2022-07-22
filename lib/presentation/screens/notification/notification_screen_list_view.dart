@@ -31,7 +31,9 @@ String elapsedTime(String date) {
 String elapsedTimeLongText(String date) {
   DateTime _oldDay = DateTime.parse(date);
   int _subMinute = DateTime.now().difference(_oldDay).inMinutes;
-  if (_subMinute < 60) {
+  if (_subMinute == 0) {
+    return "az";
+  } else if (_subMinute < 60) {
     return "${(_subMinute)} dakika"; //dakika
   } else if (_subMinute >= 60 && _subMinute < 24 * 60) {
     return "${(_subMinute / 60).toStringAsFixed(0)} saat"; //saat
@@ -64,11 +66,10 @@ Widget customListItem(int index, context) {
   if (_size.width <= 320) {
     _customTextSize = 12;
   } else if (_size.width > 320 && _size.width < 480) {
-    _customTextSize =  13;
+    _customTextSize = 13;
   } else {
-    _customTextSize =  14;
+    _customTextSize = 14;
   }
-
 
   double _customSmallTextSize;
   if (_size.width <= 320) {
@@ -79,51 +80,26 @@ Widget customListItem(int index, context) {
     _customSmallTextSize = 12;
   }
 
-
   NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
   Notifications _notification = _notificationBloc.allNotificationList[index];
 
   switch (_notification.notificationType) {
     case 'ReceivedRequest':
       {
-        return inComingRequestNotificationWidget(
-            _maxWidth,
-            _leftColumnSize,
-            context,
-            _notification,
-            _centerColumnSize,
-            _customTextSize,
-            _customSmallTextSize,
-            _rightColumnSize,
-            _notificationBloc,
-            index);
+        return inComingRequestNotificationWidget(_maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _customSmallTextSize,
+            _rightColumnSize, _notificationBloc, index);
       }
     case 'TransmittedRequest':
       {
-        return acceptYourRequestWidget(
-            _maxWidth,
-            _leftColumnSize,
-            context,
-            _notification,
-            _centerColumnSize,
-            _customTextSize,
-            _rightColumnSize);
+        return acceptYourRequestWidget(_maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _rightColumnSize);
       }
     case 'AddedToSaved':
       {
-        return youAreOnTheOtherPeoplesList(
-            _maxWidth,
-            _leftColumnSize,
-            context,
-            _notification,
-            _centerColumnSize,
-            _customTextSize,
-            _rightColumnSize);
+        return youAreOnTheOtherPeoplesList(_maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _rightColumnSize);
       }
     case 'NewFeeds':
       {
-        return newFeedWidget(_maxWidth, _leftColumnSize, context, _notification,
-            _centerColumnSize, _customTextSize, _rightColumnSize);
+        return newFeedWidget(_maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _rightColumnSize);
       }
   }
   return const Text(
@@ -133,13 +109,7 @@ Widget customListItem(int index, context) {
 }
 
 Container newFeedWidget(
-    double _maxWidth,
-    double _leftColumnSize,
-    context,
-    Notifications _data,
-    double _centerColumnSize,
-    double _customTextSize,
-    double _rightColumnSize) {
+    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -153,8 +123,7 @@ Container newFeedWidget(
           //color: Colors.green,
           width: _leftColumnSize,
           height: _leftColumnSize,
-          child: profilePhoto(
-              context, _data.requestProfileURL, _data.requestUserID!),
+          child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
         ),
         SizedBox(
           //color: Colors.orange,
@@ -179,12 +148,8 @@ Container newFeedWidget(
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "yeni " +
-                                _data.numberOfNewFeed.toString() +
-                                " paylaşım",
-                            style: TextStyle(
-                                color: Color(0xFF0353EF),
-                                fontSize: _customTextSize),
+                            text: "yeni " + _data.numberOfNewFeed.toString() + " paylaşım",
+                            style: TextStyle(color: Color(0xFF0353EF), fontSize: _customTextSize),
                           ),
                           TextSpan(
                               text: " seni bekliyor.",
@@ -221,8 +186,7 @@ Container newFeedWidget(
           //color: Colors.red,
           width: _rightColumnSize,
           height: 70,
-          child: _rightColumn(
-              context, _data.createdAt.toString(), _customTextSize - 2),
+          child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
         )
       ],
     ),
@@ -230,13 +194,7 @@ Container newFeedWidget(
 }
 
 Container youAreOnTheOtherPeoplesList(
-    double _maxWidth,
-    double _leftColumnSize,
-    context,
-    Notifications _data,
-    double _centerColumnSize,
-    double _customTextSize,
-    double _rightColumnSize) {
+    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -250,8 +208,7 @@ Container youAreOnTheOtherPeoplesList(
           //color: Colors.green,
           width: _leftColumnSize,
           height: _leftColumnSize,
-          child: profilePhoto(
-              context, _data.requestProfileURL, _data.requestUserID!),
+          child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
         ),
         SizedBox(
           //color: Colors.orange,
@@ -276,12 +233,8 @@ Container youAreOnTheOtherPeoplesList(
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: _data.youAreOnOtherPeoplesListLength
-                                    .toString() +
-                                " kişinin",
-                            style: TextStyle(
-                                color: Color(0xFF0353EF),
-                                fontSize: _customTextSize),
+                            text: _data.youAreOnOtherPeoplesListLength.toString() + " kişinin",
+                            style: TextStyle(color: Color(0xFF0353EF), fontSize: _customTextSize),
                           ),
                           TextSpan(
                               text: " listesine eklendin.",
@@ -318,8 +271,7 @@ Container youAreOnTheOtherPeoplesList(
           //color: Colors.red,
           width: _rightColumnSize,
           height: 70,
-          child: _rightColumn(
-              context, _data.createdAt.toString(), _customTextSize - 2),
+          child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
         )
       ],
     ),
@@ -327,13 +279,7 @@ Container youAreOnTheOtherPeoplesList(
 }
 
 Widget acceptYourRequestWidget(
-    double _maxWidth,
-    double _leftColumnSize,
-    context,
-    Notifications _data,
-    double _centerColumnSize,
-    double _customTextSize,
-    double _rightColumnSize) {
+    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return _data.didAccepted == false
       ? const SizedBox.shrink()
@@ -349,8 +295,7 @@ Widget acceptYourRequestWidget(
                 //color: Colors.green,
                 width: _leftColumnSize,
                 height: _leftColumnSize,
-                child: profilePhoto(
-                    context, _data.requestProfileURL, _data.requestUserID!),
+                child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
               ),
               SizedBox(
                 //color: Colors.orange,
@@ -376,9 +321,7 @@ Widget acceptYourRequestWidget(
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ', bağlantı isteğini kabul etti.',
-                                  style: TextStyle(
-                                      color: _mode.blackAndWhiteConversion(),
-                                      fontSize: _customTextSize),
+                                  style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
                                 )
                               ]),
                         ),
@@ -386,9 +329,7 @@ Widget acceptYourRequestWidget(
                       SizedBox(
                         child: Text(
                           _data.requestBiography,
-                          style: GoogleFonts.rubik(
-                              fontSize: _customTextSize - 1,
-                              color: Colors.grey),
+                          style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
                           textScaleFactor: 1,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -399,7 +340,7 @@ Widget acceptYourRequestWidget(
                       ),
                       InkWell(
                         onTap: () {
-                          Chat currentChat =  Chat(
+                          Chat currentChat = Chat(
                               hostID: _data.requestUserID!,
                               isLastMessageFromMe: false,
                               isLastMessageReceivedByHost: true,
@@ -413,7 +354,10 @@ Widget acceptYourRequestWidget(
 
                           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                           _userBloc.mainKey.currentState?.push(
-                            MaterialPageRoute(builder: (context) => MessageScreen(currentChat: currentChat,)),
+                            MaterialPageRoute(
+                                builder: (context) => MessageScreen(
+                                      currentChat: currentChat,
+                                    )),
                           );
                         },
                         child: Container(
@@ -440,25 +384,15 @@ Widget acceptYourRequestWidget(
                 //color: Colors.red,
                 width: _rightColumnSize,
                 height: 70,
-                child: _rightColumn(
-                    context, _data.createdAt.toString(), _customTextSize - 2),
+                child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
               )
             ],
           ),
         );
 }
 
-Widget inComingRequestNotificationWidget(
-    double _maxWidth,
-    double _leftColumnSize,
-    context,
-    Notifications _data,
-    double _centerColumnSize,
-    double _customTextSize,
-    double _customSmallTextSize,
-    double _rightColumnSize,
-    NotificationBloc notificationBloc,
-    index) {
+Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
+    double _customTextSize, double _customSmallTextSize, double _rightColumnSize, NotificationBloc notificationBloc, index) {
   final Mode _mode = locator<Mode>();
   return _data.didAccepted == true
       ? const SizedBox.shrink()
@@ -474,8 +408,7 @@ Widget inComingRequestNotificationWidget(
                 //color: Colors.green,
                 width: _leftColumnSize,
                 height: _leftColumnSize,
-                child: profilePhoto(
-                    context, _data.requestProfileURL, _data.requestUserID!),
+                child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
               ),
               SizedBox(
                 //color: Colors.orange,
@@ -501,9 +434,7 @@ Widget inComingRequestNotificationWidget(
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ', sana bağlantı isteği gönderdi',
-                                  style: TextStyle(
-                                      color: _mode.blackAndWhiteConversion(),
-                                      fontSize: _customTextSize),
+                                  style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
                                 )
                               ]),
                         ),
@@ -511,9 +442,7 @@ Widget inComingRequestNotificationWidget(
                       SizedBox(
                         child: Text(
                           _data.requestBiography,
-                          style: GoogleFonts.rubik(
-                              fontSize: _customTextSize - 1,
-                              color: Colors.grey),
+                          style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
                           textScaleFactor: 1,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -522,7 +451,6 @@ Widget inComingRequestNotificationWidget(
                       const SizedBox(
                         height: 5,
                       ),
-
                       const SizedBox(
                         height: 7,
                       ),
@@ -563,8 +491,7 @@ Widget inComingRequestNotificationWidget(
                 //color: Colors.red,
                 width: _rightColumnSize,
                 height: 70,
-                child: _rightColumn(
-                    context, _data.createdAt.toString(), _customTextSize - 2),
+                child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
               )
             ],
           ),
@@ -602,8 +529,7 @@ Column _rightColumn(context, String time, double _customTextSize) {
                       ),
                       title: Text(
                         'Bildirimi Sil',
-                        style: GoogleFonts.rubik(
-                            fontSize: 14, color: Colors.white),
+                        style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
                       ),
                       onTap: () {
                         //delete function
@@ -628,13 +554,7 @@ BoxDecoration _boxDecoration() {
   final Mode _mode = locator<Mode>();
   return BoxDecoration(
     color: _mode.bottomMenuBackground(),
-    boxShadow: <BoxShadow>[
-      BoxShadow(
-          color: Color(0xFF939393).withOpacity(0.6),
-          blurRadius: 0.5,
-          spreadRadius: 0,
-          offset: const Offset(0, 0))
-    ],
+    boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
     //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
   );
 }
@@ -681,8 +601,7 @@ Stack profilePhoto(BuildContext context, String _data, String userID) {
   );
 }
 
-Container mutualFriendProfilePhotoItem(
-    BuildContext context, int index, String photoUrl) {
+Container mutualFriendProfilePhotoItem(BuildContext context, int index, String photoUrl) {
   double _screenWidth = MediaQuery.of(context).size.width;
   double _itemSize() {
     if (_screenWidth <= 320) {
@@ -717,13 +636,7 @@ Container mutualFriendProfilePhotoItem(
     width: _itemSize(),
     margin: EdgeInsets.only(left: _customMarginLeftValue()),
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[
-        BoxShadow(
-            color: const Color(0xFF939393).withOpacity(0.6),
-            blurRadius: 2.0,
-            spreadRadius: 0,
-            offset: const Offset(1.0, 0.75))
-      ],
+      boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))],
       borderRadius: const BorderRadius.all(Radius.circular(999)),
       color: Colors.white, //Colors.orange,
     ),

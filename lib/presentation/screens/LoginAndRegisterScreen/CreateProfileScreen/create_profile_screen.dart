@@ -70,17 +70,15 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 ),
                                 Text(
                                   "Profilini",
+                                  textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
-                                      color: const Color(0xFF000B21),
-                                      fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
-                                      fontWeight: FontWeight.w300),
+                                      color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                                 ),
                                 Text(
                                   "Oluşturalım",
+                                  textScaleFactor: 1,
                                   style: GoogleFonts.rubik(
-                                      color: const Color(0xFF000B21),
-                                      fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
-                                      fontWeight: FontWeight.w300),
+                                      color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(
                                   height: screenHeight < 630 ? 30 : 60,
@@ -88,6 +86,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 Center(
                                   child: Text(
                                     "Profil fotoğrafını seç",
+                                    textScaleFactor: 1,
                                     style: GoogleFonts.rubik(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
@@ -105,7 +104,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                     child: CircleAvatar(
                                       radius: 55,
                                       backgroundColor: const Color(0xFF8E9BB4),
-                                      child: (UserBloc.user?.profileURL != null) && (UserBloc.user?.profileURL != '') ? ClipRRect(
+                                      child: (UserBloc.user?.profileURL != null) && (UserBloc.user?.profileURL != '')
+                                          ? ClipRRect(
                                               borderRadius: BorderRadius.circular(60),
                                               child: Image.network(
                                                 UserBloc.user!.profileURL,
@@ -113,7 +113,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                 height: 120,
                                                 fit: BoxFit.fitHeight,
                                               ))
-                                          : (image != null ? ClipRRect(
+                                          : (image != null
+                                              ? ClipRRect(
                                                   borderRadius: BorderRadius.circular(60),
                                                   child: Image.file(
                                                     image!,
@@ -143,6 +144,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 Center(
                                   child: Text(
                                     "Kendini anlat",
+                                    textScaleFactor: 1,
                                     style: GoogleFonts.rubik(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
@@ -155,7 +157,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 ),
                                 Center(
                                   child: Text(
-                                    "Şehir/ilçe",
+                                    "Şehir",
+                                    textScaleFactor: 1,
                                     style: GoogleFonts.rubik(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
@@ -232,12 +235,11 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         },
         child: Text(
           "Devam",
+          textScaleFactor: 1,
           style: GoogleFonts.rubik(
               color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
               fontSize: 22,
-              fontWeight: nameController.text.isEmpty || UserBloc.user?.city == ""
-                  ? FontWeight.w300
-                  : FontWeight.w500),
+              fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
         ),
       ),
     );
@@ -274,8 +276,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
                                 child: Container(
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   height: 350,
                                   width: MediaQuery.of(context).size.width - 40,
                                   child: Column(
@@ -289,10 +290,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                         child: CupertinoSearchTextField(
                                           onTap: () async {
                                             Future.delayed(const Duration(milliseconds: 500), () {
-                                              _jumpToBottomScrollController.animateTo(
-                                                  _jumpToBottomScrollController.position.maxScrollExtent - 50,
-                                                  duration: const Duration(milliseconds: 500),
-                                                  curve: Curves.ease);
+                                              _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent - 50,
+                                                  duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                             });
                                             setState(() {});
                                             setStateBottomSheet(() {});
@@ -318,9 +317,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                 return Container(
                                                   margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                                                   decoration: BoxDecoration(
-                                                    color: UserBloc.user?.city == items[index]
-                                                        ? const Color(0xFF0353EF)
-                                                        : Colors.white,
+                                                    color: UserBloc.user?.city == items[index] ? const Color(0xFF0353EF) : Colors.white,
                                                     borderRadius: BorderRadius.circular(15),
                                                   ),
                                                   child: Padding(
@@ -346,11 +343,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                         },
                                                         child: Text(
                                                           items[index],
+                                                          textScaleFactor: 1,
                                                           style: UserBloc.user!.city == items[index]
-                                                              ? const TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  color: Color(0xFF000B21))
+                                                              ? const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF000B21))
                                                               : const TextStyle(fontSize: 18),
                                                         ),
                                                       ),
@@ -367,10 +362,12 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 child: Container(
                                   height: 50,
                                   width: MediaQuery.of(context).size.width,
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   child: TextButton(
-                                    child: Text("Vazgeç"),
+                                    child: Text(
+                                      "Vazgeç",
+                                      textScaleFactor: 1,
+                                    ),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
@@ -385,11 +382,10 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   });
             },
             child: Text(
-              UserBloc.user?.city != "" ? UserBloc.user!.city : "Şehir Seçin",
-              style: GoogleFonts.rubik(
-                  color: const Color(0xFFFFFFFF),
-                  fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16,
-                  fontWeight: FontWeight.w300),
+              UserBloc.user?.city != "" ? UserBloc.user?.city ?? "null" : "Şehir Seçin",
+              textScaleFactor: 1,
+              style:
+                  GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
             )),
       ),
     );
@@ -426,7 +422,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       ),
     );
   }
-
 
   IconButton backButton(BuildContext context) {
     return IconButton(

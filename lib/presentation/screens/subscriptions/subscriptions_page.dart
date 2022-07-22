@@ -26,7 +26,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         scaffoldColor = scaffoldColor = _tabController.index == 0 ? Colors.white : const Color(0xFF0353EF);
       });
     });
-
+    SubscriptionFeatures().init(_tabController);
     super.initState();
   }
 
@@ -180,17 +180,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPremiumPlanIndex == 0
-            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
-            : const EdgeInsets.all(5),
+        margin: selectedPremiumPlanIndex == 0 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
             width: selectedPremiumPlanIndex == 0 ? 2 : 1,
             color: selectedPremiumPlanIndex == 0
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -204,16 +202,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPremiumPlanIndex == 0 ? 4 : 1,
                     color: selectedPremiumPlanIndex == 0
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
-                borderRadius:
-                const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPremiumPlanIndex != 0
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -226,8 +223,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPremiumPlanIndex == 0
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -263,7 +260,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ],
                   ),
                   Text(
-                    "179.99TL",
+                    SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 16,
@@ -278,7 +275,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      "%12 indirim",
+                      SubscriptionService().discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -288,7 +285,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ),
                   ),
                   Text(
-                    "${(179.99 / 3).toStringAsFixed(2)}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -314,17 +311,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPremiumPlanIndex == 1
-            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
-            : const EdgeInsets.all(5),
+        margin: selectedPremiumPlanIndex == 1 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
             width: selectedPremiumPlanIndex == 1 ? 2 : 1,
             color: selectedPremiumPlanIndex == 1
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -338,16 +333,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPremiumPlanIndex == 1 ? 4 : 1,
                     color: selectedPremiumPlanIndex == 1
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
-                borderRadius:
-                const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPremiumPlanIndex != 1
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -360,8 +354,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPremiumPlanIndex == 1
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -397,7 +391,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ],
                   ),
                   Text(
-                    "99.99TL",
+                    SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 16,
@@ -412,7 +406,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      "%12 indirim",
+                      SubscriptionService().discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -422,7 +416,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ),
                   ),
                   Text(
-                    "${99.99 / 3}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -441,162 +435,156 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
 
   InkWell _buildOneMonthPremiumWidget(BuildContext context) {
     return InkWell(
-                  onTap: () {
-                    setState(() {
-                      debugPrint("hebele gübele");
-                      selectedPremiumPlanIndex = 2;
-                    });
-                  },
-                  child: Container(
-                    width: (MediaQuery.of(context).size.width - 100) / 3,
-                    margin: selectedPremiumPlanIndex == 2
-                        ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
-                        : const EdgeInsets.all(5),
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: selectedPremiumPlanIndex == 2 ? 2 : 1,
-                        color: selectedPremiumPlanIndex == 2
-                            ? _tabController.index == 0
-                                ? const Color(0xFF0353EF)
-                                : Colors.white
-                            : const Color.fromARGB(255, 194, 194, 194),
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                " ",
-                                textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                  fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "1",
-                                    textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
-                                      fontSize: 16,
-                                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    "ay",
-                                    textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
-                                      fontSize: 16,
-                                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "39.99TL",
-                                textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 16,
-                                  color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(99),
-                                ),
-                                child: Text(
-                                  " ",
-                                  textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
-                                    fontSize: 14,
-                                    color: scaffoldColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                " ",
-                                textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 12,
-                                  color: scaffoldColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+      onTap: () {
+        setState(() {
+          debugPrint("hebele gübele");
+          selectedPremiumPlanIndex = 2;
+        });
+      },
+      child: Container(
+        width: (MediaQuery.of(context).size.width - 100) / 3,
+        margin: selectedPremiumPlanIndex == 2 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: selectedPremiumPlanIndex == 2 ? 2 : 1,
+            color: selectedPremiumPlanIndex == 2
+                ? _tabController.index == 0
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
+                : const Color.fromARGB(255, 194, 194, 194),
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    " ",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                );
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "1",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          fontSize: 16,
+                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "ay",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          fontSize: 16,
+                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      fontSize: 16,
+                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Text(
+                      " ",
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        color: scaffoldColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    " ",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      color: scaffoldColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Container _buildBuyImmediatelyPremiumButton() {
     return Container(
-            margin: const EdgeInsets.all(40),
-            child: InkWell(
-              onTap: () {
-                if (selectedPremiumPlanIndex == 0) {
-                  SubscriptionService()
-                      .purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium);
-                } else if (selectedPremiumPlanIndex == 1) {
-                  SubscriptionService()
-                      .purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium);
-                } else if (selectedPremiumPlanIndex == 2) {
-                  SubscriptionService()
-                      .purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium);
-                } else {
-                  debugPrint("3 index var else imkansız.");
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+      margin: const EdgeInsets.all(40),
+      child: InkWell(
+        onTap: () {
+          if (selectedPremiumPlanIndex == 0) {
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium);
+          } else if (selectedPremiumPlanIndex == 1) {
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium);
+          } else if (selectedPremiumPlanIndex == 2) {
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium);
+          } else {
+            debugPrint("3 index var else imkansız.");
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(99),
+            color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "HEMEN SATIN AL",
+                textScaleFactor: 1,
+                style: GoogleFonts.rubik(
+                  color: scaffoldColor,
+                  fontWeight: FontWeight.w500,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "HEMEN SATIN AL",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
-                        color: scaffoldColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget plusTab(BuildContext context) {
@@ -639,17 +627,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPlusPlanIndex == 0
-            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
-            : const EdgeInsets.all(5),
+        margin: selectedPlusPlanIndex == 0 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
             width: selectedPlusPlanIndex == 0 ? 2 : 1,
             color: selectedPlusPlanIndex == 0
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -663,16 +649,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPlusPlanIndex == 0 ? 4 : 1,
                     color: selectedPlusPlanIndex == 0
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
-                borderRadius:
-                const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPlusPlanIndex != 0
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -685,8 +670,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPlusPlanIndex == 0
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -722,7 +707,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ],
                   ),
                   Text(
-                    "179.99TL",
+                    SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 16,
@@ -737,7 +722,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      "%12 indirim",
+                      SubscriptionService().discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -747,7 +732,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ),
                   ),
                   Text(
-                    "${(179.99 / 3).toStringAsFixed(2)}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -773,17 +758,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPlusPlanIndex == 1
-            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
-            : const EdgeInsets.all(5),
+        margin: selectedPlusPlanIndex == 1 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
             width: selectedPlusPlanIndex == 1 ? 2 : 1,
             color: selectedPlusPlanIndex == 1
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -797,16 +780,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPlusPlanIndex == 1 ? 4 : 1,
                     color: selectedPlusPlanIndex == 1
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
-                borderRadius:
-                const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPlusPlanIndex != 1
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -819,8 +801,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPlusPlanIndex == 1
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -856,7 +838,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ],
                   ),
                   Text(
-                    "99.99TL",
+                    SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 16,
@@ -871,7 +853,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      "%12 indirim",
+                      SubscriptionService().discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -881,7 +863,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     ),
                   ),
                   Text(
-                    "${99.99 / 3}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -900,159 +882,155 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
 
   InkWell _buildOneMonthPlusWidget(BuildContext context) {
     return InkWell(
-                  onTap: () {
-                    setState(() {
-                      selectedPlusPlanIndex = 2;
-                    });
-                  },
-                  child: Container(
-                    width: (MediaQuery.of(context).size.width - 100) / 3,
-                    margin: selectedPlusPlanIndex == 2
-                        ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
-                        : const EdgeInsets.all(5),
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: selectedPlusPlanIndex == 2 ? 2 : 1,
-                        color: selectedPlusPlanIndex == 2
-                            ? _tabController.index == 0
-                                ? const Color(0xFF0353EF)
-                                : Colors.white
-                            : const Color.fromARGB(255, 194, 194, 194),
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                " ",
-                                textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                  fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "1",
-                                    textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
-                                      fontSize: 16,
-                                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    "ay",
-                                    textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
-                                      fontSize: 16,
-                                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "39.99TL",
-                                textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 16,
-                                  color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(99),
-                                ),
-                                child: Text(
-                                  " ",
-                                  textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
-                                    fontSize: 14,
-                                    color: scaffoldColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                " ",
-                                textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 12,
-                                  color: scaffoldColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+      onTap: () {
+        setState(() {
+          selectedPlusPlanIndex = 2;
+        });
+      },
+      child: Container(
+        width: (MediaQuery.of(context).size.width - 100) / 3,
+        margin: selectedPlusPlanIndex == 2 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: selectedPlusPlanIndex == 2 ? 2 : 1,
+            color: selectedPlusPlanIndex == 2
+                ? _tabController.index == 0
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
+                : const Color.fromARGB(255, 194, 194, 194),
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    " ",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                );
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "1",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          fontSize: 16,
+                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        "ay",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          fontSize: 16,
+                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      fontSize: 16,
+                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Text(
+                      " ",
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        color: scaffoldColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    " ",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      color: scaffoldColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Container _buildBuyImmediatelyPlusButton() {
     return Container(
-            margin: const EdgeInsets.all(40),
-            child: InkWell(
-              onTap: () {
-                debugPrint("selected premium plan index = $selectedPlusPlanIndex");
-                if (selectedPlusPlanIndex == 0) {
-                  SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus);
-                } else if (selectedPlusPlanIndex == 1) {
-                  SubscriptionService()
-                      .purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus);
-                } else if (selectedPlusPlanIndex == 2) {
-                  SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus);
-                } else {
-                  debugPrint("3 index var else imkansız.");
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(99),
-                  color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+      margin: const EdgeInsets.all(40),
+      child: InkWell(
+        onTap: () {
+          debugPrint("selected premium plan index = $selectedPlusPlanIndex");
+          if (selectedPlusPlanIndex == 0) {
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus);
+          } else if (selectedPlusPlanIndex == 1) {
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus);
+          } else if (selectedPlusPlanIndex == 2) {
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus);
+          } else {
+            debugPrint("3 index var else imkansız.");
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(99),
+            color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "HEMEN SATIN AL",
+                textScaleFactor: 1,
+                style: GoogleFonts.rubik(
+                  color: scaffoldColor,
+                  fontWeight: FontWeight.w500,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "HEMEN SATIN AL",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
-                        color: scaffoldColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

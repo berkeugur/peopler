@@ -80,6 +80,7 @@ class _NameScreenState extends State<NameScreen> {
                                         ),
                                         Text(
                                           "Etrafındaki İnsanları",
+                                          textScaleFactor: 1,
                                           style: GoogleFonts.rubik(
                                               color: const Color(0xFF000B21),
                                               fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28,
@@ -87,6 +88,7 @@ class _NameScreenState extends State<NameScreen> {
                                         ),
                                         Text(
                                           "Keşfet",
+                                          textScaleFactor: 1,
                                           style: GoogleFonts.rubik(
                                               color: const Color(0xFF0353EF),
                                               fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28,
@@ -122,10 +124,8 @@ class _NameScreenState extends State<NameScreen> {
                                               padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                               child: Text(
                                                 "İsmin Nedir ?",
-                                                style: GoogleFonts.rubik(
-                                                    color: const Color(0xFF000000),
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w300),
+                                                textScaleFactor: 1,
+                                                style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                               ),
                                             ),
                                             Container(
@@ -133,16 +133,12 @@ class _NameScreenState extends State<NameScreen> {
                                               padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
                                               margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                               height: 40,
-                                              decoration: BoxDecoration(
-                                                  color: const Color(0xFF0353EF),
-                                                  borderRadius: BorderRadius.circular(20)),
+                                              decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
                                               child: TextField(
                                                 onTap: () async {
                                                   await Future.delayed(const Duration(milliseconds: 500), () {
-                                                    _jumpToBottomScrollController.animateTo(
-                                                        _jumpToBottomScrollController.position.maxScrollExtent,
-                                                        duration: const Duration(milliseconds: 500),
-                                                        curve: Curves.ease);
+                                                    _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                        duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                   });
                                                 },
                                                 keyboardType: TextInputType.name,
@@ -186,13 +182,11 @@ class _NameScreenState extends State<NameScreen> {
                                       },
                                       child: Text(
                                         "Devam",
+                                        textScaleFactor: 1,
                                         style: GoogleFonts.rubik(
-                                            color: nameController.text.isEmpty
-                                                ? const Color(0xFF0353EF)
-                                                : const Color(0xFF0353EF),
+                                            color: nameController.text.isEmpty ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                                             fontSize: 22,
-                                            fontWeight:
-                                                nameController.text.isEmpty ? FontWeight.w300 : FontWeight.w400),
+                                            fontWeight: nameController.text.isEmpty ? FontWeight.w300 : FontWeight.w400),
                                       ),
                                     ),
                                   ),

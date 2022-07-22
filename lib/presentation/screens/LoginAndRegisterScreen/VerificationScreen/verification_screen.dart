@@ -60,17 +60,15 @@ class VerificationScreen extends StatelessWidget {
                         children: [
                           Text(
                             "Mail kutunu",
+                            textScaleFactor: 1,
                             style: GoogleFonts.rubik(
-                                color: const Color(0xFF0353EF),
-                                fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48,
-                                fontWeight: FontWeight.w300),
+                                color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48, fontWeight: FontWeight.w300),
                           ),
                           Text(
                             "kontrol et!",
+                            textScaleFactor: 1,
                             style: GoogleFonts.rubik(
-                                color: const Color(0xFF000000),
-                                fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48,
-                                fontWeight: FontWeight.w300),
+                                color: const Color(0xFF000000), fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48, fontWeight: FontWeight.w300),
                           ),
                         ],
                       ),
@@ -83,17 +81,24 @@ class VerificationScreen extends StatelessWidget {
                       child: Center(
                           child: Text(
                         "Mail adresine bir doğrulama bağlantısı gönderdik. Mail kutunu kontrol et ve bağlantıya tıklayarak profilini doğrula.\n\nProfilini doğruladıktan sonra uygulamaya doğrudan yönlendirileceksin.",
-                        style: GoogleFonts.rubik(
-                            color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                       )),
                     ),
                     const SizedBox(
                       height: 30,
                     ),
                     Center(
-                        child: Text("Doğrulama kodu gelmediyse;",
-                            style: GoogleFonts.rubik(
-                                fontWeight: FontWeight.w500, fontSize: 14, color: const Color(0xFF000000)))),
+                      child: Text(
+                        "Doğrulama kodu gelmediyse;",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: const Color(0xFF000000),
+                        ),
+                      ),
+                    ),
                     Center(
                       child: TextButton(
                         onPressed: () => _userBloc.add(resendVerificationLink()),
@@ -103,6 +108,7 @@ class VerificationScreen extends StatelessWidget {
                               padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'tekrar gönder',
+                                textScaleFactor: 1,
                                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Colors.white),
                               ),
                             )),
@@ -116,8 +122,12 @@ class VerificationScreen extends StatelessWidget {
                         onPressed: () => _buildReturnToRegisterScreen(context),
                         child: Text(
                           "Kayıt Ekranına Dön",
+                          textScaleFactor: 1,
                           style: GoogleFonts.rubik(
-                              color: const Color(0xFF0353EF), fontSize: 22, fontWeight: FontWeight.w300),
+                            color: const Color(0xFF0353EF),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
                       ),
                     ),
@@ -137,20 +147,25 @@ class VerificationScreen extends StatelessWidget {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: const Text('Kayıt Ekranına Dönmek İstediğine Emin Misin?'),
+              title: const Text(
+                'Kayıt Ekranına Dönmek İstediğine Emin Misin?',
+                textScaleFactor: 1,
+              ),
               content: const Text(
-                  'Eğer mailini veya başka bir bilgini yanlış girdiğini düşünüyorsan en baştan kayıt olabilirsin.'),
+                'Eğer mailini veya başka bir bilgini yanlış girdiğini düşünüyorsan en baştan kayıt olabilirsin.',
+                textScaleFactor: 1,
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
+                  child: const Text('vazgeç'),
                 ),
                 TextButton(
                   onPressed: () {
                     _userBloc.add(deleteUser());
                     Navigator.of(context).pushNamed('/welcomeScreen');
                   },
-                  child: const Text('Okay'),
+                  child: const Text('Evet'),
                 )
               ],
             ));

@@ -95,10 +95,11 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                             children: [
                                               Text(
                                                 "peopler",
+                                                textScaleFactor: 1,
                                                 style: GoogleFonts.spartan(
                                                     color: const Color(0xFF0353EF),
                                                     fontWeight: FontWeight.w800,
-                                                    fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48),
+                                                    fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 36),
                                               ),
                                             ],
                                           ),
@@ -106,9 +107,10 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                             children: [
                                               Text(
                                                 "deneyiminie\nçok az kaldı",
+                                                textScaleFactor: 1,
                                                 style: GoogleFonts.rubik(
                                                     color: const Color(0xFF000000),
-                                                    fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48,
+                                                    fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 36,
                                                     fontWeight: FontWeight.w300),
                                               ),
                                             ],
@@ -134,10 +136,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
                                             "E-Mail Adresin",
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            textScaleFactor: 1,
+                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
 
@@ -149,15 +149,12 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
                                           margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
+                                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
                                           child: TextField(
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
-                                                _jumpToBottomScrollController.animateTo(
-                                                    _jumpToBottomScrollController.position.maxScrollExtent,
-                                                    duration: const Duration(milliseconds: 500),
-                                                    curve: Curves.ease);
+                                                _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                    duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                               });
                                             },
                                             keyboardType: TextInputType.emailAddress,
@@ -189,10 +186,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                                           child: Text(
                                             "Sadece üniversite mailin ile kayıt olabilirsin.",
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            textScaleFactor: 1,
+                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -208,10 +203,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
                                             "Şifreni belirle",
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            textScaleFactor: 1,
+                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -229,10 +222,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: TextField(
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
-                                                _jumpToBottomScrollController.animateTo(
-                                                    _jumpToBottomScrollController.position.maxScrollExtent,
-                                                    duration: const Duration(milliseconds: 500),
-                                                    curve: Curves.ease);
+                                                _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                    duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                               });
                                             },
                                             obscureText: isVisiblePassword,
@@ -284,10 +275,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
                                             "Şifre tekrar",
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            textScaleFactor: 1,
+                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -298,15 +287,12 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
                                           margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(25)),
+                                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(25)),
                                           child: TextField(
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
-                                                _jumpToBottomScrollController.animateTo(
-                                                    _jumpToBottomScrollController.position.maxScrollExtent,
-                                                    duration: const Duration(milliseconds: 500),
-                                                    curve: Curves.ease);
+                                                _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                    duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                               });
                                             },
                                             obscureText: isVisibleCheckPassword,
@@ -326,9 +312,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                                     });
                                                   },
                                                   icon: Icon(
-                                                    isVisibleCheckPassword == true
-                                                        ? Icons.visibility
-                                                        : Icons.visibility_off,
+                                                    isVisibleCheckPassword == true ? Icons.visibility : Icons.visibility_off,
                                                     color: const Color(0xFF9ABAF9),
                                                   )),
                                               counterText: "",
@@ -362,8 +346,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                   listener: (context, UserState state) {
                                     if (state is SignedInNotVerifiedState) {
                                       _userBloc.add(waitForVerificationEvent());
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil('/verifyScreen', (Route<dynamic> route) => false);
+                                      Navigator.of(context).pushNamedAndRemoveUntil('/verifyScreen', (Route<dynamic> route) => false);
                                     } else if (state is InvalidEmailState) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         customSnackBar(
@@ -403,12 +386,16 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                                       if (_connection == false) return;
 
-                                      bool _isEduDotTr = registerEmailController.text.replaceAll(" ", "")
-                                          .toLowerCase().substring(registerEmailController.text.length - 7) == ".edu.tr" ? true : false;
+                                      bool _isEduDotTr =
+                                          registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7) ==
+                                                  ".edu.tr"
+                                              ? true
+                                              : false;
 
                                       /// DİKKAT
                                       /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
                                       _isEduDotTr = true;
+
                                       /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
 
                                       if (registerPasswordController.text == registerPasswordCheckController.text && _isEduDotTr == true) {
@@ -416,8 +403,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           email: registerEmailController.text.replaceAll(" ", ""),
                                           password: registerPasswordController.text,
                                         ));
-                                      } else if (registerPasswordController.text !=
-                                          registerPasswordCheckController.text) {
+                                      } else if (registerPasswordController.text != registerPasswordCheckController.text) {
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           customSnackBar(
                                               context: context,
@@ -450,15 +436,11 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                     },
                                     child: Text(
                                       "Devam",
+                                      textScaleFactor: 1,
                                       style: GoogleFonts.rubik(
-                                          color: UserBloc.user?.gender == ""
-                                              ? const Color(0xFF0353EF)
-                                              : const Color(0xFF0353EF),
+                                          color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                                           fontSize: 22,
-                                          fontWeight: nameController.text.isEmpty ||
-                                                  UserBloc.user?.city == ""
-                                              ? FontWeight.w300
-                                              : FontWeight.w500),
+                                          fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
                                     ),
                                   ),
                                 ),

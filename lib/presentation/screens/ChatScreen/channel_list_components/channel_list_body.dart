@@ -129,11 +129,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
           } else if (_subtractDay >= 1 && _subtractDay < 2) {
             return "Dün";
           } else {
-            return _lastMessageDate.day.toString() +
-                "." +
-                _lastMessageDate.month.toString() +
-                "." +
-                _lastMessageDate.year.toString();
+            return _lastMessageDate.day.toString() + "." + _lastMessageDate.month.toString() + "." + _lastMessageDate.year.toString();
           }
         }
 
@@ -152,7 +148,8 @@ class ChannelListBodyState extends State<ChannelListBody> {
             margin: EdgeInsets.only(bottom: 15, right: 15, top: index == 0 ? 30 : 0),
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-                color: _isNewMessage == true ? Colors.white : Colors.transparent,
+                boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+                color: Mode().homeScreenScaffoldBackgroundColor(), //_isNewMessage == true ? Colors.white : Colors.transparent,
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(0),
                   bottomRight: Radius.circular(_borderRadius),
@@ -209,8 +206,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
     }
 
     // If scroll position exceed max scroll extent (bottom),
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent && !_scrollController.position.outOfRange) {
       // If state is NoMoreEventsState
       if (_chatBloc.state is NoMoreChatsState) {
         _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
