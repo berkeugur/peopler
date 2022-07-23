@@ -28,6 +28,10 @@ class UserRepository {
     return await _firestoreDBServiceUsers.readUserPrivileged(currentUser.userID);
   }
 
+  Stream<MyUser> getMyUserWithStream(String userID) {
+    return _firestoreDBServiceUsers.readMyUserWithStream(userID);
+  }
+
   Future<MyUser?> getUserWithUserId(String userID) async {
     MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(userID);
     if (_user != null) {

@@ -21,9 +21,11 @@ class FirestoreDBServiceUsers {
     return true;
   }
 
-  // Read both public and private fields
+  /// Read both public and private fields
   Future<MyUser?> readUserPrivileged(String userID) async {
-    // PUBLIC FIELD
+    MyUser _myUser = MyUser();
+
+    /// PUBLIC FIELD
     DocumentSnapshot documentSnapshot = await _firebaseDB.collection('users').doc(userID).get();
 
     if(!documentSnapshot.exists) {
@@ -32,14 +34,38 @@ class FirestoreDBServiceUsers {
     }
 
     Map<String, dynamic> _readUserPublicMap = documentSnapshot.data() as Map<String, dynamic>;
-    MyUser _myUserPublic;
-    _myUserPublic = MyUser.fromPublicMap(_readUserPublicMap);
+    _myUser.updateFromPublicMap(_readUserPublicMap);
 
-    // PRIVATE FIELD
-    documentSnapshot = await _firebaseDB.collection('users').doc(userID).collection("private").doc("private").get();
+    /// PRIVATE FIELD
+    documentSnapshot = await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').get();
+
+    if(!documentSnapshot.exists) {
+      debugPrint('readUser private Document does not exist on the database');
+      return null;
+    }
+
     Map<String, dynamic> _readUserPrivateMap = documentSnapshot.data() as Map<String, dynamic>;
-    return MyUser.fromPrivateMap(_readUserPrivateMap, _myUserPublic);
+    _myUser.updateFromPrivateMap(_readUserPrivateMap);
+
+    return _myUser;
   }
+
+  Stream<MyUser> readMyUserWithStream(String currentUserID) {
+    var snapShot = _firebaseDB
+        .collection('users')
+        .doc(currentUserID)
+        .snapshots();
+
+    return snapShot.map(
+            (myUser) {
+              MyUser _user = MyUser();
+              _user.updateFromPublicMap(myUser.data() as Map<String, dynamic>);
+              return _user;
+            }
+    );
+  }
+
+
 
   // Read only public fields
   Future<MyUser?> readUserRestricted(String userID) async {
@@ -52,7 +78,9 @@ class FirestoreDBServiceUsers {
     }
 
     Map<String, dynamic> _readUserMap = documentSnapshot.data() as Map<String, dynamic>;
-    return MyUser.fromPublicMap(_readUserMap);
+    MyUser _user = MyUser();
+    _user.updateFromPublicMap(_readUserMap);
+    return _user;
   }
 
   Future<bool> updateUser(MyUser user) async {
@@ -271,7 +299,9 @@ class FirestoreDBServiceUsers {
           .collection('users')
           .doc(userID)
           .get();
-      MyUser _currentUser = MyUser.fromPublicMap(_userDocument.data() as Map<String, dynamic>);
+
+      MyUser _currentUser = MyUser();
+      _currentUser.updateFromPublicMap(_userDocument.data() as Map<String, dynamic>);
       _allUsers.add(_currentUser);
     }
 
@@ -300,7 +330,8 @@ class FirestoreDBServiceUsers {
 
     List<MyUser> _allUsers = [];
     for (DocumentSnapshot snap in _querySnapshot.docs) {
-      MyUser _currentUser = MyUser.fromPublicMap(snap.data() as Map<String, dynamic>);
+      MyUser _currentUser = MyUser();
+      _currentUser.updateFromPublicMap(snap.data() as Map<String, dynamic>);
       _allUsers.add(_currentUser);
     }
 
@@ -385,8 +416,6 @@ class FirestoreDBServiceUsers {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection("private")
-          .doc("private")
           .update({"transmittedRequestUserIDs": FieldValue.arrayUnion([requestUserID])});
       return true;
     } catch (e) {
@@ -428,8 +457,6 @@ class FirestoreDBServiceUsers {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection("private")
-          .doc("private")
           .update({"transmittedRequestUserIDs": FieldValue.arrayRemove([requestUserID])});
       return true;
     } catch (e) {
@@ -610,6 +637,27 @@ class FirestoreDBServiceUsers {
     }
 
     return _allRequests;
+  }
+
+
+
+  Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
+    var snapShot = _firebaseDB
+        .collection('users')
+        .doc(currentUserID)
+        .collection("notifications")
+        .orderBy("createdAt", descending: true)
+        .limit(1)
+        .snapshots();
+
+    return snapShot.map(
+      // Convert Stream<docs> to Stream<List<Object>>
+            (notificationList) => notificationList.docs.map(
+          // Convert Stream<List<Object>> to Stream<List<Notifications>>
+                (notification) => Notifications.fromMap(notification.data())
+        )
+            .toList()
+    );
   }
 
   /// ********************************************************************/

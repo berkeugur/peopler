@@ -63,8 +63,8 @@ class CityTab extends StatelessWidget {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          print("~~~~~~~~~~~~~city~~~~~~~~~~~~~~~~~~");
-          print(Mode.isEnableDarkMode);
+          debugPrint("~~~~~~~~~~~~~city~~~~~~~~~~~~~~~~~~");
+          debugPrint(Mode.isEnableDarkMode.toString());
           return Container(
             color: Mode().homeScreenScaffoldBackgroundColor(),
             child: Padding(

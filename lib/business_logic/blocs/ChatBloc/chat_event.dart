@@ -3,8 +3,6 @@ import 'package:meta/meta.dart';
 
 import '../../../data/model/chat.dart';
 
-
-
 @immutable
 abstract class ChatEvent extends Equatable {}
 

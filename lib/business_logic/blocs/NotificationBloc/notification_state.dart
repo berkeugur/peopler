@@ -9,12 +9,17 @@ class InitialNotificationState extends NotificationState {
   List<Object> get props => [];
 }
 
-class NewNotificationLoadingState extends NotificationState {
+class NotificationsLoadingState extends NotificationState {
   @override
   List<Object> get props => [];
 }
 
-class NotificationLoadedState extends NotificationState {
+class NotificationLoadedState1 extends NotificationState {
+  @override
+  List<Object> get props => [];
+}
+
+class NotificationLoadedState2 extends NotificationState {
   @override
   List<Object> get props => [];
 }

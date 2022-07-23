@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +17,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   static MyUser? user;
 
   final GlobalKey<NavigatorState> mainKey;
+
+  StreamSubscription? _streamSubscription;
+  bool _userListener = false;
 
   UserBloc(this.mainKey) : super(InitialUserState()) {
     on<signOutEvent>((event, emit) async {
@@ -47,7 +52,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<checkUserSignedInEvent>((event, emit) async {
       try {
-        /// Three seconds timeout is set to getCurrentUserm
+        /// Three seconds timeout is set to getCurrentUser
         user = await _userRepository.getCurrentUser().timeout(const Duration(seconds: 5));
         if (user == null) {
           emit(SignedOutState());
@@ -57,6 +62,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           emit(SignedInNotVerifiedState());
         } else {
           myActivities = await _userRepository.getActivities(user!.userID);
+          if (_userListener == false) {
+            _userListener = true;
+            _streamSubscription = _userRepository
+                .getMyUserWithStream(UserBloc.user!.userID)
+                .listen((updatedUser) async {
+                UserBloc.user!.updateFromPublicMap(updatedUser.toPublicMap());
+            });
+          }
           emit(SignedInState());
         }
       } catch (e) {

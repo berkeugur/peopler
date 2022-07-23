@@ -9,7 +9,6 @@ class FirebaseAuthService {
   Future<MyUser?> getCurrentUser() async {
     try {
       User? user = _firebaseAuth.currentUser;
-      await user?.reload();
       return _userFromFirebase(user);
     } catch (e) {
       debugPrint("HATA CURRENT USER" + e.toString());

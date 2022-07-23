@@ -1,18 +1,26 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+
+import '../../../data/model/notifications.dart';
 
 
 @immutable
 abstract class NotificationEvent extends Equatable {}
 
-class GetMoreDataEvent extends NotificationEvent {
+class GetNotificationWithPaginationEvent extends NotificationEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
 
-class GetInitialDataEvent extends NotificationEvent {
+class NewNotificationListenerEvent extends NotificationEvent {
+  final List<Notifications> updatedNotification;
+  NewNotificationListenerEvent({
+    required this.updatedNotification,
+  });
+
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object> get props => [updatedNotification];
 }
 
 class ClickAcceptEvent extends NotificationEvent {

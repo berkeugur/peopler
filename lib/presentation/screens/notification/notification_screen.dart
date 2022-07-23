@@ -12,12 +12,24 @@ import 'notification_screen_list_view.dart';
 
 String notificationText = "Bildirimler";
 
-class NotificationScreen extends StatelessWidget {
-  NotificationScreen({Key? key}) : super(key: key);
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({Key? key}) : super(key: key);
 
-  ScrollController notificationsScreenScrollController = ScrollController();
+  @override
+  NotificationScreenState createState() => NotificationScreenState();
+}
 
+class NotificationScreenState extends State<NotificationScreen> {
+  late ScrollController notificationsScreenScrollController;
   late final NotificationBloc _notificationBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+    _notificationBloc.add(GetNotificationWithPaginationEvent());
+    notificationsScreenScrollController = ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +39,6 @@ class NotificationScreen extends StatelessWidget {
     double _maxWidth = _size.width > 480 ? 480 : _size.width;
 
     final Mode _mode = locator<Mode>();
-
-    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _notificationBloc.add(GetInitialDataEvent());
 
     return ValueListenableBuilder(
         valueListenable: setTheme,
@@ -57,11 +66,13 @@ class NotificationScreen extends StatelessWidget {
                                         return _initialNotificationsStateWidget(context);
                                       } else if (state is NotificationNotExistState) {
                                         return _noNotificationsExistsWidget(context);
-                                      } else if (state is NotificationLoadedState) {
+                                      } else if (state is NotificationLoadedState1) {
+                                        return _showNotifications(context);
+                                      } else if (state is NotificationLoadedState2) {
                                         return _showNotifications(context);
                                       } else if (state is NoMoreNotificationState) {
                                         return _showNotifications(context);
-                                      } else if (state is NewNotificationLoadingState) {
+                                      } else if (state is NotificationsLoadingState) {
                                         return _showNotifications(context);
                                       } else {
                                         return const Text("Impossible");
@@ -71,7 +82,7 @@ class NotificationScreen extends StatelessWidget {
                                   BlocBuilder<NotificationBloc, NotificationState>(
                                       bloc: _notificationBloc,
                                       builder: (context, state) {
-                                        if (state is NewNotificationLoadingState) {
+                                        if (state is NotificationsLoadingState) {
                                           return _notificationsLoadingCircularButton();
                                         } else {
                                           return const SizedBox.shrink();
@@ -140,7 +151,7 @@ class NotificationScreen extends StatelessWidget {
   }
 
   EmptyList _noNotificationsExistsWidget(context) {
-    return EmptyList(
+    return const EmptyList(
       emptyListType: EmptyListType.emptyNotifications,
     );
   }

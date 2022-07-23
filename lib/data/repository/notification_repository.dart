@@ -11,7 +11,6 @@ class NotificationRepository {
 
   bool _hasMoreTransmitted = true;
   bool _hasMoreReceived = true;
-  bool _hasMoreNotification = true;
 
   Future<List<Notifications>> getNotificationTransmittedWithPagination(String myUserID, Notifications? lastElement) async {
     if (_hasMoreTransmitted == false) return [];
@@ -55,28 +54,27 @@ class NotificationRepository {
     return requestList;
   }
 
-  Future<List<Notifications>> getNotificationWithPagination(String myUserID, Notifications? lastElement) async {
-    if (_hasMoreNotification == false) return [];
 
-    List<Notifications> notificationList = await _firestoreDBServiceUsers.getNotificationsWithPagination(myUserID, lastElement, _numberOfElements);
 
-    if (notificationList.length < _numberOfElements) {
-      _hasMoreNotification = false;
-    }
-
-    if (notificationList.isEmpty) return [];
-
-    for (int index=0; index < notificationList.length; index++) {
-      if(notificationList[index].requestUserID == null) continue;
-
-      MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(notificationList[index].requestUserID!);
-      notificationList[index].requestDisplayName = _user!.displayName;
-      notificationList[index].requestProfileURL = _user.profileURL;
-      notificationList[index].requestBiography = _user.biography;
-    }
-
-    return notificationList;
+  Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
+    return _firestoreDBServiceUsers.getNotificationWithStream(currentUserID);
   }
+
+  Future<List<Notifications>> getNotificationWithPagination(String currentUserID, Notifications? lastNotification, int numberOfElements) async {
+    List<Notifications> _allNotifications = await _firestoreDBServiceUsers.getNotificationsWithPagination(currentUserID, lastNotification, numberOfElements);
+
+    for (int index=0; index < _allNotifications.length; index++) {
+      if(_allNotifications[index].requestUserID == null) continue;
+
+      MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(_allNotifications[index].requestUserID!);
+      _allNotifications[index].requestDisplayName = _user!.displayName;
+      _allNotifications[index].requestProfileURL = _user.profileURL;
+      _allNotifications[index].requestBiography = _user.biography;
+    }
+
+    return _allNotifications;
+  }
+
 
   // When the "Accept" button is clicked, this function run
   Future<void> acceptConnectionRequest(String myUserID, String requestUserID) async {
@@ -112,9 +110,5 @@ class NotificationRepository {
 
   void restartReceivedRequestCache() async {
     _hasMoreReceived = true;
-  }
-
-  void restartNotificationCache() async {
-    _hasMoreNotification = true;
   }
 }

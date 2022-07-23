@@ -56,19 +56,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               .getChatWithStream(event.userID)
               .listen((updatedChat) async {
 
-                MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(updatedChat[0].hostID);
-                updatedChat[0].hostUserName = _user!.displayName;
-                updatedChat[0].hostUserProfileUrl = _user.profileURL;
+                if(updatedChat.isNotEmpty) {
+                  MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(updatedChat[0].hostID);
+                  updatedChat[0].hostUserName = _user!.displayName;
+                  updatedChat[0].hostUserProfileUrl = _user.profileURL;
 
-                /// Call another ChatBloc event named NewChatListenerEvent
-                add(NewChatListenerEvent(updatedChat: updatedChat));
+                  /// Call another ChatBloc event named NewChatListenerEvent
+                  add(NewChatListenerEvent(updatedChat: updatedChat));
+                }
           });
         }
       }
     });
 
     on<NewChatListenerEvent>((event, emit) async {
-      if (event.updatedChat.isNotEmpty) {
         /// If there is a chat with updatedChat id, then remove it from _allChatList.
         /// Since updatedChat is a list with only one element, we get the only element whose index is 0.
         _allChatList.removeWhere((item) => item.hostID == event.updatedChat[0].hostID);
@@ -84,7 +85,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         } else {
           emit(ChatsLoadedState1());
         }
-      }
     });
 
     on<UpdateLastMessageSeenEvent>((event, emit) async {
