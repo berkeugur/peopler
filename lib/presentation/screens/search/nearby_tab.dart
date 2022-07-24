@@ -50,19 +50,14 @@ class _NearbyTabState extends State<NearbyTab> {
   final ScrollController _searchPeopleListControllerNearby = ScrollController();
 
   late LocationBloc _locationBloc;
-
   late LocationPermissionBloc _locationPermissionBloc;
-
   late SavedBloc _savedBloc;
-
-  late CityBloc _cityBloc;
 
   final Mode _mode = locator<Mode>();
 
   @override
   Widget build(BuildContext context) {
     _locationBloc = BlocProvider.of<LocationBloc>(context);
-    _cityBloc = BlocProvider.of<CityBloc>(context);
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
 
@@ -123,7 +118,9 @@ class _NearbyTabState extends State<NearbyTab> {
                                   } else if (state is NoMoreUsersSearchState) {
                                     return _showUsers(widget.size);
                                   } else if (state is NewUsersLoadingSearchState) {
-                                    return _showUsers(widget.size);
+                                    return const EmptyList(
+                                      emptyListType: EmptyListType.environment,
+                                    );
                                   } else {
                                     return const Text("Impossible");
                                   }
@@ -132,7 +129,7 @@ class _NearbyTabState extends State<NearbyTab> {
                               BlocBuilder<LocationBloc, LocationState>(
                                   bloc: _locationBloc,
                                   builder: (context, state) {
-                                    if (state is NewUsersLoadingSearchState && _locationBloc.allUserList.length > 4) {
+                                    if (state is NewUsersLoadingSearchState && LocationBloc.allUserList.length > 4) {
                                       return _usersLoadingCircularButton();
                                     } else {
                                       return const SizedBox.shrink();
@@ -280,27 +277,6 @@ class _NearbyTabState extends State<NearbyTab> {
     );
   }
 
-  SizedBox _initialUsersStateWidget() {
-    return SizedBox(
-        height: MediaQuery.of(widget.context).size.height,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ));
-  }
-
-  SizedBox _noUserExistsWidget() {
-    return SizedBox(
-      height: MediaQuery.of(widget.context).size.height,
-      child: const Center(
-        child: Text(
-          "No Users Exist",
-          textScaleFactor: 1,
-          style: TextStyle(color: Colors.black, fontSize: 20),
-        ),
-      ),
-    );
-  }
-
   Padding _usersLoadingCircularButton() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -313,7 +289,7 @@ class _NearbyTabState extends State<NearbyTab> {
   }
 
   ListView _showUsers(Size _size) {
-    int _listLength = _locationBloc.allUserList.length;
+    int _listLength = LocationBloc.allUserList.length;
     if (_size.width < 335) {
       return ListView.builder(
           shrinkWrap: true,
@@ -446,14 +422,14 @@ class _NearbyTabState extends State<NearbyTab> {
                         ),
                       ),
                       InkWell(
-                        onTap: () => openOthersProfile(context, _locationBloc.allUserList[index].userID, SendRequestButtonStatus.save),
+                        onTap: () => openOthersProfile(context, LocationBloc.allUserList[index].userID, SendRequestButtonStatus.save),
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           height: 100,
                           width: 100,
                           child: //_userBloc != null ?
                               CircleAvatar(
-                            backgroundImage: NetworkImage(_locationBloc.allUserList[index].profileURL
+                            backgroundImage: NetworkImage(LocationBloc.allUserList[index].profileURL
 // _userBloc.user!.profileURL
                                 ),
                             backgroundColor: Colors.transparent,
@@ -468,9 +444,9 @@ class _NearbyTabState extends State<NearbyTab> {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
-                    String _deletedUserID = _locationBloc.allUserList[index].userID;
-                    _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                    _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                    String _deletedUserID = LocationBloc.allUserList[index].userID;
+                    LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                    CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                     widget.showWidgetsKeyNearby.currentState?.setState(() {});
                     widget.showWidgetsKeyCity.currentState?.setState(() {});
                   },
@@ -483,7 +459,7 @@ class _NearbyTabState extends State<NearbyTab> {
                       width: 25,
                       height: 25,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Color(0xFF0353EF)),
+                        border: Border.all(width: 1, color: const Color(0xFF0353EF)),
                         color: Colors.white, //Colors.purple,
                         borderRadius: const BorderRadius.all(Radius.circular(999)),
                       ),
@@ -512,7 +488,7 @@ class _NearbyTabState extends State<NearbyTab> {
                         child: LimitedBox(
                           maxHeight: 20,
                           child: Text(
-                            _locationBloc.allUserList[index].displayName,
+                            LocationBloc.allUserList[index].displayName,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -527,7 +503,7 @@ class _NearbyTabState extends State<NearbyTab> {
                       ),
                       SizedBox(
                         child: Text(
-                          _locationBloc.allUserList[index].biography,
+                          LocationBloc.allUserList[index].biography,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: 1,
@@ -546,14 +522,14 @@ class _NearbyTabState extends State<NearbyTab> {
                         child: Center(
                           child: Stack(
                             children: [
-                              _locationBloc.allUserList[index].hobbies.isNotEmpty
-                                  ? hobbyItem(index, 0, _locationBloc.allUserList[index].hobbies[0])
+                              LocationBloc.allUserList[index].hobbies.isNotEmpty
+                                  ? hobbyItem(index, 0, LocationBloc.allUserList[index].hobbies[0])
                                   : const SizedBox(),
-                              _locationBloc.allUserList[index].hobbies.length >= 2
-                                  ? hobbyItem(index, 25, _locationBloc.allUserList[index].hobbies[1])
+                              LocationBloc.allUserList[index].hobbies.length >= 2
+                                  ? hobbyItem(index, 25, LocationBloc.allUserList[index].hobbies[1])
                                   : const SizedBox(),
-                              _locationBloc.allUserList[index].hobbies.length >= 3
-                                  ? hobbyItem(index, 50, _locationBloc.allUserList[index].hobbies[2])
+                              LocationBloc.allUserList[index].hobbies.length >= 3
+                                  ? hobbyItem(index, 50, LocationBloc.allUserList[index].hobbies[2])
                                   : const SizedBox(),
                             ],
                           ),
@@ -573,11 +549,11 @@ class _NearbyTabState extends State<NearbyTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                _savedBloc.add(ClickSaveButtonEvent(savedUser: _locationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
-                                String _deletedUserID = _locationBloc.allUserList[index].userID;
+                                _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
+                                String _deletedUserID = LocationBloc.allUserList[index].userID;
 
-                                _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                                _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                                LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                                CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
                                 Provider.of<SaveButton>(context, listen: false).saveUser();
                                 await Future.delayed(const Duration(milliseconds: 1500));

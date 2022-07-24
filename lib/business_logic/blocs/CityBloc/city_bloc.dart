@@ -9,22 +9,21 @@ import 'bloc.dart';
 class CityBloc extends Bloc<CityEvent, CityState> {
   final LocationRepository _locationRepository = locator<LocationRepository>();
 
-  List<MyUser> _allUserList = [];
-  List<MyUser> get allUserList => _allUserList;
+  static List<MyUser> allUserList = [];
 
   CityBloc() : super(InitialCityState()) {
 
-    /******************************************************************************************/
-    /**************************** GET INITIAL *************************************************/
-    /******************************************************************************************/
+    ///******************************************************************************************
+    ///**************************** GET INITIAL *************************************************
+    ///******************************************************************************************
     on<GetInitialSearchUsersCityEvent>((event, emit) async {
       try {
         emit(InitialCityState());
 
-        _allUserList = [];
+        allUserList = [];
         _locationRepository.restartRepositoryCache();
 
-        List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, _allUserList);
+        List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
 
         /// Remove myself from list
         userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
@@ -51,7 +50,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         /// await Future.delayed(const Duration(seconds: 2));
 
         if (userList.isNotEmpty) {
-          _allUserList.addAll(userList);
+          allUserList.addAll(userList);
           emit(UsersLoadedCityState());
         } else {
           emit(UsersNotExistCityState());
@@ -62,14 +61,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     });
 
 
-    /******************************************************************************************/
-    /**************************** GET MORE ****************************************************/
-    /******************************************************************************************/
+    /// *****************************************************************************************
+    ///**************************** GET MORE ****************************************************
+    ///******************************************************************************************
     on<GetMoreSearchUsersCityEvent>((event, emit) async {
       try {
         emit(NewUsersLoadingCityState());
 
-        List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, _allUserList);
+        List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
 
         /// Remove myself from list
         userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
@@ -96,10 +95,10 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         /// await Future.delayed(const Duration(seconds: 2));
 
         if (userList.isNotEmpty) {
-          _allUserList.addAll(userList);
+          allUserList.addAll(userList);
           emit(UsersLoadedCityState());
         } else {
-          if (_allUserList.isNotEmpty) {
+          if (allUserList.isNotEmpty) {
             emit(NoMoreUsersCityState());
           } else {
             emit(UsersNotExistCityState());
@@ -109,8 +108,8 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         debugPrint("Blocta get more location event hata:" + e.toString());
       }
     });
-    /******************************************************************************************/
-    /******************************************************************************************/
-    /******************************************************************************************/
+    ///******************************************************************************************
+    ///******************************************************************************************
+    ///******************************************************************************************
   }
 }

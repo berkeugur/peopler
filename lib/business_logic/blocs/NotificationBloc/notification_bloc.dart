@@ -84,6 +84,10 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
 
     on<NewNotificationListenerEvent>((event, emit) async {
+      /// If there is a notification with updatedNotificationId, then remove it from _allNotificationList.
+      /// Since updatedNotification is a list with only one element, we get the only element whose index is 0.
+      _allNotificationList.removeWhere((item) => item.notificationID == event.updatedNotification[0].notificationID);
+
       /// Insert updatedNotification at the top of list
       _allNotificationList.insert(0, event.updatedNotification[0]);
 

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 
 import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
@@ -68,6 +70,44 @@ class UserBloc extends Bloc<UserEvent, UserState> {
                 .getMyUserWithStream(UserBloc.user!.userID)
                 .listen((updatedUser) async {
                 UserBloc.user!.updateFromPublicMap(updatedUser.toPublicMap());
+
+                List<MyUser> tempList = [...CityBloc.allUserList];
+                for(MyUser tempUser in  tempList){
+                  if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
+                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+
+                  if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
+                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+
+                  if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+
+                  if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
+                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+                }
+
+                tempList = [...LocationBloc.allUserList];
+                for(MyUser tempUser in  tempList){
+                  if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
+                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+
+                  if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
+                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+
+                  if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+
+                  if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
+                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+                  }
+                }
             });
           }
           emit(SignedInState());

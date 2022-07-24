@@ -119,7 +119,7 @@ Widget notificationScreenBottomAppBar(BuildContext context) {
               color: _mode.bottomMenuBackground(),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: Color(0xFFE3E2E2).withOpacity(0.6),
+                    color: const Color(0xFFE3E2E2).withOpacity(0.6),
                     blurRadius: 1.5,
                     spreadRadius: 0.7,
                     offset: const Offset(0, 0))

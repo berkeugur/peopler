@@ -9,8 +9,7 @@ import 'bloc.dart';
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final LocationRepository _locationRepository = locator<LocationRepository>();
 
-  List<MyUser> _allUserList = [];
-  List<MyUser> get allUserList => _allUserList;
+  static List<MyUser> allUserList = [];
 
   List<String> _queryList = List.filled(9, '');
 
@@ -46,10 +45,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           }
         }
 
-        _allUserList = [];
+        allUserList = [];
 
         if (userList.isNotEmpty) {
-          _allUserList.addAll(userList);
+          allUserList.addAll(userList);
           add(TrigUsersLoadedSearchStateEvent());
         } else {
           add(TrigUsersNotExistSearchStateEvent());
@@ -67,7 +66,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       try {
         emit(InitialSearchState());
 
-        _allUserList = [];
+        allUserList = [];
         _locationRepository.restartRepositoryCache();
 
         _queryList = await _locationRepository.determineQueryList(event.latitude, event.longitude);
@@ -98,7 +97,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         // await Future.delayed(const Duration(seconds: 2));
 
         if (userList.isNotEmpty) {
-          _allUserList.addAll(userList);
+          allUserList.addAll(userList);
           emit(UsersLoadedSearchState());
         } else {
           emit(UsersNotExistSearchState());
@@ -139,10 +138,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         // await Future.delayed(const Duration(seconds: 2));
 
         if (userList.isNotEmpty) {
-          _allUserList.addAll(userList);
+          allUserList.addAll(userList);
           emit(UsersLoadedSearchState());
         } else {
-          if (_allUserList.isNotEmpty) {
+          if (allUserList.isNotEmpty) {
             emit(NoMoreUsersSearchState());
           } else {
             emit(UsersNotExistSearchState());

@@ -48,7 +48,6 @@ class CityTab extends StatelessWidget {
 
   late final CityBloc _cityBloc;
   late final SavedBloc _savedBloc;
-  late final LocationBloc _locationBloc;
 
   static const double _secondRowHeight = 140;
 
@@ -57,7 +56,6 @@ class CityTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _cityBloc = BlocProvider.of<CityBloc>(context);
-    _locationBloc = BlocProvider.of<LocationBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
 
     return ValueListenableBuilder(
@@ -159,7 +157,7 @@ class CityTab extends StatelessWidget {
   }
 
   Widget _showUsers(Size _size) {
-    int _listLength = _cityBloc.allUserList.length;
+    int _listLength = CityBloc.allUserList.length;
     if (_size.width < 335) {
       return ListView.builder(
           shrinkWrap: true,
@@ -291,14 +289,14 @@ class CityTab extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () => openOthersProfile(
-                            context, _cityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
+                            context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           height: 100,
                           width: 100,
                           child: //_userBloc != null ?
                               CircleAvatar(
-                            backgroundImage: NetworkImage(_cityBloc.allUserList[index].profileURL
+                            backgroundImage: NetworkImage(CityBloc.allUserList[index].profileURL
                                 // _userBloc.user!.profileURL
                                 ),
                             backgroundColor: Colors.transparent,
@@ -313,9 +311,9 @@ class CityTab extends StatelessWidget {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
-                    String _deletedUserID = _cityBloc.allUserList[index].userID;
-                    _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                    _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                    String _deletedUserID = CityBloc.allUserList[index].userID;
+                    LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                    CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
                     showWidgetsKeyNearby.currentState?.setState(() {});
                     showWidgetsKeyCity.currentState?.setState(() {});
@@ -330,7 +328,7 @@ class CityTab extends StatelessWidget {
                       width: 25,
                       height: 25,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Color(0xFF0353EF)),
+                        border: Border.all(width: 1, color: const Color(0xFF0353EF)),
                         color: Colors.white, //Colors.purple,
                         borderRadius: const BorderRadius.all(Radius.circular(999)),
                       ),
@@ -359,7 +357,7 @@ class CityTab extends StatelessWidget {
                         child: LimitedBox(
                           maxHeight: 20,
                           child: Text(
-                            _cityBloc.allUserList[index].displayName,
+                            CityBloc.allUserList[index].displayName,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -374,7 +372,7 @@ class CityTab extends StatelessWidget {
                       ),
                       SizedBox(
                         child: Text(
-                          _cityBloc.allUserList[index].biography,
+                          CityBloc.allUserList[index].biography,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: 1,
@@ -393,14 +391,14 @@ class CityTab extends StatelessWidget {
                         child: Center(
                           child: Stack(
                             children: [
-                              _cityBloc.allUserList[index].hobbies.isNotEmpty
-                                  ? hobbyItem(index, 0, _cityBloc.allUserList[index].hobbies[0].split("%").first)
+                              CityBloc.allUserList[index].hobbies.isNotEmpty
+                                  ? hobbyItem(index, 0, CityBloc.allUserList[index].hobbies[0].split("%").first)
                                   : const SizedBox(),
-                              _cityBloc.allUserList[index].hobbies.length >= 2
-                                  ? hobbyItem(index, 25, _cityBloc.allUserList[index].hobbies[1].split("%").first)
+                              CityBloc.allUserList[index].hobbies.length >= 2
+                                  ? hobbyItem(index, 25, CityBloc.allUserList[index].hobbies[1].split("%").first)
                                   : const SizedBox(),
-                              _cityBloc.allUserList[index].hobbies.length >= 3
-                                  ? hobbyItem(index, 50, _cityBloc.allUserList[index].hobbies[2].split("%").first)
+                              CityBloc.allUserList[index].hobbies.length >= 3
+                                  ? hobbyItem(index, 50, CityBloc.allUserList[index].hobbies[2].split("%").first)
                                   : const SizedBox(),
                             ],
                           ),
@@ -425,20 +423,20 @@ class CityTab extends StatelessWidget {
                                     locator<FirestoreDBServiceUsers>();
 
                                 SavedUser _savedUser = SavedUser();
-                                _savedUser.userID = _cityBloc.allUserList[index].userID;
-                                _savedUser.pplName = _cityBloc.allUserList[index].pplName!;
-                                _savedUser.displayName = _cityBloc.allUserList[index].displayName;
-                                _savedUser.gender = _cityBloc.allUserList[index].gender;
-                                _savedUser.profileURL = _cityBloc.allUserList[index].profileURL;
-                                _savedUser.biography = _cityBloc.allUserList[index].biography;
-                                _savedUser.hobbies = _cityBloc.allUserList[index].hobbies;
+                                _savedUser.userID = CityBloc.allUserList[index].userID;
+                                _savedUser.pplName = CityBloc.allUserList[index].pplName!;
+                                _savedUser.displayName = CityBloc.allUserList[index].displayName;
+                                _savedUser.gender = CityBloc.allUserList[index].gender;
+                                _savedUser.profileURL = CityBloc.allUserList[index].profileURL;
+                                _savedUser.biography = CityBloc.allUserList[index].biography;
+                                _savedUser.hobbies = CityBloc.allUserList[index].hobbies;
 
                                 _savedBloc
                                     .add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
-                                String _deletedUserID = _cityBloc.allUserList[index].userID;
-                                _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                                _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                                String _deletedUserID = CityBloc.allUserList[index].userID;
+                                LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                                CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
                                 Provider.of<SaveButton>(context, listen: false).saveUser();
                                 await Future.delayed(const Duration(milliseconds: 1500));

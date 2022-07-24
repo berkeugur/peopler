@@ -343,15 +343,13 @@ class ProfileScreenComponentsOthersProfile {
     return InkWell(
       onTap: () {
         SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
-        CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
-        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
 
-        MyUser otherUser = _locationBloc.allUserList.singleWhere((element) => element.userID == otherUserID);
+        MyUser otherUser = LocationBloc.allUserList.singleWhere((element) => element.userID == otherUserID);
         _savedBloc.add(ClickSaveButtonEvent(savedUser: otherUser, myUserID: UserBloc.user!.userID));
 
         String _deletedUserID = otherUser.userID;
-        _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-        _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+        LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+        CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -391,8 +389,6 @@ class ProfileScreenComponentsOthersProfile {
     return InkWell(
       onTap: () async {
         SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
-        CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
-        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
 
         final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
         final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
@@ -412,8 +408,8 @@ class ProfileScreenComponentsOthersProfile {
         _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
         String _deletedUserID = otherUser.userID;
-        _locationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-        _cityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+        LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+        CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
         String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
         _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
