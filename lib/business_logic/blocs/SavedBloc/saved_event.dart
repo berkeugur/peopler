@@ -59,3 +59,9 @@ class DeleteSavedUserEvent extends SavedEvent {
   @override
   List<Object> get props => [savedUserID];
 }
+
+class TrigUserNotExistSavedStateEvent extends SavedEvent {
+  @override
+  List<Object> get props => [];
+}
+

@@ -71,12 +71,14 @@ Widget actionButton(context, index, showWidgetsKeySaved) {
               String _requestUserID = _savedBloc.allRequestList[index].userID;
               _savedBloc.add(ClickSendRequestButtonEvent(savedUser: _savedBloc.allRequestList[index], myUser: UserBloc.user!));
               _savedBloc.allRequestList.removeWhere((element) => element.userID == _requestUserID);
-              showWidgetsKeySaved.currentState?.setState(() {
-
-              });
+              showWidgetsKeySaved.currentState?.setState(() { });
 
               String _token = await _firestoreDBServiceUsers.getToken(_requestUserID);
               _sendNotificationService.sendNotification(Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+
+              if(_savedBloc.allRequestList.isEmpty) {
+                _savedBloc.add(TrigUserNotExistSavedStateEvent());
+              }
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

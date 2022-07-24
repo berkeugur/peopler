@@ -108,19 +108,17 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _buildButtonGonderilen(),
           _buildButtonAlinan(),
+          _buildButtonGonderilen(),
         ],
       ),
     );
   }
 
-  InkWell _buildButtonGonderilen() {
+  InkWell _buildButtonAlinan() {
     return InkWell(
       onTap: () {
-        selectedConnectionRequestList == ConnectionRequestList.inComingRequestList
-            ? selectedConnectionRequestList = ConnectionRequestList.outGoingRequestList
-            : selectedConnectionRequestList = ConnectionRequestList.inComingRequestList;
+        selectedConnectionRequestList = ConnectionRequestList.inComingRequestList;
         setState(() {});
       },
       child: Container(
@@ -146,12 +144,10 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
     );
   }
 
-  InkWell _buildButtonAlinan() {
+  InkWell _buildButtonGonderilen() {
     return InkWell(
       onTap: () {
-        selectedConnectionRequestList == ConnectionRequestList.inComingRequestList
-            ? selectedConnectionRequestList = ConnectionRequestList.outGoingRequestList
-            : selectedConnectionRequestList = ConnectionRequestList.inComingRequestList;
+        selectedConnectionRequestList = ConnectionRequestList.outGoingRequestList;
         setState(() {});
       },
       child: Container(

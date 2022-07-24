@@ -28,12 +28,9 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         for(SavedUser tempUser in  tempList){
           if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
             savedUserList.removeWhere((item) => item.userID == tempUser.userID);
+            await _savedRepository.deleteSavedUser(UserBloc.user!.userID, tempUser.userID);
           }
-
-          await _savedRepository.deleteSavedUser(UserBloc.user!.userID, tempUser.userID);
         }
-
-        // await Future.delayed(const Duration(seconds: 2));
 
         if (savedUserList.isNotEmpty) {
           _allSavedUserList.addAll(savedUserList);
@@ -116,6 +113,10 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
       } catch (e) {
         debugPrint("Blocta delete my saved error:" + e.toString());
       }
+    });
+
+    on<TrigUserNotExistSavedStateEvent>((event, emit) async {
+      emit(UserNotExistSavedState());
     });
   }
 }

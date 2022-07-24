@@ -445,8 +445,7 @@ class CityTabState extends State<CityTab> {
                                 _savedUser.biography = CityBloc.allUserList[index].biography;
                                 _savedUser.hobbies = CityBloc.allUserList[index].hobbies;
 
-                                _savedBloc
-                                    .add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+                                _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
                                 String _deletedUserID = CityBloc.allUserList[index].userID;
                                 LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
@@ -461,6 +460,10 @@ class CityTabState extends State<CityTab> {
 
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                 widget.showWidgetsKeyCity.currentState?.setState(() {});
+
+                                if(CityBloc.allUserList.isEmpty) {
+                                  _cityBloc.add(TrigUsersNotExistCityStateEvent());
+                                }
                               },
                               child: Center(
                                 child: Container(

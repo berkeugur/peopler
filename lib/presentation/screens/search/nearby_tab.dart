@@ -486,7 +486,7 @@ class _NearbyTabState extends State<NearbyTab> {
                         child: LimitedBox(
                           maxHeight: 20,
                           child: Text(
-                            LocationBloc.allUserList[index].displayName,
+                            LocationBloc.allUserList[index].pplName!,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -558,6 +558,10 @@ class _NearbyTabState extends State<NearbyTab> {
 
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                 widget.showWidgetsKeyCity.currentState?.setState(() {});
+
+                                if(LocationBloc.allUserList.isEmpty) {
+                                  _locationBloc.add(TrigUsersNotExistSearchStateEvent());
+                                }
                               },
                               child: Center(
                                 child: Container(

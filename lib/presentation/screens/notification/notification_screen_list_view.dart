@@ -103,7 +103,7 @@ Widget customListItem(int index, context) {
       }
   }
   return const Text(
-    "error: unknow class",
+    "error: unknown class",
     textScaleFactor: 1,
   );
 }
@@ -149,7 +149,7 @@ Container newFeedWidget(
                         children: <TextSpan>[
                           TextSpan(
                             text: "yeni " + _data.numberOfNewFeed.toString() + " paylaşım",
-                            style: TextStyle(color: Color(0xFF0353EF), fontSize: _customTextSize),
+                            style: TextStyle(color: const Color(0xFF0353EF), fontSize: _customTextSize),
                           ),
                           TextSpan(
                               text: " seni bekliyor.",
@@ -166,7 +166,7 @@ Container newFeedWidget(
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                   decoration: BoxDecoration(
-                    color: Color(0xFF0353EF),
+                    color: const Color(0xFF0353EF),
                     borderRadius: BorderRadius.circular(99),
                   ),
                   child: Text(
@@ -234,7 +234,7 @@ Container youAreOnTheOtherPeoplesList(
                         children: <TextSpan>[
                           TextSpan(
                             text: _data.youAreOnOtherPeoplesListLength.toString() + " kişinin",
-                            style: TextStyle(color: Color(0xFF0353EF), fontSize: _customTextSize),
+                            style: TextStyle(color: const Color(0xFF0353EF), fontSize: _customTextSize),
                           ),
                           TextSpan(
                               text: " listesine eklendin.",
@@ -251,7 +251,7 @@ Container youAreOnTheOtherPeoplesList(
                 Container(
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                   decoration: BoxDecoration(
-                    color: Color(0xFF0353EF),
+                    color: const Color(0xFF0353EF),
                     borderRadius: BorderRadius.circular(99),
                   ),
                   child: Text(
@@ -281,9 +281,7 @@ Container youAreOnTheOtherPeoplesList(
 Widget acceptYourRequestWidget(
     double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
-  return _data.didAccepted == false
-      ? const SizedBox.shrink()
-      : Container(
+  return Container(
           width: _maxWidth,
           decoration: _boxDecoration(),
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -315,12 +313,12 @@ Widget acceptYourRequestWidget(
                           text: TextSpan(
                               text: _data.requestDisplayName,
                               style: TextStyle(
-                                color: Color(0xFF0353EF),
+                                color: const Color(0xFF0353EF),
                                 fontSize: _customTextSize,
                               ),
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: ', bağlantı isteğini kabul etti.',
+                                  text: _data.didAccepted! ? ', isteğinizi henüz görmemiş olabilir. Sabırlı olun :)' : ', bağlantı isteğini kabul etti.',
                                   style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
                                 )
                               ]),
@@ -340,34 +338,20 @@ Widget acceptYourRequestWidget(
                       ),
                       InkWell(
                         onTap: () {
-                          Chat currentChat = Chat(
-                              hostID: _data.requestUserID!,
-                              isLastMessageFromMe: false,
-                              isLastMessageReceivedByHost: true,
-                              isLastMessageSeenByHost: true,
-                              lastMessageCreatedAt: DateTime.now(),
-                              lastMessage: "",
-                              numberOfMessagesThatIHaveNotOpened: 0);
-
-                          currentChat.hostUserProfileUrl = _data.requestProfileURL;
-                          currentChat.hostUserName = _data.requestDisplayName;
-
-                          UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-                          _userBloc.mainKey.currentState?.push(
-                            MaterialPageRoute(
-                                builder: (context) => MessageScreen(
-                                      currentChat: currentChat,
-                                    )),
-                          );
+                          if(_data.didAccepted! == false) {
+                            _clickGeriAl();
+                          } else {
+                            _clickMessage(_data, context);
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                           decoration: BoxDecoration(
-                            color: Color(0xFF0353EF),
+                            color: const Color(0xFF0353EF),
                             borderRadius: BorderRadius.circular(99),
                           ),
                           child: Text(
-                            "Mesajlaş",
+                            _data.didAccepted! ? "Geri Al" : "Mesajlaş",
                             textScaleFactor: 1,
                             style: GoogleFonts.rubik(
                               fontSize: _customTextSize - 1,
@@ -389,114 +373,154 @@ Widget acceptYourRequestWidget(
             ],
           ),
         );
+}
+
+void _clickGeriAl() {
+
 }
 
 Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
     double _customTextSize, double _customSmallTextSize, double _rightColumnSize, NotificationBloc notificationBloc, index) {
   final Mode _mode = locator<Mode>();
-  return _data.didAccepted == true
-      ? const SizedBox.shrink()
-      : Container(
-          width: _maxWidth,
-          decoration: _boxDecoration(),
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                //color: Colors.green,
-                width: _leftColumnSize,
-                height: _leftColumnSize,
-                child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
-              ),
-              SizedBox(
-                //color: Colors.orange,
-                width: _centerColumnSize,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: RichText(
-                          textScaleFactor: 1,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          text: TextSpan(
-                              text: _data.requestDisplayName,
-                              style: TextStyle(
-                                color: Color(0xFF0353EF),
-                                fontSize: _customTextSize,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: ', sana bağlantı isteği gönderdi',
-                                  style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
-                                )
-                              ]),
+  return Container(
+    width: _maxWidth,
+    decoration: _boxDecoration(),
+    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          //color: Colors.green,
+          width: _leftColumnSize,
+          height: _leftColumnSize,
+          child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
+        ),
+        SizedBox(
+          //color: Colors.orange,
+          width: _centerColumnSize,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, top: 5),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: RichText(
+                    textScaleFactor: 1,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    text: TextSpan(
+                        text: _data.requestDisplayName,
+                        style: TextStyle(
+                          color: const Color(0xFF0353EF),
+                          fontSize: _customTextSize,
                         ),
-                      ),
-                      SizedBox(
-                        child: Text(
-                          _data.requestBiography,
-                          style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
-                          textScaleFactor: 1,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
-
-                          notificationBloc.add(ClickAcceptEvent(requestUserID: _data.requestUserID!));
-                          notificationBloc.allNotificationList[index].didAccepted = true;
-
-                          String? _hostUserID = notificationBloc.allNotificationList[index].requestUserID;
-                          String? _hostUserName = notificationBloc.allNotificationList[index].requestDisplayName;
-                          String? _hostUserProfileUrl = notificationBloc.allNotificationList[index].requestProfileURL;
-
-                          _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF0353EF),
-                            borderRadius: BorderRadius.circular(99),
-                          ),
-                          child: Text(
-                            "Kabul Et",
-                            textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
-                              fontSize: _customTextSize - 1,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: _data.didAccepted! ? ', artık arkadaşınız.' : ', sana bağlantı isteği gönderdi',
+                            style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
+                          )
+                        ]),
                   ),
                 ),
-              ),
-              SizedBox(
-                //color: Colors.red,
-                width: _rightColumnSize,
-                height: 70,
-                child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
-              )
-            ],
+                SizedBox(
+                  child: Text(
+                    _data.requestBiography,
+                    style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
+                    textScaleFactor: 1,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
+                InkWell(
+                  onTap: () {
+                    if(_data.didAccepted! == false) {
+                      _clickAccept(context, notificationBloc, _data, index);
+                    } else {
+                      _clickMessage(_data, context);
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0353EF),
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Text(
+                      _data.didAccepted! ? "Mesajlaş" : "Kabul Et",
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(
+                        fontSize: _customTextSize - 1,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        );
+        ),
+        SizedBox(
+          //color: Colors.red,
+          width: _rightColumnSize,
+          height: 70,
+          child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
+        )
+      ],
+    ),
+  );
 }
+
+void _clickMessage(Notifications _data, context) {
+  Chat currentChat = Chat(
+      hostID: _data.requestUserID!,
+      isLastMessageFromMe: false,
+      isLastMessageReceivedByHost: true,
+      isLastMessageSeenByHost: true,
+      lastMessageCreatedAt: DateTime.now(),
+      lastMessage: "",
+      numberOfMessagesThatIHaveNotOpened: 0);
+
+  currentChat.hostUserProfileUrl = _data.requestProfileURL;
+  currentChat.hostUserName = _data.requestDisplayName;
+
+  UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+  _userBloc.mainKey.currentState?.push(
+    MaterialPageRoute(
+        builder: (context) => MessageScreen(
+          currentChat: currentChat,
+        )),
+  );
+}
+
+void _clickAccept(context, NotificationBloc notificationBloc, Notifications _data, index) {
+  ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
+
+  notificationBloc.add(ClickAcceptEvent(
+      requestUserID: _data.requestUserID!));
+  notificationBloc.allNotificationList[index].didAccepted =
+  true;
+
+  String? _hostUserID = notificationBloc
+      .allNotificationList[index].requestUserID;
+  String? _hostUserName = notificationBloc
+      .allNotificationList[index].requestDisplayName;
+  String? _hostUserProfileUrl = notificationBloc
+      .allNotificationList[index].requestProfileURL;
+
+  _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!,
+      hostUserName: _hostUserName,
+      hostUserProfileUrl: _hostUserProfileUrl));
+}
+
 
 Column _rightColumn(context, String time, double _customTextSize) {
   final Mode _mode = locator<Mode>();
@@ -517,7 +541,7 @@ Column _rightColumn(context, String time, double _customTextSize) {
         onPressed: () {
           showModalBottomSheet(
               context: context,
-              backgroundColor: Color(0xFF0353EF),
+              backgroundColor: const Color(0xFF0353EF),
               builder: (context) {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
@@ -554,7 +578,7 @@ BoxDecoration _boxDecoration() {
   final Mode _mode = locator<Mode>();
   return BoxDecoration(
     color: _mode.bottomMenuBackground(),
-    boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+    boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
     //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
   );
 }

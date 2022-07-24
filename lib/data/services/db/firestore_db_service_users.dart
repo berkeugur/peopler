@@ -499,7 +499,7 @@ class FirestoreDBServiceUsers {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection('transmitted_requests')
+          .collection('savedUsers')
           .doc(requestUserID)
           .update({'isCountdownFinished': isCountdownFinished});
       return true;
