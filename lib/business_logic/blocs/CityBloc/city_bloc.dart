@@ -11,6 +11,49 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
   static List<MyUser> allUserList = [];
 
+  /// getRefreshDataFuture function is used in this Refresh Indicator function.
+  Future<void> getRefreshIndicatorData(String city) async {
+    try {
+      allUserList = [];
+      _locationRepository.restartRepositoryCache();
+
+      List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(city, allUserList);
+
+      /// Remove myself from list
+      userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
+
+      List<MyUser> tempList = [...userList];
+      for(MyUser tempUser in  tempList){
+        if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+      }
+
+      /// await Future.delayed(const Duration(seconds: 2));
+
+      if (userList.isNotEmpty) {
+        allUserList.addAll(userList);
+        add(TrigUsersLoadedCityStateEvent());
+      } else {
+        add(TrigUsersNotExistCityStateEvent());
+      }
+    } catch (e) {
+      debugPrint("Blocta initial city hata:" + e.toString());
+    }
+  }
+
   CityBloc() : super(InitialCityState()) {
 
     ///******************************************************************************************
@@ -111,5 +154,13 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     ///******************************************************************************************
     ///******************************************************************************************
     ///******************************************************************************************
+
+    on<TrigUsersLoadedCityStateEvent>((event, emit) async {
+      emit(UsersLoadedCityState());
+    });
+
+    on<TrigUsersNotExistCityStateEvent>((event, emit) async {
+      emit(UsersNotExistCityState());
+    });
   }
 }

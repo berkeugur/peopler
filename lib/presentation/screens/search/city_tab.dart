@@ -94,40 +94,47 @@ class CityTabState extends State<CityTab> {
                   },
                   child: Container(
                     color: Mode().homeScreenScaffoldBackgroundColor(),
-                    child: SingleChildScrollView(
-                      controller: _searchPeopleListControllerCity,
-                      physics: const ScrollPhysics(),
-                      child: Column(
-                        children: [
-                          BlocBuilder<CityBloc, CityState>(
-                            key: widget.showWidgetsKeyCity,
-                            bloc: _cityBloc,
-                            builder: (context, state) {
-                              if (state is InitialCityState) {
-                                return _initialUsersStateWidget();
-                              } else if (state is UsersNotExistCityState) {
-                                return _noUserExistsWidget();
-                              } else if (state is UsersLoadedCityState) {
-                                return _showUsers(widget.size);
-                              } else if (state is NoMoreUsersCityState) {
-                                return _showUsers(widget.size);
-                              } else if (state is NewUsersLoadingCityState) {
-                                return _showUsers(widget.size);
-                              } else {
-                                return const Text("Impossible");
-                              }
-                            },
-                          ),
-                          BlocBuilder<CityBloc, CityState>(
+                    child: RefreshIndicator(
+                      displacement: 80.0,
+                      onRefresh: () async {
+                        /// Refresh users
+                        await _cityBloc.getRefreshIndicatorData(UserBloc.user!.city);
+                      },
+                      child: SingleChildScrollView(
+                        controller: _searchPeopleListControllerCity,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            BlocBuilder<CityBloc, CityState>(
+                              key: widget.showWidgetsKeyCity,
                               bloc: _cityBloc,
                               builder: (context, state) {
-                                if (state is NewUsersLoadingCityState) {
-                                  return _usersLoadingCircularButton();
+                                if (state is InitialCityState) {
+                                  return _initialUsersStateWidget();
+                                } else if (state is UsersNotExistCityState) {
+                                  return _noUserExistsWidget();
+                                } else if (state is UsersLoadedCityState) {
+                                  return _showUsers(widget.size);
+                                } else if (state is NoMoreUsersCityState) {
+                                  return _showUsers(widget.size);
+                                } else if (state is NewUsersLoadingCityState) {
+                                  return _showUsers(widget.size);
                                 } else {
-                                  return const SizedBox.shrink();
+                                  return const Text("Impossible");
                                 }
-                              }),
-                        ],
+                              },
+                            ),
+                            BlocBuilder<CityBloc, CityState>(
+                                bloc: _cityBloc,
+                                builder: (context, state) {
+                                  if (state is NewUsersLoadingCityState) {
+                                    return _usersLoadingCircularButton();
+                                  } else {
+                                    return const SizedBox.shrink();
+                                  }
+                                }),
+                          ],
+                        ),
                       ),
                     ),
                   ),

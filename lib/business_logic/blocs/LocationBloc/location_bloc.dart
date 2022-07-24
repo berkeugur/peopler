@@ -150,11 +150,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
     });
 
-
-    on<TrigNewUsersLoadingSearchStateEvent>((event, emit) async {
-      emit(NewUsersLoadingSearchState());
-    });
-
     on<TrigUsersLoadedSearchStateEvent>((event, emit) async {
       emit(UsersLoadedSearchState());
     });
