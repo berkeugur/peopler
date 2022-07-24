@@ -23,16 +23,17 @@ import '../empty_list.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
 
-class CityTab extends StatelessWidget {
-  CityTab(
+
+class CityTab extends StatefulWidget {
+  const CityTab(
       {Key? key,
-      required this.screenHeight,
-      required this.paddingTopSafeArea,
-      required this.maxWidth,
-      required this.context,
-      required this.size,
-      required this.showWidgetsKeyNearby,
-      required this.showWidgetsKeyCity})
+        required this.screenHeight,
+        required this.paddingTopSafeArea,
+        required this.maxWidth,
+        required this.context,
+        required this.size,
+        required this.showWidgetsKeyNearby,
+        required this.showWidgetsKeyCity})
       : super(key: key);
 
   final double screenHeight;
@@ -43,6 +44,12 @@ class CityTab extends StatelessWidget {
 
   final GlobalKey showWidgetsKeyCity;
   final GlobalKey showWidgetsKeyNearby;
+
+  @override
+  State<CityTab> createState() => CityTabState();
+}
+
+class CityTabState extends State<CityTab> {
 
   final ScrollController _searchPeopleListControllerCity = ScrollController();
 
@@ -93,7 +100,7 @@ class CityTab extends StatelessWidget {
                       child: Column(
                         children: [
                           BlocBuilder<CityBloc, CityState>(
-                            key: showWidgetsKeyCity,
+                            key: widget.showWidgetsKeyCity,
                             bloc: _cityBloc,
                             builder: (context, state) {
                               if (state is InitialCityState) {
@@ -101,11 +108,11 @@ class CityTab extends StatelessWidget {
                               } else if (state is UsersNotExistCityState) {
                                 return _noUserExistsWidget();
                               } else if (state is UsersLoadedCityState) {
-                                return _showUsers(size);
+                                return _showUsers(widget.size);
                               } else if (state is NoMoreUsersCityState) {
-                                return _showUsers(size);
+                                return _showUsers(widget.size);
                               } else if (state is NewUsersLoadingCityState) {
-                                return _showUsers(size);
+                                return _showUsers(widget.size);
                               } else {
                                 return const Text("Impossible");
                               }
@@ -315,8 +322,8 @@ class CityTab extends StatelessWidget {
                     LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                     CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
-                    showWidgetsKeyNearby.currentState?.setState(() {});
-                    showWidgetsKeyCity.currentState?.setState(() {});
+                    widget.showWidgetsKeyNearby.currentState?.setState(() {});
+                    widget.showWidgetsKeyCity.currentState?.setState(() {});
                   },
                   child: Container(
                     alignment: Alignment.topRight,
@@ -445,8 +452,8 @@ class CityTab extends StatelessWidget {
                                 _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
                                     UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
 
-                                showWidgetsKeyNearby.currentState?.setState(() {});
-                                showWidgetsKeyCity.currentState?.setState(() {});
+                                widget.showWidgetsKeyNearby.currentState?.setState(() {});
+                                widget.showWidgetsKeyCity.currentState?.setState(() {});
                               },
                               child: Center(
                                 child: Container(

@@ -16,8 +16,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData(int latitude, int longitude) async {
     try {
-        add(TrigNewUsersLoadingSearchStateEvent());
-
         _locationRepository.restartRepositoryCache();
 
         _queryList = await _locationRepository.determineQueryList(latitude, longitude);

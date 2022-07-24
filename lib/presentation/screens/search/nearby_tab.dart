@@ -117,10 +117,6 @@ class _NearbyTabState extends State<NearbyTab> {
                                     return _showUsers(widget.size);
                                   } else if (state is NoMoreUsersSearchState) {
                                     return _showUsers(widget.size);
-                                  } else if (state is NewUsersLoadingSearchState) {
-                                    return const EmptyList(
-                                      emptyListType: EmptyListType.environment,
-                                    );
                                   } else {
                                     return const Text("Impossible");
                                   }
