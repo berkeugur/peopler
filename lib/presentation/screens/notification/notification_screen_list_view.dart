@@ -318,7 +318,7 @@ Widget acceptYourRequestWidget(
                               ),
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: _data.didAccepted! ? ', isteğinizi henüz görmemiş olabilir. Sabırlı olun :)' : ', bağlantı isteğini kabul etti.',
+                                  text: _data.didAccepted! ? ', bağlantı isteğini kabul etti.' : ', isteğinizi henüz görmemiş olabilir. Sabırlı olun :) ',
                                   style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
                                 )
                               ]),
@@ -338,10 +338,10 @@ Widget acceptYourRequestWidget(
                       ),
                       InkWell(
                         onTap: () {
-                          if(_data.didAccepted! == false) {
-                            _clickGeriAl();
-                          } else {
+                          if(_data.didAccepted!) {
                             _clickMessage(_data, context);
+                          } else {
+                            _clickGeriAl();
                           }
                         },
                         child: Container(
@@ -351,7 +351,7 @@ Widget acceptYourRequestWidget(
                             borderRadius: BorderRadius.circular(99),
                           ),
                           child: Text(
-                            _data.didAccepted! ? "Geri Al" : "Mesajlaş",
+                            _data.didAccepted! ? "Mesajlaş" : "Geri Al",
                             textScaleFactor: 1,
                             style: GoogleFonts.rubik(
                               fontSize: _customTextSize - 1,
@@ -442,10 +442,10 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
                 ),
                 InkWell(
                   onTap: () {
-                    if(_data.didAccepted! == false) {
-                      _clickAccept(context, notificationBloc, _data, index);
-                    } else {
+                    if(_data.didAccepted!) {
                       _clickMessage(_data, context);
+                    } else {
+                      _clickAccept(context, notificationBloc, _data, index);
                     }
                   },
                   child: Container(
