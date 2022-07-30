@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/data/model/user.dart';
+import 'package:peopler/presentation/screens/profile/MyProfile/connections_service.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
@@ -15,11 +14,18 @@ class Connection {
   final String fullName;
   final String city;
   final String bio;
+  final String id;
   final List<String> mutualConnectionsProfilePhotos;
-  Connection({required this.bio, required this.profilePhotoUrl, required this.fullName, required this.city, required this.mutualConnectionsProfilePhotos});
+  Connection(
+      {required this.id,
+      required this.bio,
+      required this.profilePhotoUrl,
+      required this.fullName,
+      required this.city,
+      required this.mutualConnectionsProfilePhotos});
 }
 
-int numberOfTotalConnections = MyUser().connectionUserIDs.length;
+int? numberOfTotalConnections = UserBloc.user?.connectionUserIDs.length;
 
 class ConnectionsScreen extends StatefulWidget {
   const ConnectionsScreen({Key? key}) : super(key: key);
@@ -32,13 +38,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   final Mode _mode = locator<Mode>();
   List<Connection> connections = [];
   getUserData() async {
-    if (connections.length != MyUser().connectionUserIDs.length) {
-      for (var userID in MyUser().connectionUserIDs) {
+    if (UserBloc.user != null && connections.length != UserBloc.user?.connectionUserIDs.length) {
+      for (var userID in UserBloc.user!.connectionUserIDs) {
         var userData = await FirebaseFirestore.instance.collection("users").doc(userID).get();
         Map<String, dynamic>? jsonUserData = userData.data();
         if (jsonUserData != null) {
           connections.add(
             Connection(
+              id: jsonUserData["userID"],
               bio: jsonUserData["biography"],
               profilePhotoUrl: jsonUserData["profileURL"],
               fullName: jsonUserData["displayName"],
@@ -49,6 +56,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         }
       }
       setState(() {});
+    } else if (UserBloc.user == null) {
+      print("user bloc null connection screen #213mm3l1");
+    } else {
+      print("connection screen error #3141xa");
     }
   }
 
@@ -56,7 +67,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   initState() {
     // TODO: implement initState
     super.initState();
-    print(MyUser().connectionUserIDs);
+    print("connectionuserids");
+    print(UserBloc.user?.connectionUserIDs ?? "null döndü");
     getUserData();
   }
 
@@ -154,7 +166,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             //color: Colors.green,
             width: _leftColumnSize(),
             height: _leftColumnSize(),
-            child: profilePhoto(context, _data.profilePhotoUrl),
+            child: InkWell(
+                onTap: () {
+                  ConnectionService().pushOthersProfile(otherProfileID: _data.id);
+                },
+                child: profilePhoto(context, _data.profilePhotoUrl)),
           ),
           SizedBox(
             //color: Colors.orange,
@@ -166,13 +182,18 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    child: Text(
-                      _data.fullName,
-                      textScaleFactor: 1,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize()),
+                  InkWell(
+                    onTap: () {
+                      ConnectionService().pushOthersProfile(otherProfileID: _data.id);
+                    },
+                    child: SizedBox(
+                      child: Text(
+                        _data.fullName,
+                        textScaleFactor: 1,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize()),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -223,7 +244,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    ConnectionService().pushMessageScreen(otherProfileID: _data.id);
+                  },
                   child: Container(
                     height: _buttonSize,
                     width: _buttonSize,
@@ -269,7 +292,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       height: 70,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           InkWell(
             onTap: () {
@@ -286,6 +309,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           const SizedBox.square(
             dimension: 25,
           ),
+          Text(
+            "Bağlantılar",
+            textScaleFactor: 1,
+            style: GoogleFonts.rubik(fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFF0353EF)),
+          ),
+          /* Search Bar
           Expanded(
             child: TextField(
               onTap: () async {},
@@ -309,6 +338,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
               },
             ),
           ),
+          */
           const SizedBox.square(
             dimension: 25,
           )

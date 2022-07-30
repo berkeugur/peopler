@@ -15,6 +15,56 @@ class SubscriptionsPage extends StatefulWidget {
 }
 
 class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTickerProviderStateMixin {
+  //ekstra birşey eklenmesine gerek yok bir aylık plana göre 3 ve 6 aylık planların ne kadar indirimli olduğunu
+  //gösterir. Verileri price fonksiyonundan alır
+  String discount({required SubscriptionPlan plan, required SubscriptionType type}) {
+    if (type == SubscriptionType.plus) {
+      switch (plan) {
+        case SubscriptionPlan.oneMonth:
+          return "";
+        case SubscriptionPlan.threeMonth:
+          return "%" +
+              (100 -
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
+                  .toStringAsFixed(0) +
+              " indirim";
+        case SubscriptionPlan.sixMonth:
+          return "%" +
+              (100 -
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
+                  .toStringAsFixed(0) +
+              " indirim";
+        default:
+          return "error";
+      }
+    } else if (type == SubscriptionType.premium) {
+      switch (plan) {
+        case SubscriptionPlan.oneMonth:
+          return "";
+        case SubscriptionPlan.threeMonth:
+          return "%" +
+              (100 -
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
+                  .toStringAsFixed(0) +
+              " indirim";
+        case SubscriptionPlan.sixMonth:
+          return "%" +
+              (100 -
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
+                  .toStringAsFixed(0) +
+              " indirim";
+        default:
+          return "error";
+      }
+    } else {
+      return "error";
+    }
+  }
+
   late TabController _tabController;
   final SubscriptionFeatures _subscriptionFeatures = SubscriptionFeatures();
 
@@ -292,7 +342,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      SubscriptionService().discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
+                      discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -425,7 +475,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      SubscriptionService().discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
+                      discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -756,7 +806,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      SubscriptionService().discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
+                      discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
@@ -889,7 +939,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                     ),
                     child: Text(
-                      SubscriptionService().discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
+                      discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(
                         fontSize: 14,

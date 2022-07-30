@@ -108,7 +108,6 @@ class SubscriptionService {
     }
   }
 
-
   /*
   //ekstra birşey eklenmesine gerek yok bir aylık plana göre 3 ve 6 aylık planların ne kadar indirimli olduğunu
   //gösterir. Verileri price fonksiyonundan alır
