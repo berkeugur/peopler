@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/subscriptions/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/tutorial/constants.dart';
 import 'package:peopler/presentation/screens/tutorial/onboardingscreen.dart';
@@ -34,7 +35,7 @@ class FeedScreenState extends State<FeedScreen> {
   late ScrollController _scrollController;
 
   late final double loadMoreOffset;
-  late final double feedHeight;
+  double? feedHeight;
 
   final Mode _mode = locator<Mode>();
 
@@ -60,8 +61,9 @@ class FeedScreenState extends State<FeedScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     feedHeight = MediaQuery.of(context).size.height / 4;
-    loadMoreOffset = feedHeight * 5;
+    loadMoreOffset = feedHeight! * 5;
   }
 
   @override
@@ -78,7 +80,8 @@ class FeedScreenState extends State<FeedScreen> {
             debugPrint(Mode.isEnableDarkMode.toString());
             return Stack(
               children: [
-                SizedBox(
+                Container(
+                  color: Mode().homeScreenScaffoldBackgroundColor(),
                   height: screenHeight - paddingTopSafeArea - 50,
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
@@ -248,6 +251,7 @@ class FeedScreenState extends State<FeedScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                /*
                 InkWell(
                   onTap: () => op_settings_icon(context),
                   child: SvgPicture.asset(
@@ -257,14 +261,14 @@ class FeedScreenState extends State<FeedScreen> {
                     color: _mode.homeScreenIconsColor(),
                     fit: BoxFit.contain,
                   ),
-                ),
+                ),*/
+                DrawerMenuWidget(),
                 InkWell(
                   onTap: () => op_peopler_title(context, _scrollController),
                   child: Text(
                     "peopler",
                     textScaleFactor: 1,
-                    style: GoogleFonts.spartan(
-                        color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+                    style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
                   ),
                 ),
                 const SizedBox.square(
@@ -335,8 +339,7 @@ class FeedScreenState extends State<FeedScreen> {
     }
 
     /// If scroll position exceed max scroll extent (bottom),
-    if (_scrollController.offset > _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+    if (_scrollController.offset > _scrollController.position.maxScrollExtent && !_scrollController.position.outOfRange) {
       /// If state is NoMoreEventsState
       if (_feedBloc.state is NoMoreFeedsState) {
         _feedBloc.add(GetMoreDataEvent());
@@ -357,15 +360,19 @@ class FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  ListView _showFeedsWidget() {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: _feedBloc.allFeedList.length,
-      itemBuilder: (context, i) {
-        eachFeedWidget eachFeed = eachFeedWidget(myFeed: _feedBloc.allFeedList[i], index: i);
-        return eachFeed;
-      },
+  _showFeedsWidget() {
+    return Column(
+      children: [
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _feedBloc.allFeedList.length,
+          itemBuilder: (context, i) {
+            eachFeedWidget eachFeed = eachFeedWidget(myFeed: _feedBloc.allFeedList[i], index: i);
+            return eachFeed;
+          },
+        ),
+      ],
     );
   }
 

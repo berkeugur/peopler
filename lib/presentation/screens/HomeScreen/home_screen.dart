@@ -92,13 +92,12 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ],
                                 ),
                                 bottomNavigationBar: MyBottomNavigationBar(
-                                  // Callback Function, when another tab is clicked, this method will run
+                                    // Callback Function, when another tab is clicked, this method will run
                                     onBottomTabTapped: (index) {
-                                      _buildOnBottomTabTapped(index);
-                                    }),
+                                  _buildOnBottomTabTapped(index);
+                                }),
                               ),
-                            )
-                        );
+                            ));
                       });
                 }),
           );
@@ -111,30 +110,23 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _homeScreen.changeFloatingActionButtonEvent();
 
     // When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
-    if (_oldTab == TabItem.feed &&
-        TabItem.values[index] == TabItem.feed &&
-        _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {
+    if (_oldTab == TabItem.feed && TabItem.values[index] == TabItem.feed && _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {
       feedListKey.currentState!.scrollToTop();
     }
 
     // When both currentTab and clicked tab are Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
-    if (_oldTab == TabItem.search &&
-        TabItem.values[index] == TabItem.search &&
-        _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
+    if (_oldTab == TabItem.search && TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
       _locationPermissionBloc.add(GetLocationPermissionEvent());
     }
 
     // When both currentTab and clicked tab are Search tab button, and screen item is cityUsers, then trig City Bloc
-    if (_oldTab == TabItem.search &&
-        TabItem.values[index] == TabItem.search &&
-        _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
+    if (_oldTab == TabItem.search && TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
       _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
     }
   }
 
   Future<bool> _buildWillPopScope() async {
-    if ([ScreenItem.invitationsReceivedScreen, ScreenItem.invitationsTransmittedScreen]
-        .contains(_homeScreen.currentScreen[_homeScreen.currentTab])) {
+    if ([ScreenItem.invitationsReceivedScreen, ScreenItem.invitationsTransmittedScreen].contains(_homeScreen.currentScreen[_homeScreen.currentTab])) {
       _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};
       _homeScreen.changeFloatingActionButtonEvent();
       return !await _homeScreen.navigatorKeys[_homeScreen.currentTab]!.currentState!.maybePop();

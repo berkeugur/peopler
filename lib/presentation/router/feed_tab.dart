@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/FeedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/Settings/settings.dart';
 import '../../business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
 import '../screens/ChatScreen/channel_list.dart';
@@ -34,23 +35,23 @@ class _FeedScreenNavigatorState extends State<FeedScreenNavigator> with Automati
     FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
 
     return ValueListenableBuilder(
-      valueListenable: setTheme,
-      builder: (context, x, y) {
-        return Navigator(
-          key: _homeScreen.navigatorKeys[TabItem.feed],
-          initialRoute: '/',
-          onGenerateRoute: (routeSettings) {
-            switch (routeSettings.name) {
-              case '/':
-                _homeScreen.currentScreen = {TabItem.feed: ScreenItem.feedScreen};
-                _homeScreen.changeFloatingActionButtonEvent();
+        valueListenable: setTheme,
+        builder: (context, x, y) {
+          return Navigator(
+            key: _homeScreen.navigatorKeys[TabItem.feed],
+            initialRoute: '/',
+            onGenerateRoute: (routeSettings) {
+              switch (routeSettings.name) {
+                case '/':
+                  _homeScreen.currentScreen = {TabItem.feed: ScreenItem.feedScreen};
+                  _homeScreen.changeFloatingActionButtonEvent();
 
-                return MaterialPageRoute(
-                    builder: (context) => MultiBlocProvider(
-                        child: FeedScreen(
-                          key: widget.feedListKey,
-                        ),
-                        providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
+                  return MaterialPageRoute(
+                      builder: (context) => MultiBlocProvider(
+                          child: DrawerHomePage(
+                            feedListKey: widget.feedListKey,
+                          ),
+                          providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
                 /*
                 case '/addFeed':
                 _homeScreen.currentScreen = {TabItem.feed: ScreenItem.addFeedScreen};
@@ -79,13 +80,13 @@ class _FeedScreenNavigatorState extends State<FeedScreenNavigator> with Automati
                   builder: (context) => const ChatScreen(),
                 );
               */
-              default:
-                debugPrint('ERROR: Event Tab Router unknown route');
-                return null;
-            }
-          },
-        );
-      });
+                default:
+                  debugPrint('ERROR: Event Tab Router unknown route');
+                  return null;
+              }
+            },
+          );
+        });
   }
 
   @override

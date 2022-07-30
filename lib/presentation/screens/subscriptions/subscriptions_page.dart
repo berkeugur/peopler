@@ -353,7 +353,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium)! / 6).toStringAsFixed(2)}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -679,7 +679,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               bloc: _purchaseGetOfferBloc,
               builder: (context, state) {
                 if (state is PurchaseGetOfferLoadedState) {
-                  return             Padding(
+                  return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
                     child: Row(
                       children: [
