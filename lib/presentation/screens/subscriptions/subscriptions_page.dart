@@ -284,6 +284,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  /*
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -300,8 +301,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ),
                   ),
+                   */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium)! / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -415,6 +417,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  /*
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -431,6 +434,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ),
                   ),
+                   */
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
@@ -744,6 +748,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  /*
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -760,6 +765,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ),
                   ),
+                   */
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
@@ -875,6 +881,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  /*
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -891,6 +898,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ),
                   ),
+                   */
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,

@@ -56,6 +56,7 @@ class PurchaseApi {
     }
   }
 
+  /*
   bool isUserPremium() {
     if(purchaserInfo.entitlements.all["premium"] == null) {
       debugPrint("There is no entitlement called premium");
@@ -71,4 +72,5 @@ class PurchaseApi {
     }
     return purchaserInfo.entitlements.all["plus"]!.isActive;
   }
+   */
 }

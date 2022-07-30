@@ -56,22 +56,22 @@ class SubscriptionService {
     if (type == SubscriptionType.plus) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return "${39.99} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("plus_one_month")?.product.priceString} $symbol";
         case SubscriptionPlan.threeMonth:
-          return "${99.99} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("plus_three_month")?.product.priceString} $symbol";
         case SubscriptionPlan.sixMonth:
-          return "${179.99} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("plus_six_month")?.product.priceString} $symbol";
         default:
           return "error $symbol";
       }
     } else if (type == SubscriptionType.premium) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return "${49.99} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("premium_one_month")?.product.priceString} $symbol";
         case SubscriptionPlan.threeMonth:
-          return "${129.99} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("premium_three_month")?.product.priceString} $symbol";
         case SubscriptionPlan.sixMonth:
-          return "${199.99} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("premium_six_month")?.product.priceString} $symbol";
         default:
           return "error $symbol";
       }
@@ -84,22 +84,22 @@ class SubscriptionService {
     if (type == SubscriptionType.plus) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return 39.99;
+          return PurchaseApi.currentOffering?.getPackage("plus_one_month")?.product.price ?? 9999;
         case SubscriptionPlan.threeMonth:
-          return 99.99;
+          return PurchaseApi.currentOffering?.getPackage("plus_three_month")?.product.price ?? 9999;
         case SubscriptionPlan.sixMonth:
-          return 179.99;
+          return PurchaseApi.currentOffering?.getPackage("plus_six_month")?.product.price ?? 9999;
         default:
           return 9999;
       }
     } else if (type == SubscriptionType.premium) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return 49.99;
+          return PurchaseApi.currentOffering?.getPackage("premium_one_month")?.product.price ?? 9999;
         case SubscriptionPlan.threeMonth:
-          return 129.99;
+          return PurchaseApi.currentOffering?.getPackage("premium_three_month")?.product.price ?? 9999;
         case SubscriptionPlan.sixMonth:
-          return 199.99;
+          return PurchaseApi.currentOffering?.getPackage("premium_six_month")?.product.price ?? 9999;
         default:
           return 999;
       }
@@ -108,6 +108,8 @@ class SubscriptionService {
     }
   }
 
+
+  /*
   //ekstra birşey eklenmesine gerek yok bir aylık plana göre 3 ve 6 aylık planların ne kadar indirimli olduğunu
   //gösterir. Verileri price fonksiyonundan alır
   String discount({required SubscriptionPlan plan, required SubscriptionType type}) {
@@ -157,4 +159,5 @@ class SubscriptionService {
       return "error";
     }
   }
+   */
 }
