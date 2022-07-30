@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import 'package:peopler/presentation/screens/subscriptions/subscription_features.dart';
 import 'package:peopler/presentation/screens/subscriptions/subscriptions_functions.dart';
 
@@ -27,6 +29,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       });
     });
     SubscriptionFeatures().init(_tabController);
+
     super.initState();
   }
 
@@ -138,6 +141,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
   }
 
   Widget premiumTab(BuildContext context) {
+    PurchaseGetOfferBloc _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
+
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 40),
         height: 500,
@@ -156,15 +161,26 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               ),
               items: SubscriptionFeatures.premiumFeatures,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
-              child: Row(
-                children: [
-                  _buildSixMonthPremiumWidget(context),
-                  _buildThreeMonthPremiumWidget(context),
-                  _buildOneMonthPremiumWidget(context),
-                ],
-              ),
+            BlocBuilder<PurchaseGetOfferBloc, PurchaseGetOfferState>(
+              bloc: _purchaseGetOfferBloc,
+              builder: (context, state) {
+                if (state is PurchaseGetOfferLoadedState) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
+                    child: Row(
+                      children: [
+                        _buildSixMonthPremiumWidget(context),
+                        _buildThreeMonthPremiumWidget(context),
+                        _buildOneMonthPremiumWidget(context),
+                      ],
+                    ),
+                  );
+                } else if (state is PurchaseGetOfferNotFoundState) {
+                  return const Text("Şu an için satın alma seçenekleri aktive edilemiyor :(");
+                } else {
+                  return const Text("Impossible");
+                }
+              },
             ),
             _buildBuyImmediatelyPremiumButton()
           ],
@@ -553,11 +569,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       child: InkWell(
         onTap: () {
           if (selectedPremiumPlanIndex == 0) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium);
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium, context: context);
           } else if (selectedPremiumPlanIndex == 1) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium);
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium, context: context);
           } else if (selectedPremiumPlanIndex == 2) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium);
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium, context: context);
           } else {
             debugPrint("3 index var else imkansız.");
           }
@@ -588,6 +604,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
   }
 
   Widget plusTab(BuildContext context) {
+    PurchaseGetOfferBloc _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
+
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 40),
         height: 500,
@@ -603,15 +621,26 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               ),
               items: SubscriptionFeatures.plusFeatures,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
-              child: Row(
-                children: [
-                  _buildSixMonthPlusWidget(context),
-                  _buildThreeMonthPlusWidget(context),
-                  _buildOneMonthPlusWidget(context),
-                ],
-              ),
+            BlocBuilder<PurchaseGetOfferBloc, PurchaseGetOfferState>(
+              bloc: _purchaseGetOfferBloc,
+              builder: (context, state) {
+                if (state is PurchaseGetOfferLoadedState) {
+                  return             Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
+                    child: Row(
+                      children: [
+                        _buildSixMonthPlusWidget(context),
+                        _buildThreeMonthPlusWidget(context),
+                        _buildOneMonthPlusWidget(context),
+                      ],
+                    ),
+                  );
+                } else if (state is PurchaseGetOfferNotFoundState) {
+                  return const Text("Şu an için satın alma seçenekleri aktive edilemiyor :(");
+                } else {
+                  return const Text("Impossible");
+                }
+              },
             ),
             _buildBuyImmediatelyPlusButton()
           ],
@@ -1000,11 +1029,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         onTap: () {
           debugPrint("selected premium plan index = $selectedPlusPlanIndex");
           if (selectedPlusPlanIndex == 0) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus);
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus, context: context);
           } else if (selectedPlusPlanIndex == 1) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus);
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus, context: context);
           } else if (selectedPlusPlanIndex == 2) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus);
+            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus, context: context);
           } else {
             debugPrint("3 index var else imkansız.");
           }

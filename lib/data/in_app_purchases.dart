@@ -6,7 +6,8 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 class PurchaseApi {
   static const _apiKeyIOS = 'appl_ywiwctMGVJhMAvcwXcWpUHkUJOo';
   static const _apiKeyAndroid = 'goog_wckqWIasEAQgEuTWcHcmXFYgenh';
-  late final PurchaserInfo purchaserInfo;
+  static late PurchaserInfo purchaserInfo;
+  static late Offering? currentOffering;
 
   Future<void> init() async {
     await Purchases.setDebugLogsEnabled(true);

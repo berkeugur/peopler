@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/data/in_app_purchases.dart';
+import '../../../business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
 
 enum SubscriptionType { plus, premium }
 
@@ -10,31 +13,41 @@ printf(String text) {
 }
 
 class SubscriptionService {
-  purchaseButton({required SubscriptionPlan plan, required SubscriptionType type}) {
+  purchaseButton({required SubscriptionPlan plan, required SubscriptionType type, required BuildContext context}) {
+    PurchaseMakePurchaseBloc _purchaseMakePurchaseBloc = BlocProvider.of<PurchaseMakePurchaseBloc>(context);
+
     if (type == SubscriptionType.plus) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return printf("Plus 1 Aylık Planı Satın Alma Butonu Fonksiyonu");
+          _purchaseMakePurchaseBloc.add(MakePurchaseEvent(package: PurchaseApi.currentOffering?.getPackage("plus_one_month")));
+          break;
         case SubscriptionPlan.threeMonth:
-          return printf("Plus 3 Aylık Planı Satın Alma Butonu Fonksiyonu");
+          _purchaseMakePurchaseBloc.add(MakePurchaseEvent(package: PurchaseApi.currentOffering?.getPackage("plus_three_month")));
+          break;
         case SubscriptionPlan.sixMonth:
-          return printf("Plus 6 Aylık Planı Satın Alma Butonu Fonksiyonu");
+          _purchaseMakePurchaseBloc.add(MakePurchaseEvent(package: PurchaseApi.currentOffering?.getPackage("plus_six_month")));
+          break;
         default:
-          printf("impossiable");
+          printf("impossible");
+          break;
       }
     } else if (type == SubscriptionType.premium) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return printf("Premium 1 Aylık Planı Satın Alma Butonu Fonksiyonu");
+          _purchaseMakePurchaseBloc.add(MakePurchaseEvent(package: PurchaseApi.currentOffering?.getPackage("premium_one_month")));
+          break;
         case SubscriptionPlan.threeMonth:
-          return printf("Premium 3 Aylık Planı Satın Alma Butonu Fonksiyonu");
+          _purchaseMakePurchaseBloc.add(MakePurchaseEvent(package: PurchaseApi.currentOffering?.getPackage("premium_three_month")));
+          break;
         case SubscriptionPlan.sixMonth:
-          return printf("Premium 6 Aylık Planı Satın Alma Butonu Fonksiyonu");
+          _purchaseMakePurchaseBloc.add(MakePurchaseEvent(package: PurchaseApi.currentOffering?.getPackage("premium_six_month")));
+          break;
         default:
-          printf("impossiable");
+          printf("impossible");
+          break;
       }
     } else {
-      printf("impossiable");
+      printf("impossible");
     }
   }
 

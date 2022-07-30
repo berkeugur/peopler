@@ -17,10 +17,6 @@ class SplashScreen extends StatelessWidget {
     /// Start to listen awesome notifications clickable
     FCMAndLocalNotifications.listenNotification();
 
-    /// Get offerings
-    PurchaseGetOfferBloc _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
-    _purchaseGetOfferBloc.add(GetInitialOfferEvent());
-
     // ACHTUNG !!!!!!!!!!!!! USE pushReplacementMethod when navigating if a page contains BlocListener
     // so that the page destroyed and BlocListener disposed.
     // DO NOT USE pushNamed

@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
-
+import 'package:purchases_flutter/purchases_flutter.dart';
+import '../../../data/in_app_purchases.dart';
 import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
 import '../../../data/repository/user_repository.dart';
@@ -23,11 +23,86 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   StreamSubscription? _streamSubscription;
   bool _userListener = false;
 
+  static LogInResult? revenueCatResult;
+  static String? entitlement;
+
+  Future<void> signedInUserPreparations() async {
+    /// Get activities related to user
+    myActivities = await _userRepository.getActivities(user!.userID);
+
+    /// RevenueCat Log In With UserID
+    revenueCatResult = await Purchases.logIn(user!.userID);
+
+    /// Init Purchaser Info Stream
+    await initPurchaserInfoStream();
+
+    if (_userListener == false) {
+      _userListener = true;
+      _streamSubscription = _userRepository
+          .getMyUserWithStream(UserBloc.user!.userID)
+          .listen((updatedUser) async {
+        UserBloc.user!.updateFromPublicMap(updatedUser.toPublicMap());
+
+        List<MyUser> tempList = [...CityBloc.allUserList];
+        for(MyUser tempUser in  tempList){
+          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
+            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
+            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
+            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+        }
+
+        tempList = [...LocationBloc.allUserList];
+        for(MyUser tempUser in  tempList){
+          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
+            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
+            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+
+          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
+            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
+          }
+        }
+      });
+    }
+  }
+
+  Future initPurchaserInfoStream() async {
+    Purchases.addPurchaserInfoUpdateListener((purchaserInfo) async {
+      updatePurchaseStatus();
+    });
+  }
+
+  Future updatePurchaseStatus() async {
+    PurchaseApi.purchaserInfo = await Purchases.getPurchaserInfo();
+
+    final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
+    entitlement = entitlements.isEmpty ? "free" : entitlements[0].toString();
+  }
+
   UserBloc(this.mainKey) : super(InitialUserState()) {
     on<signOutEvent>((event, emit) async {
       try {
         await _userRepository.deleteToken(user!.userID);
         await _userRepository.signOut();
+        await Purchases.logOut();
         user = null;
         emit(SignedOutState());
       } catch (e) {
@@ -63,53 +138,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         } else if (user?.isTheAccountConfirmed == false) {
           emit(SignedInNotVerifiedState());
         } else {
-          myActivities = await _userRepository.getActivities(user!.userID);
-          if (_userListener == false) {
-            _userListener = true;
-            _streamSubscription = _userRepository
-                .getMyUserWithStream(UserBloc.user!.userID)
-                .listen((updatedUser) async {
-                UserBloc.user!.updateFromPublicMap(updatedUser.toPublicMap());
-
-                List<MyUser> tempList = [...CityBloc.allUserList];
-                for(MyUser tempUser in  tempList){
-                  if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-
-                  if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-
-                  if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-
-                  if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-                    CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-                }
-
-                tempList = [...LocationBloc.allUserList];
-                for(MyUser tempUser in  tempList){
-                  if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-
-                  if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-
-                  if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-
-                  if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-                    LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-                  }
-                }
-            });
-          }
+          await signedInUserPreparations();
           emit(SignedInState());
         }
       } catch (e) {
@@ -126,7 +155,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (user?.missingInfo == true) {
           emit(SignedInMissingInfoState());
         } else {
-          myActivities = await _userRepository.getActivities(user!.userID);
+          await signedInUserPreparations();
           emit(SignedInState());
         }
       } on FirebaseAuthException catch (e) {
@@ -156,7 +185,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (user == null) {
           emit(SignErrorState());
         } else {
-          myActivities = await _userRepository.getActivities(user!.userID);
+          await signedInUserPreparations();
           emit(SignedInState());
         }
       } on FirebaseAuthException catch (e) {
@@ -235,7 +264,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if (isEmailVerified == true) {
         await _userRepository.updateAccountConfirmed(user!.userID, true);
         user = await _userRepository.getCurrentUser();
-        myActivities = await _userRepository.getActivities(user!.userID);
+
+        await signedInUserPreparations();
         emit(SignedInState());
       }
     });
@@ -247,7 +277,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<updateUserInfoForLinkedInEvent>((event, emit) async {
       emit(SigningInState());
       await _userRepository.updateUser(user!);
-      myActivities = await _userRepository.getActivities(user!.userID);
+
+      await signedInUserPreparations();
       emit(SignedInState());
     });
 
@@ -256,5 +287,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       user = null;
       emit(InitialUserState());
     });
+  }
+
+  @override
+  Future<void> close() async {
+    if (_streamSubscription != null) {
+      _streamSubscription?.cancel();
+    }
+    super.close();
   }
 }

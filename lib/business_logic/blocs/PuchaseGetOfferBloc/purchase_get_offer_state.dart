@@ -17,10 +17,7 @@ class PurchaseGetOfferNotFoundState extends PurchaseGetOfferState {
 }
 
 class PurchaseGetOfferLoadedState extends PurchaseGetOfferState {
-  final Offering? currentOffering;
-
-  const PurchaseGetOfferLoadedState(this.currentOffering);
-
   @override
-  List<Object?> get props => [currentOffering];
+  List<Object> get props => [];
 }
+

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
                     create: (context) => NotificationBloc()),
                 BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
                 BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
+                BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => PurchaseMakePurchaseBloc()),
               ],
               child: MaterialApp(
                   navigatorKey: mainKey,

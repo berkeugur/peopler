@@ -19,13 +19,6 @@ class PurchaseMakePurchaseNotFoundState extends PurchaseMakePurchaseState {
 }
 
 class PurchaseMakePurchaseLoadedState extends PurchaseMakePurchaseState {
-  final MyUser otherUser;
-  final List<String> mutualConnectionUserIDs;
-  final List<MyActivity> myActivities;
-  final SendRequestButtonStatus status;
-
-  const PurchaseMakePurchaseLoadedState(this.otherUser, this.mutualConnectionUserIDs, this.myActivities, this.status);
-
   @override
-  List<Object> get props => [otherUser, mutualConnectionUserIDs, myActivities, status];
+  List<Object> get props => [];
 }

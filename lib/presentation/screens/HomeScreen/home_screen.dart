@@ -10,6 +10,7 @@ import 'dart:io' show Platform;
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/presentation/router/chat_tab.dart';
+import '../../../business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
@@ -37,6 +38,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final LocationPermissionBloc _locationPermissionBloc;
   late final LocationBloc _locationBloc;
   late final CityBloc _cityBloc;
+  late final PurchaseGetOfferBloc _purchaseGetOfferBloc;
 
   @override
   void initState() {
@@ -47,6 +49,10 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
     FCMAndLocalNotifications().initializeFCMNotifications(context);
+
+    /// Get offerings
+    _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
+    _purchaseGetOfferBloc.add(GetInitialOfferEvent());
   }
 
   @override
