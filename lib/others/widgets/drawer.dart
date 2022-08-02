@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_screen.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
@@ -37,16 +39,16 @@ class DrawerMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          ZoomDrawer.of(context)!.toggle();
-          // Navigator.of(context).push(MaterialPageRoute(builder: ((context) => Zoom())));
-        },
-        icon: Icon(
-          Icons.menu,
-          size: 32,
-          color: Color(0xFF0353EF),
-        ));
+    return InkWell(
+      onTap: () => ZoomDrawer.of(context)!.toggle(),
+      child: SvgPicture.asset(
+        "assets/images/svg_icons/sort.svg",
+        width: 32,
+        height: 32,
+        color: Mode().disabledBottomMenuItemAssetColor(),
+        fit: BoxFit.contain,
+      ),
+    );
   }
 }
 
@@ -172,6 +174,8 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
   Widget build(BuildContext context) {
     return Container(
       child: ZoomDrawer(
+        shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+        shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
         showShadow: true,
         mainScreenTapClose: true,
         borderRadius: 24.0,

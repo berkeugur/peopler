@@ -251,17 +251,6 @@ class FeedScreenState extends State<FeedScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /*
-                InkWell(
-                  onTap: () => op_settings_icon(context),
-                  child: SvgPicture.asset(
-                    "assets/images/svg_icons/settings.svg",
-                    width: 25,
-                    height: 25,
-                    color: _mode.homeScreenIconsColor(),
-                    fit: BoxFit.contain,
-                  ),
-                ),*/
                 DrawerMenuWidget(),
                 InkWell(
                   onTap: () => op_peopler_title(context, _scrollController),
