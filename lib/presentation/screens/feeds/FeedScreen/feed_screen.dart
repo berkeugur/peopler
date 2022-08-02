@@ -34,7 +34,7 @@ class FeedScreenState extends State<FeedScreen> {
 
   late ScrollController _scrollController;
 
-  late final double loadMoreOffset;
+  double? loadMoreOffset;
   double? feedHeight;
 
   final Mode _mode = locator<Mode>();
@@ -330,7 +330,7 @@ class FeedScreenState extends State<FeedScreen> {
     }
 
     /// When scroll position distance to bottom is less than load more offset,
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - loadMoreOffset &&
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
         _scrollController.position.userScrollDirection == ScrollDirection.forward) {
       /// If state is FeedsLoadedState
       if (_feedBloc.state is FeedsLoadedState) {

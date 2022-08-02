@@ -3,11 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SubscriptionFeatures {
-
   static List<Widget> plusFeatures = [];
   static List<Widget> premiumFeatures = [];
 
-  void init(tabController)  {
+  void init(tabController) {
     premiumFeatures = [
       subscriptionFeatures(
         imgPath: "assets/images/hobby_badges/theater.svg",
@@ -51,11 +50,7 @@ class SubscriptionFeatures {
     ];
   }
 
-  Column subscriptionFeatures(
-      {required String imgPath,
-        required String title,
-        required String subtitle,
-        required TabController tabController}) {
+  Column subscriptionFeatures({required String imgPath, required String title, required String subtitle, required TabController tabController}) {
     return Column(
       children: [
         const SizedBox(
@@ -107,5 +102,4 @@ class SubscriptionFeatures {
       ],
     );
   }
-
 }

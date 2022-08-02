@@ -22,12 +22,12 @@ class ChannelListBodyState extends State<ChannelListBody> {
 
   static const double _borderRadius = 15;
   static const double _imageSize = 50;
-  late final Size _size;
+  Size? _size;
 
   late ScrollController _scrollController;
 
-  late final double loadMoreOffset;
-  late final double chatHeight;
+  double? loadMoreOffset;
+  double? chatHeight;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
   void didChangeDependencies() {
     _size = MediaQuery.of(context).size;
     chatHeight = MediaQuery.of(context).size.height / 6;
-    loadMoreOffset = chatHeight * 5;
+    loadMoreOffset = chatHeight! * 5;
     super.didChangeDependencies();
   }
 
@@ -52,7 +52,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
         builder: (context, x, y) {
           return Expanded(
             child: SizedBox(
-              width: _size.width >= 600 ? 600 : _size.width,
+              width: _size!.width >= 600 ? 600 : _size!.width,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                 child: SingleChildScrollView(
@@ -197,7 +197,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
 
   bool _listScrollListener() {
     // When scroll position distance to bottom is less than load more offset,
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - loadMoreOffset &&
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
         _scrollController.position.userScrollDirection == ScrollDirection.forward) {
       // If state is FeedsLoadedState
       if (_chatBloc.state is ChatsLoadedState1 || _chatBloc.state is ChatsLoadedState1) {
@@ -266,7 +266,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
 
   SizedBox _buildNameAndLastMessage(String _nameSurname, String _lastMassage, bool _isNewMessage) {
     return SizedBox(
-      width: _size.width >= 600 ? 600 - 165 : _size.width - 165,
+      width: _size!.width >= 600 ? 600 - 165 : _size!.width - 165,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,

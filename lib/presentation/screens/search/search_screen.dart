@@ -21,8 +21,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  late final double loadMoreOffset;
-  late final double userHeight;
+  double? loadMoreOffset;
+  double? userHeight;
 
   late final ThemeCubit _themeCubit;
   late final FloatingActionButtonCubit _homeScreen;
@@ -69,8 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
             bloc: _locationPermissionBloc,
             listener: (BuildContext context, state) {
               if (state is ReadyState) {
-                _locationBloc.add(
-                    GetInitialSearchUsersEvent(latitude: UserBloc.user!.latitude, longitude: UserBloc.user!.longitude));
+                _locationBloc.add(GetInitialSearchUsersEvent(latitude: UserBloc.user!.latitude, longitude: UserBloc.user!.longitude));
               }
             },
             child: ChangeNotifierProvider.value(

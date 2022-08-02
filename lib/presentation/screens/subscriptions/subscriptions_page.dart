@@ -102,6 +102,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: 50,
           shadowColor: Colors.transparent,
           leading: Container(
             padding: const EdgeInsets.all(10),
@@ -166,22 +167,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               ),
             ),
             // tab bar view here
-            Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height - 70 - 45,
-                  child: TabBarView(
-                    physics: const BouncingScrollPhysics(),
-                    controller: _tabController,
-                    children: [
-                      // first tab [you can add an icon using the icon property]
-                      plusTab(context),
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 106,
+              child: TabBarView(
+                physics: const BouncingScrollPhysics(),
+                controller: _tabController,
+                children: [
+                  // first tab [you can add an icon using the icon property]
+                  plusTab(context),
 
-                      // second tab [you can add an icon using the icon property]
-                      premiumTab(context),
-                    ],
-                  ),
-                ),
+                  // second tab [you can add an icon using the icon property]
+                  premiumTab(context),
+                ],
               ),
             ),
           ],
@@ -193,48 +190,55 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
   Widget premiumTab(BuildContext context) {
     PurchaseGetOfferBloc _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
 
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        height: 500,
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            CarouselSlider(
-              options: CarouselOptions(
-                viewportFraction: 1,
-                autoPlay: true,
-                aspectRatio: 4 / 2,
-                enlargeCenterPage: true,
-                enlargeStrategy: CenterPageEnlargeStrategy.height,
-              ),
-              items: SubscriptionFeatures.premiumFeatures,
-            ),
-            BlocBuilder<PurchaseGetOfferBloc, PurchaseGetOfferState>(
-              bloc: _purchaseGetOfferBloc,
-              builder: (context, state) {
-                if (state is PurchaseGetOfferLoadedState) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
-                    child: Row(
-                      children: [
-                        _buildSixMonthPremiumWidget(context),
-                        _buildThreeMonthPremiumWidget(context),
-                        _buildOneMonthPremiumWidget(context),
-                      ],
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 106,
+      child: SingleChildScrollView(
+        child: Container(
+            height: MediaQuery.of(context).size.height - 106,
+            padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.05),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      viewportFraction: 1,
+                      autoPlay: true,
+                      aspectRatio: 4 / 2,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
                     ),
-                  );
-                } else if (state is PurchaseGetOfferNotFoundState) {
-                  return const Text("Şu an için satın alma seçenekleri aktive edilemiyor :(");
-                } else {
-                  return const Text("Impossible");
-                }
-              },
-            ),
-            _buildBuyImmediatelyPremiumButton()
-          ],
-        ));
+                    items: SubscriptionFeatures.premiumFeatures,
+                  ),
+                ),
+                BlocBuilder<PurchaseGetOfferBloc, PurchaseGetOfferState>(
+                  bloc: _purchaseGetOfferBloc,
+                  builder: (context, state) {
+                    if (state is PurchaseGetOfferLoadedState) {
+                      return Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 35.0, vertical: MediaQuery.of(context).size.height * 0.01),
+                          child: Row(
+                            children: [
+                              _buildSixMonthPremiumWidget(context),
+                              _buildThreeMonthPremiumWidget(context),
+                              _buildOneMonthPremiumWidget(context),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else if (state is PurchaseGetOfferNotFoundState) {
+                      return const Text("Şu an için satın alma seçenekleri aktive edilemiyor :(");
+                    } else {
+                      return const Text("Impossible");
+                    }
+                  },
+                ),
+                _buildBuyImmediatelyPremiumButton()
+              ],
+            )),
+      ),
+    );
   }
 
   InkWell _buildSixMonthPremiumWidget(BuildContext context) {
@@ -619,7 +623,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
 
   Container _buildBuyImmediatelyPremiumButton() {
     return Container(
-      margin: const EdgeInsets.all(40),
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: MediaQuery.of(context).size.height * 0.01),
       child: InkWell(
         onTap: () {
           if (selectedPremiumPlanIndex == 0) {
@@ -660,45 +664,55 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
   Widget plusTab(BuildContext context) {
     PurchaseGetOfferBloc _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);
 
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        height: 500,
-        child: Column(
-          children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                viewportFraction: 1,
-                autoPlay: true,
-                aspectRatio: 4 / 2,
-                enlargeCenterPage: true,
-                enlargeStrategy: CenterPageEnlargeStrategy.height,
-              ),
-              items: SubscriptionFeatures.plusFeatures,
-            ),
-            BlocBuilder<PurchaseGetOfferBloc, PurchaseGetOfferState>(
-              bloc: _purchaseGetOfferBloc,
-              builder: (context, state) {
-                if (state is PurchaseGetOfferLoadedState) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
-                    child: Row(
-                      children: [
-                        _buildSixMonthPlusWidget(context),
-                        _buildThreeMonthPlusWidget(context),
-                        _buildOneMonthPlusWidget(context),
-                      ],
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 106,
+      child: SingleChildScrollView(
+        child: Container(
+            height: MediaQuery.of(context).size.height - 106,
+            padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.05),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      viewportFraction: 1,
+                      autoPlay: true,
+                      aspectRatio: 4 / 2,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
                     ),
-                  );
-                } else if (state is PurchaseGetOfferNotFoundState) {
-                  return const Text("Şu an için satın alma seçenekleri aktive edilemiyor :(");
-                } else {
-                  return const Text("Impossible");
-                }
-              },
-            ),
-            _buildBuyImmediatelyPlusButton()
-          ],
-        ));
+                    items: SubscriptionFeatures.plusFeatures,
+                  ),
+                ),
+                BlocBuilder<PurchaseGetOfferBloc, PurchaseGetOfferState>(
+                  bloc: _purchaseGetOfferBloc,
+                  builder: (context, state) {
+                    if (state is PurchaseGetOfferLoadedState) {
+                      return Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 35.0, vertical: MediaQuery.of(context).size.height * 0.01),
+                          child: Row(
+                            children: [
+                              _buildSixMonthPlusWidget(context),
+                              _buildThreeMonthPlusWidget(context),
+                              _buildOneMonthPlusWidget(context),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else if (state is PurchaseGetOfferNotFoundState) {
+                      return const Text("Şu an için satın alma seçenekleri aktive edilemiyor :(");
+                    } else {
+                      return const Text("Impossible");
+                    }
+                  },
+                ),
+                _buildBuyImmediatelyPlusButton()
+              ],
+            )),
+      ),
+    );
   }
 
   InkWell _buildSixMonthPlusWidget(BuildContext context) {
@@ -1082,7 +1096,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
 
   Container _buildBuyImmediatelyPlusButton() {
     return Container(
-      margin: const EdgeInsets.all(40),
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: MediaQuery.of(context).size.height * 0.01),
       child: InkWell(
         onTap: () {
           debugPrint("selected premium plan index = $selectedPlusPlanIndex");
