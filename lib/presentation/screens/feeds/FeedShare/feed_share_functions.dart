@@ -14,7 +14,7 @@ import '../../../tab_item.dart';
 feed_share_button_on_pressed(BuildContext context) {
   final Mode _mode = locator<Mode>();
 
-  if (feedController.text.replaceAll(" ", "").length > 20) {
+  if (feedController.text.replaceAll(" ", "").length > 10) {
     MyFeed _feed = MyFeed(userID: UserBloc.user?.userID ?? "error #1DEUUXB");
     AddFeedBloc _addFeedBloc = BlocProvider.of<AddFeedBloc>(context);
     _addFeedBloc.add(AddAFeedEvent(myFeed: _feed));
@@ -33,8 +33,7 @@ feed_share_button_on_pressed(BuildContext context) {
 
 // ignore: non_constant_identifier_names
 feed_share_back_icon_on_pressed(context) {
-  final FloatingActionButtonCubit _homeScreen =
-      BlocProvider.of<FloatingActionButtonCubit>(context);
+  final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
   _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.feedScreen};
   _homeScreen.changeFloatingActionButtonEvent();
   Navigator.pop(context);

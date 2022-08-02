@@ -29,8 +29,7 @@ class ProfileScreenComponentsOthersProfile {
   final List<String> mutualConnectionUserIDs;
   final List<MyActivity> myActivities;
 
-  ProfileScreenComponentsOthersProfile(
-      {required this.profileData, required this.mutualConnectionUserIDs, required this.myActivities});
+  ProfileScreenComponentsOthersProfile({required this.profileData, required this.mutualConnectionUserIDs, required this.myActivities});
 
   final Mode _mode = locator<Mode>();
 
@@ -66,13 +65,7 @@ class ProfileScreenComponentsOthersProfile {
         AnimatedContainer(
             decoration: BoxDecoration(
               color: Mode().homeScreenScaffoldBackgroundColor(),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: const Color(0xFF939393).withOpacity(0.6),
-                    blurRadius: 0.5,
-                    spreadRadius: 0,
-                    offset: const Offset(0, 0))
-              ],
+              boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
             ),
             width: MediaQuery.of(context).size.width,
             duration: const Duration(seconds: 1),
@@ -157,8 +150,7 @@ class ProfileScreenComponentsOthersProfile {
     double _photoPadding = 2.5;
 
     int _numberOfPhoto = 4;
-    ValueNotifier<int> _itemCount = ValueNotifier(
-        profileData.photosURL.length > _numberOfPhoto ? _numberOfPhoto + 1 : profileData.photosURL.length);
+    ValueNotifier<int> _itemCount = ValueNotifier(profileData.photosURL.length > _numberOfPhoto ? _numberOfPhoto + 1 : profileData.photosURL.length);
 
     BorderRadius _customBorderRadius() => BorderRadius.circular(7.5);
     return ValueListenableBuilder(
@@ -322,7 +314,7 @@ class ProfileScreenComponentsOthersProfile {
   Widget buttonContent(BuildContext context, SendRequestButtonStatus status, MyUser otherUser) {
     switch (status) {
       case SendRequestButtonStatus.save:
-          return _buildSaveStatus(context, otherUser.userID);
+        return _buildSaveStatus(context, otherUser.userID);
       case SendRequestButtonStatus.saved:
         return _buildSavedStatus();
       case SendRequestButtonStatus.connect:
@@ -330,14 +322,13 @@ class ProfileScreenComponentsOthersProfile {
       case SendRequestButtonStatus.requestSent:
         return _buildRequestSentStatus();
       case SendRequestButtonStatus.accept:
-        return _buildAcceptStatus(context, otherUser.userID);
+        return _buildAcceptStatus(context, otherUser.userID, otherUser);
       case SendRequestButtonStatus.connected:
         return _buildConnectedStatus(otherUser, context);
       default:
-          return const Text("error");
+        return const Text("error");
     }
   }
-
 
   InkWell _buildSaveStatus(BuildContext context, String otherUserID) {
     return InkWell(
@@ -412,8 +403,8 @@ class ProfileScreenComponentsOthersProfile {
         CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
         String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-        _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
-            UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+        _sendNotificationService.sendNotification(
+            Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
       },
       child: Text(
         "Bağlantı Kur",
@@ -449,22 +440,50 @@ class ProfileScreenComponentsOthersProfile {
     );
   }
 
-  InkWell _buildAcceptStatus(BuildContext context, String otherUserID) {
+  InkWell _buildAcceptStatus(BuildContext context, String otherUserID, MyUser otherUser) {
+    bool _isAccepted = false;
     return InkWell(
       onTap: () {
-        NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-        Notifications _notification = _notificationBloc.allNotificationList.singleWhere((element) => element.requestUserID == otherUserID);
+        print("butona tıklandı");
+        if (_isAccepted) {
+          print("gelen istek kabul edildi artık mesajlaşma ekranına git");
+          Chat currentChat = Chat(
+              hostID: otherUser.userID,
+              isLastMessageFromMe: false,
+              isLastMessageReceivedByHost: true,
+              isLastMessageSeenByHost: true,
+              lastMessageCreatedAt: DateTime.now(),
+              lastMessage: "",
+              numberOfMessagesThatIHaveNotOpened: 0);
 
-        ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
+          currentChat.hostUserProfileUrl = otherUser.profileURL;
+          currentChat.hostUserName = otherUser.displayName;
 
-        _notificationBloc.add(ClickAcceptEvent(requestUserID: otherUserID));
-        _notification.didAccepted = true;
+          UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+          _userBloc.mainKey.currentState?.push(
+            MaterialPageRoute(
+                builder: (context) => MessageScreen(
+                      currentChat: currentChat,
+                    )),
+          );
+        } else {
+          print("istek henüz kabul edilmedi");
+          NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+          Notifications _notification = _notificationBloc.allNotificationList.singleWhere((element) => element.requestUserID == otherUserID);
 
-        String? _hostUserID = _notification.requestUserID;
-        String? _hostUserName = _notification.requestDisplayName;
-        String? _hostUserProfileUrl = _notification.requestProfileURL;
+          ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
 
-        _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
+          _notificationBloc.add(ClickAcceptEvent(requestUserID: otherUserID));
+          _notification.didAccepted = true;
+
+          _isAccepted = true;
+
+          String? _hostUserID = _notification.requestUserID;
+          String? _hostUserName = _notification.requestDisplayName;
+          String? _hostUserProfileUrl = _notification.requestProfileURL;
+
+          _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -480,7 +499,7 @@ class ProfileScreenComponentsOthersProfile {
             ),
           ),
           Text(
-            "Kabul Et",
+            _isAccepted ? "Mesajlaş" : "Kabul Et",
             textScaleFactor: 1,
             style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
@@ -495,7 +514,7 @@ class ProfileScreenComponentsOthersProfile {
   InkWell _buildConnectedStatus(MyUser otherUser, BuildContext context) {
     return InkWell(
       onTap: () {
-        Chat currentChat =  Chat(
+        Chat currentChat = Chat(
             hostID: otherUser.userID,
             isLastMessageFromMe: false,
             isLastMessageReceivedByHost: true,
@@ -509,7 +528,10 @@ class ProfileScreenComponentsOthersProfile {
 
         UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
         _userBloc.mainKey.currentState?.push(
-          MaterialPageRoute(builder: (context) => MessageScreen(currentChat: currentChat,)),
+          MaterialPageRoute(
+              builder: (context) => MessageScreen(
+                    currentChat: currentChat,
+                  )),
         );
       },
       child: Text(
@@ -668,9 +690,7 @@ class ProfileScreenComponentsOthersProfile {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllActivityListOthersProfile(
-                                        profileData: profileData, myActivities: myActivities)),
+                                MaterialPageRoute(builder: (context) => AllActivityListOthersProfile(profileData: profileData, myActivities: myActivities)),
                               );
 
                               numberOfActivity.value == minNumberOfActivity + 1
@@ -683,19 +703,13 @@ class ProfileScreenComponentsOthersProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: const Color(0xFF939393).withOpacity(0.6),
-                                      blurRadius: 0.5,
-                                      spreadRadius: 0,
-                                      offset: const Offset(0, 0))
+                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
                               child: Center(
                                   child: Text(
-                                numberOfActivity.value == minNumberOfActivity + 1
-                                    ? "Daha Fazla Göster"
-                                    : "Daha Az Göster",
+                                numberOfActivity.value == minNumberOfActivity + 1 ? "Daha Fazla Göster" : "Daha Az Göster",
                                 textScaleFactor: 1,
                                 style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
@@ -707,11 +721,7 @@ class ProfileScreenComponentsOthersProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: const Color(0xFF939393).withOpacity(0.6),
-                                    blurRadius: 0.5,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, 0))
+                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -723,18 +733,12 @@ class ProfileScreenComponentsOthersProfile {
                                     Text(
                                       profileData.pplName!,
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(
-                                          fontSize: 14,
-                                          color: _mode.blackAndWhiteConversion(),
-                                          fontWeight: FontWeight.w600),
+                                      style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       " " + activityText(index),
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(
-                                          fontSize: 14,
-                                          color: _mode.blackAndWhiteConversion(),
-                                          fontWeight: FontWeight.normal),
+                                      style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                     ),
                                   ],
                                 ),
@@ -745,9 +749,7 @@ class ProfileScreenComponentsOthersProfile {
                                         children: [
                                           buildDislike(index),
                                           SizedBox(
-                                            width: MediaQuery.of(context).size.width < 600
-                                                ? MediaQuery.of(context).size.width * 0.05
-                                                : 600 * 0.05,
+                                            width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.05 : 600 * 0.05,
                                           ),
                                           buildLike(index),
                                         ],
@@ -801,12 +803,11 @@ class ProfileScreenComponentsOthersProfile {
                       ),
                       itemBuilder: (context, index) {
                         String hobbyDateRange(index) {
-                          DateTime _startDate = DateTime(int.parse(profileData.hobbies[index].split("%")[2]),
-                              monthToInt(profileData.hobbies[index].split("%")[1]));
+                          DateTime _startDate =
+                              DateTime(int.parse(profileData.hobbies[index].split("%")[2]), monthToInt(profileData.hobbies[index].split("%")[1]));
                           DateTime _finishDate = profileData.hobbies[index].split("%").length == 3
                               ? DateTime.now()
-                              : DateTime(int.parse(profileData.hobbies[index].split("%")[4]),
-                                  monthToInt(profileData.hobbies[index].split("%")[3]));
+                              : DateTime(int.parse(profileData.hobbies[index].split("%")[4]), monthToInt(profileData.hobbies[index].split("%")[3]));
 
                           int _days = _finishDate.difference(_startDate).inDays;
                           int _months = _days ~/ 30 != 0 ? _days ~/ 30 : 1;
@@ -819,8 +820,7 @@ class ProfileScreenComponentsOthersProfile {
                           }
                         }
 
-                        if (profileData.hobbies.length > numberOfExperience.value &&
-                            index == numberOfExperience.value - 1) {
+                        if (profileData.hobbies.length > numberOfExperience.value && index == numberOfExperience.value - 1) {
                           return InkWell(
                             onTap: () {
                               /*
@@ -845,19 +845,13 @@ class ProfileScreenComponentsOthersProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: const Color(0xFF939393).withOpacity(0.6),
-                                      blurRadius: 0.5,
-                                      spreadRadius: 0,
-                                      offset: const Offset(0, 0))
+                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
                               child: Center(
                                   child: Text(
-                                numberOfExperience.value == minNumberOfExperience + 1
-                                    ? "Daha Fazla Göster"
-                                    : "Daha Az Göster",
+                                numberOfExperience.value == minNumberOfExperience + 1 ? "Daha Fazla Göster" : "Daha Az Göster",
                                 textScaleFactor: 1,
                                 style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
@@ -869,11 +863,7 @@ class ProfileScreenComponentsOthersProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: const Color(0xFF939393).withOpacity(0.6),
-                                    blurRadius: 0.5,
-                                    spreadRadius: 0,
-                                    offset: const Offset(0, 0))
+                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -894,8 +884,7 @@ class ProfileScreenComponentsOthersProfile {
                                                 )),
                                             child: CircleAvatar(
                                               backgroundColor: const Color(0xFF0353EF),
-                                              child: Text("ppl$index",
-                                                  textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                              child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
                                             ),
                                           ),
                                           Container(
@@ -920,10 +909,7 @@ class ProfileScreenComponentsOthersProfile {
                                     Text(
                                       profileData.hobbies[index].split("%")[0],
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(
-                                          color: _mode.blackAndWhiteConversion(),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
@@ -935,8 +921,7 @@ class ProfileScreenComponentsOthersProfile {
                                               " ~ " +
                                               hobbyDateRange(index),
                                           textScaleFactor: 1,
-                                          style:
-                                              GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                                          style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                         ),
                                       ],
                                     ),
@@ -1113,13 +1098,7 @@ class ProfileScreenComponentsOthersProfile {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: const Color(0xFF939393).withOpacity(0.6),
-              blurRadius: 2.0,
-              spreadRadius: 0,
-              offset: const Offset(-1.0, 0.75))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),
@@ -1134,10 +1113,10 @@ class ProfileScreenComponentsOthersProfile {
 }
 
 enum SendRequestButtonStatus {
-  save,         // If I have opened other user's profile from "nearby"
-  saved,        // If I have added other user in nearby and waiting for timeout
-  connect,      // If I have opened other user's profile from "feeds, city"
-  requestSent,  // If I have sent a request and waiting for him/her to accept
-  accept,       // If other user sent me a connection request and waiting for me to accept
-  connected     // If we are friends!
+  save, // If I have opened other user's profile from "nearby"
+  saved, // If I have added other user in nearby and waiting for timeout
+  connect, // If I have opened other user's profile from "feeds, city"
+  requestSent, // If I have sent a request and waiting for him/her to accept
+  accept, // If other user sent me a connection request and waiting for me to accept
+  connected // If we are friends!
 }

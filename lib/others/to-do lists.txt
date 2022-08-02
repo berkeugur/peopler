@@ -14,6 +14,9 @@
 - email girişlerinde edu.tr uzantısı var mı yok mu doğrula
 
 
+-other profiles den istek gittiği gönderildiği zaman gönderildi olarak gözüksün.
+
+
 
 
 

@@ -125,7 +125,7 @@ class VerificationScreen extends StatelessWidget {
                           textScaleFactor: 1,
                           style: GoogleFonts.rubik(
                             color: const Color(0xFF0353EF),
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.w300,
                           ),
                         ),
@@ -158,14 +158,22 @@ class VerificationScreen extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('vazgeç'),
+                  child: Text(
+                    'vazgeç',
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(color: Color(0xFF0353EF)),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
                     _userBloc.add(deleteUser());
                     Navigator.of(context).pushNamed('/welcomeScreen');
                   },
-                  child: const Text('Evet'),
+                  child: Text(
+                    'Evet',
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(color: Color(0xFF0353EF)),
+                  ),
                 )
               ],
             ));
