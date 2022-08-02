@@ -12,7 +12,7 @@ toggleSwitches(context, {required StateSetter setState}) {
         //SizedBox(height: 20,),
         //security_settings_field(context),
         //SizedBox(height:20,),
-        theme_settings_field(context, setState: setState),
+        theme_settings_field(context),
       ],
     ),
   );

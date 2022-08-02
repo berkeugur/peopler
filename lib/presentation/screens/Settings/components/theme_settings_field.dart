@@ -7,7 +7,7 @@ import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 
 // ignore: non_constant_identifier_names
-theme_settings_field(context, {required StateSetter setState}) {
+theme_settings_field(context) {
   final Mode _mode = locator<Mode>();
   final ThemeCubit _themeCubit = BlocProvider.of<ThemeCubit>(context);
   return Column(

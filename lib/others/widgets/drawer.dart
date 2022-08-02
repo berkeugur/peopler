@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
+import 'package:peopler/presentation/screens/Settings/components/theme_settings_field.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_screen.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
@@ -62,6 +65,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
+    final ThemeCubit _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Container(
       child: Scaffold(
         backgroundColor: Color(0xFF0353EF),
@@ -83,6 +87,10 @@ class _MenuPageState extends State<MenuPage> {
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
                   ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  theme_change_buttons(_themeCubit),
                 ],
               ),
               Column(
@@ -106,6 +114,82 @@ class _MenuPageState extends State<MenuPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Row theme_change_buttons(ThemeCubit _themeCubit) {
+    return Row(
+      children: [
+        InkWell(
+          onTap: () => _themeCubit.openLightMode(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Mode.isEnableDarkMode == false ? Colors.white : Colors.transparent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/svg_icons/light_mode.svg",
+                    width: 15,
+                    height: 15,
+                    color: Mode.isEnableDarkMode == false ? Color(0xFF0353EF) : Colors.white,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Aydınlık",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      color: Mode.isEnableDarkMode == false ? Color(0xFF0353EF) : Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        InkWell(
+          onTap: () => _themeCubit.openDarkMode(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Mode.isEnableDarkMode == true ? Colors.white : Colors.transparent,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/svg_icons/dark_mode.svg",
+                    width: 15,
+                    height: 15,
+                    color: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : Colors.white,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "Karanlık",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      color: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
