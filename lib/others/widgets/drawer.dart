@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/Settings/components/theme_settings_field.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
@@ -78,7 +79,7 @@ class _MenuPageState extends State<MenuPage> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ProfileScreenComponentsMyProfile().profilePhoto(context),
+                  profilePhoto(context),
                   SizedBox(
                     height: 10,
                   ),
@@ -117,8 +118,45 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  profilePhoto(context) {
+    final MyUser profileData = UserBloc.user!;
+    Size _size = MediaQuery.of(context).size;
+    double _screenWidth = _size.width;
+    double _photoSize = _screenWidth / 4.2;
+    return Stack(
+      children: [
+        Container(
+          height: _photoSize,
+          width: _photoSize,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), border: Border.all(width: 5, color: Colors.white)),
+          child: const CircleAvatar(
+            backgroundColor: Color(0xFF0353EF),
+            child: Text(
+              "ppl",
+              textScaleFactor: 1,
+            ),
+          ),
+        ),
+        Container(
+          height: _photoSize,
+          width: _photoSize,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), border: Border.all(width: 3, color: Colors.white)),
+          child: //_userBloc != null ?
+              CircleAvatar(
+            radius: 999,
+            backgroundImage: NetworkImage(
+              profileData.profileURL,
+            ),
+            backgroundColor: Colors.transparent,
+          ),
+        ),
+      ],
+    );
+  }
+
   Row theme_change_buttons(ThemeCubit _themeCubit) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: () => _themeCubit.openLightMode(),
@@ -153,8 +191,8 @@ class _MenuPageState extends State<MenuPage> {
             ),
           ),
         ),
-        const SizedBox(
-          width: 20,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.045,
         ),
         InkWell(
           onTap: () => _themeCubit.openDarkMode(),
