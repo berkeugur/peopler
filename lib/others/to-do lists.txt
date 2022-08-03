@@ -37,7 +37,6 @@ Berke Uğur
     - fotoğrafların üstüne tıklanabilir yapılması
     - mesajlaşma ekranına emoji picker eklemek,
     - mesajlarda sadece tek emoji var ise emojiyi mesaj kutusu içinde değil de daha büyük şekilde göstermek
-    - chat screen peopler yazısı ortalanmamış
 
 
 Mert Salar
