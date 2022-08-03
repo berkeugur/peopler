@@ -8,7 +8,6 @@ Berke Uğur
     - mesajlaşma ekranında report özelliği. Belki feedback paketi kullanılabilir. (Gizlilik politikasına madde olarak eklenebilir.)
       mesajlaşma sırasında uygunsuz mesajların gönderilmesini engellemek için.
     - mesajlar ikonu ince yapılacak diğer bottom menu ikonları arasında kalın duruyor.
-    - search ekranlarının yeniden tasarlanması tab bar yapılabilir. wrap ile tek scroll ile hallet.
     - davetiyeler ekranındaki app bar tasarımını native flutter ile değiştir. tab bar özelliği kazanmasını sağla
     - aynı ortamımdaki fab animation.
     - register ekranlarının pageview ile yeniden tasarlanması ve progress bara animasyon kazandırılması.
