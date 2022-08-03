@@ -201,10 +201,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
       width: _maxWidth,
       decoration: BoxDecoration(
         color: _mode.bottomMenuBackground(),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
         //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
       ),
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -226,15 +223,16 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               text: TextSpan(
-                  text: _currentItem.requestDisplayName + " artık bağlantınız.",
+                  text: _currentItem.requestDisplayName + " artık bağlantınız. ",
                   style: GoogleFonts.rubik(
                     color: _mode.blackAndWhiteConversion(),
                     fontSize: _customTextSize,
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      recognizer: TapGestureRecognizer()..onTap = () {
-                        Chat currentChat =  Chat(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Chat currentChat = Chat(
                               hostID: _currentItem.requestUserID!,
                               isLastMessageFromMe: false,
                               isLastMessageReceivedByHost: true,
@@ -243,14 +241,17 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
                               lastMessage: "",
                               numberOfMessagesThatIHaveNotOpened: 0);
 
-                        currentChat.hostUserProfileUrl = _currentItem.requestProfileURL;
-                        currentChat.hostUserName = _currentItem.requestDisplayName;
+                          currentChat.hostUserProfileUrl = _currentItem.requestProfileURL;
+                          currentChat.hostUserName = _currentItem.requestDisplayName;
 
-                        UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-                        _userBloc.mainKey.currentState?.push(
-                          MaterialPageRoute(builder: (context) => MessageScreen(currentChat: currentChat,)),
-                        );
-                      },
+                          UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                          _userBloc.mainKey.currentState?.push(
+                            MaterialPageRoute(
+                                builder: (context) => MessageScreen(
+                                      currentChat: currentChat,
+                                    )),
+                          );
+                        },
                       text: _currentItem.requestDisplayName + " ile konuşma başlat.",
                       style: GoogleFonts.rubik(color: Color(0xFF0353EF), fontSize: _customTextSize),
                     ),
@@ -293,10 +294,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
       width: _maxWidth,
       decoration: BoxDecoration(
         color: _mode.bottomMenuBackground(),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
         //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
       ),
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -360,10 +358,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
       width: _maxWidth,
       decoration: BoxDecoration(
         color: _mode.bottomMenuBackground(),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
         //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
       ),
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),

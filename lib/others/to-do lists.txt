@@ -1,22 +1,48 @@
-- Kayıt ekranı 6 yapılacak (mail ve şifre girişi)
-- Kayıt tamamlandı ekranı yapılacak
-- Login ekranı yapılacak
-- Şifreyi unuttum ekranı yapılacak
-- profil sayfasında profil fotoğrafı ekleme kısmı kodlanacak
-- Kayıt ve giriş ekranlarının hepsinin responsive olup olmadığı kontrol edilecek
-- kodlarda gerekli klasörleme ve düzenlemeler yapılacak
-- alert dialoglar tasarlanacak ve kodlanacak
-- linkedin ile giriş işlemleri yapılacak
-- İnstagram ile giriş işlemleri yapılacak
-- Üniversite maili ile kayıt işlemlerinin tamamlanması yapılacak
-- üniversite maili ile giriş işlemleri tamamlanacak
-- şifreyi sıfırlama işlemleri yapılacak
-- email girişlerinde edu.tr uzantısı var mı yok mu doğrula
+Berke Uğur
+    - others profile düzeltilecek
+    - şifre sıfırlama ekranı ve ayarları
+    - subscription ekranındaki ikonlar ve textler değiştirilecek
+    - feed beğen beğenme butonları değiştirilecek
+    - feed screendaki backgorund colora animation vermek gerekiyor. 
+      scaffold color yerine scaffold dışına animated container oluştur. Duration appbarın durationu ile aynı olsun
+      drawerda tema değiştirirken renk geçişi hoş görünmüyor.
+    - mesajlaşma ekranında report özelliği. Belki feedback paketi kullanılabilir. (Gizlilik politikasına madde olarak eklenebilir.)
+      mesajlaşma sırasında uygunsuz mesajların gönderilmesini engellemek için.
+    - mesajlar ikonu ince yapılacak diğer bottom menu ikonları arasında kalın duruyor.
+    - search ekranlarının yeniden tasarlanması tab bar yapılabilir. wrap ile tek scroll ile hallet.
+    - davetiyeler ekranındaki app bar tasarımını native flutter ile değiştir. tab bar özelliği kazanmasını sağla
+    - aynı ortamımdaki fab animation.
+    - register ekranlarının pageview ile yeniden tasarlanması ve progress bara animasyon kazandırılması.
+    - pubscpec yaml düzenlenmesi statemanagement, user interface, core, vs... başlıklara ayrılması
+    - feedlere slidable özelliği ile beğen beğenme özelliğinin kazandırılması.
+    - feed beğen beğenme animasyonu eklenmesi
+    - feed beğen beğenme butonlarının oklar ile değiştirilmesi. hareketler sayfasındaki butonlar da değişmeli
+    - my profile app bardaki settings in drawer menu ile değiştirilmesi
+    - şehir değiştirildiğinde city tab ı set state yapmak mert fonksiyonunu vermişti
+    - profile edit ekranındaki kaydet butonunun koşullarının ayarlanması
+    - profile edit ekranında kaydet butonuna 1 kez tıklanması sonra işlemler kaydedilene kadar circular döndürme 
+      (arada aynı resmi 2 kere ekliyor 2,3 kere kaydet butonuna tıklanırsa)
+    - native splash eklenmesi.
+    - linkedin register sırasında ortaya çıkan html deki peopler yazısının güncel fontWeight değeriyle değiştirilmesi.
+    - tema değiştirme ayarlarının yapılması için flutter native kullanma işlemi Mode() klasörü artık kullanılmayacak.
+    - my profile hareketler  daha fazla göstere tıklanınca hem daha fazla gösteriyor hem de sayfa değiştiriyor
+      sadece sayfa değişecek şekilde tekrar düzenle my profile ekranında daha fazla gösterme özelliği çalışmasın.
+    - profile photo border ına profilin ne kadar tamamlandığını gösteren bir ekleme yapmak
+    - profilin % kaç tamamlandığını hangi adımların yapılması gerektiğini bildiren bir to do list yapılması
+    - settings ekranındaki gizlilik politikası ve kullanım şartlarınının fonksiyonlarının verilmesi.
+    - görüş, öneri, şikayer bildir butonunun aktifleştirilmesi
+    - uygulamamızı değerlendirin butonu eklenmesi uygulamanın play store veya app store sayfasına yönlendirecek veya alttan bottom sheet çıkacak
+    - lisanslar sayfası yapılması veya gerekli mi değil mi koymak zorunda mıyız araştırılması
+    - dark mode hesabı sil butonu renklerinin ayarlanması.
+    - fotoğrafların üstüne tıklanabilir yapılması
+    - mesajlaşma ekranına emoji picker eklemek,
+    - mesajlarda sadece tek emoji var ise emojiyi mesaj kutusu içinde değil de daha büyük şekilde göstermek
+    - chat screen peopler yazısı ortalanmamış
 
 
--other profiles den istek gittiği gönderildiği zaman gönderildi olarak gözüksün.
-
-
+Mert Salar
+- a kişisi b kişine istek gönderdiği zaman ve b kişisi kabul ettiği zaman b kişinini receivedRequestUserIDs lerinden a kişisi silinmiyor.
+- Drawer menü açıldığında alt taraftaki bottom menu ve fab(floating action button) kaldırılcak DrawerHomePage ve DrawerProfilePage
 
 
 

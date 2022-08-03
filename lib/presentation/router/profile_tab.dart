@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/others/widgets/drawer.dart';
 import '../screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import '../tab_item.dart';
 
@@ -35,7 +36,7 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
                   _homeScreen.currentScreen = {TabItem.profile: ScreenItem.profileScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
                   return MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
+                    builder: (context) => DrawerProfilePage(),
                   );
                 default:
                   debugPrint('ERROR: Notification Tab Router unknown route');

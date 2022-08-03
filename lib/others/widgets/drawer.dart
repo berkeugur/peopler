@@ -15,6 +15,8 @@ import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_screen.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
 import 'package:flutter/material.dart';
 
+import '../../presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
+
 class CircularImage extends StatelessWidget {
   final double _width, _height;
   final ImageProvider image;
@@ -313,6 +315,45 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
         mainScreen: FeedScreen(
           key: widget.feedListKey,
         ),
+        menuScreen: MenuPage(),
+      ),
+    );
+  }
+}
+
+class DrawerProfilePage extends StatefulWidget {
+  DrawerProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<DrawerProfilePage> createState() => _DrawerProfilePageState();
+}
+
+class _DrawerProfilePageState extends State<DrawerProfilePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ZoomDrawer(
+        shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+        shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
+        showShadow: true,
+        mainScreenTapClose: true,
+        borderRadius: 24.0,
+        angle: 0,
+        style: DrawerStyle.defaultStyle,
+        // showShadow: true,
+        openCurve: Curves.fastOutSlowIn,
+        slideWidth: MediaQuery.of(context).size.width * 0.70,
+        duration: const Duration(milliseconds: 500),
+        // angle: 0.0,
+        menuBackgroundColor: Color(0xFF0353EF),
+
+        mainScreen: ProfileScreen(),
         menuScreen: MenuPage(),
       ),
     );

@@ -299,7 +299,6 @@ class ProfileScreenComponentsOthersProfile {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
       height: 30,
-      width: 105,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
         border: Border.all(width: 1, color: const Color(0xFF0353EF)),
@@ -307,7 +306,12 @@ class ProfileScreenComponentsOthersProfile {
             ? const Color(0xFF0353EF) //,_mode.inActiveColor()
             : const Color(0xFF0353EF),
       ),
-      child: Center(child: buttonContent(context, status, otherUser)),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Center(child: buttonContent(context, status, otherUser)),
+        ],
+      ),
     );
   }
 

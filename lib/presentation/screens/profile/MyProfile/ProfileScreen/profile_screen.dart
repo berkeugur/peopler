@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -97,9 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               */
             ],
           ),
-          UserBloc.user!.schoolName != "" && UserBloc.user!.currentJobName != ""
-              ? const SizedBox(height: 5)
-              : const SizedBox.shrink(),
+          UserBloc.user!.schoolName != "" && UserBloc.user!.currentJobName != "" ? const SizedBox(height: 5) : const SizedBox.shrink(),
 //(UserBloc.user!.schoolName.isEmpty || UserBloc.user!.currentJobName.isEmpty ? "" : " / ") +UserBloc.user!.currentJobName
           _titles(),
           //_profileScreenComponents.companyName(),
@@ -122,14 +121,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _titles() {
     if (UserBloc.user!.company == "" && UserBloc.user!.currentJobName != "") {
-      return Text(UserBloc.user!.currentJobName,
-          textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+      return Text(UserBloc.user!.currentJobName, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
     } else if (UserBloc.user!.company != "" && UserBloc.user!.currentJobName != "") {
       return Text(UserBloc.user!.company + " şirketinde " + UserBloc.user!.currentJobName,
           textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
     } else if (UserBloc.user!.company != "" && UserBloc.user!.currentJobName == "") {
-      return Text(UserBloc.user!.company + " şirketinde çalışıyor.",
-          textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+      return Text(UserBloc.user!.company + " şirketinde çalışıyor.", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
     } else {
       return const SizedBox.shrink();
     }
@@ -145,16 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          InkWell(
-            onTap: () => op_settings_icon(context),
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/settings.svg",
-              width: 25,
-              height: 25,
-              color: _mode.homeScreenIconsColor(),
-              fit: BoxFit.contain,
-            ),
-          ),
+          DrawerMenuWidget(),
           Text(
             "peopler",
             textScaleFactor: 1,

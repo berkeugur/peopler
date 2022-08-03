@@ -50,9 +50,8 @@ class ProfileScreenComponentsMyProfile {
             ],
           ),
         ),
-        AnimatedContainer(
+        Container(
             width: MediaQuery.of(context).size.width,
-            duration: const Duration(seconds: 1),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             decoration: BoxDecoration(
               color: Mode().homeScreenScaffoldBackgroundColor(),
