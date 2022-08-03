@@ -68,8 +68,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           _profileScreenComponents.photos(context),
           _profileScreenComponents.nameField(),
-          const SizedBox(
-            height: 5,
+          SizedBox(
+            height: UserBloc.user!.schoolName != "" ? 5 : 0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -102,8 +102,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 //(UserBloc.user!.schoolName.isEmpty || UserBloc.user!.currentJobName.isEmpty ? "" : " / ") +UserBloc.user!.currentJobName
           _titles(),
           //_profileScreenComponents.companyName(),
-          UserBloc.user!.company != "" ? const SizedBox(height: 5) : const SizedBox.shrink(),
-          _profileScreenComponents.mutualFriends(context),
+          UserBloc.user!.company != "" ? const SizedBox(height: 0) : const SizedBox.shrink(),
+          _profileScreenComponents.connections(context),
           UserBloc.user!.connectionUserIDs.isNotEmpty ? const SizedBox(height: 5) : const SizedBox.shrink(),
           _profileScreenComponents.profileEditButton(context),
           const SizedBox(height: 10),

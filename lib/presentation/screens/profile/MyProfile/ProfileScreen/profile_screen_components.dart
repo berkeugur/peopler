@@ -421,38 +421,48 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  mutualFriends(context) {
+  connections(context) {
     return Center(
       child: Column(
         children: [
           InkWell(
+            borderRadius: BorderRadius.circular(99),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const ConnectionsScreen()),
               );
             },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.people,
-                  color: Colors.grey[500],
-                ),
-                UserBloc.user!.connectionUserIDs.isNotEmpty
-                    ? Text(
-                        "${UserBloc.user!.connectionUserIDs.length} bağlantı",
-                        textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
-                          color: Colors.grey[500],
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+                vertical: 5,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.people,
+                    color: Colors.grey[500],
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  UserBloc.user!.connectionUserIDs.isNotEmpty
+                      ? Text(
+                          "${UserBloc.user!.connectionUserIDs.length} bağlantı",
+                          textScaleFactor: 1,
+                          style: GoogleFonts.rubik(
+                            color: Colors.grey[500],
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ],
+              ),
             ),
           ),
           const SizedBox(
