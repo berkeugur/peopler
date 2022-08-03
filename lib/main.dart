@@ -49,23 +49,16 @@ class MyApp extends StatelessWidget {
               providers: [
                 BlocProvider<FeedBloc>(create: (context) => FeedBloc()),
                 BlocProvider<SavedBloc>(create: (context) => SavedBloc()),
-
                 BlocProvider<CityBloc>(create: (context) => CityBloc()),
                 BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
                 BlocProvider<UserBloc>(create: (context) => UserBloc(mainKey)),
                 BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
-                BlocProvider<LocationUpdateBloc>(
-                    create: (context) => LocationUpdateBloc()),
-                BlocProvider<LocationPermissionBloc>(
-                    create: (context) => LocationPermissionBloc()),
-                BlocProvider<FloatingActionButtonCubit>(
-                    create: (context) => FloatingActionButtonCubit()),
-                BlocProvider<NotificationTransmittedBloc>(
-                    create: (context) => NotificationTransmittedBloc()),
-                BlocProvider<NotificationReceivedBloc>(
-                    create: (context) => NotificationReceivedBloc()),
-                BlocProvider<NotificationBloc>(
-                    create: (context) => NotificationBloc()),
+                BlocProvider<LocationUpdateBloc>(create: (context) => LocationUpdateBloc()),
+                BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
+                BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
+                BlocProvider<NotificationTransmittedBloc>(create: (context) => NotificationTransmittedBloc()),
+                BlocProvider<NotificationReceivedBloc>(create: (context) => NotificationReceivedBloc()),
+                BlocProvider<NotificationBloc>(create: (context) => NotificationBloc()),
                 BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
                 BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
                 BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => PurchaseMakePurchaseBloc()),

@@ -23,17 +23,16 @@ import '../empty_list.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
 
-
 class CityTab extends StatefulWidget {
   const CityTab(
       {Key? key,
-        required this.screenHeight,
-        required this.paddingTopSafeArea,
-        required this.maxWidth,
-        required this.context,
-        required this.size,
-        required this.showWidgetsKeyNearby,
-        required this.showWidgetsKeyCity})
+      required this.screenHeight,
+      required this.paddingTopSafeArea,
+      required this.maxWidth,
+      required this.context,
+      required this.size,
+      required this.showWidgetsKeyNearby,
+      required this.showWidgetsKeyCity})
       : super(key: key);
 
   final double screenHeight;
@@ -50,7 +49,6 @@ class CityTab extends StatefulWidget {
 }
 
 class CityTabState extends State<CityTab> {
-
   final ScrollController _searchPeopleListControllerCity = ScrollController();
 
   late final CityBloc _cityBloc;
@@ -83,8 +81,7 @@ class CityTabState extends State<CityTab> {
                         // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
                         // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
                       }
-                    } else if (_searchPeopleListControllerCity.position.userScrollDirection ==
-                        ScrollDirection.reverse) {
+                    } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
                       if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
                         Variables.animatedSearchPeopleHeaderHeight.value = 0;
                         // print("reverse $ach");
@@ -95,6 +92,7 @@ class CityTabState extends State<CityTab> {
                   child: Container(
                     color: Mode().homeScreenScaffoldBackgroundColor(),
                     child: RefreshIndicator(
+                      color: Color(0xFF0353EF),
                       displacement: 80.0,
                       onRefresh: () async {
                         /// Refresh users
@@ -302,8 +300,7 @@ class CityTabState extends State<CityTab> {
                         ),
                       ),
                       InkWell(
-                        onTap: () => openOthersProfile(
-                            context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
+                        onTap: () => openOthersProfile(context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           height: 100,
@@ -392,8 +389,7 @@ class CityTabState extends State<CityTab> {
                           textScaleFactor: 1,
                           maxLines: 3,
                           //_size.width * 0.038 < 15 ? 3 : _size.width * 0.038 <20  ? 2:1,
-                          style: const TextStyle(
-                              height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
+                          style: const TextStyle(height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
                         ),
                       ),
                       const SizedBox(
@@ -431,10 +427,8 @@ class CityTabState extends State<CityTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                final SendNotificationService _sendNotificationService =
-                                    locator<SendNotificationService>();
-                                final FirestoreDBServiceUsers _firestoreDBServiceUsers =
-                                    locator<FirestoreDBServiceUsers>();
+                                final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
+                                final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
                                 SavedUser _savedUser = SavedUser();
                                 _savedUser.userID = CityBloc.allUserList[index].userID;
@@ -455,13 +449,13 @@ class CityTabState extends State<CityTab> {
                                 await Future.delayed(const Duration(milliseconds: 1500));
 
                                 String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-                                _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
-                                    UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                _sendNotificationService.sendNotification(
+                                    Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
 
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                 widget.showWidgetsKeyCity.currentState?.setState(() {});
 
-                                if(CityBloc.allUserList.isEmpty) {
+                                if (CityBloc.allUserList.isEmpty) {
                                   _cityBloc.add(TrigUsersNotExistCityStateEvent());
                                 }
                               },
@@ -470,8 +464,7 @@ class CityTabState extends State<CityTab> {
                                   width: 104,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
+                                    border: Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
                                     color: Colors.transparent,
                                     //Colors.purple,
                                     borderRadius: const BorderRadius.all(Radius.circular(999)),
@@ -544,13 +537,7 @@ class CityTabState extends State<CityTab> {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: const Color(0xFF939393).withOpacity(0.6),
-              blurRadius: 2.0,
-              spreadRadius: 0,
-              offset: const Offset(-1.0, 0.75))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),

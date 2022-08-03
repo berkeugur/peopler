@@ -86,6 +86,7 @@ class FeedScreenState extends State<FeedScreen> {
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                     child: RefreshIndicator(
+                      color: Color(0xFF0353EF),
                       displacement: 120.0,
                       onRefresh: () async {
                         /// Refresh feeds

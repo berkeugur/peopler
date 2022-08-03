@@ -77,8 +77,7 @@ class _NearbyTabState extends State<NearbyTab> {
                       // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
                       // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
                     }
-                  } else if (_searchPeopleListControllerNearby.position.userScrollDirection ==
-                      ScrollDirection.reverse) {
+                  } else if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
                     if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
                       Variables.animatedSearchPeopleHeaderHeight.value = 0;
                       // print("reverse $ach");
@@ -87,10 +86,11 @@ class _NearbyTabState extends State<NearbyTab> {
                   return true;
                 },
                 child: RefreshIndicator(
+                  color: Color(0xFF0353EF),
                   displacement: 80.0,
                   onRefresh: () async {
-                  /// Refresh users
-                  await _locationBloc.getRefreshIndicatorData(UserBloc.user!.latitude, UserBloc.user!.longitude);
+                    /// Refresh users
+                    await _locationBloc.getRefreshIndicatorData(UserBloc.user!.latitude, UserBloc.user!.longitude);
                   },
                   child: SingleChildScrollView(
                     controller: _searchPeopleListControllerNearby,
@@ -507,8 +507,7 @@ class _NearbyTabState extends State<NearbyTab> {
                           textScaleFactor: 1,
                           maxLines: 3,
                           //_size.width * 0.038 < 15 ? 3 : _size.width * 0.038 <20  ? 2:1,
-                          style: const TextStyle(
-                              height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
+                          style: const TextStyle(height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
                         ),
                       ),
                       const SizedBox(
@@ -559,7 +558,7 @@ class _NearbyTabState extends State<NearbyTab> {
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                 widget.showWidgetsKeyCity.currentState?.setState(() {});
 
-                                if(LocationBloc.allUserList.isEmpty) {
+                                if (LocationBloc.allUserList.isEmpty) {
                                   _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                                 }
                               },
@@ -568,8 +567,7 @@ class _NearbyTabState extends State<NearbyTab> {
                                   width: 104,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
+                                    border: Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
                                     color: Colors.transparent,
                                     //Colors.purple,
                                     borderRadius: const BorderRadius.all(Radius.circular(999)),
@@ -652,13 +650,7 @@ class _NearbyTabState extends State<NearbyTab> {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: const Color(0xFF939393).withOpacity(0.6),
-              blurRadius: 2.0,
-              spreadRadius: 0,
-              offset: const Offset(-1.0, 0.75))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),

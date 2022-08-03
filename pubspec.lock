@@ -469,13 +469,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.3"
-  font_awesome_flutter:
-    dependency: "direct main"
-    description:
-      name: font_awesome_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "10.1.0"
   freezed_annotation:
     dependency: transitive
     description:
@@ -630,6 +623,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  liquid_pull_to_refresh:
+    dependency: "direct main"
+    description:
+      name: liquid_pull_to_refresh
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   matcher:
     dependency: transitive
     description:
@@ -847,6 +847,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.3"
+  pull_to_refresh_flutter3:
+    dependency: "direct main"
+    description:
+      name: pull_to_refresh_flutter3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   purchases_flutter:
     dependency: "direct main"
     description:
