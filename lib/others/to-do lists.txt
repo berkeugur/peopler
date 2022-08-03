@@ -2,7 +2,6 @@ Berke Uğur
     - others profile düzeltilecek
     - şifre sıfırlama ekranı ve ayarları
     - subscription ekranındaki ikonlar ve textler değiştirilecek
-    - feed beğen beğenme butonları değiştirilecek
     - feed screendaki backgorund colora animation vermek gerekiyor. 
       scaffold color yerine scaffold dışına animated container oluştur. Duration appbarın durationu ile aynı olsun
       drawerda tema değiştirirken renk geçişi hoş görünmüyor.
@@ -16,8 +15,6 @@ Berke Uğur
     - pubscpec yaml düzenlenmesi statemanagement, user interface, core, vs... başlıklara ayrılması
     - feedlere slidable özelliği ile beğen beğenme özelliğinin kazandırılması.
     - feed beğen beğenme animasyonu eklenmesi
-    - feed beğen beğenme butonlarının oklar ile değiştirilmesi. hareketler sayfasındaki butonlar da değişmeli
-    - my profile app bardaki settings in drawer menu ile değiştirilmesi
     - şehir değiştirildiğinde city tab ı set state yapmak mert fonksiyonunu vermişti
     - profile edit ekranındaki kaydet butonunun koşullarının ayarlanması
     - profile edit ekranında kaydet butonuna 1 kez tıklanması sonra işlemler kaydedilene kadar circular döndürme 
@@ -25,8 +22,6 @@ Berke Uğur
     - native splash eklenmesi.
     - linkedin register sırasında ortaya çıkan html deki peopler yazısının güncel fontWeight değeriyle değiştirilmesi.
     - tema değiştirme ayarlarının yapılması için flutter native kullanma işlemi Mode() klasörü artık kullanılmayacak.
-    - my profile hareketler  daha fazla göstere tıklanınca hem daha fazla gösteriyor hem de sayfa değiştiriyor
-      sadece sayfa değişecek şekilde tekrar düzenle my profile ekranında daha fazla gösterme özelliği çalışmasın.
     - profile photo border ına profilin ne kadar tamamlandığını gösteren bir ekleme yapmak
     - profilin % kaç tamamlandığını hangi adımların yapılması gerektiğini bildiren bir to do list yapılması
     - settings ekranındaki gizlilik politikası ve kullanım şartlarınının fonksiyonlarının verilmesi.
@@ -43,6 +38,6 @@ Mert Salar
 - Drawer menü açıldığında alt taraftaki bottom menu ve fab(floating action button) kaldırılcak DrawerHomePage ve DrawerProfilePage
 - bildirimler ekranında bildirimi sil butonu çalışmıyor. 
 - feed beğenme tuşları backend de çalışmıyor.
-
+- hareketler sayfasındaki bottom nav bar kaldırılacak
 
 

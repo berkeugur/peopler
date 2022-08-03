@@ -583,9 +583,6 @@ class ProfileScreenComponentsMyProfile {
                                     builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: UserBloc.myActivities)),
                               );
 
-                              numberOfActivity.value == minNumberOfActivity + 1
-                                  ? numberOfActivity.value = UserBloc.myActivities.length + 1
-                                  : numberOfActivity.value = minNumberOfActivity + 1;
                               debugPrint("çalıştı .........");
                             },
                             child: Container(
@@ -599,7 +596,7 @@ class ProfileScreenComponentsMyProfile {
                               ),
                               child: Center(
                                   child: Text(
-                                numberOfActivity.value == minNumberOfActivity + 1 ? "Daha Fazla Göster" : "Daha Az Göster",
+                                "Daha Fazla Göster",
                                 textScaleFactor: 1,
                                 style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
