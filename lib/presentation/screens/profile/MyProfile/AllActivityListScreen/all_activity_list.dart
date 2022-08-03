@@ -53,8 +53,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                         Text(
                           txt.peoplerTXT,
                           textScaleFactor: 1,
-                          style: GoogleFonts.spartan(
-                              color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 24),
+                          style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 24),
                         ),
                         const SizedBox.square(
                           dimension: 25,
@@ -94,11 +93,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                                   decoration: BoxDecoration(
                                     color: _mode.bottomMenuBackground(),
                                     boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                          color: Color(0xFF939393).withOpacity(0.6),
-                                          blurRadius: 0.5,
-                                          spreadRadius: 0,
-                                          offset: const Offset(0, 0))
+                                      BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                     ],
                                     //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                                   ),
@@ -111,17 +106,11 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                                             children: [
                                               Text(
                                                 "#" + widget.profileData.pplName!,
-                                                style: GoogleFonts.rubik(
-                                                    fontSize: 14,
-                                                    color: _mode.blackAndWhiteConversion(),
-                                                    fontWeight: FontWeight.w600),
+                                                style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                               ),
                                               Text(
                                                 " " + activityText(index),
-                                                style: GoogleFonts.rubik(
-                                                    fontSize: 14,
-                                                    color: _mode.blackAndWhiteConversion(),
-                                                    fontWeight: FontWeight.normal),
+                                                style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                               ),
                                             ],
                                           ),
@@ -134,11 +123,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                                           color: _mode.homeScreenFeedBackgroundColor(),
                                           borderRadius: BorderRadius.circular(10),
                                           boxShadow: <BoxShadow>[
-                                            BoxShadow(
-                                                color: Color(0xFF939393).withOpacity(0.6),
-                                                blurRadius: 1,
-                                                spreadRadius: 0.2,
-                                                offset: const Offset(0, 0))
+                                            BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 1, spreadRadius: 0.2, offset: const Offset(0, 0))
                                           ],
                                         ),
                                         child: feedView(context, index),
@@ -162,20 +147,15 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
     final Mode _mode = locator<Mode>();
 
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0,
-          vertical: 5),
-      padding: MediaQuery.of(context).size.width < 340
-          ? const EdgeInsets.fromLTRB(10, 20, 0, 20)
-          : const EdgeInsets.fromLTRB(20, 20, 0, 20),
+      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
+      padding: MediaQuery.of(context).size.width < 340 ? const EdgeInsets.fromLTRB(10, 20, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildFeedScreenFeedUserPhoto(index),
           SizedBox(
-            width:
-                MediaQuery.of(context).size.width > 600 ? 600 - 90 - 60 : MediaQuery.of(context).size.width - 90 - 60,
+            width: MediaQuery.of(context).size.width > 600 ? 600 - 90 - 60 : MediaQuery.of(context).size.width - 90 - 60,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,10 +206,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      right: MediaQuery.of(context).size.width < 600
-                          ? MediaQuery.of(context).size.width * 0.15
-                          : 600 * 0.15),
+                  padding: EdgeInsets.only(right: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.15 : 600 * 0.15),
                   child: _buildLikeDislikeIcons(context, index),
                   //BlocProvider<LikedBloc>(create: (context) => _likedBloc, child: _buildLikeDislikeIcons(context,)),
                 )
@@ -289,29 +266,10 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                  */
           },
           child: SvgPicture.asset(
-            "assets/images/svg_icons/smile.svg",
+            "assets/images/svg_icons/up_arrow.svg",
             color: _mode.blackAndWhiteConversion(),
             fit: BoxFit.contain,
           ),
-
-          /*
-              SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: (state is LikeState)
-                      ? SvgPicture.asset(
-                    "assets/images/svg_icons/smile.svg",
-                    color: Colors.pink,
-                    fit: BoxFit.contain,
-                  )
-                      : SvgPicture.asset(
-                    "assets/images/svg_icons/smile.svg",
-                    color: Mode().blackAndWhiteConversion(),
-                    fit: BoxFit.contain,
-                  )
-              ),
-
-               */
         ),
         //build   },
         //),
@@ -338,7 +296,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
             height: 20,
             width: 20,
             child: SvgPicture.asset(
-              "assets/images/svg_icons/meh.svg",
+              "assets/images/svg_icons/down_arrow.svg",
               color: _mode.blackAndWhiteConversion(),
               fit: BoxFit.contain,
             )),
@@ -361,9 +319,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
     return Container(
       //color: Colors.purple,
       child: Padding(
-        padding: MediaQuery.of(context).size.width < 340
-            ? const EdgeInsets.only(right: 10.0)
-            : const EdgeInsets.only(right: 20.0),
+        padding: MediaQuery.of(context).size.width < 340 ? const EdgeInsets.only(right: 10.0) : const EdgeInsets.only(right: 20.0),
         child: Text(
           widget.myActivities[index].feedExplanation,
           textScaleFactor: 1,

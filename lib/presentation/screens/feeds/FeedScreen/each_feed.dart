@@ -32,19 +32,10 @@ class eachFeedWidget extends StatelessWidget {
           valueListenable: setTheme,
           builder: (context, x, y) {
             return Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0,
-                  vertical: 5),
-              padding:
-                  index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
+              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
+              padding: index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
               decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Color(0xFF939393).withOpacity(0.6),
-                      blurRadius: 0.5,
-                      spreadRadius: 0,
-                      offset: const Offset(0, 0))
-                ],
+                boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
                 color: _mode.homeScreenFeedBackgroundColor(),
               ),
               child: Row(
@@ -113,10 +104,7 @@ class eachFeedWidget extends StatelessWidget {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width < 600
-                                  ? MediaQuery.of(context).size.width * 0.15
-                                  : 600 * 0.15),
+                          padding: EdgeInsets.only(right: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.15 : 600 * 0.15),
                           child: BlocProvider<LikedBloc>(
                               create: (context) => _likedBloc,
                               child: _buildLikeDislikeIcons(
@@ -155,37 +143,25 @@ class eachFeedWidget extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 if (state is LikeState) {
-                  _likedBloc.add(SwapLikedEvent(
-                      type: 'liked', setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
+                  _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                   myFeed.liked -= 1;
                 } else if (state is DislikeState) {
-                  _likedBloc.add(SwapLikedEvent(
-                      type: 'liked', setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
+                  _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                   myFeed.liked += 1;
                   myFeed.disliked -= 1;
                 } else {
-                  _likedBloc.add(SwapLikedEvent(
-                      type: Strings.activityLiked,
-                      setClear: true,
-                      feedID: myFeed.feedID,
-                      userID: UserBloc.user!.userID));
+                  _likedBloc.add(SwapLikedEvent(type: Strings.activityLiked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                   myFeed.liked += 1;
                 }
               },
               child: SizedBox(
                   height: 20,
                   width: 20,
-                  child: (state is LikeState)
-                      ? SvgPicture.asset(
-                          "assets/images/svg_icons/smile.svg",
-                          color: Colors.green,
-                          fit: BoxFit.contain,
-                        )
-                      : SvgPicture.asset(
-                          "assets/images/svg_icons/smile.svg",
-                          color: _mode.blackAndWhiteConversion(),
-                          fit: BoxFit.contain,
-                        )),
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/up_arrow.svg",
+                    color: (state is LikeState) ? Colors.green : Mode().blackAndWhiteConversion(),
+                    fit: BoxFit.contain,
+                  )),
             );
           },
         ),
@@ -217,43 +193,25 @@ class eachFeedWidget extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 if (state is DislikeState) {
-                  _likedBloc.add(SwapLikedEvent(
-                      type: Strings.activityDisliked,
-                      setClear: false,
-                      feedID: myFeed.feedID,
-                      userID: UserBloc.user!.userID));
+                  _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                   myFeed.disliked -= 1;
                 } else if (state is LikeState) {
-                  _likedBloc.add(SwapLikedEvent(
-                      type: Strings.activityDisliked,
-                      setClear: true,
-                      feedID: myFeed.feedID,
-                      userID: UserBloc.user!.userID));
+                  _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                   myFeed.disliked += 1;
                   myFeed.liked -= 1;
                 } else {
-                  _likedBloc.add(SwapLikedEvent(
-                      type: Strings.activityDisliked,
-                      setClear: true,
-                      feedID: myFeed.feedID,
-                      userID: UserBloc.user!.userID));
+                  _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                   myFeed.disliked += 1;
                 }
               },
               child: SizedBox(
                   height: 20,
                   width: 20,
-                  child: (state is DislikeState)
-                      ? SvgPicture.asset(
-                          "assets/images/svg_icons/meh.svg",
-                          color: Colors.pink,
-                          fit: BoxFit.contain,
-                        )
-                      : SvgPicture.asset(
-                          "assets/images/svg_icons/meh.svg",
-                          color: _mode.blackAndWhiteConversion(),
-                          fit: BoxFit.contain,
-                        )),
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/down_arrow.svg",
+                    color: (state is DislikeState) ? Colors.pink : Mode().blackAndWhiteConversion(),
+                    fit: BoxFit.contain,
+                  )),
             );
           },
         ),
@@ -277,9 +235,7 @@ class eachFeedWidget extends StatelessWidget {
   }
 
   Container _buildFeedScreenFeedUserPhoto(context) {
-    String imageUrl = myFeed.userPhotoUrl != ''
-        ? myFeed.userPhotoUrl
-        : 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png';
+    String imageUrl = myFeed.userPhotoUrl != '' ? myFeed.userPhotoUrl : 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png';
 
     return Container(
         height: 60,

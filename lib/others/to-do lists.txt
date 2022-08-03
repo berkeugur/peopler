@@ -38,8 +38,7 @@ Berke Uğur
     - mesajlaşma ekranına emoji picker eklemek,
     - mesajlarda sadece tek emoji var ise emojiyi mesaj kutusu içinde değil de daha büyük şekilde göstermek
 
-
-Mert Salar
+Mert Salar 
 - a kişisi b kişine istek gönderdiği zaman ve b kişisi kabul ettiği zaman b kişinini receivedRequestUserIDs lerinden a kişisi silinmiyor.
 - Drawer menü açıldığında alt taraftaki bottom menu ve fab(floating action button) kaldırılcak DrawerHomePage ve DrawerProfilePage
 - bildirimler ekranında bildirimi sil butonu çalışmıyor. 

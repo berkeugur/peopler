@@ -493,7 +493,7 @@ class ProfileScreenComponentsMyProfile {
     return Row(
       children: [
         SvgPicture.asset(
-          "assets/images/svg_icons/smile.svg",
+          "assets/images/svg_icons/up_arrow.svg",
           color: _mode.blackAndWhiteConversion(),
           fit: BoxFit.contain,
         ),
@@ -521,7 +521,7 @@ class ProfileScreenComponentsMyProfile {
             height: 20,
             width: 20,
             child: SvgPicture.asset(
-              "assets/images/svg_icons/meh.svg",
+              "assets/images/svg_icons/down_arrow.svg",
               color: _mode.blackAndWhiteConversion(),
               fit: BoxFit.contain,
             )),
