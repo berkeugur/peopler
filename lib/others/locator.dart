@@ -8,6 +8,7 @@ import 'package:peopler/data/repository/notification_repository.dart';
 import 'package:peopler/data/repository/saved_repository.dart';
 import 'package:peopler/data/services/db/firebase_db_common.dart';
 import 'package:peopler/data/services/db/firebase_db_service_message.dart';
+import 'package:peopler/data/services/remote_config/remote_config.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/OnBoardingScreen/constants.dart';
@@ -68,6 +69,11 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => PurchaseApi());
   final PurchaseApi _purchaseApi = locator<PurchaseApi>();
   await _purchaseApi.init();
+
+  /// Firebase Remote Config Service
+  locator.registerLazySingleton(() => FirebaseRemoteConfigService());
+  final FirebaseRemoteConfigService _remoteConfig = locator<FirebaseRemoteConfigService>();
+  await _remoteConfig.initConfig();
 
   /// Theme
   locator.registerLazySingleton(() => Mode());

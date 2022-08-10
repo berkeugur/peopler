@@ -568,6 +568,20 @@ class FirestoreDBServiceUsers {
     }
   }
 
+  Future<bool> makeNotificationInvisible(String myUserID, String notificationID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .collection('notifications')
+          .doc(notificationID)
+          .update({'notificationVisible': false});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<List<Notifications>> getRequestsWithPagination(
       String myUserID,
       Notifications? lastSelectedRequest,

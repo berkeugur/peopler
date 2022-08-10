@@ -1,4 +1,7 @@
 class Strings {
+  /// VERSION
+  static const String version = "update_v1_0";
+
   /// LinkedIn Parameters (From LinkedIn Developer Page)
   static const String redirectUrl =
       'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';

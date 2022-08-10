@@ -86,7 +86,7 @@ class FeedScreenState extends State<FeedScreen> {
                   child: NotificationListener<ScrollNotification>(
                     onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                     child: RefreshIndicator(
-                      color: Color(0xFF0353EF),
+                      color: const Color(0xFF0353EF),
                       displacement: 120.0,
                       onRefresh: () async {
                         /// Refresh feeds
@@ -252,7 +252,7 @@ class FeedScreenState extends State<FeedScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DrawerMenuWidget(),
+                const DrawerMenuWidget(),
                 InkWell(
                   onTap: () => op_peopler_title(context, _scrollController),
                   child: Text(

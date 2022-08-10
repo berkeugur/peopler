@@ -8,12 +8,8 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
-import 'package:peopler/presentation/screens/Settings/components/theme_settings_field.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_screen.dart';
-import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
-import 'package:flutter/material.dart';
-
 import '../../presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 
 class CircularImage extends StatelessWidget {
@@ -29,7 +25,7 @@ class CircularImage extends StatelessWidget {
     return Container(
       width: _width,
       height: _height,
-      decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: image), boxShadow: [
+      decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: image), boxShadow: const [
         BoxShadow(
           blurRadius: 10,
           color: Colors.black45,
@@ -45,7 +41,8 @@ class DrawerMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => ZoomDrawer.of(context)!.toggle(),
+      // onTap: () => ZoomDrawer.of(context)!.toggle(),
+      onTap: () => op_settings_icon(context),
       child: SvgPicture.asset(
         "assets/images/svg_icons/sort.svg",
         width: 32,
@@ -81,7 +78,7 @@ class _MenuPageState extends State<MenuPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   profilePhoto(context),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
@@ -89,7 +86,7 @@ class _MenuPageState extends State<MenuPage> {
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   theme_change_buttons(_themeCubit),
@@ -239,7 +236,7 @@ class _MenuPageState extends State<MenuPage> {
     IconData? icon,
   }) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       child: InkWell(
         onTap: () => op_settings_icon(context),
         child: Row(
@@ -259,10 +256,10 @@ class _MenuPageState extends State<MenuPage> {
                         color: Colors.white,
                         fit: BoxFit.contain,
                       )
-                    : SizedBox.square(
+                    : const SizedBox.square(
                         dimension: 25,
                       ),
-            SizedBox(
+            const SizedBox(
               width: 40,
             ),
             Text(
@@ -280,7 +277,7 @@ class _MenuPageState extends State<MenuPage> {
 
 class DrawerHomePage extends StatefulWidget {
   final GlobalKey<FeedScreenState> feedListKey;
-  DrawerHomePage({Key? key, required this.feedListKey}) : super(key: key);
+  const DrawerHomePage({Key? key, required this.feedListKey}) : super(key: key);
 
   @override
   State<DrawerHomePage> createState() => _DrawerHomePageState();
@@ -295,33 +292,31 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ZoomDrawer(
-        shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
-        shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
-        showShadow: true,
-        mainScreenTapClose: true,
-        borderRadius: 24.0,
-        angle: 0,
-        style: DrawerStyle.defaultStyle,
-        // showShadow: true,
-        openCurve: Curves.fastOutSlowIn,
-        slideWidth: MediaQuery.of(context).size.width * 0.70,
-        duration: const Duration(milliseconds: 500),
-        // angle: 0.0,
-        menuBackgroundColor: Color(0xFF0353EF),
+    return ZoomDrawer(
+      shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+      shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
+      showShadow: true,
+      mainScreenTapClose: true,
+      borderRadius: 24.0,
+      angle: 0,
+      style: DrawerStyle.defaultStyle,
+      // showShadow: true,
+      openCurve: Curves.fastOutSlowIn,
+      slideWidth: MediaQuery.of(context).size.width * 0.70,
+      duration: const Duration(milliseconds: 500),
+      // angle: 0.0,
+      menuBackgroundColor: const Color(0xFF0353EF),
 
-        mainScreen: FeedScreen(
-          key: widget.feedListKey,
-        ),
-        menuScreen: MenuPage(),
+      mainScreen: FeedScreen(
+        key: widget.feedListKey,
       ),
+      menuScreen: MenuPage(),
     );
   }
 }
 
 class DrawerProfilePage extends StatefulWidget {
-  DrawerProfilePage({Key? key}) : super(key: key);
+  const DrawerProfilePage({Key? key}) : super(key: key);
 
   @override
   State<DrawerProfilePage> createState() => _DrawerProfilePageState();
@@ -336,25 +331,23 @@ class _DrawerProfilePageState extends State<DrawerProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ZoomDrawer(
-        shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
-        shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
-        showShadow: true,
-        mainScreenTapClose: true,
-        borderRadius: 24.0,
-        angle: 0,
-        style: DrawerStyle.defaultStyle,
-        // showShadow: true,
-        openCurve: Curves.fastOutSlowIn,
-        slideWidth: MediaQuery.of(context).size.width * 0.70,
-        duration: const Duration(milliseconds: 500),
-        // angle: 0.0,
-        menuBackgroundColor: Color(0xFF0353EF),
+    return ZoomDrawer(
+      shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+      shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
+      showShadow: true,
+      mainScreenTapClose: true,
+      borderRadius: 24.0,
+      angle: 0,
+      style: DrawerStyle.defaultStyle,
+      // showShadow: true,
+      openCurve: Curves.fastOutSlowIn,
+      slideWidth: MediaQuery.of(context).size.width * 0.70,
+      duration: const Duration(milliseconds: 500),
+      // angle: 0.0,
+      menuBackgroundColor: const Color(0xFF0353EF),
 
-        mainScreen: ProfileScreen(),
-        menuScreen: MenuPage(),
-      ),
+      mainScreen: const ProfileScreen(),
+      menuScreen: const MenuPage(),
     );
   }
 }

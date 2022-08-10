@@ -5,6 +5,7 @@ class Notifications {
   bool? didAccepted;
   int? youAreOnOtherPeoplesListLength;
   int? numberOfNewFeed;
+  bool notificationVisible = true;
   DateTime? createdAt;
 
   /// Below fields does not exists in Firestore, get them through /users collection
@@ -24,6 +25,7 @@ class Notifications {
       'didAccepted': didAccepted ?? false,
       'youAreOnOtherPeoplesListLength': youAreOnOtherPeoplesListLength ?? 0,
       'numberOfNewFeed': numberOfNewFeed ?? 0,
+      'notificationVisible': notificationVisible,
       'createdAt': createdAt ?? DateTime.now()
     };
   }
@@ -35,5 +37,6 @@ class Notifications {
         didAccepted = map['didAccepted'],
         youAreOnOtherPeoplesListLength = map['youAreOnOtherPeoplesListLength'],
         numberOfNewFeed = map['numberOfNewFeed'],
+        notificationVisible = map['notificationVisible'],
         createdAt = map['createdAt'].toDate();
 }

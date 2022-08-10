@@ -103,6 +103,9 @@ class NotificationRepository {
     await _firestoreDBServiceUsers.deleteReceivedUserIDsField(myUserID, requestUserID);
   }
 
+  Future<void> makeNotificationInvisible(String myUserID, String notificationID) async {
+    await _firestoreDBServiceUsers.makeNotificationInvisible(myUserID, notificationID);
+  }
 
   void restartTransmittedRequestCache() async {
     _hasMoreTransmitted = true;

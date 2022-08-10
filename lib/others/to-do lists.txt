@@ -35,8 +35,12 @@ Berke Uğur
 Mert Salar 
 - a kişisi b kişine istek gönderdiği zaman ve b kişisi kabul ettiği zaman b kişinini receivedRequestUserIDs lerinden a kişisi silinmiyor.
 - Drawer menü açıldığında alt taraftaki bottom menu ve fab(floating action button) kaldırılcak DrawerHomePage ve DrawerProfilePage
-- bildirimler ekranında bildirimi sil butonu çalışmıyor. 
+    Şimdilik doğrudan eski settings sayfasına yönlendiriyorum.
+- bildirimler ekranında bildirimi sil butonu çalışmıyor.
+    Tamamlandı.
 - feed beğenme tuşları backend de çalışmıyor.
+    Şimdilik rulesta herkese izin verdim, ancak ileride feed altında public isimli bir documentte liked-disliked'ı sadece herkese açıcam
 - hareketler sayfasındaki bottom nav bar kaldırılacak
+   Tamamlandı.
 
 

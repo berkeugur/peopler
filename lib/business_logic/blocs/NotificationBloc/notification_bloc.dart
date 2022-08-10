@@ -41,9 +41,14 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           _hasMore = false;
         }
 
-        _allNotificationList.addAll(newNotificationList);
+        /// If notification is not visible (if it is deleted by user before), then remove it from list
+        int newNotificationListLength = newNotificationList.length;
+        for(int i=0; i<newNotificationListLength; i++){
+            newNotificationList.removeWhere((item) => item.notificationVisible == false);
+        }
 
         if(_allNotificationList.isNotEmpty) {
+          _allNotificationList.addAll(newNotificationList);
           if(state is NotificationLoadedState1) {
             emit(NotificationLoadedState2());
           } else {
@@ -102,7 +107,25 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       try {
         await _notificationRepository.acceptConnectionRequest(UserBloc.user!.userID, event.requestUserID);
       } catch (e) {
-        debugPrint("Blocta get more data ClickAcceptEvent hata:" + e.toString());
+        debugPrint("Blocta ClickAcceptEvent hata:" + e.toString());
+      }
+    });
+
+    on<DeleteNotification>((event, emit) async {
+      try {
+        int index = _allNotificationList.indexWhere((element) => element.notificationID == event.notificationID);
+        _allNotificationList.removeAt(index);
+
+        await _notificationRepository.makeNotificationInvisible(UserBloc.user!.userID, event.notificationID);
+
+        if(state is NotificationLoadedState1) {
+          emit(NotificationLoadedState2());
+        } else {
+          emit(NotificationLoadedState1());
+        }
+
+      } catch (e) {
+        debugPrint("Blocta DeleteNotification hata:" + e.toString());
       }
     });
   }

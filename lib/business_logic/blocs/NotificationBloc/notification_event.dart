@@ -33,3 +33,16 @@ class ClickAcceptEvent extends NotificationEvent {
   @override
   List<Object> get props => [requestUserID];
 }
+
+class DeleteNotification extends NotificationEvent {
+  final String notificationID;
+
+  DeleteNotification({
+    required this.notificationID,
+  });
+
+  @override
+  List<Object> get props => [notificationID];
+}
+
+

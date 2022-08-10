@@ -87,7 +87,7 @@ Widget customListItem(int index, context) {
     case 'ReceivedRequest':
       {
         return inComingRequestNotificationWidget(_maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _customSmallTextSize,
-            _rightColumnSize, _notificationBloc, index);
+            _rightColumnSize, index);
       }
     case 'TransmittedRequest':
       {
@@ -186,7 +186,7 @@ Container newFeedWidget(
           //color: Colors.red,
           width: _rightColumnSize,
           height: 70,
-          child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
+          child: _rightColumn(context, _data, _customTextSize - 2),
         )
       ],
     ),
@@ -271,7 +271,7 @@ Container youAreOnTheOtherPeoplesList(
           //color: Colors.red,
           width: _rightColumnSize,
           height: 70,
-          child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
+          child: _rightColumn(context, _data, _customTextSize - 2),
         )
       ],
     ),
@@ -368,7 +368,7 @@ Widget acceptYourRequestWidget(
                 //color: Colors.red,
                 width: _rightColumnSize,
                 height: 70,
-                child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
+                child: _rightColumn(context,  _data, _customTextSize - 2),
               )
             ],
           ),
@@ -380,7 +380,8 @@ void _clickGeriAl() {
 }
 
 Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
-    double _customTextSize, double _customSmallTextSize, double _rightColumnSize, NotificationBloc notificationBloc, index) {
+    double _customTextSize, double _customSmallTextSize, double _rightColumnSize, index) {
+
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -445,7 +446,7 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
                     if(_data.didAccepted!) {
                       _clickMessage(_data, context);
                     } else {
-                      _clickAccept(context, notificationBloc, _data, index);
+                      _clickAccept(context, _data, index);
                     }
                   },
                   child: Container(
@@ -472,7 +473,7 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
           //color: Colors.red,
           width: _rightColumnSize,
           height: 70,
-          child: _rightColumn(context, _data.createdAt.toString(), _customTextSize - 2),
+          child: _rightColumn(context,  _data, _customTextSize - 2),
         )
       ],
     ),
@@ -501,8 +502,10 @@ void _clickMessage(Notifications _data, context) {
   );
 }
 
-void _clickAccept(context, NotificationBloc notificationBloc, Notifications _data, index) {
+void _clickAccept(context, Notifications _data, index) {
   ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
+
+  NotificationBloc notificationBloc = BlocProvider.of<NotificationBloc>(context);
 
   notificationBloc.add(ClickAcceptEvent(
       requestUserID: _data.requestUserID!));
@@ -522,13 +525,14 @@ void _clickAccept(context, NotificationBloc notificationBloc, Notifications _dat
 }
 
 
-Column _rightColumn(context, String time, double _customTextSize) {
+Column _rightColumn(context, Notifications _data, double _customTextSize) {
   final Mode _mode = locator<Mode>();
+  NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
       AutoSizeText(
-        elapsedTime(time),
+        elapsedTime(_data.createdAt.toString()),
         textScaleFactor: 1,
         style: GoogleFonts.rubik(
           fontSize: _customTextSize,
@@ -547,18 +551,19 @@ Column _rightColumn(context, String time, double _customTextSize) {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      leading: const Icon(
-                        Icons.delete_rounded,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        'Bildirimi Sil',
-                        style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
-                      ),
-                      onTap: () {
-                        //delete function
-                        Navigator.pop(context);
-                      },
+                        onTap: () {
+                          //delete notification function
+                          _notificationBloc.add(DeleteNotification(notificationID: _data.notificationID));
+                          Navigator.pop(context);
+                        },
+                        leading: const Icon(
+                          Icons.delete_rounded,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          'Bildirimi Sil',
+                          style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                        ),
                     ),
                   ],
                 );

@@ -587,10 +587,16 @@ class ProfileScreenComponentsMyProfile {
                         if (index == numberOfActivity.value - 1) {
                           return InkWell(
                             onTap: () {
+                              /*
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: UserBloc.myActivities)),
+                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: UserBloc.myActivities)),
+                              );
+                               */
+
+                              UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                              _userBloc.mainKey.currentState?.push(
+                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: UserBloc.myActivities)),
                               );
 
                               debugPrint("çalıştı .........");

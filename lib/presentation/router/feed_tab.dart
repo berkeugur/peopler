@@ -46,12 +46,12 @@ class _FeedScreenNavigatorState extends State<FeedScreenNavigator> with Automati
                   _homeScreen.currentScreen = {TabItem.feed: ScreenItem.feedScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
 
-                  return MaterialPageRoute(
-                      builder: (context) => MultiBlocProvider(
-                          child: DrawerHomePage(
-                            feedListKey: widget.feedListKey,
-                          ),
-                          providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
+                return MaterialPageRoute(
+                    builder: (context) => MultiBlocProvider(
+                        child: FeedScreen(
+                          key: widget.feedListKey,
+                        ),
+                        providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
                 /*
                 case '/addFeed':
                 _homeScreen.currentScreen = {TabItem.feed: ScreenItem.addFeedScreen};
