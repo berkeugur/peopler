@@ -10,6 +10,7 @@ import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
+import '../../../../others/widgets/snack_bars.dart';
 import '../../../tab_item.dart';
 import '../../profile/OthersProfile/functions.dart';
 import '../../profile/OthersProfile/profile/profile_screen_components.dart';
@@ -27,7 +28,9 @@ class eachFeedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     {
-      _likedBloc.add(GetInitialLikedEvent(userID: UserBloc.user!.userID, feedID: myFeed.feedID));
+      if(UserBloc.user != null) {
+        _likedBloc.add(GetInitialLikedEvent(userID: UserBloc.user!.userID, feedID: myFeed.feedID));
+      }
       return ValueListenableBuilder(
           valueListenable: setTheme,
           builder: (context, x, y) {
@@ -142,16 +145,18 @@ class eachFeedWidget extends StatelessWidget {
           builder: (context, state) {
             return GestureDetector(
               onTap: () {
-                if (state is LikeState) {
-                  _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
-                  myFeed.liked -= 1;
-                } else if (state is DislikeState) {
-                  _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
-                  myFeed.liked += 1;
-                  myFeed.disliked -= 1;
-                } else {
-                  _likedBloc.add(SwapLikedEvent(type: Strings.activityLiked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
-                  myFeed.liked += 1;
+                if(UserBloc.user != null) {
+                  if (state is LikeState) {
+                    _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
+                    myFeed.liked -= 1;
+                  } else if (state is DislikeState) {
+                    _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
+                    myFeed.liked += 1;
+                    myFeed.disliked -= 1;
+                  } else {
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityLiked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
+                    myFeed.liked += 1;
+                  }
                 }
               },
               child: SizedBox(
@@ -192,16 +197,27 @@ class eachFeedWidget extends StatelessWidget {
           builder: (context, state) {
             return GestureDetector(
               onTap: () {
-                if (state is DislikeState) {
-                  _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
-                  myFeed.disliked -= 1;
-                } else if (state is LikeState) {
-                  _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
-                  myFeed.disliked += 1;
-                  myFeed.liked -= 1;
-                } else {
-                  _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
-                  myFeed.disliked += 1;
+                if(UserBloc.user != null) {
+                  if (state is DislikeState) {
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked,
+                        setClear: false,
+                        feedID: myFeed.feedID,
+                        userID: UserBloc.user!.userID));
+                    myFeed.disliked -= 1;
+                  } else if (state is LikeState) {
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked,
+                        setClear: true,
+                        feedID: myFeed.feedID,
+                        userID: UserBloc.user!.userID));
+                    myFeed.disliked += 1;
+                    myFeed.liked -= 1;
+                  } else {
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked,
+                        setClear: true,
+                        feedID: myFeed.feedID,
+                        userID: UserBloc.user!.userID));
+                    myFeed.disliked += 1;
+                  }
                 }
               },
               child: SizedBox(
@@ -243,6 +259,11 @@ class eachFeedWidget extends StatelessWidget {
         margin: const EdgeInsets.only(right: 10),
         child: InkWell(
           onTap: () {
+            if(UserBloc.user == null) {
+              showYouNeedToLogin(context);
+              return;
+            }
+
             if (myFeed.userID != UserBloc.user!.userID) {
               openOthersProfile(context, myFeed.userID, SendRequestButtonStatus.connect);
             } else {

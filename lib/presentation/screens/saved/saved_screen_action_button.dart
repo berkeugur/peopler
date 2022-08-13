@@ -10,6 +10,7 @@ import '../../../data/services/db/firestore_db_service_users.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
+import '../../../others/widgets/snack_bars.dart';
 
 Widget actionButton(context, index, showWidgetsKeySaved) {
   final Mode _mode = locator<Mode>();
@@ -68,10 +69,19 @@ Widget actionButton(context, index, showWidgetsKeySaved) {
       child: Center(
           child: InkWell(
             onTap: () async {
+              if(UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+                showNumOfConnectionRequestsConsumed(context);
+                return;
+              }
+
               String _requestUserID = _savedBloc.allRequestList[index].userID;
               _savedBloc.add(ClickSendRequestButtonEvent(savedUser: _savedBloc.allRequestList[index], myUser: UserBloc.user!));
               _savedBloc.allRequestList.removeWhere((element) => element.userID == _requestUserID);
               showWidgetsKeySaved.currentState?.setState(() { });
+
+              if(UserBloc.entitlement == "free") {
+                showRestNumOfConnectionRequests(context);
+              }
 
               String _token = await _firestoreDBServiceUsers.getToken(_requestUserID);
               _sendNotificationService.sendNotification(Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);

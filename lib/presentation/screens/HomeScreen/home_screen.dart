@@ -48,7 +48,10 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
-    FCMAndLocalNotifications().initializeFCMNotifications(context);
+
+    if(UserBloc.user != null) {
+      FCMAndLocalNotifications().initializeFCMNotifications(context);
+    }
 
     /// Get offerings
     _purchaseGetOfferBloc = BlocProvider.of<PurchaseGetOfferBloc>(context);

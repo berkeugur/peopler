@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/WelcomeScreen/welcome.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/WelcomeScreen/welcome_functions.dart';
+import '../../../../data/repository/location_repository.dart';
+import '../../../../others/locator.dart';
 
 Center buildTitle() {
   return Center(
@@ -45,6 +47,15 @@ Column buildButtons(BuildContext context) {
           continueWithUniversityEmailOnPressed(context);
         },
       ),
+      const SizedBox(
+        height: 8,
+      ),
+      InkWell(onTap: () {
+        final LocationRepository _locationRepository = locator<LocationRepository>();
+        _locationRepository.requestPermission();
+        Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
+      },
+      child: const Text("Misafir", style: TextStyle(color: Colors.white),),)
     ],
   );
 }

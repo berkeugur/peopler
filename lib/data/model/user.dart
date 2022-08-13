@@ -29,6 +29,7 @@ class MyUser {
   int latitude = 0;
   int longitude = 0;
   List<String> savedUserIDs = [];
+  int numOfSendRequest = 15;
 
   MyUser();
 
@@ -92,6 +93,7 @@ class MyUser {
       'latitude': latitude,
       'longitude': longitude,
       'savedUserIDs': savedUserIDs,
+      'numOfSendRequest': numOfSendRequest,
     };
   }
 
@@ -103,6 +105,7 @@ class MyUser {
     latitude = map['latitude'];
     longitude = map['longitude'];
     savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList();
+    numOfSendRequest = map['numOfSendRequest'];
   }
 
   String randomNumberGenerator() {

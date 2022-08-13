@@ -6,9 +6,18 @@ import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 
 void openOthersProfile(context, userID, SendRequestButtonStatus status) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-  _userBloc.mainKey.currentState?.push(MaterialPageRoute(
-    builder: (context) => OthersProfileScreen(userID: userID, status: status,),
-  ));
+  if(UserBloc.user != null) {
+    _userBloc.mainKey.currentState?.push(MaterialPageRoute(
+      builder: (context) =>
+          OthersProfileScreen(userID: userID, status: status,),
+    ));
+  } else {
+    _userBloc.mainKey.currentState?.push(    MaterialPageRoute(
+      builder: (context) => const Scaffold(
+        body: Center(child: Text("Giriş yapmanız gerekiyor"),),
+      ),
+    ));
+  }
 }
 
 Future<bool> popOtherUserScreen(context) async {

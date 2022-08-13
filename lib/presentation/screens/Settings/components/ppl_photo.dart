@@ -5,7 +5,6 @@ import '../settings_page_functions.dart';
 
 // ignore: non_constant_identifier_names
 ppl_photo(BuildContext context) {
-  UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   return Center(
     child: InkWell(
       onTap: () => op_settings_ppl_photo(),
@@ -23,7 +22,7 @@ ppl_photo(BuildContext context) {
                 SizedBox(
                   height: 100,
                   width: 100,
-                  child: _userBloc != null
+                  child: UserBloc.user != null
                       ? CircleAvatar(
                           backgroundImage:
                               NetworkImage(UserBloc.user!.profileURL),

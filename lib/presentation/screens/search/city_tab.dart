@@ -19,6 +19,7 @@ import '../../../data/services/db/firestore_db_service_users.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
+import '../../../others/widgets/snack_bars.dart';
 import '../empty_list.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
@@ -300,7 +301,13 @@ class CityTabState extends State<CityTab> {
                         ),
                       ),
                       InkWell(
-                        onTap: () => openOthersProfile(context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect),
+                        onTap: () {
+                          if(UserBloc.user == null) {
+                            showYouNeedToLogin(context);
+                            return;
+                          }
+                          openOthersProfile(context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect);
+                        },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           height: 100,
@@ -427,6 +434,11 @@ class CityTabState extends State<CityTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
+                                if(UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+                                  showNumOfConnectionRequestsConsumed(context);
+                                  return;
+                                }
+
                                 final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
                                 final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
@@ -444,6 +456,10 @@ class CityTabState extends State<CityTab> {
                                 String _deletedUserID = CityBloc.allUserList[index].userID;
                                 LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                                 CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+
+                                if(UserBloc.entitlement == "free") {
+                                  showRestNumOfConnectionRequests(context);
+                                }
 
                                 Provider.of<SaveButton>(context, listen: false).saveUser();
                                 await Future.delayed(const Duration(milliseconds: 1500));

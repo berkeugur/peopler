@@ -33,7 +33,9 @@ class ChannelListBodyState extends State<ChannelListBody> {
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of<ChatBloc>(context);
-    _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
+    if(UserBloc.user != null) {
+      _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
+    }
     _scrollController = ScrollController();
   }
 
@@ -57,7 +59,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
                 onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,

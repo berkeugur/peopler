@@ -102,6 +102,11 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
 
         UserBloc.user!.savedUserIDs.remove(event.savedUser.userID);
         UserBloc.user!.transmittedRequestUserIDs.add(event.savedUser.userID);
+
+        if(UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest > 0) {
+          UserBloc.user!.numOfSendRequest -= 1;
+          await _savedRepository.decrementNumOfSendRequest(myUser.userID);
+        }
       } catch (e) {
         debugPrint("Blocta add my saved error:" + e.toString());
       }

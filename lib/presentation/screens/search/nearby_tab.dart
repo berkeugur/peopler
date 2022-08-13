@@ -16,6 +16,7 @@ import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
+import '../../../others/widgets/snack_bars.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
 
@@ -420,7 +421,13 @@ class _NearbyTabState extends State<NearbyTab> {
                         ),
                       ),
                       InkWell(
-                        onTap: () => openOthersProfile(context, LocationBloc.allUserList[index].userID, SendRequestButtonStatus.save),
+                        onTap: () {
+                          if(UserBloc.user == null) {
+                            showYouNeedToLogin(context);
+                            return;
+                          }
+                          openOthersProfile(context, LocationBloc.allUserList[index].userID, SendRequestButtonStatus.save);
+                        },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           height: 100,

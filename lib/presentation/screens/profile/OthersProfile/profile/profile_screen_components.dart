@@ -22,6 +22,7 @@ import '../../../../../data/model/saved_user.dart';
 import '../../../../../data/repository/user_repository.dart';
 import '../../../../../data/send_notification_service.dart';
 import '../../../../../data/services/db/firestore_db_service_users.dart';
+import '../../../../../others/widgets/snack_bars.dart';
 import '../../../MessageScreen/message_screen.dart';
 
 class ProfileScreenComponentsOthersProfile {
@@ -383,6 +384,11 @@ class ProfileScreenComponentsOthersProfile {
   InkWell _buildConnectStatus(BuildContext context, String otherUserID) {
     return InkWell(
       onTap: () async {
+        if(UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+          showNumOfConnectionRequestsConsumed(context);
+          return;
+        }
+
         SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
 
         final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
@@ -399,6 +405,10 @@ class ProfileScreenComponentsOthersProfile {
         _savedUser.profileURL = otherUser.profileURL;
         _savedUser.biography = otherUser.biography;
         _savedUser.hobbies = otherUser.hobbies;
+
+        if(UserBloc.entitlement == "free") {
+          showRestNumOfConnectionRequests(context);
+        }
 
         _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 

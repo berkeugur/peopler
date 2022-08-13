@@ -24,7 +24,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   bool _userListener = false;
 
   static LogInResult? revenueCatResult;
-  static String? entitlement;
+  static String entitlement = "free";
+
+  static final Set<String> adminUsers = {
+    /*
+    "mertsalar137@gmail.com",
+    "mail@berkeugur.com",
+    "alimetehanpetek@gmail.com",
+    "ahmetrtmkk@hotmail.com",
+     */
+  };
 
   Future<void> signedInUserPreparations() async {
     /// Get activities related to user
@@ -85,6 +94,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Future initPurchaserInfoStream() async {
+    updatePurchaseStatus();
     Purchases.addPurchaserInfoUpdateListener((purchaserInfo) async {
       updatePurchaseStatus();
     });
@@ -95,6 +105,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
     entitlement = entitlements.isEmpty ? "free" : entitlements[0].toString();
+
+    if(adminUsers.contains(user!.email)) {
+      entitlement = "admin";
+    }
   }
 
   UserBloc(this.mainKey) : super(InitialUserState()) {
@@ -232,8 +246,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             emit(EmailAlreadyInUseState());
             break;
         }
-        print(e.code);
-        print(e.message);
+        debugPrint(e.code);
+        debugPrint(e.message);
       } catch (e) {
         debugPrint('unhandled exceptions');
       }
@@ -252,8 +266,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             emit(UserNotFoundState());
             break;
         }
-        print(e.code);
-        print(e.message);
+        debugPrint(e.code);
+        debugPrint(e.message);
       } catch (e) {
         debugPrint('unhandled exceptions');
       }

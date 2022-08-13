@@ -582,6 +582,20 @@ class FirestoreDBServiceUsers {
     }
   }
 
+  Future<bool> decrementNumOfSendRequest(String userID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(userID)
+          .collection('private')
+          .doc('private')
+          .update({'numOfSendRequest': FieldValue.increment(-1)});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<List<Notifications>> getRequestsWithPagination(
       String myUserID,
       Notifications? lastSelectedRequest,

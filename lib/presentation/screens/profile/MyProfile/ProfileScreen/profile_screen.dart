@@ -142,13 +142,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DrawerMenuWidget(),
+          const DrawerMenuWidget(),
           Text(
             "peopler",
             textScaleFactor: 1,
             style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
           ),
-          SizedBox.square(
+          const SizedBox.square(
             dimension: 25,
           ),
           /*

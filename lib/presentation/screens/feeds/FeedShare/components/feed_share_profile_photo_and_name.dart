@@ -33,7 +33,7 @@ Padding profilePhotoAndName(context) {
                   child: Text("ppl"),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
                 width: 60,
                 child: CircleAvatar(

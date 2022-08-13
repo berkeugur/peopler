@@ -84,6 +84,12 @@ class SavedRepository {
     await deleteSavedUser(myUser.userID, requestUser.userID);
   }
 
+  Future<void> decrementNumOfSendRequest(String userID) async {
+    await _firestoreDBServiceUsers.decrementNumOfSendRequest(userID);
+  }
+
+
+
   // When the "close" button is clicked, this function run
   Future<void> deleteSavedUser(String myUserID, String savedUserID) async {
     await _firestoreDBServiceUsers.deleteUserFromSavedUsers(myUserID, savedUserID);

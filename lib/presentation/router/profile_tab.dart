@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/others/widgets/drawer.dart';
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import '../tab_item.dart';
 
@@ -33,11 +34,20 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
             onGenerateRoute: (routeSettings) {
               switch (routeSettings.name) {
                 case '/':
-                  _homeScreen.currentScreen = {TabItem.profile: ScreenItem.profileScreen};
+                  _homeScreen.currentScreen =
+                  {TabItem.profile: ScreenItem.profileScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  return MaterialPageRoute(
-                    builder: (context) => DrawerProfilePage(),
-                  );
+                  if(UserBloc.user != null) {
+                    return MaterialPageRoute(
+                      builder: (context) => const DrawerProfilePage(),
+                    );
+                  } else {
+                    return MaterialPageRoute(
+                      builder: (context) => const Scaffold(
+                        body: Center(child: Text("Giriş yapmanız gerekiyor"),),
+                      ),
+                    );
+                  }
                 default:
                   debugPrint('ERROR: Notification Tab Router unknown route');
                   return null;

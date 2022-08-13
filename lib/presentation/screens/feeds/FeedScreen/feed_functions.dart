@@ -11,13 +11,23 @@ import '../../../tab_item.dart';
 // ignore: non_constant_identifier_names
 op_settings_icon(context) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-  _userBloc.mainKey.currentState?.push(
-    MaterialPageRoute(builder: (context) => const SettingsScreen()),
-  );
+  if(UserBloc.user != null) {
+    _userBloc.mainKey.currentState?.push(
+      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    );
+  } else {
+    _userBloc.mainKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) => const Scaffold(
+          body: Center(child: Text("Giriş yapmanız gerekiyor"),),
+        ),
+      ),
+    );
+  }
 }
 
-op_peopler_title(context, ScrollController _scrollController) {
-  _scrollController.animateTo(10, duration: Duration(seconds: 2), curve: Curves.easeInOutSine);
+op_peopler_title(context, ScrollController scrollController) {
+  scrollController.animateTo(10, duration: const Duration(seconds: 2), curve: Curves.easeInOutSine);
   return;
 }
 

@@ -64,9 +64,21 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
         backgroundColor: const Color(0xFF0353EF),
         onPressed: () {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-          _userBloc.mainKey.currentState?.push(
-            MaterialPageRoute(builder: (context) =>  BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
-          );
+          if(UserBloc.user != null) {
+            _userBloc.mainKey.currentState?.push(
+              MaterialPageRoute(builder: (context) =>
+              BlocProvider<FeedBloc>.value(
+                  value: _feedBloc, child: const FeedShareScreen())),
+            );
+          } else {
+            _userBloc.mainKey.currentState?.push(
+              MaterialPageRoute(
+                builder: (context) => const Scaffold(
+                  body: Center(child: Text("Giriş yapmanız gerekiyor"),),
+                ),
+              ),
+            );
+          }
         },
       ),
     );

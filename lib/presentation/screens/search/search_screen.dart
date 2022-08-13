@@ -43,7 +43,9 @@ class _SearchScreenState extends State<SearchScreen> {
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
-    _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
+    if(UserBloc.user != null) {
+      _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
+    }
   }
 
   // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,

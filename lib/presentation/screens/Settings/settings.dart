@@ -88,7 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             const SizedBox(
                               height: 30,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 40,
                             ),
                             SizedBox.square(dimension: 50, child: Image.asset("assets/ic_launcher.png")),
@@ -101,11 +101,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Padding(
-                              padding: EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(20),
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(5),
                                 onTap: () {
@@ -144,7 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                 "Vazgeç",
                                                 textScaleFactor: 1,
                                                 style: GoogleFonts.rubik(
-                                                  color: Color(0xFF0353EF),
+                                                  color: const Color(0xFF0353EF),
                                                 ),
                                               ),
                                             ),
@@ -154,10 +154,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   print("tapped");
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.all(13),
+                                  padding: const EdgeInsets.all(13),
                                   decoration: BoxDecoration(boxShadow: <BoxShadow>[
                                     BoxShadow(
-                                      color: Color.fromARGB(255, 233, 233, 233).withOpacity(1),
+                                      color: const Color.fromARGB(255, 233, 233, 233).withOpacity(1),
                                       blurRadius: 0.5,
                                       spreadRadius: 1,
                                       offset: const Offset(0, 0),

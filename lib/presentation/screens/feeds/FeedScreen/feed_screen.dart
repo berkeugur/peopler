@@ -204,7 +204,7 @@ class FeedScreenState extends State<FeedScreen> {
                       onTap: () {
                         UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                         _userBloc.mainKey.currentState?.push(
-                          MaterialPageRoute(builder: (context) => SubscriptionsPage()),
+                          MaterialPageRoute(builder: (context) => const SubscriptionsPage()),
                         );
                       },
                       child: Container(

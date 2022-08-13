@@ -4,6 +4,7 @@ import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/presentation/screens/ChatScreen/channel_list.dart';
 import '../../business_logic/blocs/SavedBloc/saved_bloc.dart';
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../tab_item.dart';
 
 class ChatScreenNavigator extends StatefulWidget {
@@ -37,11 +38,19 @@ class _ChatScreenNavigatorState extends State<ChatScreenNavigator> with Automati
                 case '/':
                   _homeScreen.currentScreen = {TabItem.chat: ScreenItem.chatScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  return MaterialPageRoute(
-                    builder: (context) => MultiBlocProvider(child: const ChatScreen(), providers: [
-                      BlocProvider.value(value: _savedBloc),
-                    ]),
-                  );
+                  if(UserBloc.user != null) {
+                    return MaterialPageRoute(
+                      builder: (context) => MultiBlocProvider(child: const ChatScreen(), providers: [
+                        BlocProvider.value(value: _savedBloc),
+                      ]),
+                    );
+                  } else {
+                    return MaterialPageRoute(
+                      builder: (context) => const Scaffold(
+                        body: Center(child: Text("Giriş yapmanız gerekiyor"),),
+                      ),
+                    );
+                  }
                 default:
                   debugPrint('ERROR: Chat Tab Router unknown route');
                   return null;
