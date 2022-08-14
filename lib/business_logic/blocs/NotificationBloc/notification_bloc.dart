@@ -128,6 +128,19 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         debugPrint("Blocta DeleteNotification hata:" + e.toString());
       }
     });
+
+    on<GeriAlButtonEvent>((event, emit) async {
+      try {
+        UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
+        _allNotificationList.removeWhere((element) => element.requestUserID == event.requestUserID);
+
+        emit(NotificationsLoadingState());
+        await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);
+        emit(NotificationLoadedState1());
+      } catch (e) {
+        debugPrint("Blocta geri al error:" + e.toString());
+      }
+    });
   }
 
   @override

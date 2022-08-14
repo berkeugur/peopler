@@ -34,6 +34,16 @@ class ClickAcceptEvent extends NotificationEvent {
   List<Object> get props => [requestUserID];
 }
 
+class GeriAlButtonEvent extends NotificationEvent {
+  final String requestUserID;
+  GeriAlButtonEvent({
+    required this.requestUserID,
+  });
+
+  @override
+  List<Object> get props => [requestUserID];
+}
+
 class DeleteNotification extends NotificationEvent {
   final String notificationID;
 

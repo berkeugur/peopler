@@ -63,7 +63,7 @@ class SavedRepository {
   }
 
 
-  // When the "Send Connection Request" button is clicked, this function run
+  /// When the "Send Connection Request" button is clicked, this function run
   Future<void> saveConnectionRequest(SavedUser myUser, SavedUser requestUser) async {
     Notifications myNotification = Notifications();
     myNotification.notificationID = requestUser.userID;

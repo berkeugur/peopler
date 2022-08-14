@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import '../../../../business_logic/blocs/SavedBloc/bloc.dart';
+import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../empty_list.dart';
@@ -155,7 +157,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
         color: _mode.bottomMenuBackground(),
         boxShadow: <BoxShadow>[
           BoxShadow(
-              color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+              color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
         ],
         //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
       ),
@@ -226,11 +228,8 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
               children: [
                 InkWell(
                   onTap: () {
-                    /*
-                    fakeOutGoingRequest.removeAt(index);
-                    setState((){});
-
-                     */
+                    String requestUserID = _notificationTransmittedBloc.allTransmittedList[index].requestUserID!;
+                    _notificationTransmittedBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
                   },
                   child: SizedBox(
                       height: _buttonSize + 7,

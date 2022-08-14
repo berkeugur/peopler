@@ -341,7 +341,7 @@ Widget acceptYourRequestWidget(
                           if(_data.didAccepted!) {
                             _clickMessage(_data, context);
                           } else {
-                            _clickGeriAl();
+                            _clickGeriAl(context, _data);
                           }
                         },
                         child: Container(
@@ -375,8 +375,10 @@ Widget acceptYourRequestWidget(
         );
 }
 
-void _clickGeriAl() {
-
+void _clickGeriAl(BuildContext context, Notifications notification) {
+  NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+  String requestUserID = notification.requestUserID!;
+  _notificationBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
 }
 
 Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,

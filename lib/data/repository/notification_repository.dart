@@ -91,16 +91,24 @@ class NotificationRepository {
     await _firestoreDBServiceUsers.deleteReceivedUserIDsField(myUserID, requestUserID);
   }
 
-  // When the "Not Accept" button is clicked, this function run
+  /// When the "Not Accept" button is clicked, this function run
   Future<void> notAcceptConnectionRequest(String myUserID, String requestUserID) async {
-    // requestUserID is notificationID for incoming request for me
+    /// requestUserID is notificationID for incoming request for me
     await _firestoreDBServiceUsers.deleteNotificationFromUser(myUserID, requestUserID);
 
-    // myUserID is notificationID for outgoing request for host
+    /// myUserID is notificationID for outgoing request for host
     await _firestoreDBServiceUsers.deleteNotificationFromUser(requestUserID, myUserID);
 
     await _firestoreDBServiceUsers.deleteTransmittedUserIDsField(requestUserID, myUserID);
     await _firestoreDBServiceUsers.deleteReceivedUserIDsField(myUserID, requestUserID);
+  }
+
+  Future<void> deleteConnectionRequest(String myUserID, String savedUserID) async {
+    await _firestoreDBServiceUsers.deleteTransmittedUserIDsField(myUserID, savedUserID);
+    await _firestoreDBServiceUsers.deleteReceivedUserIDsField(savedUserID, myUserID);
+
+    await _firestoreDBServiceUsers.deleteNotificationFromUser(savedUserID, myUserID);
+    await _firestoreDBServiceUsers.deleteNotificationFromUser(myUserID, savedUserID);
   }
 
   Future<void> makeNotificationInvisible(String myUserID, String notificationID) async {
