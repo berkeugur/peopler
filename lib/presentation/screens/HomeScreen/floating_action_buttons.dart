@@ -117,9 +117,54 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
         backgroundColor: const Color(0xFF0353EF),
         onPressed: () {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-          _userBloc.mainKey.currentState?.push(
-            MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
-          );
+          if (UserBloc.user != null) {
+            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+            _userBloc.mainKey.currentState?.push(
+              MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
+            );
+          } else {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      "Giriş Yapmalısınız.",
+                      style: GoogleFonts.rubik(
+                        color: Color(0xFF0353EF),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "Kapat",
+                            style: GoogleFonts.rubik(
+                              color: Color(0xFF0353EF),
+                            ),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            //98865896
+                            //welcomescreen a git
+                          },
+                          child: Text(
+                            "Giriş Yap",
+                            style: GoogleFonts.rubik(
+                              color: Color(0xFF0353EF),
+                            ),
+                          )),
+                    ],
+                  );
+                });
+            /*
+    _userBloc.mainKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) => const GuestLoginScreen(),
+      ),
+    );*/
+          }
         },
       ),
     );
