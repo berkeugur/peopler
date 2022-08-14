@@ -40,7 +40,8 @@ op_settings_icon(context) {
                   )),
               TextButton(
                   onPressed: () {
-                    //welcomescreen a git
+                    UserBloc _userBloc = BlocProvider.of(context);
+                    _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
                   },
                   child: Text(
                     "Giriş Yap",
@@ -299,7 +300,8 @@ InkWell _reportItem(
                       )),
                   TextButton(
                       onPressed: () {
-                        //welcomescreen a git
+                        UserBloc _userBloc = BlocProvider.of(context);
+                        _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
                       },
                       child: Text(
                         "Giriş Yap",
