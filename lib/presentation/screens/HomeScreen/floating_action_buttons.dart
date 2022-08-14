@@ -12,6 +12,7 @@ import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../../tab_item.dart';
+import '../GuestLoginScreen/guest_login_screen.dart';
 
 class MyFloatingActionButtons extends StatefulWidget {
   const MyFloatingActionButtons({Key? key}) : super(key: key);
@@ -43,7 +44,8 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               builder: (_, trig) {
                 if ((_homeScreen.currentTab == TabItem.feed) && (_homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen)) {
                   return _buildAddFeedFAB(context);
-                } else if (_homeScreen.currentTab == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
+                } else if (_homeScreen.currentTab == TabItem.notifications &&
+                    _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
                   // return _buildNotificationDeleteFAB();
                   return const SizedBox.shrink();
                 } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
@@ -54,6 +56,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               });
         });
   }
+
   Padding _buildAddFeedFAB(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 0.0),
@@ -64,18 +67,14 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
         backgroundColor: const Color(0xFF0353EF),
         onPressed: () {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-          if(UserBloc.user != null) {
+          if (UserBloc.user != null) {
             _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(builder: (context) =>
-              BlocProvider<FeedBloc>.value(
-                  value: _feedBloc, child: const FeedShareScreen())),
+              MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
             _userBloc.mainKey.currentState?.push(
               MaterialPageRoute(
-                builder: (context) => const Scaffold(
-                  body: Center(child: Text("Giriş yapmanız gerekiyor"),),
-                ),
+                builder: (context) => const GuestLoginScreen(),
               ),
             );
           }
@@ -119,7 +118,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
         onPressed: () {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
           _userBloc.mainKey.currentState?.push(
-            MaterialPageRoute(builder: (context) =>  BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
+            MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
           );
         },
       ),

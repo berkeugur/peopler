@@ -106,6 +106,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
     entitlement = entitlements.isEmpty ? "free" : entitlements[0].toString();
 
+    if(user == null) {
+      return;
+    }
+
     if(adminUsers.contains(user!.email)) {
       entitlement = "admin";
     }

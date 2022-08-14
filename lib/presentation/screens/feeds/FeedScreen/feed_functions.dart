@@ -7,22 +7,56 @@ import 'package:peopler/presentation/screens/Settings/settings.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../tab_item.dart';
+import '../../GuestLoginScreen/guest_login_screen.dart';
 
 // ignore: non_constant_identifier_names
 op_settings_icon(context) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-  if(UserBloc.user != null) {
+  if (UserBloc.user != null) {
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(builder: (context) => const SettingsScreen()),
     );
   } else {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "Giriş Yapmalısınız.",
+              style: GoogleFonts.rubik(
+                color: Color(0xFF0353EF),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Kapat",
+                    style: GoogleFonts.rubik(
+                      color: Color(0xFF0353EF),
+                    ),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    //welcomescreen a git
+                  },
+                  child: Text(
+                    "Giriş Yap",
+                    style: GoogleFonts.rubik(
+                      color: Color(0xFF0353EF),
+                    ),
+                  )),
+            ],
+          );
+        });
+    /*
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(
-        builder: (context) => const Scaffold(
-          body: Center(child: Text("Giriş yapmanız gerekiyor"),),
-        ),
+        builder: (context) => const GuestLoginScreen(),
       ),
-    );
+    );*/
   }
 }
 
@@ -37,15 +71,15 @@ op_message_icon(context) {
 }
 
 tripleDotOnPressed(
-    BuildContext context,
-    String feedId,
-    String feedExplanation,
-    String userID,
-    String userDisplayName,
-    String userGender,
-    DateTime createdAt,
-    String userPhotoUrl,
-    ) {
+  BuildContext context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) {
   showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF0353EF),
@@ -65,8 +99,7 @@ tripleDotOnPressed(
               ),
               onTap: () {
                 Navigator.pop(context);
-                _showReportBottomSheet(
-                    context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
+                _showReportBottomSheet(context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
               },
             ),
           ],
@@ -75,15 +108,15 @@ tripleDotOnPressed(
 }
 
 Future<void> _showReportBottomSheet(
-    context,
-    String feedId,
-    String feedExplanation,
-    String userID,
-    String userDisplayName,
-    String userGender,
-    DateTime createdAt,
-    String userPhotoUrl,
-    ) async {
+  context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) async {
   await showModalBottomSheet(
       context: context,
       backgroundColor: Color(0xFF0353EF),
@@ -164,30 +197,19 @@ Future<void> _showReportBottomSheet(
                   ),
                 ),
               ),
-              _reportItem("Spam", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt,
-                  userPhotoUrl),
-              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, userDisplayName, userGender,
+              _reportItem("Spam", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID, userDisplayName, userGender,
                   createdAt, userPhotoUrl),
-              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, userDisplayName, userGender,
-                  createdAt, userPhotoUrl),
-              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation,
-                  userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, userDisplayName,
-                  userGender, createdAt, userPhotoUrl),
-              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, userDisplayName, userGender,
-                  createdAt, userPhotoUrl),
+              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
             ])
           ],
         );
@@ -195,62 +217,106 @@ Future<void> _showReportBottomSheet(
 }
 
 InkWell _reportItem(
-    String text,
-    BuildContext context,
-    String feedId,
-    String feedExplanation,
-    String userID,
-    String userDisplayName,
-    String userGender,
-    DateTime createdAt,
-    String userPhotoUrl,
-    ) {
+  String text,
+  BuildContext context,
+  String feedId,
+  String feedExplanation,
+  String userID,
+  String userDisplayName,
+  String userGender,
+  DateTime createdAt,
+  String userPhotoUrl,
+) {
   return InkWell(
     onTap: () {
-      CollectionReference _reports = FirebaseFirestore.instance.collection('reports');
-      _reports.add({
-        "type": text,
-        "feedID": feedId,
-        "feedExplanation": feedExplanation,
-        "userID": userID,
-        "userDisplayName": userDisplayName,
-        "userGender": userGender,
-        "createdAt": createdAt,
-        "userPhotoUrl": userPhotoUrl,
-        "fromUserId": MyUser().userID,
-        "fromUserDisplayName": MyUser().displayName,
-      }).then((value) {
-        print("then");
-      }).catchError((error) => print("Failed to add feed: $error"));
+      UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+      if (UserBloc.user != null) {
+        CollectionReference _reports = FirebaseFirestore.instance.collection('reports');
+        _reports.add({
+          "type": text,
+          "feedID": feedId,
+          "feedExplanation": feedExplanation,
+          "userID": userID,
+          "userDisplayName": userDisplayName,
+          "userGender": userGender,
+          "createdAt": createdAt,
+          "userPhotoUrl": userPhotoUrl,
+          "fromUserId": MyUser().userID,
+          "fromUserDisplayName": MyUser().displayName,
+        }).then((value) {
+          print("then");
+        }).catchError((error) => print("Failed to add feed: $error"));
 
-      print("reported: $text");
+        print("reported: $text");
 
-      Navigator.pop(context);
+        Navigator.pop(context);
 
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(
-                'Talebiniz Alındı',
-                textScaleFactor: 1,
-              ),
-              content: Text(
-                'En kısa sürede şikayetiniz incelenecektir! Bizi bilgilendirdiğiniz için teşekkür ederiz.',
-                textScaleFactor: 1,
-              ),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Kapat',
-                      textScaleFactor: 1,
-                    )),
-              ],
-            );
-          });
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  'Talebiniz Alındı',
+                  textScaleFactor: 1,
+                ),
+                content: Text(
+                  'En kısa sürede şikayetiniz incelenecektir! Bizi bilgilendirdiğiniz için teşekkür ederiz.',
+                  textScaleFactor: 1,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Kapat',
+                        textScaleFactor: 1,
+                      )),
+                ],
+              );
+            });
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  "Giriş Yapmalısınız.",
+                  style: GoogleFonts.rubik(
+                    color: Color(0xFF0353EF),
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        "Kapat",
+                        style: GoogleFonts.rubik(
+                          color: Color(0xFF0353EF),
+                        ),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        //welcomescreen a git
+                      },
+                      child: Text(
+                        "Giriş Yap",
+                        style: GoogleFonts.rubik(
+                          color: Color(0xFF0353EF),
+                        ),
+                      )),
+                ],
+              );
+            });
+        /*
+    _userBloc.mainKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) => const GuestLoginScreen(),
+      ),
+    );*/
+      }
     },
     child: Container(
       height: 40,
