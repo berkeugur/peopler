@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/presentation/screens/ChatScreen/channel_list.dart';
+import 'package:peopler/presentation/screens/guest_login_screen.dart';
 import '../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../tab_item.dart';
@@ -38,7 +39,7 @@ class _ChatScreenNavigatorState extends State<ChatScreenNavigator> with Automati
                 case '/':
                   _homeScreen.currentScreen = {TabItem.chat: ScreenItem.chatScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  if(UserBloc.user != null) {
+                  if (UserBloc.user != null) {
                     return MaterialPageRoute(
                       builder: (context) => MultiBlocProvider(child: const ChatScreen(), providers: [
                         BlocProvider.value(value: _savedBloc),
@@ -46,9 +47,7 @@ class _ChatScreenNavigatorState extends State<ChatScreenNavigator> with Automati
                     );
                   } else {
                     return MaterialPageRoute(
-                      builder: (context) => const Scaffold(
-                        body: Center(child: Text("Giriş yapmanız gerekiyor"),),
-                      ),
+                      builder: (context) => const GuestLoginScreen(),
                     );
                   }
                 default:

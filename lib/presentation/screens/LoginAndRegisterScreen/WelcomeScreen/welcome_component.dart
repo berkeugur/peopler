@@ -48,20 +48,28 @@ Column buildButtons(BuildContext context) {
         },
       ),
       const SizedBox(
-        height: 8,
+        height: 20,
       ),
-      InkWell(onTap: () {
-        final LocationRepository _locationRepository = locator<LocationRepository>();
-        _locationRepository.requestPermission();
-        Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
-      },
-      child: const Text("Misafir", style: TextStyle(color: Colors.white),),)
+      continueWithButton(
+        context,
+        icon: SvgPicture.asset(
+          "assets/images/svg_icons/linkedin.svg",
+          width: 0,
+          height: 0,
+          fit: BoxFit.contain,
+        ),
+        text: "MİSAFİR",
+        onPressed: () {
+          final LocationRepository _locationRepository = locator<LocationRepository>();
+          _locationRepository.requestPermission();
+          Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
+        },
+      ),
     ],
   );
 }
 
-Center continueWithButton(BuildContext context,
-    {required Widget? icon, required String text, required VoidCallback onPressed}) {
+Center continueWithButton(BuildContext context, {Color? backgroundColor, required Widget? icon, required String text, required VoidCallback onPressed}) {
   return Center(
     child: InkWell(
       borderRadius: BorderRadius.circular(99),
@@ -70,19 +78,19 @@ Center continueWithButton(BuildContext context,
         width: 285,
         height: 43,
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(92),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(
+              const Radius.circular(92),
             ),
             boxShadow: [
-              BoxShadow(
-                color: Color(0x40000000),
-                offset: Offset(0, 4),
+              const BoxShadow(
+                color: const Color(0x40000000),
+                offset: const Offset(0, 4),
                 blurRadius: 4,
                 spreadRadius: 0,
               )
             ],
-            color: Colors.white),
+            color: backgroundColor ?? Colors.white),
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
@@ -97,7 +105,11 @@ Center continueWithButton(BuildContext context,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(text),
+                Text(
+                  text,
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 16),
+                ),
               ],
             ),
           ],
@@ -159,12 +171,7 @@ Center continueText(context) {
           ),
           TextSpan(
             text: " ",
-            style: TextStyle(
-                color: Colors.grey[200],
-                fontWeight: FontWeight.w300,
-                fontFamily: "Rubik",
-                fontStyle: FontStyle.normal,
-                fontSize: 15.0),
+            style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.w300, fontFamily: "Rubik", fontStyle: FontStyle.normal, fontSize: 15.0),
           ),
           TextSpan(
             style: const TextStyle(
@@ -183,12 +190,7 @@ Center continueText(context) {
           ),
           TextSpan(
             text: " kabul ediyorsun.",
-            style: TextStyle(
-                color: Colors.grey[200],
-                fontWeight: FontWeight.w300,
-                fontFamily: "Rubik",
-                fontStyle: FontStyle.normal,
-                fontSize: 15.0),
+            style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.w300, fontFamily: "Rubik", fontStyle: FontStyle.normal, fontSize: 15.0),
           ),
         ]),
       ),

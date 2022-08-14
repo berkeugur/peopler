@@ -7,8 +7,7 @@ class BottomButtons extends StatelessWidget {
   final int dataLength;
   final PageController controller;
 
-  const BottomButtons({Key? key, required this.currentIndex, required this.dataLength, required this.controller})
-      : super(key: key);
+  const BottomButtons({Key? key, required this.currentIndex, required this.dataLength, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +20,15 @@ class BottomButtons extends StatelessWidget {
             children: currentIndex == dataLength - 1
                 ? [
                     SizedBox(
-                      height: 50,
                       width: MediaQuery.of(context).size.width - 32,
                       child: Center(
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(40, 5, 40, 0),
-                          decoration:
-                              BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
+                          padding: const EdgeInsets.fromLTRB(40, 3, 40, 3),
+                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
                           child: TextButton(
                             child: Text(
                               "BAŞLAYALIM",
+                              textAlign: TextAlign.center,
                               textScaleFactor: 1,
                               style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600),
                             ),
@@ -40,8 +38,7 @@ class BottomButtons extends StatelessWidget {
                             style: TextButton.styleFrom(
                               primary: const Color(0xFFFFFFFF),
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
-                              textStyle:
-                                  const TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.normal),
+                              textStyle: const TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.normal),
                             ),
                           ),
                         ),

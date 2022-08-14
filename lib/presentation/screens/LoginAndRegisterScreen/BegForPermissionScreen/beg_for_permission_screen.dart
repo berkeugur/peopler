@@ -80,6 +80,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                   dimension: 10,
                 ),
                 InkWell(
+                  borderRadius: BorderRadius.circular(99),
                   onTap: () {
                     Navigator.of(context).pushNamedAndRemoveUntil('/homeScreen', (Route<dynamic> route) => false);
                   },
@@ -90,7 +91,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                       "Devam Et",
                       // "Bu adımı atla",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(fontSize: 14, fontWeight: FontWeight.w700, color: Colors.white),
+                      style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
                     ),
                   ),
                 ),

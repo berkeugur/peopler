@@ -4,6 +4,7 @@ import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../screens/guest_login_screen.dart';
 import '../screens/search/search_screen.dart';
 import '../tab_item.dart';
 
@@ -38,7 +39,7 @@ class _SearchScreenNavigatorState extends State<SearchScreenNavigator> with Auto
                 case '/':
                   _homeScreen.currentScreen = {TabItem.search: ScreenItem.searchNearByScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  if(UserBloc.user != null) {
+                  if (UserBloc.user != null) {
                     return MaterialPageRoute(
                       builder: (context) => MultiBlocProvider(child: const SearchScreen(), providers: [
                         BlocProvider.value(value: _savedBloc),
@@ -46,9 +47,7 @@ class _SearchScreenNavigatorState extends State<SearchScreenNavigator> with Auto
                     );
                   } else {
                     return MaterialPageRoute(
-                      builder: (context) => const Scaffold(
-                        body: Center(child: Text("Giriş yapmanız gerekiyor"),),
-                      ),
+                      builder: (context) => const GuestLoginScreen(),
                     );
                   }
                 default:

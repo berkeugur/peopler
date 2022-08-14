@@ -4,6 +4,7 @@ import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../screens/ChatScreen/channel_list.dart';
+import '../screens/guest_login_screen.dart';
 import '../screens/notification/connection_requests_screen/connection_request_screen.dart';
 import '../screens/notification/notification_screen.dart';
 import '../tab_item.dart';
@@ -37,15 +38,13 @@ class _NotificationScreenNavigatorState extends State<NotificationScreenNavigato
                 case '/':
                   _homeScreen.currentScreen = {TabItem.notifications: ScreenItem.notificationScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  if(UserBloc.user != null) {
+                  if (UserBloc.user != null) {
                     return MaterialPageRoute(
                       builder: (context) => const NotificationScreen(),
                     );
                   } else {
                     return MaterialPageRoute(
-                      builder: (context) => const Scaffold(
-                        body: Center(child: Text("Giriş yapmanız gerekiyor"),),
-                      ),
+                      builder: (context) => const GuestLoginScreen(),
                     );
                   }
                 case '/invitations':
