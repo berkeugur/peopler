@@ -72,11 +72,41 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
-            _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(
-                builder: (context) => const GuestLoginScreen(),
-              ),
-            );
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      "Giriş Yapmalısınız.",
+                      style: GoogleFonts.rubik(
+                        color: Color(0xFF0353EF),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "Kapat",
+                            style: GoogleFonts.rubik(
+                              color: Color(0xFF0353EF),
+                            ),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            //98865896
+                            //welcomescreen a git
+                          },
+                          child: Text(
+                            "Giriş Yap",
+                            style: GoogleFonts.rubik(
+                              color: Color(0xFF0353EF),
+                            ),
+                          )),
+                    ],
+                  );
+                });
           }
         },
       ),
