@@ -73,7 +73,6 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
-<<<<<<< Updated upstream
             showDialog(
                 context: context,
                 builder: (context) {
@@ -109,9 +108,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     ],
                   );
                 });
-=======
             GuestAlert.dialog(context);
->>>>>>> Stashed changes
           }
         },
       ),
@@ -158,7 +155,6 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
             );
           } else {
-<<<<<<< Updated upstream
             showDialog(
                 context: context,
                 builder: (context) {
@@ -194,9 +190,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     ],
                   );
                 });
-=======
             GuestAlert.dialog(context);
->>>>>>> Stashed changes
             /*
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(

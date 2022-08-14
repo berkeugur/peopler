@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/data/model/user.dart';
+import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/Settings/settings.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../tab_item.dart';
-import '../../GuestLoginScreen/guest_login_screen.dart';
+import '../../guest_login_screen.dart';
 
 // ignore: non_constant_identifier_names
 op_settings_icon(context) {
@@ -17,41 +18,7 @@ op_settings_icon(context) {
       MaterialPageRoute(builder: (context) => const SettingsScreen()),
     );
   } else {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              "Giriş Yapmalısınız.",
-              style: GoogleFonts.rubik(
-                color: Color(0xFF0353EF),
-              ),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "Kapat",
-                    style: GoogleFonts.rubik(
-                      color: Color(0xFF0353EF),
-                    ),
-                  )),
-              TextButton(
-                  onPressed: () {
-                    UserBloc _userBloc = BlocProvider.of(context);
-                    _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
-                  },
-                  child: Text(
-                    "Giriş Yap",
-                    style: GoogleFonts.rubik(
-                      color: Color(0xFF0353EF),
-                    ),
-                  )),
-            ],
-          );
-        });
+    GuestAlert.dialog(context);
     /*
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(
@@ -277,41 +244,7 @@ InkWell _reportItem(
               );
             });
       } else {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  "Giriş Yapmalısınız.",
-                  style: GoogleFonts.rubik(
-                    color: Color(0xFF0353EF),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "Kapat",
-                        style: GoogleFonts.rubik(
-                          color: Color(0xFF0353EF),
-                        ),
-                      )),
-                  TextButton(
-                      onPressed: () {
-                        UserBloc _userBloc = BlocProvider.of(context);
-                        _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
-                      },
-                      child: Text(
-                        "Giriş Yap",
-                        style: GoogleFonts.rubik(
-                          color: Color(0xFF0353EF),
-                        ),
-                      )),
-                ],
-              );
-            });
+        GuestAlert.dialog(context);
         /*
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(
