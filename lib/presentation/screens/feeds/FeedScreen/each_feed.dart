@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LikedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/feed.dart';
+import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
@@ -28,7 +29,7 @@ class eachFeedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     {
-      if(UserBloc.user != null) {
+      if (UserBloc.user != null) {
         _likedBloc.add(GetInitialLikedEvent(userID: UserBloc.user!.userID, feedID: myFeed.feedID));
       }
       return ValueListenableBuilder(
@@ -145,7 +146,7 @@ class eachFeedWidget extends StatelessWidget {
           builder: (context, state) {
             return GestureDetector(
               onTap: () {
-                if(UserBloc.user != null) {
+                if (UserBloc.user != null) {
                   if (state is LikeState) {
                     _likedBloc.add(SwapLikedEvent(type: 'liked', setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                     myFeed.liked -= 1;
@@ -157,6 +158,8 @@ class eachFeedWidget extends StatelessWidget {
                     _likedBloc.add(SwapLikedEvent(type: Strings.activityLiked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                     myFeed.liked += 1;
                   }
+                } else {
+                  GuestAlert.dialog(context);
                 }
               },
               child: SizedBox(
@@ -197,27 +200,20 @@ class eachFeedWidget extends StatelessWidget {
           builder: (context, state) {
             return GestureDetector(
               onTap: () {
-                if(UserBloc.user != null) {
+                if (UserBloc.user != null) {
                   if (state is DislikeState) {
-                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked,
-                        setClear: false,
-                        feedID: myFeed.feedID,
-                        userID: UserBloc.user!.userID));
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: false, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                     myFeed.disliked -= 1;
                   } else if (state is LikeState) {
-                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked,
-                        setClear: true,
-                        feedID: myFeed.feedID,
-                        userID: UserBloc.user!.userID));
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                     myFeed.disliked += 1;
                     myFeed.liked -= 1;
                   } else {
-                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked,
-                        setClear: true,
-                        feedID: myFeed.feedID,
-                        userID: UserBloc.user!.userID));
+                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: myFeed.feedID, userID: UserBloc.user!.userID));
                     myFeed.disliked += 1;
                   }
+                } else {
+                  GuestAlert.dialog(context);
                 }
               },
               child: SizedBox(
@@ -259,7 +255,7 @@ class eachFeedWidget extends StatelessWidget {
         margin: const EdgeInsets.only(right: 10),
         child: InkWell(
           onTap: () {
-            if(UserBloc.user == null) {
+            if (UserBloc.user == null) {
               showYouNeedToLogin(context);
               return;
             }

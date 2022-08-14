@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/FeedBloc/feed_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/feeds/FeedShare/feed_share_screen.dart';
 import 'package:peopler/presentation/screens/saved/saved_screen.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
@@ -72,6 +73,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
+<<<<<<< Updated upstream
             showDialog(
                 context: context,
                 builder: (context) {
@@ -107,6 +109,9 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     ],
                   );
                 });
+=======
+            GuestAlert.dialog(context);
+>>>>>>> Stashed changes
           }
         },
       ),
@@ -153,6 +158,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
               MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
             );
           } else {
+<<<<<<< Updated upstream
             showDialog(
                 context: context,
                 builder: (context) {
@@ -188,6 +194,9 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     ],
                   );
                 });
+=======
+            GuestAlert.dialog(context);
+>>>>>>> Stashed changes
             /*
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(
