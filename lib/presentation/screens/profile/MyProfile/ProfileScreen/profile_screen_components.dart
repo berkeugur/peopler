@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/others/classes/hobbies.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/AllActivityListScreen/all_activity_list.dart';
@@ -26,7 +27,7 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  biographyField(context) {
+  biographyField(context, String biography) {
     double _width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +59,7 @@ class ProfileScreenComponentsMyProfile {
               boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
             ),
             child: Text(
-              profileData.biography,
+              biography,
               textScaleFactor: 1,
               style: GoogleFonts.rubik(
                 fontSize: 15,
@@ -73,11 +74,11 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  photos(context) {
+  photos(context, List<String> photos, photoURL) {
     Size _size = MediaQuery.of(context).size;
     double _screenWidth = _size.width;
 
-    double _photoHeight = profileData.photosURL.length >= 3 ? _screenWidth / 3.5 : _screenWidth / 2.8;
+    double _photoHeight = photos.length >= 3 ? _screenWidth / 3.5 : _screenWidth / 2.8;
     double _photoRatio = 4 / 3;
     double _photoWidth = _photoHeight * _photoRatio;
     double _photoPadding = 2.5;
@@ -87,7 +88,7 @@ class ProfileScreenComponentsMyProfile {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        profileData.photosURL.isEmpty
+        photos.isEmpty
             ? Column(
                 children: [
                   Row(
@@ -128,11 +129,11 @@ class ProfileScreenComponentsMyProfile {
                     ],
                   ),
                   SizedBox.square(
-                    dimension: profileData.photosURL.length >= 3 ? _photoHeight / 2 : _photoHeight / 3,
+                    dimension: photos.length >= 3 ? _photoHeight / 2 : _photoHeight / 3,
                   ),
                 ],
               )
-            : profileData.photosURL.length == 1
+            : photos.length == 1
                 ? Column(
                     children: [
                       Row(
@@ -149,7 +150,7 @@ class ProfileScreenComponentsMyProfile {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(7.5),
                               child: Image.network(
-                                profileData.photosURL.first,
+                                photos.first,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -173,17 +174,17 @@ class ProfileScreenComponentsMyProfile {
                         ],
                       ),
                       SizedBox.square(
-                        dimension: profileData.photosURL.length >= 3 ? _photoHeight / 2 : _photoHeight / 3,
+                        dimension: photos.length >= 3 ? _photoHeight / 2 : _photoHeight / 3,
                       ),
                     ],
                   )
-                : horizontalPhotoList(context),
-        profilePhoto(context),
+                : horizontalPhotoList(context, photos),
+        profilePhoto(context, photoURL),
       ],
     );
   }
 
-  profilePhoto(context) {
+  profilePhoto(context, String photoURL) {
     Size _size = MediaQuery.of(context).size;
     double _screenWidth = _size.width;
     double _photoSize = _screenWidth / 4.2;
@@ -219,7 +220,7 @@ class ProfileScreenComponentsMyProfile {
               CircleAvatar(
             radius: 999,
             backgroundImage: NetworkImage(
-              profileData.profileURL,
+              photoURL,
             ),
             backgroundColor: Colors.transparent,
           ),
@@ -228,17 +229,17 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  horizontalPhotoList(context) {
+  horizontalPhotoList(context, List<String> photos) {
     Size _size = MediaQuery.of(context).size;
     double _screenWidth = _size.width;
 
-    double _photoHeight = profileData.photosURL.length >= 3 ? _screenWidth / 3.5 : _screenWidth / 2.8;
+    double _photoHeight = photos.length >= 3 ? _screenWidth / 3.5 : _screenWidth / 2.8;
     double _photoRatio = 4 / 3;
     double _photoWidth = _photoHeight * _photoRatio;
     double _photoPadding = 2.5;
 
     int _numberOfPhoto = 4;
-    ValueNotifier<int> _itemCount = ValueNotifier(profileData.photosURL.length > _numberOfPhoto ? _numberOfPhoto + 1 : profileData.photosURL.length);
+    ValueNotifier<int> _itemCount = ValueNotifier(photos.length > _numberOfPhoto ? _numberOfPhoto + 1 : photos.length);
 
     BorderRadius _customBorderRadius() => BorderRadius.circular(7.5);
     return ValueListenableBuilder(
@@ -250,7 +251,7 @@ class ProfileScreenComponentsMyProfile {
                 width: double.infinity,
                 height: _photoHeight,
                 child: Align(
-                  alignment: profileData.photosURL.length != 1 ? Alignment.center : Alignment.centerLeft,
+                  alignment: photos.length != 1 ? Alignment.center : Alignment.centerLeft,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     //i use +1 because last index for less more see more widget
@@ -267,9 +268,7 @@ class ProfileScreenComponentsMyProfile {
                               child: Center(
                                 child: TextButton(
                                   onPressed: () {
-                                    _itemCount.value == _numberOfPhoto + 1
-                                        ? _itemCount.value = profileData.photosURL.length + 1
-                                        : _itemCount.value = _numberOfPhoto + 1;
+                                    _itemCount.value == _numberOfPhoto + 1 ? _itemCount.value = photos.length + 1 : _itemCount.value = _numberOfPhoto + 1;
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -293,16 +292,14 @@ class ProfileScreenComponentsMyProfile {
                                   ),
                                 ),
                               ))
-                          : index == _itemCount.value - 1 && _itemCount.value == profileData.photosURL.length + 1
+                          : index == _itemCount.value - 1 && _itemCount.value == photos.length + 1
                               ? Container(
                                   height: _photoHeight,
                                   width: _photoWidth,
                                   child: Center(
                                     child: TextButton(
                                       onPressed: () {
-                                        _itemCount.value == _numberOfPhoto + 1
-                                            ? _itemCount.value = profileData.photosURL.length + 1
-                                            : _itemCount.value = _numberOfPhoto + 1;
+                                        _itemCount.value == _numberOfPhoto + 1 ? _itemCount.value = photos.length + 1 : _itemCount.value = _numberOfPhoto + 1;
                                       },
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -334,16 +331,16 @@ class ProfileScreenComponentsMyProfile {
                                     color: Colors.grey[400],
                                   ),
                                   margin: EdgeInsets.only(
-                                      left: index == 0 && profileData.photosURL.length >= 3
+                                      left: index == 0 && photos.length >= 3
                                           ? 5
-                                          : profileData.photosURL.length == 1
+                                          : photos.length == 1
                                               ? 10
                                               : _photoPadding,
                                       right: _photoPadding),
                                   child: ClipRRect(
                                     borderRadius: _customBorderRadius(),
                                     child: Image.network(
-                                      profileData.photosURL[index],
+                                      photos[index],
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -353,7 +350,7 @@ class ProfileScreenComponentsMyProfile {
                 ),
               ),
               SizedBox.square(
-                dimension: profileData.photosURL.length >= 3 ? _photoHeight / 2 : _photoHeight / 3,
+                dimension: photos.length >= 3 ? _photoHeight / 2 : _photoHeight / 3,
               ),
             ],
           );
@@ -499,7 +496,7 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  Row buildLike(index) {
+  Row buildLike(index, List<MyActivity> activities) {
     return Row(
       children: [
         SvgPicture.asset(
@@ -514,7 +511,7 @@ class ProfileScreenComponentsMyProfile {
         ),
 
         Text(
-          UserBloc.myActivities[index].liked.toString(),
+          activities[index].liked.toString(),
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             color: _mode.blackAndWhiteConversion(),
@@ -524,7 +521,7 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  Row buildDislike(int index) {
+  Row buildDislike(int index, List<MyActivity> activities) {
     return Row(
       children: [
         SizedBox(
@@ -539,7 +536,7 @@ class ProfileScreenComponentsMyProfile {
           width: 5,
         ),
         Text(
-          UserBloc.myActivities[index].disliked.toString(),
+          activities[index].disliked.toString(),
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             color: _mode.blackAndWhiteConversion(),
@@ -549,11 +546,11 @@ class ProfileScreenComponentsMyProfile {
     );
   }
 
-  activityList(BuildContext context) {
+  activityList(BuildContext context, List<MyActivity> activities) {
     int minNumberOfActivity = 1;
     ValueNotifier<int> numberOfActivity = ValueNotifier(minNumberOfActivity + 1); //profileData.experiences.length+1;
 
-    return UserBloc.myActivities.isEmpty
+    return activities.isEmpty
         ? const SizedBox.shrink()
         : ValueListenableBuilder(
             valueListenable: numberOfActivity,
@@ -590,13 +587,13 @@ class ProfileScreenComponentsMyProfile {
                               /*
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: UserBloc.myActivities)),
+                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: activities)),
                               );
                                */
 
                               UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                               _userBloc.mainKey.currentState?.push(
-                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: UserBloc.myActivities)),
+                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: activities)),
                               );
 
                               debugPrint("çalıştı .........");
@@ -639,7 +636,7 @@ class ProfileScreenComponentsMyProfile {
                                       style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                     ),
                                     Text(
-                                      " " + activityText(index),
+                                      " " + activityText(index, UserBloc.myActivities),
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                     ),
@@ -650,11 +647,11 @@ class ProfileScreenComponentsMyProfile {
                                     : Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
-                                          buildDislike(index),
+                                          buildDislike(index, activities),
                                           SizedBox(
                                             width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.05 : 600 * 0.05,
                                           ),
-                                          buildLike(index),
+                                          buildLike(index, activities),
                                         ],
                                       ),
                               ],
@@ -1483,8 +1480,8 @@ class ProfileScreenComponentsMyProfile {
     }
   }
 
-  String activityText(index) {
-    switch (UserBloc.myActivities[index].activityType) {
+  String activityText(index, List<MyActivity> activities) {
+    switch (activities[index].activityType) {
       case Strings.activityShared:
         return "bir fikir paylaştı.";
       case Strings.activityLiked:

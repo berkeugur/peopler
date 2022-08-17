@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
@@ -60,13 +61,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildBody() {
+    final MyUser profileData = UserBloc.user!;
     ProfileScreenComponentsMyProfile _profileScreenComponents = ProfileScreenComponentsMyProfile();
     return SingleChildScrollView(
       child: Column(
         children: [
           header(context),
 
-          _profileScreenComponents.photos(context),
+          _profileScreenComponents.photos(context, profileData.photosURL, profileData.profileURL),
           _profileScreenComponents.nameField(),
           SizedBox(
             height: UserBloc.user!.schoolName != "" ? 5 : 0,
@@ -109,9 +111,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 10),
           _profileScreenComponents.locationText(),
           const SizedBox(height: 15),
-          _profileScreenComponents.biographyField(context),
+          _profileScreenComponents.biographyField(context, profileData.biography),
           const SizedBox(height: 15),
-          _profileScreenComponents.activityList(context),
+          _profileScreenComponents.activityList(context, UserBloc.myActivities),
           const SizedBox(height: 10),
           _profileScreenComponents.experiencesList(context),
         ],

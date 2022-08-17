@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/user.dart';
+import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
 import 'package:peopler/presentation/screens/profile/OthersProfile/functions.dart';
 import 'package:peopler/presentation/screens/profile/OthersProfile/profile/profile_screen_components.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
@@ -14,14 +17,12 @@ import '../../../../../others/strings.dart';
 
 Widget titles4OtherProfiles(MyUser otherUser) {
   if (otherUser.company == "" && otherUser.currentJobName != "") {
-    return Text(otherUser.currentJobName,
-        textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+    return Text(otherUser.currentJobName, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
   } else if (otherUser.company != "" && otherUser.currentJobName != "") {
     return Text(otherUser.company + " şirketinde " + otherUser.currentJobName,
         textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
   } else if (otherUser.company != "" && otherUser.currentJobName == "") {
-    return Text(otherUser.company + " şirketinde çalışıyor.",
-        textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+    return Text(otherUser.company + " şirketinde çalışıyor.", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
   } else {
     return SizedBox.shrink();
   }
@@ -81,8 +82,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
             if (state is InitialOtherUserState) {
               return _initialOtherUserStateWidget(context);
             } else if (state is OtherUserLoadedState) {
-              return _userLoadedStateWidget(
-                  context, state.otherUser, state.mutualConnectionUserIDs, state.myActivities, state.status);
+              return _userLoadedStateWidget(context, state.otherUser, state.mutualConnectionUserIDs, state.myActivities, state.status);
             } else {
               return const Text("Impossible");
             }
@@ -92,15 +92,57 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
     );
   }
 
-  Column _userLoadedStateWidget(context, MyUser otherUser, List<String> mutualConnectionUserIDs,
-      List<MyActivity> myActivities, SendRequestButtonStatus status) {
-    ProfileScreenComponentsOthersProfile _profileScreenComponents = ProfileScreenComponentsOthersProfile(
-        profileData: otherUser, mutualConnectionUserIDs: mutualConnectionUserIDs, myActivities: myActivities);
+  Column _userLoadedStateWidget(
+      context, MyUser otherUser, List<String> mutualConnectionUserIDs, List<MyActivity> myActivities, SendRequestButtonStatus status) {
+    ProfileScreenComponentsOthersProfile _profileScreenComponents =
+        ProfileScreenComponentsOthersProfile(profileData: otherUser, mutualConnectionUserIDs: mutualConnectionUserIDs, myActivities: myActivities);
 
     return Column(
       children: [
-        header(context),
-        _profileScreenComponents.photos(context),
+        Container(
+          decoration: BoxDecoration(
+            color: _mode.bottomMenuBackground(),
+          ),
+          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+          height: 70,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                // onTap: () => ZoomDrawer.of(context)!.toggle(),
+                onTap: () => Navigator.of(context).pop(),
+                child: SvgPicture.asset(
+                  "assets/images/svg_icons/back_arrow.svg",
+                  width: 32,
+                  height: 32,
+                  color: Mode().disabledBottomMenuItemAssetColor(),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Text(
+                "peopler",
+                textScaleFactor: 1,
+                style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+              ),
+              const SizedBox.square(
+                dimension: 25,
+              ),
+              /*
+          InkWell(
+            onTap: () => op_message_icon(context),
+            child: SvgPicture.asset(
+              "assets/images/svg_icons/message_icon.svg",
+              width: 25,
+              height: 25,
+              color: _mode.homeScreenIconsColor(),
+              fit: BoxFit.contain,
+            ),
+          ),
+          */
+            ],
+          ),
+        ),
+        ProfileScreenComponentsMyProfile().photos(context, otherUser.photosURL, otherUser.profileURL),
         _profileScreenComponents.nameField(),
         const SizedBox(
           height: 5,
@@ -129,9 +171,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
             //_profileScreenComponents.currentJob(context),
           ],
         ),
-        otherUser.schoolName != "" && otherUser.currentJobName != ""
-            ? const SizedBox(height: 5)
-            : const SizedBox.shrink(),
+        otherUser.schoolName != "" && otherUser.currentJobName != "" ? const SizedBox(height: 5) : const SizedBox.shrink(),
 
         titles4OtherProfiles(otherUser),
         //_profileScreenComponents.companyName(),
@@ -144,9 +184,9 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
         const SizedBox(height: 10),
         _profileScreenComponents.locationText(),
         const SizedBox(height: 15),
-        _profileScreenComponents.biographyField(context),
+        ProfileScreenComponentsMyProfile().biographyField(context, otherUser.biography),
         const SizedBox(height: 10),
-        _profileScreenComponents.activityList(context),
+        ProfileScreenComponentsMyProfile().activityList(context, UserBloc.myActivities),
         const SizedBox(height: 10),
         _profileScreenComponents.experiencesList(context),
       ],

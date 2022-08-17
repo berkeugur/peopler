@@ -298,8 +298,7 @@ class ProfileScreenComponentsOthersProfile {
 
   sendRequestButton(BuildContext context, SendRequestButtonStatus status, MyUser otherUser) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-      height: 30,
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(999),
         border: Border.all(width: 1, color: const Color(0xFF0353EF)),
@@ -384,7 +383,7 @@ class ProfileScreenComponentsOthersProfile {
   InkWell _buildConnectStatus(BuildContext context, String otherUserID) {
     return InkWell(
       onTap: () async {
-        if(UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+        if (UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
           showNumOfConnectionRequestsConsumed(context);
           return;
         }
@@ -406,7 +405,7 @@ class ProfileScreenComponentsOthersProfile {
         _savedUser.biography = otherUser.biography;
         _savedUser.hobbies = otherUser.hobbies;
 
-        if(UserBloc.entitlement == "free") {
+        if (UserBloc.entitlement == "free") {
           showRestNumOfConnectionRequests(context);
         }
 
@@ -548,10 +547,23 @@ class ProfileScreenComponentsOthersProfile {
                   )),
         );
       },
-      child: Text(
-        "Mesajlaş",
-        textScaleFactor: 1,
-        style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            "assets/images/svg_icons/message_icon.svg",
+            width: 16,
+            color: Colors.white,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            "Mesajlaş",
+            textScaleFactor: 1,
+            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+          ),
+        ],
       ),
     );
   }
