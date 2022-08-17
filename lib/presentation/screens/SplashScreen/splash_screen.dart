@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../data/fcm_and_local_notifications.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatelessWidget {
   static const splashScreenDuration = 1;
@@ -43,13 +45,13 @@ class SplashScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
         body: Center(
-          child: Image.asset(
-            "assets/images/splashScreen/1.jpg",
-            fit: BoxFit.fill,
-          ),
-        ),
+            child: Lottie.asset(
+          'assets/loading.json',
+          width: MediaQuery.of(context).size.width / 2,
+          repeat: true,
+        )),
       ),
     );
   }

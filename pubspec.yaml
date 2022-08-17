@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.16.0-134.1.beta <3.0.0"
@@ -38,13 +38,16 @@ dependencies:
   csc_picker: ^0.2.6
   cupertino_icons: ^1.0.5
   equatable: ^2.0.3
+  firebase_analytics: ^9.3.0
   firebase_auth: ^3.4.1
   firebase_core: ^1.19.1
   firebase_messaging: ^11.4.4
+  firebase_remote_config: ^2.0.13
   firebase_storage: ^10.3.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  flutter_native_splash: ^2.2.7
   flutter_platform_widgets: ^2.0.0
   flutter_secure_storage: ^5.0.2
   flutter_svg: 1.1.0
@@ -56,7 +59,9 @@ dependencies:
   image_cropper: ^1.5.0
   image_picker: ^0.8.5
   intl: ^0.17.0
+  launch_review: ^3.0.1
   liquid_pull_to_refresh: ^3.0.1
+  lottie: ^1.4.1
   move_to_background: ^1.0.2
   multi_value_listenable_builder: ^0.0.2
   package_info_plus: ^1.4.2
@@ -68,14 +73,14 @@ dependencies:
   share_plus: ^4.0.4
   webview_flutter: ^3.0.4
   workmanager: ^0.5.0
-  firebase_remote_config: ^2.0.13
-  firebase_analytics: ^9.3.0
-  launch_review: ^3.0.1
 
 dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
+flutter_native_splash:
+  image: assets/peopler.png
+  color: "#0353EF"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

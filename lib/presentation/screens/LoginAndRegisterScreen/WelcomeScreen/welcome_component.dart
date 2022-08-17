@@ -108,7 +108,7 @@ Center continueWithButton(BuildContext context, {Color? backgroundColor, require
                 Text(
                   text,
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 16),
+                  style: GoogleFonts.rubik(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 15),
                 ),
               ],
             ),
