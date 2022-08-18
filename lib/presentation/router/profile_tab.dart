@@ -37,15 +37,15 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
                 case '/':
                   _homeScreen.currentScreen = {TabItem.profile: ScreenItem.profileScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  if (UserBloc.user != null) {
-                    return MaterialPageRoute(
-                      builder: (context) => const DrawerProfilePage(),
-                    );
-                  } else {
+                  if (UserBloc.user == null) {
                     return MaterialPageRoute(
                       builder: (context) => const GuestLoginScreen(),
                     );
                   }
+
+                  return MaterialPageRoute(
+                    builder: (context) => const DrawerProfilePage(),
+                  );
                 default:
                   debugPrint('ERROR: Notification Tab Router unknown route');
                   return null;

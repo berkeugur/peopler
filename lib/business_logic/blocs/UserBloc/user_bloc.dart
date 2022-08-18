@@ -17,6 +17,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   static late List<MyActivity> myActivities;
   static MyUser? user;
+  static MyUser? guestUser;
 
   final GlobalKey<NavigatorState> mainKey;
 

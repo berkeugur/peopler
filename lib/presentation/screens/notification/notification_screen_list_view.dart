@@ -10,6 +10,7 @@ import '../../../data/model/notifications.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../MessageScreen/message_screen.dart';
+import '../clickMessage.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
 
@@ -339,7 +340,15 @@ Widget acceptYourRequestWidget(
                       InkWell(
                         onTap: () {
                           if(_data.didAccepted!) {
-                            _clickMessage(_data, context);
+                            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                            _userBloc.mainKey.currentState?.push(
+                              MaterialPageRoute(
+                                  builder: (context) => MessageScreen(
+                                    requestUserID: _data.requestUserID!,
+                                    requestProfileURL: _data.requestProfileURL,
+                                    requestDisplayName: _data.requestDisplayName,
+                                  )),
+                            );
                           } else {
                             _clickGeriAl(context, _data);
                           }
@@ -446,7 +455,15 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
                 InkWell(
                   onTap: () {
                     if(_data.didAccepted!) {
-                      _clickMessage(_data, context);
+                      UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                      _userBloc.mainKey.currentState?.push(
+                        MaterialPageRoute(
+                            builder: (context) => MessageScreen(
+                              requestUserID: _data.requestUserID!,
+                              requestProfileURL: _data.requestProfileURL,
+                              requestDisplayName: _data.requestDisplayName,
+                            )),
+                      );
                     } else {
                       _clickAccept(context, _data, index);
                     }
@@ -479,28 +496,6 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
         )
       ],
     ),
-  );
-}
-
-void _clickMessage(Notifications _data, context) {
-  Chat currentChat = Chat(
-      hostID: _data.requestUserID!,
-      isLastMessageFromMe: false,
-      isLastMessageReceivedByHost: true,
-      isLastMessageSeenByHost: true,
-      lastMessageCreatedAt: DateTime.now(),
-      lastMessage: "",
-      numberOfMessagesThatIHaveNotOpened: 0);
-
-  currentChat.hostUserProfileUrl = _data.requestProfileURL;
-  currentChat.hostUserName = _data.requestDisplayName;
-
-  UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-  _userBloc.mainKey.currentState?.push(
-    MaterialPageRoute(
-        builder: (context) => MessageScreen(
-          currentChat: currentChat,
-        )),
   );
 }
 

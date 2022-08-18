@@ -1,9 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/WelcomeScreen/welcome.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/WelcomeScreen/welcome_functions.dart';
+import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../data/model/user.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/locator.dart';
 
@@ -62,6 +65,9 @@ Column buildButtons(BuildContext context) {
         onPressed: () {
           final LocationRepository _locationRepository = locator<LocationRepository>();
           _locationRepository.requestPermission();
+
+          UserBloc.guestUser = MyUser();
+
           Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
         },
       ),
@@ -80,12 +86,12 @@ Center continueWithButton(BuildContext context, {Color? backgroundColor, require
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
-              const Radius.circular(92),
+              Radius.circular(92),
             ),
-            boxShadow: [
-              const BoxShadow(
-                color: const Color(0x40000000),
-                offset: const Offset(0, 4),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x40000000),
+                offset: Offset(0, 4),
                 blurRadius: 4,
                 spreadRadius: 0,
               )

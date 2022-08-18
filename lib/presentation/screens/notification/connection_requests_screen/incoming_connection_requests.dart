@@ -232,24 +232,14 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Chat currentChat = Chat(
-                              hostID: _currentItem.requestUserID!,
-                              isLastMessageFromMe: false,
-                              isLastMessageReceivedByHost: true,
-                              isLastMessageSeenByHost: true,
-                              lastMessageCreatedAt: DateTime.now(),
-                              lastMessage: "",
-                              numberOfMessagesThatIHaveNotOpened: 0);
-
-                          currentChat.hostUserProfileUrl = _currentItem.requestProfileURL;
-                          currentChat.hostUserName = _currentItem.requestDisplayName;
-
                           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                           _userBloc.mainKey.currentState?.push(
                             MaterialPageRoute(
                                 builder: (context) => MessageScreen(
-                                      currentChat: currentChat,
-                                    )),
+                                  requestUserID: _currentItem.notificationID,
+                                  requestProfileURL: _currentItem.requestProfileURL,
+                                  requestDisplayName: _currentItem.requestDisplayName,
+                                )),
                           );
                         },
                       text: _currentItem.requestDisplayName + " ile konuşma başlat.",

@@ -212,3 +212,14 @@ showYouNeedToLogin(BuildContext context) {
         bgColor: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : const Color(0xFF000B21)),
   );
 }
+
+showYouNeedToLoginSave(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    customSnackBar(
+        context: context,
+        title: "Başkalarını kaydedebilmek için giriş yapmalısınız.",
+        icon: Icons.done,
+        textColor: const Color(0xFFFFFFFF),
+        bgColor: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : const Color(0xFF000B21)),
+  );
+}

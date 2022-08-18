@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/others/classes/hobbies.dart';
+import 'package:peopler/presentation/screens/GuestLoginScreen/body.dart';
 import 'package:peopler/presentation/screens/search/save_button_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../business_logic/blocs/LocationBloc/location_bloc.dart';
@@ -63,6 +64,10 @@ class CityTabState extends State<CityTab> {
   Widget build(BuildContext context) {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
+
+    if (UserBloc.user == null) {
+      return const GuestLoginScreenBody();
+    }
 
     return ValueListenableBuilder(
         valueListenable: setTheme,

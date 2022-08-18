@@ -24,6 +24,7 @@ import '../../../../../data/send_notification_service.dart';
 import '../../../../../data/services/db/firestore_db_service_users.dart';
 import '../../../../../others/widgets/snack_bars.dart';
 import '../../../MessageScreen/message_screen.dart';
+import '../../../clickMessage.dart';
 
 class ProfileScreenComponentsOthersProfile {
   final MyUser profileData;
@@ -459,25 +460,14 @@ class ProfileScreenComponentsOthersProfile {
       onTap: () {
         print("butona tıklandı");
         if (_isAccepted) {
-          print("gelen istek kabul edildi artık mesajlaşma ekranına git");
-          Chat currentChat = Chat(
-              hostID: otherUser.userID,
-              isLastMessageFromMe: false,
-              isLastMessageReceivedByHost: true,
-              isLastMessageSeenByHost: true,
-              lastMessageCreatedAt: DateTime.now(),
-              lastMessage: "",
-              numberOfMessagesThatIHaveNotOpened: 0);
-
-          currentChat.hostUserProfileUrl = otherUser.profileURL;
-          currentChat.hostUserName = otherUser.displayName;
-
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
           _userBloc.mainKey.currentState?.push(
             MaterialPageRoute(
                 builder: (context) => MessageScreen(
-                      currentChat: currentChat,
-                    )),
+                  requestUserID: otherUser.userID,
+                  requestProfileURL: otherUser.profileURL,
+                  requestDisplayName: otherUser.displayName,
+                )),
           );
         } else {
           print("istek henüz kabul edilmedi");
@@ -527,24 +517,14 @@ class ProfileScreenComponentsOthersProfile {
   InkWell _buildConnectedStatus(MyUser otherUser, BuildContext context) {
     return InkWell(
       onTap: () {
-        Chat currentChat = Chat(
-            hostID: otherUser.userID,
-            isLastMessageFromMe: false,
-            isLastMessageReceivedByHost: true,
-            isLastMessageSeenByHost: true,
-            lastMessageCreatedAt: DateTime.now(),
-            lastMessage: "",
-            numberOfMessagesThatIHaveNotOpened: 0);
-
-        currentChat.hostUserProfileUrl = otherUser.profileURL;
-        currentChat.hostUserName = otherUser.displayName;
-
         UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
         _userBloc.mainKey.currentState?.push(
           MaterialPageRoute(
               builder: (context) => MessageScreen(
-                    currentChat: currentChat,
-                  )),
+                requestUserID: otherUser.userID,
+                requestProfileURL: otherUser.profileURL,
+                requestDisplayName: otherUser.displayName,
+              )),
         );
       },
       child: Row(
@@ -555,7 +535,7 @@ class ProfileScreenComponentsOthersProfile {
             color: Colors.white,
             fit: BoxFit.contain,
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(

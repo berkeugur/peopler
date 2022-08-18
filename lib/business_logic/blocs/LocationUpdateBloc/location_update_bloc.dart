@@ -42,23 +42,44 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
         return 'PositionNotGetState';
       }
 
-      bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
-      if (isUpdated == false) {
+      if(UserBloc.user != null) {
+        bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(
+            _position!);
+        if (isUpdated == false) {
+          /// For debug purposes
+          /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
+          return 'PositionNotUpdatedState';
+        }
+
+        /// Obtain shared preferences.
+        const storage = FlutterSecureStorage();
+        Map<String, String> allValues = await storage.readAll();
+
+        UserBloc.user?.region = allValues['sharedRegion']!;
+        UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
+        UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
+
         /// For debug purposes
-        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
-        return 'PositionNotUpdatedState';
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
+      } else {
+        bool isUpdated = await _locationRepository.updateGuestUserLocation(_position!);
+        if (isUpdated == false) {
+          /// For debug purposes
+          /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
+          return 'PositionNotUpdatedState';
+        }
+
+        /// Obtain shared preferences.
+        const storage = FlutterSecureStorage();
+        Map<String, String> allValues = await storage.readAll();
+
+        UserBloc.guestUser?.region = allValues['sharedRegion']!;
+        UserBloc.guestUser?.latitude = int.parse(allValues['sharedLatitude']!);
+        UserBloc.guestUser?.longitude = int.parse(allValues['sharedLongitude']!);
+
+        /// For debug purposes
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
       }
-
-      /// Obtain shared preferences.
-      const storage = FlutterSecureStorage();
-      Map<String, String> allValues = await storage.readAll();
-
-      UserBloc.user?.region = allValues['sharedRegion']!;
-      UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
-      UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
-
-      /// For debug purposes
-      /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
 
       return 'PositionUpdatedState';
     } catch (e) {
@@ -84,9 +105,10 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
     ///--------------- TIMER - FOREGROUND ----------------------------//
     on<StartLocationUpdatesForeground>((event, emit) async {
       if (_isTimerActive == false) {
-        if (UserBloc.user != null) {
-          const storage = FlutterSecureStorage();
 
+        const storage = FlutterSecureStorage();
+
+        if (UserBloc.user != null) {
           await storage.write(
               key: 'sharedUserID', value: UserBloc.user!.userID);
           await storage.write(
@@ -96,18 +118,27 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
           await storage.write(
               key: 'sharedLongitude',
               value: UserBloc.user!.longitude.toString());
-
-          add(UpdateLocationEvent());
-
-          Timer.periodic(
-            const Duration(minutes: 1),
-            (timer) {
-              debugPrint("Foreground update active");
-              _isTimerActive = true;
-              add(UpdateLocationEvent());
-            },
-          );
+        } else {
+          await storage.write(
+              key: 'sharedRegion', value: UserBloc.guestUser!.region);
+          await storage.write(
+              key: 'sharedLatitude', value: UserBloc.guestUser!.latitude.toString());
+          await storage.write(
+              key: 'sharedLongitude',
+              value: UserBloc.guestUser!.longitude.toString());
         }
+
+        add(UpdateLocationEvent());
+
+        Timer.periodic(
+          const Duration(minutes: 1),
+          (timer) {
+            debugPrint("Foreground update active");
+            _isTimerActive = true;
+            add(UpdateLocationEvent());
+          },
+        );
+
       }
     });
 

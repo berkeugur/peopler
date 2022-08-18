@@ -90,8 +90,19 @@ class _NearbyTabState extends State<NearbyTab> {
                   color: Color(0xFF0353EF),
                   displacement: 80.0,
                   onRefresh: () async {
+                    int _latitude;
+                    int _longitude;
+
+                    if(UserBloc.user != null) {
+                      _latitude = UserBloc.user!.latitude;
+                      _longitude = UserBloc.user!.longitude;
+                    } else {
+                      _latitude = UserBloc.guestUser!.latitude;
+                      _longitude = UserBloc.guestUser!.longitude;
+                    }
+
                     /// Refresh users
-                    await _locationBloc.getRefreshIndicatorData(UserBloc.user!.latitude, UserBloc.user!.longitude);
+                    await _locationBloc.getRefreshIndicatorData(_latitude, _longitude);
                   },
                   child: SingleChildScrollView(
                     controller: _searchPeopleListControllerNearby,
@@ -553,20 +564,24 @@ class _NearbyTabState extends State<NearbyTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
-                                String _deletedUserID = LocationBloc.allUserList[index].userID;
+                                if(UserBloc.user != null) {
+                                  _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
+                                  String _deletedUserID = LocationBloc.allUserList[index].userID;
 
-                                LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                                CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                                  LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                                  CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
-                                Provider.of<SaveButton>(context, listen: false).saveUser();
-                                await Future.delayed(const Duration(milliseconds: 1500));
+                                  Provider.of<SaveButton>(context, listen: false).saveUser();
+                                  await Future.delayed(const Duration(milliseconds: 1500));
 
-                                widget.showWidgetsKeyNearby.currentState?.setState(() {});
-                                widget.showWidgetsKeyCity.currentState?.setState(() {});
+                                  widget.showWidgetsKeyNearby.currentState?.setState(() {});
+                                  widget.showWidgetsKeyCity.currentState?.setState(() {});
 
-                                if (LocationBloc.allUserList.isEmpty) {
-                                  _locationBloc.add(TrigUsersNotExistSearchStateEvent());
+                                  if (LocationBloc.allUserList.isEmpty) {
+                                    _locationBloc.add(TrigUsersNotExistSearchStateEvent());
+                                  }
+                                } else {
+                                  showYouNeedToLoginSave(context);
                                 }
                               },
                               child: Center(

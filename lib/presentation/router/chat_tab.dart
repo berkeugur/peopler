@@ -39,17 +39,17 @@ class _ChatScreenNavigatorState extends State<ChatScreenNavigator> with Automati
                 case '/':
                   _homeScreen.currentScreen = {TabItem.chat: ScreenItem.chatScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  if (UserBloc.user != null) {
-                    return MaterialPageRoute(
-                      builder: (context) => MultiBlocProvider(child: const ChatScreen(), providers: [
-                        BlocProvider.value(value: _savedBloc),
-                      ]),
-                    );
-                  } else {
+                  if (UserBloc.user == null) {
                     return MaterialPageRoute(
                       builder: (context) => const GuestLoginScreen(),
                     );
                   }
+
+                  return MaterialPageRoute(
+                    builder: (context) => MultiBlocProvider(child: const ChatScreen(), providers: [
+                      BlocProvider.value(value: _savedBloc),
+                    ]),
+                  );
                 default:
                   debugPrint('ERROR: Chat Tab Router unknown route');
                   return null;

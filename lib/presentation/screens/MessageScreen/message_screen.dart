@@ -15,9 +15,13 @@ import 'message_screen_functions.dart';
 TextEditingController messageController = TextEditingController();
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key, required this.currentChat}) : super(key: key);
+  const MessageScreen({Key? key, this.requestUserID, this.requestProfileURL, this.requestDisplayName, this.currentChat}) : super(key: key);
 
-  final Chat currentChat;
+  final String? requestUserID;
+  final String? requestProfileURL;
+  final String? requestDisplayName;
+
+  final Chat? currentChat;
 
   @override
   _MessageScreenState createState() => _MessageScreenState();
@@ -42,7 +46,24 @@ class _MessageScreenState extends State<MessageScreen> {
   @override
   void initState() {
     _messageBloc = MessageBloc();
-    _messageBloc.currentChat = widget.currentChat;
+
+    if(widget.currentChat == null) {
+      Chat currentChat = Chat(
+          hostID: widget.requestUserID!,
+          isLastMessageFromMe: false,
+          isLastMessageReceivedByHost: true,
+          isLastMessageSeenByHost: true,
+          lastMessageCreatedAt: DateTime.now(),
+          lastMessage: "",
+          numberOfMessagesThatIHaveNotOpened: 0);
+
+      currentChat.hostUserProfileUrl = widget.requestProfileURL!;
+      currentChat.hostUserName = widget.requestDisplayName!;
+
+      _messageBloc.currentChat = currentChat;
+    } else {
+      _messageBloc.currentChat = widget.currentChat;
+    }
     _messageBloc.add(GetMessageWithPaginationEvent());
     messageListController = ScrollController();
     _mode = locator<Mode>();
@@ -62,7 +83,7 @@ class _MessageScreenState extends State<MessageScreen> {
               child: Builder(
                 builder: (BuildContext context) {
                   return Scaffold(
-                    backgroundColor: Mode.isEnableDarkMode == true ? Color(0xFF000B21) : Color(0xFFF0F4F5),
+                    backgroundColor: Mode.isEnableDarkMode == true ? const Color(0xFF000B21) : const Color(0xFFF0F4F5),
                     body: SafeArea(
                       child: Column(
                         children: [

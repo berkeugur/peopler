@@ -134,6 +134,45 @@ class LocationRepository {
     }
   }
 
+  Future<bool> updateGuestUserLocation(Position position) async {
+    try{
+
+      /// Obtain shared preferences.
+      const storage = FlutterSecureStorage();
+      Map<String, String> allValues = await storage.readAll();
+
+      String? sharedRegion = allValues['sharedRegion'];
+      int? sharedLatitude = int.parse(allValues['sharedLatitude']!);
+      int? sharedLongitude = int.parse(allValues['sharedLongitude']!);
+
+      int latitude = (position.latitude * 1e5).round();
+      int longitude = (position.longitude * 1e5).round();
+
+      /// If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
+      if(latitude > sharedLatitude - UPDATE_WIDTH &&
+          latitude < sharedLatitude + UPDATE_WIDTH &&
+          longitude > sharedLongitude - UPDATE_WIDTH &&
+          longitude < sharedLongitude + UPDATE_WIDTH) {
+        return false;
+      }
+
+      /// Query region bottom left corner coordinates
+      int bottomLatitude = latitude - latitude % QUERY_WIDTH;
+      int leftLongitude = longitude - longitude % QUERY_WIDTH;
+
+      String _region = bottomLatitude.toString() + ',' + leftLongitude.toString();
+
+      await storage.write(key: 'sharedRegion', value: _region);
+      await storage.write(key: 'sharedLatitude', value: latitude.toString());
+      await storage.write(key: 'sharedLongitude', value: longitude.toString());
+
+      return true;
+    }
+    catch(e) {
+      return false;
+    }
+  }
+
   Future<List<String>> determineQueryList(int latitude, int longitude) async {
     int _latitude = latitude;
     int _longitude = longitude;

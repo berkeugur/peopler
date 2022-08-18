@@ -308,24 +308,13 @@ class FCMAndLocalNotifications {
           _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!
               .pushNamed('/');
         } else if (payloadType == Strings.message) {
-          Chat currentChat = Chat(
-              hostID: receivedAction.payload!['userID']!,
-              isLastMessageFromMe: false,
-              isLastMessageReceivedByHost: true,
-              isLastMessageSeenByHost: true,
-              lastMessageCreatedAt: DateTime.now(),
-              lastMessage: "",
-              numberOfMessagesThatIHaveNotOpened: 0);
-
-          currentChat.hostUserProfileUrl =
-              receivedAction.payload!['profileURL']!;
-          currentChat.hostUserName = receivedAction.payload!['displayName']!;
-
           UserBloc _userBloc = BlocProvider.of<UserBloc>(myContext!);
           _userBloc.mainKey.currentState?.push(
             MaterialPageRoute(
                 builder: (context) => MessageScreen(
-                      currentChat: currentChat,
+                      requestUserID: receivedAction.payload!['userID']!,
+                      requestProfileURL: receivedAction.payload!['profileURL']!,
+                      requestDisplayName: receivedAction.payload!['displayName']!,
                     )),
           );
         } else {

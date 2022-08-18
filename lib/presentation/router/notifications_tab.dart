@@ -38,15 +38,15 @@ class _NotificationScreenNavigatorState extends State<NotificationScreenNavigato
                 case '/':
                   _homeScreen.currentScreen = {TabItem.notifications: ScreenItem.notificationScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
-                  if (UserBloc.user != null) {
-                    return MaterialPageRoute(
-                      builder: (context) => const NotificationScreen(),
-                    );
-                  } else {
+                  if (UserBloc.user == null) {
                     return MaterialPageRoute(
                       builder: (context) => const GuestLoginScreen(),
                     );
                   }
+
+                  return MaterialPageRoute(
+                    builder: (context) => const NotificationScreen(),
+                  );
                 case '/invitations':
                   _homeScreen.currentScreen = {TabItem.notifications: ScreenItem.invitationsReceivedScreen};
                   _homeScreen.changeFloatingActionButtonEvent();

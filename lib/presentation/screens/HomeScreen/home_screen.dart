@@ -74,7 +74,20 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         return BlocListener<LocationUpdateBloc, LocationUpdateState>(
                             listener: (BuildContext context, state) {
                               if (state is PositionUpdatedState) {
-                                _locationBloc.add(GetInitialSearchUsersEvent(latitude: UserBloc.user!.latitude, longitude: UserBloc.user!.longitude));
+                                int _latitude;
+                                int _longitude;
+
+                                if(UserBloc.user != null) {
+                                  _latitude = UserBloc.user!.latitude;
+                                  _longitude = UserBloc.user!.longitude;
+                                } else {
+                                  _latitude = UserBloc.guestUser!.latitude;
+                                  _longitude = UserBloc.guestUser!.longitude;
+                                }
+
+                                _locationBloc.add(GetInitialSearchUsersEvent(
+                                    latitude: _latitude,
+                                    longitude: _longitude));
                               }
                             },
                             child: SafeArea(

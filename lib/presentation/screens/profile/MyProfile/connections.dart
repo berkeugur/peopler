@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
@@ -8,6 +9,8 @@ import 'package:peopler/presentation/screens/profile/MyProfile/connections_servi
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
+import '../../MessageScreen/message_screen.dart';
+import '../../clickMessage.dart';
 
 class Connection {
   final String profilePhotoUrl;
@@ -162,13 +165,13 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             //color: Colors.green,
             width: _leftColumnSize(),
             height: _leftColumnSize(),
             child: InkWell(
                 onTap: () {
-                  ConnectionService().pushOthersProfile(otherProfileID: _data.id);
+                  ConnectionService().pushOthersProfile(context: context, otherProfileID: _data.id);
                 },
                 child: profilePhoto(context, _data.profilePhotoUrl)),
           ),
@@ -184,7 +187,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      ConnectionService().pushOthersProfile(otherProfileID: _data.id);
+                      ConnectionService().pushOthersProfile(context: context, otherProfileID: _data.id);
                     },
                     child: SizedBox(
                       child: Text(
@@ -245,9 +248,17 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    ConnectionService().pushMessageScreen(otherProfileID: _data.id);
+                    UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                    _userBloc.mainKey.currentState?.push(
+                      MaterialPageRoute(
+                          builder: (context) => MessageScreen(
+                            requestUserID: _data.id,
+                            requestProfileURL: _data.profilePhotoUrl,
+                            requestDisplayName: _data.fullName,
+                          )),
+                    );
                   },
-                  child: Container(
+                  child: SizedBox(
                     height: _buttonSize,
                     width: _buttonSize,
                     child: const Icon(

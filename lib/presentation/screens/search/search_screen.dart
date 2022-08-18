@@ -71,7 +71,18 @@ class _SearchScreenState extends State<SearchScreen> {
             bloc: _locationPermissionBloc,
             listener: (BuildContext context, state) {
               if (state is ReadyState) {
-                _locationBloc.add(GetInitialSearchUsersEvent(latitude: UserBloc.user!.latitude, longitude: UserBloc.user!.longitude));
+                int _latitude;
+                int _longitude;
+                if(UserBloc.user != null) {
+                  _latitude = UserBloc.user!.latitude;
+                  _longitude = UserBloc.user!.longitude;
+                } else {
+                  _latitude = UserBloc.guestUser!.latitude;
+                  _longitude = UserBloc.guestUser!.longitude;
+                }
+                _locationBloc.add(GetInitialSearchUsersEvent(
+                    latitude: _latitude,
+                    longitude: _longitude));
               }
             },
             child: ChangeNotifierProvider.value(

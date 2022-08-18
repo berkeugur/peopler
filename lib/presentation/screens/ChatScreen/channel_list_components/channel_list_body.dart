@@ -141,7 +141,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
             _userBloc.mainKey.currentState?.push(
               MaterialPageRoute(
                   builder: (context) => MessageScreen(
-                        currentChat: currentChat,
+                        currentChat: currentChat
                       )),
             );
           },

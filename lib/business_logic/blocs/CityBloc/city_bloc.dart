@@ -11,6 +11,33 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
   static List<MyUser> allUserList = [];
 
+  void removeUnnecessaryUsersFromUserList(List<MyUser> userList) {
+    if(UserBloc.user != null) {
+      /// Remove myself from list
+      userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
+
+      List<MyUser> tempList = [...userList];
+      for (MyUser tempUser in tempList) {
+        if (UserBloc.user!.savedUserIDs.contains(tempUser.userID)) {
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if (UserBloc.user!.transmittedRequestUserIDs.contains(
+            tempUser.userID)) {
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if (UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)) {
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if (UserBloc.user!.connectionUserIDs.contains(tempUser.userID)) {
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+      }
+    }
+  }
+
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData(String city) async {
     try {
@@ -19,27 +46,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
       List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(city, allUserList);
 
-      /// Remove myself from list
-      userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
-
-      List<MyUser> tempList = [...userList];
-      for(MyUser tempUser in  tempList){
-        if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-
-        if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-
-        if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-
-        if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-      }
+      removeUnnecessaryUsersFromUserList(userList);
 
       /// await Future.delayed(const Duration(seconds: 2));
 
@@ -68,27 +75,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
 
-        /// Remove myself from list
-        userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
-
-        List<MyUser> tempList = [...userList];
-        for(MyUser tempUser in  tempList){
-          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-        }
+        removeUnnecessaryUsersFromUserList(userList);
 
         /// await Future.delayed(const Duration(seconds: 2));
 
@@ -113,27 +100,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
 
-        /// Remove myself from list
-        userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
-
-        List<MyUser> tempList = [...userList];
-        for(MyUser tempUser in  tempList){
-          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-        }
+        removeUnnecessaryUsersFromUserList(userList);
 
         /// await Future.delayed(const Duration(seconds: 2));
 
