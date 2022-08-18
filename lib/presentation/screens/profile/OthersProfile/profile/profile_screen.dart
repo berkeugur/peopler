@@ -186,6 +186,9 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
         const SizedBox(height: 15),
         ProfileScreenComponentsMyProfile().biographyField(context, otherUser.biography),
         const SizedBox(height: 10),
+
+        ///123321 MyUser Profile kısmında UserBloc.myActivites işe yarıyor
+        ///ancak Others Userda OtherUserBloc().myActivities late hatası veriyor
         ProfileScreenComponentsMyProfile().activityList(context, UserBloc.myActivities),
         const SizedBox(height: 10),
         _profileScreenComponents.experiencesList(context),
