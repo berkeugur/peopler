@@ -53,7 +53,7 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
 
         } else if (_permission == LocationPermission.whileInUse) {
           /// When notification button clicked, open Permission Settings
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Uygulamanız arka planda çalışırken bulunabilir olmanız için ayarlardan Her zaman İzin Ver seçiniz.', Strings.permissionSettings);
+          // await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Uygulamanız arka planda çalışırken bulunabilir olmanız için ayarlardan Her zaman İzin Ver seçiniz.', Strings.permissionSettings);
 
           /// Since permission already given, no problem, then check for location
           add(LocationSettingListener());
