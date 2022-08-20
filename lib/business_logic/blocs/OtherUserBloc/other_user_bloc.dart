@@ -23,7 +23,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
         otherUser = await _userRepository.getUserWithUserId(event.userID);
 
         /// Find my mutual friends with him/her
-        Set<String> otherUserConnectionIDs = otherUser!.connectionUserIDs.toSet();
+        Set<String> otherUserConnectionIDs =  otherUser!.connectionUserIDs.toSet();
         Set<String> myUserConnectionIDs = UserBloc.user!.connectionUserIDs.toSet();
         mutualConnectionUserIDs = otherUserConnectionIDs.intersection(myUserConnectionIDs).toList();
 
@@ -56,6 +56,13 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
         emit(OtherUserNotFoundState());
         debugPrint("other user not found" + e.toString());
       }
+    });
+
+    on<RemoveConnectionEvent>((event, emit) async {
+      emit(InitialOtherUserState());
+      await _userRepository.removeConnection(UserBloc.user!.userID, event.otherUserID);
+      status = SendRequestButtonStatus.connect;
+      emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, myActivities, status));
     });
   }
 }

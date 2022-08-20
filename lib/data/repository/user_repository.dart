@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/services/db/firebase_db_common.dart';
+import 'package:peopler/data/services/db/firebase_db_service_chat.dart';
 import 'package:peopler/data/services/db/firebase_db_service_location.dart';
 import 'package:peopler/data/services/db/firestore_db_service_feeds.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
@@ -20,6 +21,7 @@ class UserRepository {
   final FirebaseStorageService _firebaseStorageService = locator<FirebaseStorageService>();
   final FirestoreDBServiceCommon _firestoreDBServiceCommon = locator<FirestoreDBServiceCommon>();
   final FirestoreDBServiceLocation _firestoreDBServiceLocation= locator<FirestoreDBServiceLocation>();
+  final FirestoreDBServiceChat _firestoreDBServiceChat= locator<FirestoreDBServiceChat>();
 
   Future<MyUser?> getCurrentUser() async {
     MyUser? currentUser = await _firebaseAuthService.getCurrentUser();
@@ -217,5 +219,23 @@ class UserRepository {
     await _firebaseAuthService.deleteUser();
 
     UserBloc.user = null;
+  }
+
+  Future<void> removeConnection(String myUserID, String otherUserID) async {
+    /// Delete notifications
+    await _firestoreDBServiceUsers.deleteNotificationFromUser(myUserID, otherUserID);
+    await _firestoreDBServiceUsers.deleteNotificationFromUser(otherUserID, myUserID);
+
+    /// Delete messages
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + myUserID + "/chats/" + otherUserID + "/messages");
+    await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + otherUserID + "/chats/" + myUserID + "/messages");
+
+    /// Delete Chat
+    await _firestoreDBServiceChat.deleteChat(myUserID, otherUserID);
+    await _firestoreDBServiceChat.deleteChat(otherUserID, myUserID);
+
+    /// Delete connectionID
+    await _firestoreDBServiceUsers.deleteUserFromConnections(myUserID, otherUserID);
+    await _firestoreDBServiceUsers.deleteUserFromConnections(otherUserID, myUserID);
   }
 }

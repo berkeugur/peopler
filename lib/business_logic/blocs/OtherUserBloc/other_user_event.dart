@@ -15,3 +15,12 @@ class GetInitialDataEvent extends OtherUserEvent {
   @override
   List<Object> get props => [userID, status];
 }
+
+class RemoveConnectionEvent extends OtherUserEvent {
+  final String otherUserID;
+
+  RemoveConnectionEvent({required this.otherUserID});
+
+  @override
+  List<Object> get props => [otherUserID];
+}

@@ -5,6 +5,7 @@ import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'dart:io' show Platform;
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
@@ -38,6 +39,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final LocationPermissionBloc _locationPermissionBloc;
   late final LocationBloc _locationBloc;
   late final CityBloc _cityBloc;
+  late final NotificationBloc _notificationBloc;
   late final PurchaseGetOfferBloc _purchaseGetOfferBloc;
 
   @override
@@ -48,6 +50,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
+    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
 
     if(UserBloc.user != null) {
       FCMAndLocalNotifications().initializeFCMNotifications(context);
@@ -125,17 +128,17 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _homeScreen.currentTab = TabItem.values[index];
     _homeScreen.changeFloatingActionButtonEvent();
 
-    // When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
+    /// When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
     if (_oldTab == TabItem.feed && TabItem.values[index] == TabItem.feed && _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {
       feedListKey.currentState!.scrollToTop();
     }
 
-    // When both currentTab and clicked tab are Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
+    /// When both currentTab and clicked tab are Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
     if (_oldTab == TabItem.search && TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
       _locationPermissionBloc.add(GetLocationPermissionEvent());
     }
 
-    // When both currentTab and clicked tab are Search tab button, and screen item is cityUsers, then trig City Bloc
+    /// When both currentTab and clicked tab are Search tab button, and screen item is cityUsers, then trig City Bloc
     if (_oldTab == TabItem.search && TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
       _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
     }

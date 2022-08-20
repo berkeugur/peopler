@@ -2,7 +2,6 @@ import 'package:get_it/get_it.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/data/my_work_manager.dart';
 import 'package:peopler/data/repository/chat_repository.dart';
-import 'package:peopler/data/repository/connection_repository.dart';
 import 'package:peopler/data/repository/message_repository.dart';
 import 'package:peopler/data/repository/notification_repository.dart';
 import 'package:peopler/data/repository/saved_repository.dart';
@@ -20,6 +19,7 @@ import '../data/repository/user_repository.dart';
 import '../data/send_notification_service.dart';
 import '../data/services/auth/firebase_auth_service.dart';
 import '../data/services/connectivity/connectivity_service.dart';
+import '../data/services/db/firebase_db_report.dart';
 import '../data/services/db/firebase_db_service_chat.dart';
 import '../data/services/db/firebase_db_service_location.dart';
 import '../data/services/db/firestore_db_service_feeds.dart';
@@ -41,6 +41,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => FirestoreDBServiceChat());
   locator.registerLazySingleton(() => FirestoreDBServiceMessage());
   locator.registerLazySingleton(() => FirestoreDBServiceCommon());
+  locator.registerLazySingleton(() => FirestoreDBServiceReport());
 
   /// Repositories
   locator.registerLazySingleton(() => UserRepository());
@@ -48,7 +49,6 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => LocationRepository());
   locator.registerLazySingleton(() => ConnectivityRepository());
   locator.registerLazySingleton(() => ChatRepository());
-  locator.registerLazySingleton(() => ConnectionRepository());
   locator.registerLazySingleton(() => MessageRepository());
   locator.registerLazySingleton(() => SavedRepository());
   locator.registerLazySingleton(() => NotificationRepository());

@@ -554,6 +554,19 @@ class FirestoreDBServiceUsers {
     }
   }
 
+  Future<bool> deleteUserFromConnections(String myUserID, String requestUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .update({"connectionUserIDs": FieldValue.arrayRemove([requestUserID])});
+      return true;
+    } catch (e) {
+      debugPrint('Update SaveUserIDsField fail');
+      return false;
+    }
+  }
+
   Future<bool> deleteNotificationFromUser(String myUserID, String deletedNotificationID) async {
     try {
       await _firebaseDB

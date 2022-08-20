@@ -29,11 +29,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       if (_hasMore == false) {
         emit(NoMoreNotificationState());
       } else {
+        emit(NotificationsLoadingState());
+
         if (_allNotificationList.isNotEmpty) {
           _lastSelectedNotification = _allNotificationList.last;
         }
-
-        emit(NotificationsLoadingState());
 
         List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification, _numberOfElements);
 
@@ -65,11 +65,15 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
               .listen((updatedNotification) async {
 
             if(updatedNotification.isEmpty) {
+              /// Call another NotificationBloc event named NewNotificationListenerEvent
+              add(NewNotificationListenerEvent(updatedNotification: updatedNotification));
               debugPrint("There is no new notification");
               return;
             }
 
             if(updatedNotification[0].requestUserID == null) {
+              /// Call another NotificationBloc event named NewNotificationListenerEvent
+              add(NewNotificationListenerEvent(updatedNotification: updatedNotification));
               debugPrint("Notification Type is not receive or transmit");
               return;
             }
@@ -79,7 +83,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             updatedNotification[0].requestProfileURL = _user.profileURL;
             updatedNotification[0].requestBiography = _user.biography;
 
-            /// Call another ChatBloc event named NewChatListenerEvent
+            /// Call another NotificationBloc event named NewNotificationListenerEvent
             add(NewNotificationListenerEvent(updatedNotification: updatedNotification));
           });
         }
@@ -89,6 +93,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
 
     on<NewNotificationListenerEvent>((event, emit) async {
+      /// If notification deleted and now there is no notifications
+      if(event.updatedNotification.isEmpty) {
+        emit(NotificationNotExistState());
+        return;
+      }
+
       /// If there is a notification with updatedNotificationId, then remove it from _allNotificationList.
       /// Since updatedNotification is a list with only one element, we get the only element whose index is 0.
       _allNotificationList.removeWhere((item) => item.notificationID == event.updatedNotification[0].notificationID);

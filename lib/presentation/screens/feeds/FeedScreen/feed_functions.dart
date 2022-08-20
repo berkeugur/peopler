@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/Settings/settings.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
+import '../../../../data/services/db/firebase_db_report.dart';
+import '../../../../others/locator.dart';
 import '../../../tab_item.dart';
 import '../../guest_login_screen.dart';
 
@@ -133,12 +136,12 @@ Future<void> _showReportBottomSheet(
                 )
               ],
             ),
-            Divider(
+            const Divider(
               color: Colors.white,
               height: 1,
             ),
             Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Padding(
@@ -165,19 +168,19 @@ Future<void> _showReportBottomSheet(
                   ),
                 ),
               ),
-              _reportItem("Spam", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID, userDisplayName, userGender,
-                  createdAt, userPhotoUrl),
-              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
-              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl),
+              _reportItem("Spam", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID,
+                  createdAt),
+              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, createdAt),
+              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, createdAt),
             ])
           ],
         );
@@ -190,32 +193,15 @@ InkWell _reportItem(
   String feedId,
   String feedExplanation,
   String userID,
-  String userDisplayName,
-  String userGender,
   DateTime createdAt,
-  String userPhotoUrl,
 ) {
   return InkWell(
     onTap: () {
-      UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
       if (UserBloc.user != null) {
-        CollectionReference _reports = FirebaseFirestore.instance.collection('reports');
-        _reports.add({
-          "type": text,
-          "feedID": feedId,
-          "feedExplanation": feedExplanation,
-          "userID": userID,
-          "userDisplayName": userDisplayName,
-          "userGender": userGender,
-          "createdAt": createdAt,
-          "userPhotoUrl": userPhotoUrl,
-          "fromUserId": MyUser().userID,
-          "fromUserDisplayName": MyUser().displayName,
-        }).then((value) {
-          print("then");
-        }).catchError((error) => print("Failed to add feed: $error"));
+        final FirestoreDBServiceReport _firestoreDBServiceReport = locator<FirestoreDBServiceReport>();
 
-        print("reported: $text");
+        MyReport report = MyReport(userID: userID, type: text, feedID: feedId, feedExplanation: feedExplanation);
+        _firestoreDBServiceReport.reportFeedOrUser(report);
 
         Navigator.pop(context);
 
@@ -223,11 +209,11 @@ InkWell _reportItem(
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text(
+                title: const Text(
                   'Talebiniz Alındı',
                   textScaleFactor: 1,
                 ),
-                content: Text(
+                content: const Text(
                   'En kısa sürede şikayetiniz incelenecektir! Bizi bilgilendirdiğiniz için teşekkür ederiz.',
                   textScaleFactor: 1,
                 ),
@@ -236,7 +222,7 @@ InkWell _reportItem(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Kapat',
                         textScaleFactor: 1,
                       )),
@@ -267,7 +253,7 @@ InkWell _reportItem(
               color: Colors.white,
             ),
           ),
-          Icon(
+          const Icon(
             Icons.arrow_forward_ios,
             color: Colors.white,
             size: 14,
