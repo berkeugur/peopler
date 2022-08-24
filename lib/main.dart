@@ -67,8 +67,21 @@ class MyApp extends StatelessWidget {
                   navigatorKey: mainKey,
                   debugShowCheckedModeBanner: false,
                   theme: ThemeData(
-                    primarySwatch: Colors.blue,
-                  ),
+                      primarySwatch: const MaterialColor(
+                    0xFF0353EF,
+                    <int, Color>{
+                      50: Color(0xFF0353EF),
+                      100: Color(0xFF0353EF),
+                      200: Color(0xFF0353EF),
+                      300: Color(0xFF0353EF),
+                      400: Color(0xFF0353EF),
+                      500: Color(0xFF0353EF),
+                      600: Color(0xFF0353EF),
+                      700: Color(0xFF0353EF),
+                      800: Color(0xFF0353EF),
+                      900: Color(0xFF0353EF),
+                    },
+                  )),
                   onGenerateRoute: _loginRouter.onGenerateRoute));
         });
   }

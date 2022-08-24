@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen_components.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -70,6 +71,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           _profileScreenComponents.photos(context, profileData.photosURL, profileData.profileURL),
           _profileScreenComponents.nameField(),
+          OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ProfileEditHome())));
+              },
+              child: Text("Yeni Profil Ekranları")),
+          OutlinedButton(
+              onPressed: () {
+                setState(() {});
+              },
+              child: Text("Setstate")),
           SizedBox(
             height: UserBloc.user!.schoolName != "" ? 5 : 0,
           ),

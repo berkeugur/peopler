@@ -6,6 +6,7 @@ import 'package:multi_value_listenable_builder/multi_value_listenable_builder.da
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/profile_edit/image_functions.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit.dart';
 
@@ -102,10 +103,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
                               TextButton(
                                 onPressed: () async {
                                   await FirebaseStorage.instance.refFromURL(UserBloc.user!.photosURL[index]).delete();
-                                  await FirebaseFirestore.instance
-                                      .collection("users")
-                                      .doc(UserBloc.user!.userID)
-                                      .update({
+                                  await FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID).update({
                                     "photosURL": FieldValue.arrayRemove([UserBloc.user!.photosURL[index]])
                                   });
 
@@ -222,19 +220,16 @@ class _DragDropGridViewState extends State<DragDropGridView> {
           showPickerForAddPhotos(context, stateSetter: setState);
         },
         child: Center(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.add,
-                  color: Color(0xFF0353EF),
-                ),
-                Text(
-                  "Yeni Ekle",
-                  style: GoogleFonts.rubik(color: Color(0xFF0353EF)),
-                ),
-              ]),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+            const Icon(
+              Icons.add,
+              color: Color(0xFF0353EF),
+            ),
+            Text(
+              "Yeni Ekle",
+              style: GoogleFonts.rubik(color: Color(0xFF0353EF)),
+            ),
+          ]),
         ),
       ),
     );

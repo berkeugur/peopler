@@ -75,8 +75,7 @@ saveButtonFunction(String changedCity) async {
   }
   print("*********************** 7 **********************");
   if (newProfileimage != null) {
-    Reference _storageReference =
-        FirebaseStorage.instance.ref().child(UserBloc.user!.userID).child("profile_photo").child("profile_photo.png");
+    Reference _storageReference = FirebaseStorage.instance.ref().child(UserBloc.user!.userID).child("profile_photo").child("profile_photo.png");
     await _storageReference.putFile(newProfileimage!);
     //gs://peopler-2376c.appspot.com/G4yKPJketQU8dm2GjDfeZZXHt8Z2/profile_photo/profile_photo.png
     print(_storageReference.fullPath);
@@ -92,7 +91,6 @@ saveButtonFunction(String changedCity) async {
 //
 //
   print("*********************** 8 **********************");
-  print(images2.last.runtimeType);
 
   //fotoğrafları kaydetme
   List.generate(images2.length, (index) async {
@@ -116,8 +114,7 @@ saveButtonFunction(String changedCity) async {
       // ignore: avoid_single_cascade_in_expression_statements
       FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID)
         ..update({
-          "photosURL":
-              FieldValue.arrayUnion([await FirebaseStorage.instance.ref(_storageReference.fullPath).getDownloadURL()])
+          "photosURL": FieldValue.arrayUnion([await FirebaseStorage.instance.ref(_storageReference.fullPath).getDownloadURL()])
         }).then((value) async {
           UserBloc.user!.photosURL.add(await FirebaseStorage.instance.ref(_storageReference.fullPath).getDownloadURL());
 

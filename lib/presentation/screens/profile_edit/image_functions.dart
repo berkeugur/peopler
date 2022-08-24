@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit.dart';
 
 void showPickerForChangeProfilePhoto(context, {required StateSetter stateSetter}) {
@@ -37,8 +38,7 @@ void showPickerForChangeProfilePhoto(context, {required StateSetter stateSetter}
 
 File? newProfileimage;
 _profilePhotoChangeImgFromCamera({required StateSetter stateSetter}) async {
-  XFile? image = await ImagePicker()
-      .pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
+  XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
 
   stateSetter(() {
     //_image = File(image!.path);
@@ -110,8 +110,7 @@ void showPickerForAddPhotos(context, {required StateSetter stateSetter}) {
 
 File? newPhotos;
 _photosAddImgFromCamera({required StateSetter stateSetter}) async {
-  XFile? image = await ImagePicker()
-      .pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
+  XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
 
   stateSetter(() {
     //_image = File(image!.path);

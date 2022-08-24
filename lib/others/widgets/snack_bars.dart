@@ -14,7 +14,7 @@ import '../classes/dark_light_mode_controller.dart';
 //
 //
 
-customSnackBar({required BuildContext context, required String title, required IconData? icon, required Color? textColor, required Color? bgColor}){
+customSnackBar({required BuildContext context, required String title, required IconData? icon, required Color? textColor, required Color? bgColor}) {
   const double iconSize = 25;
   final double screenWidth = MediaQuery.of(context).size.width;
 
@@ -40,7 +40,12 @@ customSnackBar({required BuildContext context, required String title, required I
             const SizedBox(
               width: 10,
             ),
-            SizedBox(width: screenWidth - (iconSize * 2 * 2) - 10 - 62, child: Text(title,style: TextStyle(fontSize: 16, color: textColor),)),
+            SizedBox(
+                width: screenWidth - (iconSize * 2 * 2) - 10 - 62,
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 16, color: textColor),
+                )),
           ],
         ),
         SizedBox(
@@ -58,8 +63,7 @@ customSnackBar({required BuildContext context, required String title, required I
   );
 }
 
-
-alertSnackBar(context, String text, GlobalKey<ScaffoldMessengerState> key) {
+alertSnackBar(context, String text, GlobalKey<ScaffoldMessengerState>? key) {
   const double iconSize = 25;
   double screenWidth = MediaQuery.of(context).size.width;
   return SnackBar(
@@ -96,9 +100,7 @@ alertSnackBar(context, String text, GlobalKey<ScaffoldMessengerState> key) {
           height: iconSize * 2,
           width: iconSize * 2,
           child: TextButton(
-            onPressed: () {
-              key.currentState!.hideCurrentSnackBar();
-            },
+            onPressed: () {},
             child: Icon(Icons.close, color: Colors.grey[850], size: iconSize),
           ),
         ),
@@ -174,11 +176,11 @@ showNumOfConnectionRequestsConsumed(BuildContext context) {
         actions: [
           TextButton(
             child: const Text("İptal"),
-            onPressed:  () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           TextButton(
             child: const Text("Ayrıcalıkları Keşfet"),
-            onPressed:  () {
+            onPressed: () {
               UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
               _userBloc.mainKey.currentState?.push(
                 MaterialPageRoute(builder: (context) => const SubscriptionsPage()),

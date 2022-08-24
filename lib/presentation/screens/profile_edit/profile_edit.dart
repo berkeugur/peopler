@@ -6,12 +6,11 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/functions/search_functions.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/presentation/screens/profile_edit/drag_drop_gridview.dart';
 import 'package:peopler/presentation/screens/profile_edit/image_functions.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit_function.dart';
-
-ValueNotifier<bool> setStateEditProfile = ValueNotifier(false);
 
 class EditProfileData {
   final double photoSize;
@@ -129,8 +128,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 "Yaşadığınız İl",
                                 textAlign: TextAlign.left,
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
-                                    fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+                                style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
                               ),
                             ),
                           ],
@@ -147,10 +145,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 child: Text(
                                   "Fotoğraflarınız",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Mode().blackAndWhiteConversion()),
+                                  style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
                                 ),
                               ),
                               const DragDropGridView(),
@@ -200,8 +195,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
                                 child: Container(
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   height: 350,
                                   width: MediaQuery.of(context).size.width - 40,
                                   child: Column(
@@ -215,10 +209,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         child: CupertinoSearchTextField(
                                           onTap: () async {
                                             await Future.delayed(const Duration(milliseconds: 500), () {
-                                              _jumpToBottomScrollController.animateTo(
-                                                  _jumpToBottomScrollController.position.maxScrollExtent - 50,
-                                                  duration: const Duration(milliseconds: 500),
-                                                  curve: Curves.ease);
+                                              _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent - 50,
+                                                  duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                             });
                                             setState(() {});
                                             setStateBottomSheet(() {});
@@ -244,9 +236,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                 return Container(
                                                   margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                                                   decoration: BoxDecoration(
-                                                    color: UserBloc.user?.city == items[index]
-                                                        ? const Color(0xFF0353EF)
-                                                        : Colors.white,
+                                                    color: UserBloc.user?.city == items[index] ? const Color(0xFF0353EF) : Colors.white,
                                                     borderRadius: BorderRadius.circular(99),
                                                   ),
                                                   child: Padding(
@@ -264,9 +254,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                                           items[index],
                                                           style: UserBloc.user!.city == items[index]
                                                               ? const TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight: FontWeight.w600,
-                                                                  color: Color.fromARGB(255, 255, 255, 255))
+                                                                  fontSize: 20, fontWeight: FontWeight.w600, color: Color.fromARGB(255, 255, 255, 255))
                                                               : const TextStyle(fontSize: 18),
                                                         ),
                                                       ),
@@ -283,8 +271,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 child: Container(
                                   height: 50,
                                   width: MediaQuery.of(context).size.width,
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   child: TextButton(
                                     child: Text("Vazgeç"),
                                     onPressed: () {
@@ -302,10 +289,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             },
             child: Text(
               changedCity != "" ? changedCity : UserBloc.user!.city,
-              style: GoogleFonts.rubik(
-                  color: const Color(0xFFFFFFFF),
-                  fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16,
-                  fontWeight: FontWeight.w300),
+              style:
+                  GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
             )),
       ),
     );
@@ -326,14 +311,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               child: Text(
                 "Tam Adınız",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                    fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+                style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 5),
-              decoration: BoxDecoration(
-                  color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
+              decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
                 controller: nameController,
@@ -368,14 +351,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               child: Text(
                 "Kendinizi Tanıtın",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                    fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+                style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 5),
-              decoration: BoxDecoration(
-                  color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
+              decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
                 controller: bioController,
@@ -410,14 +391,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               child: Text(
                 "Üniversite",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                    fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+                style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 5),
-              decoration: BoxDecoration(
-                  color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
+              decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
                 controller: schoolNameController,
@@ -452,14 +431,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               child: Text(
                 "Mesleğiniz (zorunlu değil)",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                    fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+                style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 5),
-              decoration: BoxDecoration(
-                  color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
+              decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
                 controller: currentJobNameController,
@@ -494,14 +471,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               child: Text(
                 "Çalıştığınız Şirket (zorunlu değil)",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                    fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+                style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
               ),
             ),
             Container(
               margin: const EdgeInsets.only(top: 5),
-              decoration: BoxDecoration(
-                  color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
+              decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
                 controller: companyNameController,
@@ -592,8 +567,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         width: 5,
                         color: Mode().search_peoples_scaffold_background() as Color,
                       )),
-                  child: CircleAvatar(
-                      backgroundColor: Color(0xFF0353EF).withOpacity(0.3), child: const Icon(Icons.photo_camera)),
+                  child: CircleAvatar(backgroundColor: Color(0xFF0353EF).withOpacity(0.3), child: const Icon(Icons.photo_camera)),
                 ),
               ),
             ],
@@ -623,8 +597,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         context: context,
                         builder: (context) => AlertDialog(
                               title: const Text('Emin Misiniz?'), // App Permission Settings
-                              content: const Text(
-                                  'Kaydetmediğiniz değişikliklikler var. Devam ederseniz değişiklikleriniz kaybolacak.'),
+                              content: const Text('Kaydetmediğiniz değişikliklikler var. Devam ederseniz değişiklikleriniz kaybolacak.'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
