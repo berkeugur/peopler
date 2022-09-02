@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 
+import '../../../core/constants/navigation/navigation_constants.dart';
+
 class BottomButtons extends StatelessWidget {
   final int currentIndex;
   final int dataLength;
@@ -33,7 +35,7 @@ class BottomButtons extends StatelessWidget {
                               style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pushNamed('/welcomeScreen');
+                              Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
                             },
                             style: TextButton.styleFrom(
                               primary: const Color(0xFFFFFFFF),
@@ -48,7 +50,7 @@ class BottomButtons extends StatelessWidget {
                 : [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/welcomeScreen');
+                        Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,

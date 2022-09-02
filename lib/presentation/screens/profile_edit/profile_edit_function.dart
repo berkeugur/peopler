@@ -124,9 +124,9 @@ saveButtonFunction(String changedCity) async {
           //setStateValue
 
           Future.delayed(Duration(milliseconds: 500), () {
-            setStateValue.value = !setStateValue.value;
+            setStateProfileScreen.value = !setStateProfileScreen.value;
           }).then(
-            (value) => setStateValue.value = !setStateValue.value,
+            (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
           );
         }).onError(
           (error, stackTrace) {

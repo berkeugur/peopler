@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
+import '../../../core/constants/navigation/navigation_constants.dart';
 import '../../tab_item.dart';
 
 ///op = On Pressed
@@ -69,7 +70,7 @@ op_change_password(context) {
 op_delete_account(BuildContext context) {
   UserBloc _userBloc = BlocProvider.of(context);
   _userBloc.add(deleteUser());
-  _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
+  _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
 }
 
 op_suggestion_or_complaint() {
@@ -98,5 +99,5 @@ op_sign_out(context) {
     print("pressed  op_sign_out");
   }
   _userBloc.add(signOutEvent());
-  _userBloc.mainKey.currentState?.pushReplacementNamed('/welcomeScreen');
+  _userBloc.mainKey.currentState?.pushReplacementNamed(NavigationConstants.WELCOME);
 }

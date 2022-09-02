@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../others/strings.dart';
@@ -31,19 +32,18 @@ class _LinkedInPageState extends State<LinkedInPage> {
         bloc: _userBloc,
         listener: (context, UserState state) {
           if (state is SignedInState) {
-            Navigator.of(context).pushNamedAndRemoveUntil('/homeScreen', (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
           } else if (state is SignedInMissingInfoState) {
             Navigator.of(context).pushNamedAndRemoveUntil('/genderSelectScreen', (Route<dynamic> route) => false);
           }
         },
         child: WebView(
           javascriptMode: JavascriptMode.unrestricted,
-          initialUrl:
-              'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' +
-                  Strings.clientId +
-                  '&redirect_uri=' +
-                  Strings.redirectUrl +
-                  '&state=foobar&scope=r_liteprofile%20r_emailaddress',
+          initialUrl: 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' +
+              Strings.clientId +
+              '&redirect_uri=' +
+              Strings.redirectUrl +
+              '&state=foobar&scope=r_liteprofile%20r_emailaddress',
           onWebViewCreated: (controller) {
             _controller = controller;
           },
@@ -57,14 +57,12 @@ class _LinkedInPageState extends State<LinkedInPage> {
                 customToken = arr[0];
 
                 _userBloc.add(signInWithLinkedInEvent(customToken: customToken));
-
               },
             ),
           },
           onPageFinished: (url) {
             if (url.contains(Strings.redirectUrl)) {
-              _controller.runJavascript(
-                  "(function(){LinkedInSignIn.postMessage(window.document.body.outerHTML)})();");
+              _controller.runJavascript("(function(){LinkedInSignIn.postMessage(window.document.body.outerHTML)})();");
             }
           },
         ),

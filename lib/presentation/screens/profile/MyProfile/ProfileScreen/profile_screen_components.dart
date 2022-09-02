@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -211,18 +212,23 @@ class ProfileScreenComponentsMyProfile {
           height: _photoSize,
           width: _photoSize,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(
-                width: 5,
-                color: _mode.search_peoples_scaffold_background() as Color,
-              )),
-          child: //_userBloc != null ?
-              CircleAvatar(
-            radius: 999,
-            backgroundImage: NetworkImage(
-              photoURL,
+            shape: BoxShape.circle,
+            border: Border.all(
+              width: 5,
+              color: _mode.search_peoples_scaffold_background() as Color,
             ),
-            backgroundColor: Colors.transparent,
+          ),
+          child: //_userBloc != null ?
+              CachedNetworkImage(
+            imageUrl: photoURL,
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+            progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ),
       ],

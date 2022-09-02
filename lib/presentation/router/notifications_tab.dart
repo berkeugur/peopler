@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../core/constants/navigation/navigation_constants.dart';
 import '../screens/ChatScreen/channel_list.dart';
 import '../screens/GuestLoginScreen/guest_login_screen.dart';
 import '../screens/notification/connection_requests_screen/connection_request_screen.dart';
@@ -32,10 +33,10 @@ class _NotificationScreenNavigatorState extends State<NotificationScreenNavigato
         builder: (context, x, y) {
           return Navigator(
             key: _homeScreen.navigatorKeys[TabItem.notifications],
-            initialRoute: '/',
+            initialRoute: NavigationConstants.INITIAL_ROUTE,
             onGenerateRoute: (routeSettings) {
               switch (routeSettings.name) {
-                case '/':
+                case NavigationConstants.INITIAL_ROUTE:
                   _homeScreen.currentScreen = {TabItem.notifications: ScreenItem.notificationScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
                   if (UserBloc.user == null) {

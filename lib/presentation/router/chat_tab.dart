@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/ChatScreen/channel_list.dart';
 import 'package:peopler/presentation/screens/GuestLoginScreen/guest_login_screen.dart';
 import '../../business_logic/blocs/SavedBloc/saved_bloc.dart';
@@ -33,10 +34,10 @@ class _ChatScreenNavigatorState extends State<ChatScreenNavigator> with Automati
         builder: (context, x, y) {
           return Navigator(
             key: _homeScreen.navigatorKeys[TabItem.chat],
-            initialRoute: '/',
+            initialRoute: NavigationConstants.INITIAL_ROUTE,
             onGenerateRoute: (routeSettings) {
               switch (routeSettings.name) {
-                case '/':
+                case NavigationConstants.INITIAL_ROUTE:
                   _homeScreen.currentScreen = {TabItem.chat: ScreenItem.chatScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
                   if (UserBloc.user == null) {

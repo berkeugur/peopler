@@ -26,7 +26,7 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-ValueNotifier<bool> setStateValue = ValueNotifier(false);
+ValueNotifier<bool> setStateProfileScreen = ValueNotifier(false);
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final Mode _mode = locator<Mode>();
@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //değiştirebiliriz.
 
             body: ValueListenableBuilder(
-                valueListenable: setStateValue,
+                valueListenable: setStateProfileScreen,
                 builder: (context, xbool, xwidget) {
                   return SafeArea(
                     child: _buildBody(),

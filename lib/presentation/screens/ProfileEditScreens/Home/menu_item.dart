@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
-import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 
 class HomeItem extends StatelessWidget {
   const HomeItem({
@@ -34,7 +31,9 @@ class HomeItem extends StatelessWidget {
               )),
           onPressed: () {
             if (targetPage != null) {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfileScreen()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return targetPage!;
+              }));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 customSnackBar(

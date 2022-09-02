@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
 class GuestAlert {
   static dialog(context) {
@@ -29,7 +30,7 @@ class GuestAlert {
               TextButton(
                   onPressed: () {
                     UserBloc _userBloc = BlocProvider.of(context);
-                    _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
+                    _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                     //98865896
                     //welcomescreen a git
                   },

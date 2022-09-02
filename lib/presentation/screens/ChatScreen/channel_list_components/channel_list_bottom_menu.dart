@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
 import '../../../../../others/classes/variables.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/locator.dart';
 
 Container bottomMenuForChannelList(BuildContext context) {
-  double _menuItemHeight = MediaQuery.of(context).size.width < 425
-      ? MediaQuery.of(context).size.width * 0.056 + 10
-      : 425 * 0.056 + 10;
-  double _menuItemWidth = MediaQuery.of(context).size.width < 425
-      ? MediaQuery.of(context).size.width * 0.059 + 10
-      : 425 * 0.059 + 10;
+  double _menuItemHeight = MediaQuery.of(context).size.width < 425 ? MediaQuery.of(context).size.width * 0.056 + 10 : 425 * 0.056 + 10;
+  double _menuItemWidth = MediaQuery.of(context).size.width < 425 ? MediaQuery.of(context).size.width * 0.059 + 10 : 425 * 0.059 + 10;
 
   final Mode _mode = locator<Mode>();
 
   return Container(
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[
-        BoxShadow(
-            color: Color(0xFF939393).withOpacity(0.6),
-            blurRadius: 2.0,
-            spreadRadius: 0,
-            offset: Offset(0.0, 0.75))
-      ],
+      boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: Offset(0.0, 0.75))],
       color: _mode.bottomMenuBackground(),
     ),
     width: MediaQuery.of(context).size.width,
@@ -34,7 +25,7 @@ Container bottomMenuForChannelList(BuildContext context) {
       children: [
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/homeScreen');
+            Navigator.pushNamed(context, NavigationConstants.HOME_SCREEN);
           },
           child: AnimatedContainer(
             padding: const EdgeInsets.all(5),
@@ -57,7 +48,7 @@ Container bottomMenuForChannelList(BuildContext context) {
         ),
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/homeScreen');
+            Navigator.pushNamed(context, NavigationConstants.HOME_SCREEN);
           },
           child: AnimatedContainer(
             padding: const EdgeInsets.all(5),
@@ -80,7 +71,7 @@ Container bottomMenuForChannelList(BuildContext context) {
         ),
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/homeScreen');
+            Navigator.pushNamed(context, NavigationConstants.HOME_SCREEN);
           },
           child: AnimatedContainer(
             padding: const EdgeInsets.all(5),
@@ -103,7 +94,7 @@ Container bottomMenuForChannelList(BuildContext context) {
         ),
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/homeScreen');
+            Navigator.pushNamed(context, NavigationConstants.HOME_SCREEN);
           },
           child: AnimatedContainer(
             padding: const EdgeInsets.all(5),
@@ -126,7 +117,7 @@ Container bottomMenuForChannelList(BuildContext context) {
         ),
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/homeScreen');
+            Navigator.pushNamed(context, NavigationConstants.HOME_SCREEN);
           },
           child: AnimatedContainer(
             padding: const EdgeInsets.all(5),

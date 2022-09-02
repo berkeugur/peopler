@@ -116,9 +116,9 @@ class _DragDropGridViewState extends State<DragDropGridView> {
                                   }).then((value) => setStateEditProfile.value = !setStateEditProfile.value);
 
                                   Future.delayed(Duration(milliseconds: 500), () {
-                                    setStateValue.value = !setStateValue.value;
+                                    setStateProfileScreen.value = !setStateProfileScreen.value;
                                   }).then(
-                                    (value) => setStateValue.value = !setStateValue.value,
+                                    (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
                                   );
 
                                   Navigator.pop(context);

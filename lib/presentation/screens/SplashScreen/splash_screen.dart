@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import 'package:peopler/core/constants/app/animations_constants.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../data/fcm_and_local_notifications.dart';
@@ -26,11 +28,11 @@ class SplashScreen extends StatelessWidget {
       listener: (context, UserState state) {
         if (state is SignedInState) {
           Timer(const Duration(seconds: splashScreenDuration), () {
-            Navigator.of(context).pushReplacementNamed('/homeScreen');
+            Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
           });
         } else if (state is SignedOutState) {
           Timer(const Duration(seconds: splashScreenDuration), () {
-            Navigator.of(context).pushReplacementNamed('/onBoardingScreen');
+            Navigator.of(context).pushReplacementNamed(NavigationConstants.ON_BOARDING);
           });
         } else if (state is SignedInMissingInfoState) {
           Timer(const Duration(seconds: splashScreenDuration), () {
@@ -48,7 +50,7 @@ class SplashScreen extends StatelessWidget {
         backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
         body: Center(
             child: Lottie.asset(
-          'assets/loading.json',
+          AnimationsConstants.LOADING_PATH,
           width: MediaQuery.of(context).size.width / 2,
           repeat: true,
         )),

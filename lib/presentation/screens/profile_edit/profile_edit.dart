@@ -643,8 +643,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               await saveButtonFunction(changedCity);
 
               Future.delayed(const Duration(milliseconds: 500), (() {
-                setStateValue.value = false;
-              })).then((value) => setStateValue.value = true);
+                setStateProfileScreen.value = false;
+              })).then((value) => setStateProfileScreen.value = true);
               numberOfNewPhotos = 0;
               Navigator.of(context).pop();
             },

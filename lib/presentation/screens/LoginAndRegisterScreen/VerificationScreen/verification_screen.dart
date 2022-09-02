@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../core/constants/navigation/navigation_constants.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
@@ -167,7 +168,7 @@ class VerificationScreen extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     _userBloc.add(deleteUser());
-                    Navigator.of(context).pushNamed('/welcomeScreen');
+                    Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
                   },
                   child: Text(
                     'Evet',

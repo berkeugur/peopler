@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/services/remote_config/remote_config.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/BegForPermissionScreen/beg_for_permission_screen.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/EmailAndPasswordScreen/email_pass_screen.dart';
@@ -21,22 +22,22 @@ class LoginRouter {
   // final FeedBloc _feedBloc = FeedBloc();
   // final SavedBloc _savedBloc = SavedBloc();
 
-  Route? onGenerateRoute(RouteSettings routeSettings)  {
+  Route? onGenerateRoute(RouteSettings routeSettings) {
     final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
-    if(_remoteConfigService.isMaintenance()) {
+    if (_remoteConfigService.isMaintenance()) {
       return MaterialPageRoute(builder: (_) => const MaintenanceScreen());
     }
 
-    if(_remoteConfigService.isUpdate()) {
+    if (_remoteConfigService.isUpdate()) {
       return MaterialPageRoute(builder: (_) => const UpdateScreen());
     }
 
     switch (routeSettings.name) {
-      case '/':
+      case NavigationConstants.INITIAL_ROUTE:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case '/onBoardingScreen':
+      case NavigationConstants.ON_BOARDING:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
-      case '/welcomeScreen':
+      case NavigationConstants.WELCOME:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
       case '/nameScreen':
         return MaterialPageRoute(builder: (_) => const NameScreen());
@@ -48,10 +49,10 @@ class LoginRouter {
         return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
       case '/begForPermissionScreen':
         return MaterialPageRoute(builder: (_) => const BegForPermissionScreen());
-      case '/homeScreen':
-        return MaterialPageRoute(builder: (_) =>  const HomeScreen());
+      case NavigationConstants.HOME_SCREEN:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
 
-            /*
+      /*
             MaterialPageRoute(
                 builder: (_) => MultiBlocProvider(providers: [
                   BlocProvider<FeedBloc>.value(value: _feedBloc),

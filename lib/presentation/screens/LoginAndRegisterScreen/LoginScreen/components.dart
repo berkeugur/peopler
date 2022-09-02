@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/connectivity_repository.dart';
@@ -17,7 +18,7 @@ Center signInButton(context) {
       bloc: _userBloc,
       listener: (context, UserState state) {
         if (state is SignedInState) {
-          Navigator.of(context).pushReplacementNamed('/homeScreen');
+          Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
         } else if (state is SignedInNotVerifiedState) {
           Navigator.of(context).pushReplacementNamed('/verifyScreen');
         } else if (state is InvalidEmailState) {
@@ -90,8 +91,7 @@ Center signInButton(context) {
                     bgColor: const Color(0xFF000B21)),
               );
             } else if (loginEmailController.text.isNotEmpty && loginPasswordController.text.isNotEmpty) {
-              _userBloc.add(signInWithEmailandPasswordEvent(
-                  email: loginEmailController.text, password: loginPasswordController.text));
+              _userBloc.add(signInWithEmailandPasswordEvent(email: loginEmailController.text, password: loginPasswordController.text));
             }
           },
           child: Text(

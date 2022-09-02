@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import '../../../../others/locator.dart';
 
@@ -62,7 +63,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                     _locationRepository.openPermissionSettings();
                     // We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
                     await Future.delayed(const Duration(seconds: 10));
-                    Navigator.of(context).pushNamedAndRemoveUntil('/homeScreen', (Route<dynamic> route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -82,7 +83,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 InkWell(
                   borderRadius: BorderRadius.circular(99),
                   onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil('/homeScreen', (Route<dynamic> route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                   },
                   child: Container(
                     //color: Colors.purple,

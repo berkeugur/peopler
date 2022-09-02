@@ -15,9 +15,9 @@ addHobbyWithJustStartDate(context, selectedHobbyName, selectedStartYear, selecte
       UserBloc.user!.hobbies.add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear");
 
       Future.delayed(const Duration(milliseconds: 500), () {
-        setStateValue.value = !setStateValue.value;
+        setStateProfileScreen.value = !setStateProfileScreen.value;
       }).then(
-        (value) => setStateValue.value = !setStateValue.value,
+        (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -38,20 +38,17 @@ addHobbyWithJustStartDate(context, selectedHobbyName, selectedStartYear, selecte
     );
 }
 
-addHobbyWithStartAndFinishDate(
-    context, selectedHobbyName, selectedStartYear, selectedStartMonth, selectedFinishYear, selectedFinishMonth) {
+addHobbyWithStartAndFinishDate(context, selectedHobbyName, selectedStartYear, selectedStartMonth, selectedFinishYear, selectedFinishMonth) {
   // ignore: avoid_single_cascade_in_expression_statements
   FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID)
     ..update({
-      "hobbies": FieldValue.arrayUnion(
-          ["$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear"])
+      "hobbies": FieldValue.arrayUnion(["$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear"])
     }).then((value) async {
-      UserBloc.user!.hobbies
-          .add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear");
+      UserBloc.user!.hobbies.add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear");
       Future.delayed(const Duration(milliseconds: 500), () {
-        setStateValue.value = !setStateValue.value;
+        setStateProfileScreen.value = !setStateProfileScreen.value;
       }).then(
-        (value) => setStateValue.value = !setStateValue.value,
+        (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -113,9 +110,9 @@ deleteHobby(context, index, StateSetter setStateEditHobbyBottomSheet) {
       UserBloc.user!.hobbies.removeAt(index);
 
       Future.delayed(const Duration(milliseconds: 500), () {
-        setStateValue.value = !setStateValue.value;
+        setStateProfileScreen.value = !setStateProfileScreen.value;
       }).then(
-        (value) => setStateValue.value = !setStateValue.value,
+        (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(

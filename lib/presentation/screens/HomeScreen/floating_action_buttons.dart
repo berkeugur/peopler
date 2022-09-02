@@ -10,6 +10,7 @@ import 'package:peopler/presentation/screens/saved/saved_screen.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
+import '../../../core/constants/navigation/navigation_constants.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../../tab_item.dart';
@@ -97,7 +98,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                       TextButton(
                           onPressed: () {
                             UserBloc _userBloc = BlocProvider.of(context);
-                            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
+                            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                           },
                           child: Text(
                             "Giriş Yap",
@@ -179,7 +180,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                       TextButton(
                           onPressed: () {
                             UserBloc _userBloc = BlocProvider.of(context);
-                            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil('/welcomeScreen', (Route<dynamic> route) => false);
+                            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                           },
                           child: Text(
                             "Giriş Yap",
