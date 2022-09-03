@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../others/classes/variables.dart';
 import 'functions.dart';
@@ -92,7 +93,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     onEditingComplete: () {
                                       setState(() {});
                                     },
-                                    maxLength: 105,
+                                    maxLength: MaxLengthConstants.EMAIL,
                                     controller: resetPasswordController,
                                     textInputAction: TextInputAction.next,
                                     decoration: InputDecoration(

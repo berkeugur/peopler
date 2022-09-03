@@ -4,7 +4,13 @@ import 'package:peopler/others/classes/AppBars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/menu_item.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_photo.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/biography_change.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/city_change.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/company_change.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/education_change.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/job_change.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/name_change.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Screens/photos.dart';
 
 ValueNotifier<bool> setStateEditProfile = ValueNotifier(false);
 
@@ -18,7 +24,6 @@ class ProfileEditHome extends StatefulWidget {
 class _ProfileEditHomeState extends State<ProfileEditHome> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -29,12 +34,6 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
         builder: (context, _, __) {
           return Scaffold(
             backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                setState(() {});
-              },
-              child: const Icon(Icons.refresh),
-            ),
             appBar: PeoplerAppBars(context: context).PROFILE_EDIT(),
             body: SingleChildScrollView(
               child: Expanded(
@@ -50,11 +49,47 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
                       targetPage: const ProfileEditNameChangeScreen(),
                     ),
                     HomeItem(
-                        context: context, title: UserBloc.user!.biography, subtitle: "Kendiniz hakkında birkaç kelime ekleyin", emptyText: "Kendinizi Tanıtın"),
-                    HomeItem(context: context, title: UserBloc.user!.schoolName, subtitle: "Hangi okulda okuduğunuzdan bahsedin", emptyText: "Eğitim"),
-                    HomeItem(context: context, title: UserBloc.user!.currentJobName, subtitle: "Kısaca mesleğinizden bahsedin", emptyText: "Meslek"),
-                    HomeItem(context: context, title: UserBloc.user!.company, subtitle: "Çalıştığınız şirket", emptyText: "Şirket"),
-                    HomeItem(context: context, title: UserBloc.user!.city, subtitle: "Yaşadığınız şehir", emptyText: "Şehir"),
+                      context: context,
+                      title: UserBloc.user!.biography,
+                      subtitle: "Kendiniz hakkında birkaç kelime ekleyin",
+                      emptyText: "Kendinizi Tanıtın",
+                      targetPage: const ProfileEditBiographyChangeScreen(),
+                    ),
+                    HomeItem(
+                      context: context,
+                      title: UserBloc.user!.schoolName,
+                      subtitle: "Hangi okulda okuduğunuzdan bahsedin",
+                      emptyText: "Eğitim",
+                      targetPage: const ProfileEditEducationChangeScreen(),
+                    ),
+                    HomeItem(
+                      context: context,
+                      title: UserBloc.user!.currentJobName,
+                      subtitle: "Kısaca mesleğinizden bahsedin",
+                      emptyText: "Meslek",
+                      targetPage: const ProfileEditJobChangeScreen(),
+                    ),
+                    HomeItem(
+                      context: context,
+                      title: UserBloc.user!.company,
+                      subtitle: "Çalıştığınız şirket",
+                      emptyText: "Şirket",
+                      targetPage: const ProfileEditCompanyChangeScreen(),
+                    ),
+                    HomeItem(
+                      context: context,
+                      title: UserBloc.user!.city,
+                      subtitle: "Yaşadığınız şehir",
+                      emptyText: "Şehir",
+                      targetPage: const ProfileEditCityChangeScreen(),
+                    ),
+                    HomeItem(
+                      context: context,
+                      title: "Fotoğraflar",
+                      subtitle: "Profilinize fotoğraflar ekleyin",
+                      emptyText: "Fotoğraflar",
+                      targetPage: const ProfileEditPhotosScreen(),
+                    ),
                   ],
                 ),
               ),
@@ -62,7 +97,4 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
           );
         });
   }
-
-  // ignore: non_constant_identifier_names
-
 }

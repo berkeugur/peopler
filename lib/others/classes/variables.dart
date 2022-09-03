@@ -28,9 +28,6 @@ double menuItemHeight = 38;
 double menuItemWidth = 54;
 double menuItemBorderRadius = 19;
 
-///feed share screen text field length
-int customMaxLength = 140;
-
 class Variables {
   static ValueNotifier<double> animatedContainerHeight = ValueNotifier(30);
   static ValueNotifier<double> animatedAppBarHeight = ValueNotifier(70);

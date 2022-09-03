@@ -6,16 +6,16 @@ import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edi
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/ui/dialogs.dart';
 
-class NameChangeService {
-  static Future saveChanges(context, nameController, _controller) async {
+class BiographyChangeService {
+  static Future saveChanges(context, bioController, _controller) async {
     FocusScope.of(context).unfocus();
     if (UserBloc.user != null) {
-      if (UserBloc.user!.displayName != nameController.text) {
-        if (nameController.text.toString().length > 6) {
+      if (UserBloc.user!.biography != bioController.text) {
+        if (bioController.text.toString().length > 6) {
           await FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID).update({
-            "displayName": nameController.text,
+            "biography": bioController.text,
           }).then((value) {
-            UserBloc.user!.displayName = nameController.text;
+            UserBloc.user!.biography = bioController.text;
             Future.delayed(const Duration(milliseconds: 500), () {
               setStateEditProfile.value = !setStateEditProfile.value;
               setStateProfileScreen.value = !setStateProfileScreen.value;
@@ -34,7 +34,7 @@ class NameChangeService {
         SnackBars(context: context).snackbar("Herhangi bir değişiklik yapmadınız!");
       }
     } else {
-      SnackBars(context: context).snackbar("Hata Kodu: #002365, support@peopler.app mail adresimize durumu açıklayan bir mail atarak yardım alabilirsiniz.");
+      SnackBars(context: context).snackbar("Hata Kodu: #002355, support@peopler.app mail adresimize durumu açıklayan bir mail atarak yardım alabilirsiniz.");
     }
   }
 }

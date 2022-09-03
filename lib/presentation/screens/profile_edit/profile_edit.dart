@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/functions/search_functions.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
@@ -319,6 +320,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
+                maxLength: MaxLengthConstants.DISPLAYNAME,
                 controller: nameController,
                 style: const TextStyle(color: Color.fromARGB(255, 203, 220, 255)),
                 cursorColor: Colors.white,
@@ -359,6 +361,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
+                maxLength: MaxLengthConstants.BIOGRAPHY,
                 controller: bioController,
                 style: const TextStyle(color: Color.fromARGB(255, 203, 220, 255)),
                 cursorColor: Colors.white,
@@ -398,6 +401,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
+                maxLength: MaxLengthConstants.SCHOOLNAME,
                 autocorrect: true,
                 controller: schoolNameController,
                 style: const TextStyle(color: Color.fromARGB(255, 203, 220, 255)),
@@ -439,6 +443,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
                 autocorrect: true,
+                maxLength: MaxLengthConstants.JOBNAME,
                 controller: currentJobNameController,
                 style: const TextStyle(color: Color.fromARGB(255, 203, 220, 255)),
                 cursorColor: Colors.white,
@@ -478,6 +483,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(color: Color(0xFF0353EF).withOpacity(1), borderRadius: const BorderRadius.all(Radius.circular(99))),
               child: TextField(
+                maxLength: MaxLengthConstants.COMPANYNAME,
                 autocorrect: true,
                 controller: companyNameController,
                 style: const TextStyle(color: Color.fromARGB(255, 203, 220, 255)),

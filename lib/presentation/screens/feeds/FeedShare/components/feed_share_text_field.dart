@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 
 import '../../../../../others/classes/variables.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
@@ -11,6 +12,7 @@ import '../../../../../others/locator.dart';
 Padding TextFieldArea(StateSetter setState, context) {
   AddFeedBloc _addFeedBloc = BlocProvider.of<AddFeedBloc>(context);
   final Mode _mode = locator<Mode>();
+  int customMaxLength = MaxLengthConstants.FEED;
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: TextFormField(

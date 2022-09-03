@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
@@ -122,7 +123,7 @@ Container passwordInputField(StateSetter setState, double screenWidth) {
       obscureText: isVisibleLoginPassword,
       keyboardType: TextInputType.visiblePassword,
       cursorColor: const Color(0xFFB3CBFA),
-      maxLength: 105,
+      maxLength: MaxLengthConstants.PASSWORD,
       controller: loginPasswordController,
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -169,7 +170,7 @@ Container emailFormField(StateSetter setState, double screenWidth) {
       onEditingComplete: () {
         setState(() {});
       },
-      maxLength: 105,
+      maxLength: MaxLengthConstants.EMAIL,
       controller: loginEmailController,
       textInputAction: TextInputAction.next,
       decoration: const InputDecoration(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../data/model/chat.dart';
 import '../../../data/model/message.dart';
@@ -47,7 +48,7 @@ class _MessageScreenState extends State<MessageScreen> {
   void initState() {
     _messageBloc = MessageBloc();
 
-    if(widget.currentChat == null) {
+    if (widget.currentChat == null) {
       Chat currentChat = Chat(
           hostID: widget.requestUserID!,
           isLastMessageFromMe: false,
@@ -113,13 +114,7 @@ class _MessageScreenState extends State<MessageScreen> {
       duration: const Duration(milliseconds: 500),
       width: _size.width,
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: const Color(0xFF939393).withOpacity(0.6),
-              blurRadius: 2.0,
-              spreadRadius: 0,
-              offset: const Offset(0.0, 0.75))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(0.0, 0.75))],
         color: _mode.enabledMenuItemBackground(),
       ),
       height: 50,
@@ -141,9 +136,9 @@ class _MessageScreenState extends State<MessageScreen> {
                 keyboardType: TextInputType.multiline,
                 maxLines: 99,
                 minLines: 1,
+                maxLength: MaxLengthConstants.MESSAGE,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                    border: InputBorder.none, hintText: 'Mesaj yazın', hintStyle: TextStyle(color: Colors.white)),
+                decoration: const InputDecoration(border: InputBorder.none, hintText: 'Mesaj yazın', hintStyle: TextStyle(color: Colors.white)),
               ),
             ),
           ),

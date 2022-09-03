@@ -188,7 +188,7 @@ class ProfileScreenComponentsMyProfile {
   profilePhoto(context, String photoURL) {
     Size _size = MediaQuery.of(context).size;
     double _screenWidth = _size.width;
-    double _photoSize = _screenWidth / 4.2;
+    double _photoSize = _screenWidth / 3.4;
     return Stack(
       children: [
         Container(

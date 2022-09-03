@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../others/classes/responsive_size.dart';
@@ -149,7 +150,7 @@ class _NameScreenState extends State<NameScreen> {
                                                 onSubmitted: (value) {
                                                   nameNextFunction(context);
                                                 },
-                                                maxLength: 105,
+                                                maxLength: MaxLengthConstants.DISPLAYNAME,
                                                 controller: nameController,
                                                 textInputAction: TextInputAction.next,
                                                 decoration: const InputDecoration(
