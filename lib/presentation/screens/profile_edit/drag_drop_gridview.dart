@@ -35,6 +35,7 @@ class _DragDropGridViewState extends State<DragDropGridView> {
           debugPrint("***************uzuadasdğ****************");
           return images2.length == 0
               ? Container(
+                  color: Colors.red,
                   width: MediaQuery.of(context).size.width,
                   height: ((images2.length / 3).toInt()) + 1 * (MediaQuery.of(context).size.width / 3) * 4 / 3,
                   child: GridView.count(
@@ -46,7 +47,8 @@ class _DragDropGridViewState extends State<DragDropGridView> {
                     }),
                   ),
                 )
-              : SizedBox(
+              : Container(
+                  color: Colors.pink,
                   width: MediaQuery.of(context).size.width,
                   height: ((images2.length / 3).toInt()) + 1 * (MediaQuery.of(context).size.width / 3) * 4 / 3,
                   child: GridView.count(

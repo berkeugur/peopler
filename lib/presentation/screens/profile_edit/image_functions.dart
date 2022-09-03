@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
+import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit.dart';
 
 void showPickerForChangeProfilePhoto(context, {required StateSetter stateSetter}) {
@@ -141,7 +142,11 @@ void photosAddCrop({required File photo, required StateSetter stateSetter}) asyn
   }
   Future.delayed(const Duration(seconds: 1), () {
     setStateEditProfile.value = !setStateEditProfile.value;
-  }).then((value) => setStateEditProfile.value = !setStateEditProfile.value);
+    setStateProfileScreen.value = !setStateProfileScreen.value;
+  }).then((value) {
+    setStateEditProfile.value = !setStateEditProfile.value;
+    setStateProfileScreen.value = !setStateProfileScreen.value;
+  });
 
   numberOfNewPhotos++;
 }
