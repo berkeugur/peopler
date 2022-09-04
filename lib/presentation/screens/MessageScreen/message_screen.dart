@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
@@ -39,6 +42,15 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
  */
+  bool emojiShowing = false;
+
+  _onEmojiSelected(Emoji emoji) {
+    print('_onEmojiSelected: ${emoji.emoji}');
+  }
+
+  _onBackspacePressed() {
+    print('_onBackspacePressed');
+  }
 
   late final MessageBloc _messageBloc;
   late final ScrollController messageListController;
@@ -93,6 +105,46 @@ class _MessageScreenState extends State<MessageScreen> {
                             messageListController: messageListController,
                           ),
                           message_input_field(context, messageListController),
+                          Offstage(
+                            offstage: !emojiShowing,
+                            child: SizedBox(
+                              height: 250,
+                              child: EmojiPicker(
+                                  textEditingController: messageController,
+                                  onEmojiSelected: (Category category, Emoji emoji) {
+                                    _onEmojiSelected(emoji);
+                                  },
+                                  onBackspacePressed: _onBackspacePressed,
+                                  config: Config(
+                                      columns: 7,
+                                      // Issue: https://github.com/flutter/flutter/issues/28894
+                                      emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+                                      verticalSpacing: 0,
+                                      horizontalSpacing: 0,
+                                      gridPadding: EdgeInsets.zero,
+                                      initCategory: Category.RECENT,
+                                      bgColor: const Color(0xFFF2F2F2),
+                                      indicatorColor: Colors.blue,
+                                      iconColor: Colors.grey,
+                                      iconColorSelected: Colors.blue,
+                                      progressIndicatorColor: Colors.blue,
+                                      backspaceColor: Colors.blue,
+                                      skinToneDialogBgColor: Colors.white,
+                                      skinToneIndicatorColor: Colors.grey,
+                                      enableSkinTones: true,
+                                      showRecentsTab: true,
+                                      recentsLimit: 28,
+                                      replaceEmojiOnLimitExceed: false,
+                                      noRecents: const Text(
+                                        'No Recents',
+                                        style: TextStyle(fontSize: 20, color: Colors.black26),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      tabIndicatorAnimDuration: kTabScrollDuration,
+                                      categoryIcons: const CategoryIcons(),
+                                      buttonMode: ButtonMode.MATERIAL)),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -105,7 +157,6 @@ class _MessageScreenState extends State<MessageScreen> {
   }
 
   Widget message_input_field(context, ScrollController messageListController) {
-    double _iconsSize = 20;
     Size _size = MediaQuery.of(context).size;
 
     MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
@@ -121,7 +172,18 @@ class _MessageScreenState extends State<MessageScreen> {
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Row(
         children: [
-          //Icon(Icons.tag_faces,size: _iconsSize,),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                emojiShowing = !emojiShowing;
+              });
+            },
+            icon: Icon(
+              Icons.tag_faces,
+              size: 25,
+              color: Colors.white,
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -138,7 +200,12 @@ class _MessageScreenState extends State<MessageScreen> {
                 minLines: 1,
                 maxLength: MaxLengthConstants.MESSAGE,
                 style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(border: InputBorder.none, hintText: 'Mesaj yazın', hintStyle: TextStyle(color: Colors.white)),
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Mesaj yazın',
+                  counterText: "",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),
@@ -166,7 +233,7 @@ class _MessageScreenState extends State<MessageScreen> {
               },
               icon: Icon(
                 Icons.send,
-                size: _iconsSize,
+                size: 25,
                 color: Colors.white,
               )),
         ],
