@@ -10,7 +10,7 @@ import 'package:peopler/data/services/db/firebase_db_service_message.dart';
 import 'package:peopler/data/services/remote_config/remote_config.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
-import 'package:peopler/presentation/screens/OnBoardingScreen/constants.dart';
+import 'package:peopler/presentation/screens/ONBOARDING/constants.dart';
 import '../data/in_app_purchases.dart';
 import '../data/repository/connectivity_repository.dart';
 import '../data/repository/feed_repository.dart';
@@ -30,10 +30,12 @@ GetIt locator = GetIt.I;
 
 Future<void> setupLocator() async {
   OnBoardingScreenDataList.prepareDataList();
+
   /// Custom Services
   locator.registerLazySingleton(() => FirebaseAuthService());
   locator.registerLazySingleton(() => LocationService());
   locator.registerLazySingleton(() => ConnectivityService());
+
   /// Firestore Services
   locator.registerLazySingleton(() => FirestoreDBServiceUsers());
   locator.registerLazySingleton(() => FirestoreDBServiceFeeds());

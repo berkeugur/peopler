@@ -8,9 +8,9 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
-import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_functions.dart';
-import 'package:peopler/presentation/screens/feeds/FeedScreen/feed_screen.dart';
-import '../../presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
+import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
+import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_screen.dart';
+import '../../presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
 class CircularImage extends StatelessWidget {
   final double _width, _height;

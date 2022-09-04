@@ -5,7 +5,7 @@ import 'package:peopler/data/model/activity.dart';
 import '../../../data/model/user.dart';
 import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
-import '../../../presentation/screens/profile/OthersProfile/profile/profile_screen_components.dart';
+import '../../../presentation/screens/PROFILE/OthersProfile/profile/profile_screen_components.dart';
 import 'bloc.dart';
 
 class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {

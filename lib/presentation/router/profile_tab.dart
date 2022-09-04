@@ -7,7 +7,7 @@ import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../screens/GuestLoginScreen/guest_login_screen.dart';
+import '../screens/GUEST_LOGIN/guest_login_screen.dart';
 
 class ProfileScreenNavigator extends StatefulWidget {
   const ProfileScreenNavigator({

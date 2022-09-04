@@ -7,7 +7,7 @@ import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
-import '../screens/feeds/FeedScreen/feed_screen.dart';
+import '../screens/FEEDS/FeedScreen/feed_screen.dart';
 
 class FeedScreenNavigator extends StatefulWidget {
   final GlobalKey<FeedScreenState> feedListKey;

@@ -6,7 +6,7 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import '../../core/constants/navigation/navigation_constants.dart';
-import '../screens/search/search_screen.dart';
+import '../screens/SEARCH/search_screen.dart';
 
 class SearchScreenNavigator extends StatefulWidget {
   const SearchScreenNavigator({

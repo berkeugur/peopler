@@ -6,9 +6,9 @@ import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../core/constants/navigation/navigation_constants.dart';
-import '../screens/GuestLoginScreen/guest_login_screen.dart';
-import '../screens/notification/connection_requests_screen/connection_request_screen.dart';
-import '../screens/notification/notification_screen.dart';
+import '../screens/GUEST_LOGIN/guest_login_screen.dart';
+import '../screens/NOTIFICATION/connection_requests_screen/connection_request_screen.dart';
+import '../screens/NOTIFICATION/notification_screen.dart';
 
 class NotificationScreenNavigator extends StatefulWidget {
   const NotificationScreenNavigator({

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/components/snack_bars.dart';
 
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../presentation/screens/subscriptions/subscriptions_page.dart';
+import '../../presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
 import '../classes/dark_light_mode_controller.dart';
 
 //ScaffoldMessenger.of(context).showSnackBar(customSnackBar(context, "please do it right", Icons.add, Colors.white, Color(0xFF0D43DE)),);

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../presentation/screens/profile/OthersProfile/profile/profile_screen_components.dart';
+import '../../../presentation/screens/PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 @immutable
 abstract class OtherUserEvent extends Equatable {}
