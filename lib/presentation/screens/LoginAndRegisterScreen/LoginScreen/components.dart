@@ -21,7 +21,7 @@ Center signInButton(context) {
         if (state is SignedInState) {
           Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
         } else if (state is SignedInNotVerifiedState) {
-          Navigator.of(context).pushReplacementNamed('/verifyScreen');
+          Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);
         } else if (state is InvalidEmailState) {
           ScaffoldMessenger.of(context).showSnackBar(
             customSnackBar(

@@ -36,13 +36,13 @@ class SplashScreen extends StatelessWidget {
           });
         } else if (state is SignedInMissingInfoState) {
           Timer(const Duration(seconds: splashScreenDuration), () {
-            Navigator.of(context).pushReplacementNamed('/genderSelectScreen');
+            Navigator.of(context).pushReplacementNamed(NavigationConstants.GENDER_SELECT_SCREEN);
           });
         } else if (state is SignedInNotVerifiedState) {
           Timer(const Duration(seconds: splashScreenDuration), () {
             _userBloc.add(waitForVerificationEvent());
 
-            Navigator.of(context).pushReplacementNamed('/verifyScreen');
+            Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);
           });
         }
       },

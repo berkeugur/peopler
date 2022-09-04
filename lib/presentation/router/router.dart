@@ -39,15 +39,15 @@ class LoginRouter {
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
       case NavigationConstants.WELCOME:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
-      case '/nameScreen':
+      case NavigationConstants.NAME_SCREEN:
         return MaterialPageRoute(builder: (_) => const NameScreen());
-      case '/loginScreen':
+      case NavigationConstants.LOGIN_SCREEN:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case '/genderSelectScreen':
+      case NavigationConstants.GENDER_SELECT_SCREEN:
         return MaterialPageRoute(builder: (_) => const GenderSelectScreen());
-      case '/resetPasswordScreen':
+      case NavigationConstants.RESET_PASSWORD_SCREEN:
         return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
-      case '/begForPermissionScreen':
+      case NavigationConstants.BEG_FOR_PERMISSION_SCREEN:
         return MaterialPageRoute(builder: (_) => const BegForPermissionScreen());
       case NavigationConstants.HOME_SCREEN:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
@@ -59,13 +59,13 @@ class LoginRouter {
                   BlocProvider<SavedBloc>.value(value: _savedBloc),
                     ], child: const HomeScreen()));
              */
-      case '/verifyScreen':
+      case NavigationConstants.VERIFY_SCREEN:
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
-      case '/createProfileScreen':
+      case NavigationConstants.CREATE_PROFILE_SCREEN:
         return MaterialPageRoute(builder: (_) => const CreateProfileScreen());
-      case '/emailAndPasswordScreen':
+      case NavigationConstants.EMAIL_AND_PASSWORD_SCREEN:
         return MaterialPageRoute(builder: (_) => const EmailAndPasswordScreen());
-      case '/linkedInLoginScreen':
+      case NavigationConstants.LINKEDIN_LOGIN_SCREEN:
         return MaterialPageRoute(builder: (_) => const LinkedInPage());
 
       default:

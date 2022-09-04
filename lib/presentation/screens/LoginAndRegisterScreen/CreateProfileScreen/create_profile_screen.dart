@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
@@ -201,9 +202,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               }
               final LocationRepository _locationRepository = locator<LocationRepository>();
               _locationRepository.requestPermission();
-              Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
             } else if (_userBloc.state == SignedOutState()) {
-              Navigator.pushNamed(context, '/emailAndPasswordScreen');
+              Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);
             }
           } else if (UserBloc.user?.city == "" && bioController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -35,7 +35,7 @@ class VerificationScreen extends StatelessWidget {
                 /// Request Permission
                 final LocationRepository _locationRepository = locator<LocationRepository>();
                 _locationRepository.requestPermission();
-                Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
               }
             },
             child: SafeArea(

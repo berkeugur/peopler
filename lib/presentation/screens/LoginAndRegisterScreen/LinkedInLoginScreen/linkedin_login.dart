@@ -34,7 +34,7 @@ class _LinkedInPageState extends State<LinkedInPage> {
           if (state is SignedInState) {
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
           } else if (state is SignedInMissingInfoState) {
-            Navigator.of(context).pushNamedAndRemoveUntil('/genderSelectScreen', (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
           }
         },
         child: WebView(

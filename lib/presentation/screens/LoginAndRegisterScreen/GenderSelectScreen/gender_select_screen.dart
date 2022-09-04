@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../others/classes/responsive_size.dart';
 import '../../../../others/widgets/snack_bars.dart';
@@ -146,7 +147,7 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                                       bgColor: const Color(0xFF000B21)),
                                 );
                               } else {
-                                Navigator.pushNamed(context, '/createProfileScreen');
+                                Navigator.pushNamed(context, NavigationConstants.CREATE_PROFILE_SCREEN);
                               }
                             },
                             child: Text(

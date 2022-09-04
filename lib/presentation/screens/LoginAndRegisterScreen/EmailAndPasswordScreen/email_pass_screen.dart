@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
@@ -347,7 +348,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                   listener: (context, UserState state) {
                                     if (state is SignedInNotVerifiedState) {
                                       _userBloc.add(waitForVerificationEvent());
-                                      Navigator.of(context).pushNamedAndRemoveUntil('/verifyScreen', (Route<dynamic> route) => false);
+                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.VERIFY_SCREEN, (Route<dynamic> route) => false);
                                     } else if (state is InvalidEmailState) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         customSnackBar(

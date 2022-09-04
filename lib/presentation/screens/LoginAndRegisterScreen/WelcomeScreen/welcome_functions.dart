@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_event.dart';
@@ -54,18 +55,18 @@ void termOfUseTextOnPressed(BuildContext context) {
 }
 
 void areYouAlreadyMemberOnPressed(BuildContext context) {
-  Navigator.of(context).pushNamed('/loginScreen');
+  Navigator.of(context).pushNamed(NavigationConstants.LOGIN_SCREEN);
 }
 
 void continueWithLinkedinButtonOnPressed(BuildContext context) async {
   final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
   bool _connection = await _connectivityRepository.checkConnection(context);
   if (_connection == false) return;
-  Navigator.of(context).pushNamed('/linkedInLoginScreen');
+  Navigator.of(context).pushNamed(NavigationConstants.LINKEDIN_LOGIN_SCREEN);
 }
 
 void continueWithUniversityEmailOnPressed(BuildContext context) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   _userBloc.add(initializeMyUserEvent());
-  Navigator.of(context).pushNamed('/nameScreen');
+  Navigator.of(context).pushNamed(NavigationConstants.NAME_SCREEN);
 }

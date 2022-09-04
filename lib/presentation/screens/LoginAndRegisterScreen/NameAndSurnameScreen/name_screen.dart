@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../../../core/constants/navigation/navigation_constants.dart';
 import '../../../../others/classes/responsive_size.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/widgets/snack_bars.dart';
@@ -230,6 +231,6 @@ nameNextFunction(context) {
     );
   } else {
     UserBloc.user?.displayName = nameController.text;
-    Navigator.of(context).pushNamed('/genderSelectScreen');
+    Navigator.of(context).pushNamed(NavigationConstants.GENDER_SELECT_SCREEN);
   }
 }

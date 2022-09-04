@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/WelcomeScreen/welcome.dart';
 import 'package:peopler/presentation/screens/LoginAndRegisterScreen/WelcomeScreen/welcome_functions.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
@@ -68,7 +69,7 @@ Column buildButtons(BuildContext context) {
 
           UserBloc.guestUser = MyUser();
 
-          Navigator.of(context).pushNamedAndRemoveUntil('/begForPermissionScreen', (Route<dynamic> route) => false);
+          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
         },
       ),
     ],
