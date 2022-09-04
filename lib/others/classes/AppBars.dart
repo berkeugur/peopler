@@ -60,24 +60,26 @@ class PeoplerAppBars {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-              onPressed: function,
-              child: Row(
-                children: [
-                  const Icon(Icons.save),
-                  const SizedBox(
-                    width: 4,
+          function == null
+              ? const SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    onPressed: function,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.save),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          "kaydet",
+                          style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    "kaydet",
-                    style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-            ),
-          )
+                )
         ],
         leading: _BACK_BUTTON(() {
           Navigator.of(context).pop();

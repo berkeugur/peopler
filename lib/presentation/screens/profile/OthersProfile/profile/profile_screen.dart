@@ -189,7 +189,11 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
 
         ///123321 MyUser Profile kısmında UserBloc.myActivites işe yarıyor
         ///ancak Others Userda OtherUserBloc().myActivities late hatası veriyor
-        ProfileScreenComponentsMyProfile().activityList(context, _otherUserBloc.myActivities),
+        ProfileScreenComponentsOthersProfile(
+                profileData: _otherUserBloc.otherUser!,
+                mutualConnectionUserIDs: _otherUserBloc.mutualConnectionUserIDs,
+                myActivities: _otherUserBloc.activities)
+            .activityList(context),
         const SizedBox(height: 10),
         _profileScreenComponents.experiencesList(context),
       ],

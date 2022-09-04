@@ -4,6 +4,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
@@ -20,14 +21,14 @@ void showPickerForChangeProfilePhoto(context, {required StateSetter stateSetter}
                   leading: const Icon(Icons.photo_library),
                   title: const Text('Galeriden Seç'),
                   onTap: () {
-                    _profilePhotoChangeImgFromGallery(stateSetter: stateSetter);
+                    _profilePhotoChangeImgFromGallery(stateSetter: stateSetter, context: context);
                     Navigator.of(context).pop();
                   }),
               ListTile(
                 leading: const Icon(Icons.photo_camera),
                 title: const Text('Kamera'),
                 onTap: () {
-                  _profilePhotoChangeImgFromCamera(stateSetter: stateSetter);
+                  _profilePhotoChangeImgFromCamera(stateSetter: stateSetter, context: context);
                   Navigator.of(context).pop();
                 },
               ),
@@ -38,22 +39,20 @@ void showPickerForChangeProfilePhoto(context, {required StateSetter stateSetter}
 }
 
 File? newProfileimage;
-_profilePhotoChangeImgFromCamera({required StateSetter stateSetter}) async {
-  XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
-
-  stateSetter(() {
-    //_image = File(image!.path);
-    profilePhotoChangeCrop(photo: File(image!.path), stateSetter: stateSetter);
-  });
+_profilePhotoChangeImgFromCamera({required StateSetter stateSetter, required BuildContext context}) async {
+  await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20).then((value) {
+    if (value != null) {
+      profilePhotoChangeCrop(photo: File(value.path), stateSetter: stateSetter);
+    }
+  }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
 }
 
-_profilePhotoChangeImgFromGallery({required StateSetter stateSetter}) async {
-  XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 20);
-
-  stateSetter(() {
-    //_image = File(image!.path);
-    profilePhotoChangeCrop(photo: File(image!.path), stateSetter: stateSetter);
-  });
+_profilePhotoChangeImgFromGallery({required StateSetter stateSetter, required BuildContext context}) async {
+  await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 20).then((value) {
+    if (value != null) {
+      profilePhotoChangeCrop(photo: File(value.path), stateSetter: stateSetter);
+    }
+  }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
 }
 
 void profilePhotoChangeCrop({required File photo, required StateSetter stateSetter}) async {

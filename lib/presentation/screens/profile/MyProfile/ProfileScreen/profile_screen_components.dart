@@ -7,6 +7,7 @@ import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/others/classes/hobbies.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
+import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/AllActivityListScreen/all_activity_list.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/hobby_functions.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/connections.dart';
@@ -150,9 +151,17 @@ class ProfileScreenComponentsMyProfile {
                             margin: EdgeInsets.only(left: 5, right: 2.5),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(7.5),
-                              child: Image.network(
-                                photos.first,
-                                fit: BoxFit.cover,
+                              child: CachedNetworkImage(
+                                imageBuilder: (context, imageProvider) => Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(7.5),
+                                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                  ),
+                                ),
+                                imageUrl: photos.first,
+                                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                    ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
                             ),
                           ),
@@ -345,9 +354,17 @@ class ProfileScreenComponentsMyProfile {
                                       right: _photoPadding),
                                   child: ClipRRect(
                                     borderRadius: _customBorderRadius(),
-                                    child: Image.network(
-                                      photos[index],
-                                      fit: BoxFit.cover,
+                                    child: CachedNetworkImage(
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(7.5),
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      imageUrl: photos[index],
+                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                          ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
                                     ),
                                   ),
                                 );
@@ -394,7 +411,7 @@ class ProfileScreenComponentsMyProfile {
         child: InkWell(
           onTap: () {
             UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-            _userBloc.mainKey.currentState?.push(MaterialPageRoute(builder: (context) => const ProfileEditScreen()));
+            _userBloc.mainKey.currentState?.push(MaterialPageRoute(builder: (context) => const ProfileEditHome()));
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1487,17 +1504,21 @@ class ProfileScreenComponentsMyProfile {
   }
 
   String activityText(index, List<MyActivity> activities) {
-    switch (activities[index].activityType) {
-      case Strings.activityShared:
-        return "bir fikir paylaştı.";
-      case Strings.activityLiked:
-        return "bir fikre katıldı.";
-      case Strings.activityDisliked:
-        return "bir fikre katılmadı.";
-      default:
-        {
-          return "hata";
-        }
+    if (activities.isNotEmpty) {
+      switch (activities[index].activityType) {
+        case Strings.activityShared:
+          return "bir fikir paylaştı.";
+        case Strings.activityLiked:
+          return "bir fikre katıldı.";
+        case Strings.activityDisliked:
+          return "bir fikre katılmadı.";
+        default:
+          {
+            return "hata";
+          }
+      }
+    } else {
+      return "0";
     }
   }
 

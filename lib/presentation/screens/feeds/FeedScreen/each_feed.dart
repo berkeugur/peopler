@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -268,39 +269,17 @@ class eachFeedWidget extends StatelessWidget {
               _homeScreen.changeFloatingActionButtonEvent();
             }
           },
-          child: CircleAvatar(
-            radius: 70,
-            backgroundImage:
-                /*
-            ImageNetwork(
-              image: widget.myFeed.userPhotoUrl,
-              imageCache: CachedNetworkImageProvider(widget.myFeed.userPhotoUrl),
-              height: 60,
-              width: 60,
-              duration: 500,
-              curve: Curves.easeIn,
-              onPointer: true,
-              debugPrint: false,
-              fullScreen: false,
-              fitAndroidIos: BoxFit.cover,
-              fitWeb: BoxFitWeb.cover,
-              borderRadius: BorderRadius.circular(70),
-              onLoading: const CircularProgressIndicator(
-                color: Colors.indigoAccent,
+          child: CachedNetworkImage(
+            imageUrl: myFeed.userPhotoUrl,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
               ),
-              onError: const Icon(
-                Icons.error,
-                color: Colors.blue,
-              ),
-              onTap: () {
-                debugPrint("©gabriel_patrick_souza");
-              },
             ),
-             */
-                NetworkImage(
-              myFeed.userPhotoUrl,
-            ),
-            backgroundColor: Colors.white,
           ),
         )
 

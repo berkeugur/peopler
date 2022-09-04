@@ -23,4 +23,17 @@ class PeoplerDialogs {
           ),
         ),
       );
+  static Future showLoadingDialog(BuildContext ctx, AnimationController controller) async => await showDialog(
+        barrierColor: Colors.transparent,
+        context: ctx,
+        builder: (ctx) => Dialog(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Lottie.asset(
+            AnimationsConstants.LOADING_PATH,
+            controller: controller,
+            repeat: true,
+          ),
+        ),
+      );
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 
@@ -19,23 +20,19 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
   File? newProfileimage;
 
   _profilePhotoChangeImgFromCamera({required StateSetter stateSetter}) async {
-    XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
-
-    stateSetter(() {
-      //_image = File(image!.path);
-      profilePhotoEditChangeCrop(
-        photo: File(image!.path),
-      );
-    });
+    await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20).then((value) {
+      if (value != null) {
+        profilePhotoEditChangeCrop(photo: File(value.path));
+      }
+    }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
   }
 
   _profilePhotoChangeImgFromGallery({required StateSetter stateSetter}) async {
-    XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 20);
-
-    stateSetter(() {
-      //_image = File(image!.path);
-      profilePhotoEditChangeCrop(photo: File(image!.path));
-    });
+    await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 20).then((value) {
+      if (value != null) {
+        profilePhotoEditChangeCrop(photo: File(value.path));
+      }
+    }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
   }
 
   void profilePhotoEditChangeCrop({required File photo}) async {

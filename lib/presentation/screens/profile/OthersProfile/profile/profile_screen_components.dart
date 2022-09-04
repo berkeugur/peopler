@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -154,7 +155,6 @@ class ProfileScreenComponentsOthersProfile {
     int _numberOfPhoto = 4;
     ValueNotifier<int> _itemCount = ValueNotifier(profileData.photosURL.length > _numberOfPhoto ? _numberOfPhoto + 1 : profileData.photosURL.length);
 
-    BorderRadius _customBorderRadius() => BorderRadius.circular(7.5);
     return ValueListenableBuilder(
         valueListenable: _itemCount,
         builder: (context, value, _) {
@@ -244,7 +244,6 @@ class ProfileScreenComponentsOthersProfile {
                                   height: _photoHeight,
                                   width: _photoWidth,
                                   decoration: BoxDecoration(
-                                    borderRadius: _customBorderRadius(),
                                     color: Colors.grey[400],
                                   ),
                                   margin: EdgeInsets.only(
@@ -254,12 +253,17 @@ class ProfileScreenComponentsOthersProfile {
                                               ? 10
                                               : _photoPadding,
                                       right: _photoPadding),
-                                  child: ClipRRect(
-                                    borderRadius: _customBorderRadius(),
-                                    child: Image.network(
-                                      profileData.photosURL[index],
-                                      fit: BoxFit.cover,
+                                  child: CachedNetworkImage(
+                                    imageBuilder: (context, imageProvider) => Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(7.5),
+                                        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                      ),
                                     ),
+                                    imageUrl: profileData.photosURL[index],
+                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                        ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
                                   ),
                                 );
                     },
@@ -464,10 +468,10 @@ class ProfileScreenComponentsOthersProfile {
           _userBloc.mainKey.currentState?.push(
             MaterialPageRoute(
                 builder: (context) => MessageScreen(
-                  requestUserID: otherUser.userID,
-                  requestProfileURL: otherUser.profileURL,
-                  requestDisplayName: otherUser.displayName,
-                )),
+                      requestUserID: otherUser.userID,
+                      requestProfileURL: otherUser.profileURL,
+                      requestDisplayName: otherUser.displayName,
+                    )),
           );
         } else {
           print("istek henüz kabul edilmedi");
@@ -521,10 +525,10 @@ class ProfileScreenComponentsOthersProfile {
         _userBloc.mainKey.currentState?.push(
           MaterialPageRoute(
               builder: (context) => MessageScreen(
-                requestUserID: otherUser.userID,
-                requestProfileURL: otherUser.profileURL,
-                requestDisplayName: otherUser.displayName,
-              )),
+                    requestUserID: otherUser.userID,
+                    requestProfileURL: otherUser.profileURL,
+                    requestDisplayName: otherUser.displayName,
+                  )),
         );
       },
       child: Row(

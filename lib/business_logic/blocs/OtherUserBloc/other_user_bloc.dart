@@ -13,7 +13,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
 
   MyUser? otherUser;
   late final List<String> mutualConnectionUserIDs;
-  late final List<MyActivity> myActivities;
+  late final List<MyActivity> activities;
   late final SendRequestButtonStatus status;
 
   OtherUserBloc() : super(InitialOtherUserState()) {
@@ -23,27 +23,27 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
         otherUser = await _userRepository.getUserWithUserId(event.userID);
 
         /// Find my mutual friends with him/her
-        Set<String> otherUserConnectionIDs =  otherUser!.connectionUserIDs.toSet();
+        Set<String> otherUserConnectionIDs = otherUser!.connectionUserIDs.toSet();
         Set<String> myUserConnectionIDs = UserBloc.user!.connectionUserIDs.toSet();
         mutualConnectionUserIDs = otherUserConnectionIDs.intersection(myUserConnectionIDs).toList();
 
         /// Get his activities
-        myActivities = await _userRepository.getActivities(event.userID);
+        activities = await _userRepository.getActivities(event.userID);
 
         /// Find status with him/her
-        if(UserBloc.user!.savedUserIDs.toSet().contains(event.userID)) {
+        if (UserBloc.user!.savedUserIDs.toSet().contains(event.userID)) {
           /// Check if I have already saved other user
           status = SendRequestButtonStatus.saved;
-        } else if(event.status == SendRequestButtonStatus.save) {
+        } else if (event.status == SendRequestButtonStatus.save) {
           /// If not, check if I have opened other user's profile from nearby users
           status = SendRequestButtonStatus.save;
-        } else if(otherUserConnectionIDs.contains(UserBloc.user?.userID)) {
+        } else if (otherUserConnectionIDs.contains(UserBloc.user?.userID)) {
           /// Check if we are already connected
           status = SendRequestButtonStatus.connected;
-        } else if(UserBloc.user!.transmittedRequestUserIDs.toSet().contains(event.userID)) {
+        } else if (UserBloc.user!.transmittedRequestUserIDs.toSet().contains(event.userID)) {
           /// Check if I sent a request to other user
           status = SendRequestButtonStatus.requestSent;
-        } else if(UserBloc.user!.receivedRequestUserIDs.toSet().contains(event.userID)) {
+        } else if (UserBloc.user!.receivedRequestUserIDs.toSet().contains(event.userID)) {
           /// Check if other user sent me a request
           status = SendRequestButtonStatus.accept;
         } else {
@@ -51,7 +51,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
           status = SendRequestButtonStatus.connect;
         }
 
-        emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, myActivities, status));
+        emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status));
       } catch (e) {
         emit(OtherUserNotFoundState());
         debugPrint("other user not found" + e.toString());
@@ -62,7 +62,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
       emit(InitialOtherUserState());
       await _userRepository.removeConnection(UserBloc.user!.userID, event.otherUserID);
       status = SendRequestButtonStatus.connect;
-      emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, myActivities, status));
+      emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status));
     });
   }
 }

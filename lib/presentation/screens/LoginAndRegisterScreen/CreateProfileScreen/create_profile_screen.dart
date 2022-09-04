@@ -112,7 +112,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                 width: 120,
                                                 height: 120,
                                                 fit: BoxFit.fitHeight,
-                                              ))
+                                              ),
+                                            )
                                           : (image != null
                                               ? ClipRRect(
                                                   borderRadius: BorderRadius.circular(60),

@@ -71,16 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           _profileScreenComponents.photos(context, profileData.photosURL, profileData.profileURL),
           _profileScreenComponents.nameField(),
-          OutlinedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ProfileEditHome())));
-              },
-              child: Text("Yeni Profil Ekranları")),
-          OutlinedButton(
-              onPressed: () {
-                setState(() {});
-              },
-              child: Text("Setstate")),
+
           SizedBox(
             height: UserBloc.user!.schoolName != "" ? 5 : 0,
           ),
