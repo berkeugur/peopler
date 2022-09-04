@@ -5,7 +5,7 @@ class SnackBars {
 
   SnackBars({required this.context});
 
-  snackbar(String content) {
+  simple(String content) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

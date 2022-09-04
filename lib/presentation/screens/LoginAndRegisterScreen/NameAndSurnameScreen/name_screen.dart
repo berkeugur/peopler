@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
@@ -212,23 +213,9 @@ class _NameScreenState extends State<NameScreen> {
 
 nameNextFunction(context) {
   if (nameController.text.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      customSnackBar(
-          context: context,
-          title: "Lütfen isim ve soy isminizi girin.",
-          icon: Icons.warning_outlined,
-          textColor: const Color(0xFFFFFFFF),
-          bgColor: const Color(0xFF000B21)),
-    );
+    SnackBars(context: context).simple("Lütfen isim ve soy isminizi girin.");
   } else if (nameController.text.replaceAll(" ", "").length < 4) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      customSnackBar(
-          context: context,
-          title: "İsim Soyisminiz çok kısa.",
-          icon: Icons.warning_outlined,
-          textColor: const Color(0xFFFFFFFF),
-          bgColor: const Color(0xFF000B21)),
-    );
+    SnackBars(context: context).simple("İsim Soyisminiz çok kısa.");
   } else {
     UserBloc.user?.displayName = nameController.text;
     Navigator.of(context).pushNamed(NavigationConstants.GENDER_SELECT_SCREEN);

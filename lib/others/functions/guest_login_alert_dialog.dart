@@ -13,7 +13,7 @@ class GuestAlert {
             title: Text(
               "Giriş Yapmalısınız.",
               style: GoogleFonts.rubik(
-                color: Color(0xFF0353EF),
+                color: const Color(0xFF0353EF),
               ),
             ),
             actions: [
@@ -24,7 +24,7 @@ class GuestAlert {
                   child: Text(
                     "Kapat",
                     style: GoogleFonts.rubik(
-                      color: Color(0xFF0353EF),
+                      color: const Color(0xFF0353EF),
                     ),
                   )),
               TextButton(
@@ -37,7 +37,7 @@ class GuestAlert {
                   child: Text(
                     "Giriş Yap",
                     style: GoogleFonts.rubik(
-                      color: Color(0xFF0353EF),
+                      color: const Color(0xFF0353EF),
                     ),
                   )),
             ],

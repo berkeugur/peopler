@@ -33,7 +33,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of<ChatBloc>(context);
-    if(UserBloc.user != null) {
+    if (UserBloc.user != null) {
       _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
     }
     _scrollController = ScrollController();
@@ -139,10 +139,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
           onTap: () {
             UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
             _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(
-                  builder: (context) => MessageScreen(
-                        currentChat: currentChat
-                      )),
+              MaterialPageRoute(builder: (context) => MessageScreen(currentChat: currentChat)),
             );
           },
           onLongPress: () {},
@@ -150,7 +147,14 @@ class ChannelListBodyState extends State<ChannelListBody> {
             margin: EdgeInsets.only(bottom: 15, right: 15, top: index == 0 ? 30 : 0),
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: const Color(0xFF939393).withOpacity(0.6),
+                    blurRadius: 0.5,
+                    spreadRadius: 0,
+                    offset: const Offset(0, 0),
+                  )
+                ],
                 color: Mode().homeScreenScaffoldBackgroundColor(), //_isNewMessage == true ? Colors.white : Colors.transparent,
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(0),
@@ -219,51 +223,16 @@ class ChannelListBodyState extends State<ChannelListBody> {
 
   Container _buildProfilePhoto(String _image) {
     return Container(
-        height: _imageSize,
-        width: _imageSize,
-        margin: const EdgeInsets.only(right: 15, left: 10),
-        child: CircleAvatar(
-          backgroundImage:
-
-              /*
-                            ImageNetwork(
-                              image: _image,
-                              imageCache: CachedNetworkImageProvider(_image),
-                              height: _imageSize,
-                              width: _imageSize,
-                              duration: 500,
-                              curve: Curves.easeIn,
-                              onPointer: true,
-                              debugPrint: false,
-                              fullScreen: false,
-                              fitAndroidIos: BoxFit.cover,
-                              fitWeb: BoxFitWeb.cover,
-                              borderRadius: BorderRadius.circular(70),
-                              onLoading: const CircularProgressIndicator(
-                                color: Colors.indigoAccent,
-                              ),
-                              onError: const Icon(
-                                Icons.error,
-                                color: Colors.blue,
-                              ),
-                              onTap: () {
-                                debugPrint("©gabriel_patrick_souza");
-                              },
-                            ),
-                             */
-
-              NetworkImage(
-            _image,
-          ),
-          backgroundColor: Colors.transparent,
-        )
-
-        /*CircleAvatar(
-                        backgroundColor:
-                            Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                                .withOpacity(1.0),
-                      )*/
-        );
+      height: _imageSize,
+      width: _imageSize,
+      margin: const EdgeInsets.only(right: 15, left: 10),
+      child: CircleAvatar(
+        backgroundImage: NetworkImage(
+          _image,
+        ),
+        backgroundColor: Colors.transparent,
+      ),
+    );
   }
 
   SizedBox _buildNameAndLastMessage(String _nameSurname, String _lastMassage, bool _isNewMessage) {
@@ -291,7 +260,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
             textScaleFactor: 1,
             style: GoogleFonts.rubik(
               fontSize: 14,
-              color: _isNewMessage != true ? Color.fromARGB(255, 204, 203, 203) : Mode().blackAndWhiteConversion(),
+              color: _isNewMessage != true ? const Color.fromARGB(255, 204, 203, 203) : Mode().blackAndWhiteConversion(),
             ),
           ),
         ],
@@ -299,7 +268,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
     );
   }
 
-  SizedBox _buildDateAndNumberOfNewMessages(String _channelListItemDate(), int _numberOfNewMessage) {
+  SizedBox _buildDateAndNumberOfNewMessages(String Function() _channelListItemDate, int _numberOfNewMessage) {
     return SizedBox(
       height: 60,
       width: 60,
@@ -333,7 +302,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
                     ),
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
         ],
       ),
     );

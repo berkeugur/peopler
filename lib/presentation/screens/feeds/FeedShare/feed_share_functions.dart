@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/components/snack_bars.dart';
 import '../../../../business_logic/blocs/AddAnFeedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
@@ -20,14 +21,7 @@ feed_share_button_on_pressed(BuildContext context) {
     _addFeedBloc.add(AddAFeedEvent(myFeed: _feed));
     debugPrint("share feed button is clicked");
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(customSnackBar(
-      title: 'Paylaşımın çok kısa',
-      context: context,
-      bgColor: _mode.feedShareScreenSnackBarBackground(),
-      icon: Icons.warning_amber_rounded,
-      textColor: _mode.feedShareScreenSnackBarTextColor(),
-    ));
-    // "alert: Paylaşmak için çok kısa"
+    SnackBars(context: context).simple('Paylaşımın çok kısa');
   }
 }
 

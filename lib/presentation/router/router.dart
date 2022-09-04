@@ -51,14 +51,6 @@ class LoginRouter {
         return MaterialPageRoute(builder: (_) => const BegForPermissionScreen());
       case NavigationConstants.HOME_SCREEN:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
-
-      /*
-            MaterialPageRoute(
-                builder: (_) => MultiBlocProvider(providers: [
-                  BlocProvider<FeedBloc>.value(value: _feedBloc),
-                  BlocProvider<SavedBloc>.value(value: _savedBloc),
-                    ], child: const HomeScreen()));
-             */
       case NavigationConstants.VERIFY_SCREEN:
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
       case NavigationConstants.CREATE_PROFILE_SCREEN:
@@ -74,3 +66,11 @@ class LoginRouter {
     }
   }
 }
+
+      /*
+            MaterialPageRoute(
+                builder: (_) => MultiBlocProvider(providers: [
+                  BlocProvider<FeedBloc>.value(value: _feedBloc),
+                  BlocProvider<SavedBloc>.value(value: _savedBloc),
+                    ], child: const HomeScreen()));
+             */

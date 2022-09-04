@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
@@ -23,32 +24,11 @@ Center signInButton(context) {
         } else if (state is SignedInNotVerifiedState) {
           Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);
         } else if (state is InvalidEmailState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            customSnackBar(
-                context: context,
-                title: "E posta adresiniz istenilen biçimde değil!",
-                icon: Icons.warning_outlined,
-                textColor: const Color(0xFFFFFFFF),
-                bgColor: const Color(0xFF000B21)),
-          );
+          SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
         } else if (state is UserNotFoundState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            customSnackBar(
-                context: context,
-                title: "Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!",
-                icon: Icons.warning_outlined,
-                textColor: const Color(0xFFFFFFFF),
-                bgColor: const Color(0xFF000B21)),
-          );
+          SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
         } else if (state is WrongPasswordState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            customSnackBar(
-                context: context,
-                title: "Hatalı şifre girdiniz.\nŞifrenizi unuttuysanız sıfırlayabilirsiniz",
-                icon: Icons.warning_outlined,
-                textColor: const Color(0xFFFFFFFF),
-                bgColor: const Color(0xFF000B21)),
-          );
+          SnackBars(context: context).simple("Hatalı şifre girdiniz.\nŞifrenizi unuttuysanız sıfırlayabilirsiniz");
         }
       },
       child: Container(
@@ -65,32 +45,11 @@ Center signInButton(context) {
             if (_connection == false) return;
 
             if (loginEmailController.text.isEmpty && loginPasswordController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                customSnackBar(
-                    context: context,
-                    title: "Lütfen e posta adresinizi ve şifrenizi girin.",
-                    icon: Icons.warning_outlined,
-                    textColor: const Color(0xFFFFFFFF),
-                    bgColor: const Color(0xFF000B21)),
-              );
+              SnackBars(context: context).simple("Lütfen e posta adresinizi ve şifrenizi girin.");
             } else if (loginEmailController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                customSnackBar(
-                    context: context,
-                    title: "Lütfen e posta adresinizi girin.",
-                    icon: Icons.warning_outlined,
-                    textColor: const Color(0xFFFFFFFF),
-                    bgColor: const Color(0xFF000B21)),
-              );
+              SnackBars(context: context).simple("Lütfen e posta adresinizi girin.");
             } else if (loginPasswordController.text.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                customSnackBar(
-                    context: context,
-                    title: "Lütfen şifrenizi girin.",
-                    icon: Icons.warning_outlined,
-                    textColor: const Color(0xFFFFFFFF),
-                    bgColor: const Color(0xFF000B21)),
-              );
+              SnackBars(context: context).simple("Lütfen şifrenizi girin.");
             } else if (loginEmailController.text.isNotEmpty && loginPasswordController.text.isNotEmpty) {
               _userBloc.add(signInWithEmailandPasswordEvent(email: loginEmailController.text, password: loginPasswordController.text));
             }

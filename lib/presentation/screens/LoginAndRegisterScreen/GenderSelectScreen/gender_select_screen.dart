@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../others/classes/responsive_size.dart';
@@ -138,14 +139,7 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                           child: TextButton(
                             onPressed: () {
                               if (UserBloc.user?.gender == "") {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  customSnackBar(
-                                      context: context,
-                                      title: "Lütfen cinsiyetinizi seçin.",
-                                      icon: Icons.warning_outlined,
-                                      textColor: const Color(0xFFFFFFFF),
-                                      bgColor: const Color(0xFF000B21)),
-                                );
+                                SnackBars(context: context).simple("Lütfen cinsiyetinizi seçin.");
                               } else {
                                 Navigator.pushNamed(context, NavigationConstants.CREATE_PROFILE_SCREEN);
                               }

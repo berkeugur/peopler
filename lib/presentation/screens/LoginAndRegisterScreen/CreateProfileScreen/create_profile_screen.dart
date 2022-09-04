@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
@@ -207,32 +208,11 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);
             }
           } else if (UserBloc.user?.city == "" && bioController.text.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              customSnackBar(
-                  context: context,
-                  title: "Boş alanları doldurmanız gerekiyor.",
-                  icon: Icons.warning_outlined,
-                  textColor: const Color(0xFFFFFFFF),
-                  bgColor: const Color(0xFF000B21)),
-            );
+            SnackBars(context: context).simple("Boşlukları Doldurunuz");
           } else if (UserBloc.user?.city == "" && bioController.text.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              customSnackBar(
-                  context: context,
-                  title: "Şehir seçmeniz gerekiyor.",
-                  icon: Icons.warning_outlined,
-                  textColor: const Color(0xFFFFFFFF),
-                  bgColor: const Color(0xFF000B21)),
-            );
+            SnackBars(context: context).simple("Şehir seçmeniz gerekiyor.");
           } else if (UserBloc.user?.city != "" && bioController.text.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              customSnackBar(
-                  context: context,
-                  title: "Biyogrofi alanını doldurunuz!",
-                  icon: Icons.warning_outlined,
-                  textColor: const Color(0xFFFFFFFF),
-                  bgColor: const Color(0xFF000B21)),
-            );
+            SnackBars(context: context).simple("Biyogrofi alanını doldurunuz!");
           }
         },
         child: Text(

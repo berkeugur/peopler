@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
@@ -350,35 +351,14 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                       _userBloc.add(waitForVerificationEvent());
                                       Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.VERIFY_SCREEN, (Route<dynamic> route) => false);
                                     } else if (state is InvalidEmailState) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        customSnackBar(
-                                            context: context,
-                                            title: "E posta adresiniz istenilen biçimde değil!",
-                                            icon: Icons.warning_outlined,
-                                            textColor: const Color(0xFFFFFFFF),
-                                            bgColor: const Color(0xFF000B21)),
-                                      );
+                                      SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                                     } else if (state is SigningInState) {
                                       debugPrint("SIGNING IN");
                                     } else if (state is UserNotFoundState) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        customSnackBar(
-                                            context: context,
-                                            title: "Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!",
-                                            icon: Icons.warning_outlined,
-                                            textColor: const Color(0xFFFFFFFF),
-                                            bgColor: const Color(0xFF000B21)),
-                                      );
+                                      SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
                                     } else if (state is EmailAlreadyInUseState) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        customSnackBar(
-                                            context: context,
-                                            title:
-                                                "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.",
-                                            icon: Icons.warning_outlined,
-                                            textColor: const Color(0xFFFFFFFF),
-                                            bgColor: const Color(0xFF000B21)),
-                                      );
+                                      SnackBars(context: context).simple(
+                                          "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
                                     }
                                   },
                                   child: TextButton(
@@ -406,34 +386,13 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           password: registerPasswordController.text,
                                         ));
                                       } else if (registerPasswordController.text != registerPasswordCheckController.text) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          customSnackBar(
-                                              context: context,
-                                              title: "Girdiğiniz şifreler aynı değil!",
-                                              icon: Icons.warning_outlined,
-                                              textColor: const Color(0xFFFFFFFF),
-                                              bgColor: const Color(0xFF000B21)),
-                                        );
+                                        SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
                                       } else if (_isEduDotTr == false) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          customSnackBar(
-                                              context: context,
-                                              title:
-                                                  "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
-                                                  "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!",
-                                              icon: Icons.warning_outlined,
-                                              textColor: const Color(0xFFFFFFFF),
-                                              bgColor: const Color(0xFF000B21)),
-                                        );
+                                        SnackBars(context: context).simple(
+                                            "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
+                                            "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
                                       } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          customSnackBar(
-                                              context: context,
-                                              title: "Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !",
-                                              icon: Icons.warning_outlined,
-                                              textColor: const Color(0xFFFFFFFF),
-                                              bgColor: const Color(0xFF000B21)),
-                                        );
+                                        SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
                                       }
                                     },
                                     child: Text(

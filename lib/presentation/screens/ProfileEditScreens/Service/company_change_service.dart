@@ -27,10 +27,10 @@ class CompanyChangeService {
           PeoplerDialogs.showSuccessfulDialog(context, _controller).then((value) => Navigator.of(context).pop());
         });
       } else {
-        SnackBars(context: context).snackbar("Herhangi bir değişiklik yapmadınız!");
+        SnackBars(context: context).simple("Herhangi bir değişiklik yapmadınız!");
       }
     } else {
-      SnackBars(context: context).snackbar("Hata Kodu: #00237855, support@peopler.app mail adresimize durumu açıklayan bir mail atarak yardım alabilirsiniz.");
+      SnackBars(context: context).simple("Hata Kodu: #00237855, support@peopler.app mail adresimize durumu açıklayan bir mail atarak yardım alabilirsiniz.");
     }
   }
 }

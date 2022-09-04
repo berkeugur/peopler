@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
 
@@ -35,14 +36,7 @@ class HomeItem extends StatelessWidget {
                 return targetPage!;
               }));
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                customSnackBar(
-                    context: context,
-                    title: "Çoooook Yakında",
-                    icon: Icons.done,
-                    textColor: const Color(0xFFFFFFFF),
-                    bgColor: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : const Color(0xFF000B21)),
-              );
+              SnackBars(context: context).simple("çok yakında...");
             }
           },
           child: Padding(

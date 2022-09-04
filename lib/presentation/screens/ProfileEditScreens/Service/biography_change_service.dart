@@ -28,13 +28,13 @@ class BiographyChangeService {
             PeoplerDialogs.showSuccessfulDialog(context, _controller).then((value) => Navigator.of(context).pop());
           });
         } else {
-          SnackBars(context: context).snackbar("En az 7 karakter kullanmalısınız!");
+          SnackBars(context: context).simple("En az 7 karakter kullanmalısınız!");
         }
       } else {
-        SnackBars(context: context).snackbar("Herhangi bir değişiklik yapmadınız!");
+        SnackBars(context: context).simple("Herhangi bir değişiklik yapmadınız!");
       }
     } else {
-      SnackBars(context: context).snackbar("Hata Kodu: #002355, support@peopler.app mail adresimize durumu açıklayan bir mail atarak yardım alabilirsiniz.");
+      SnackBars(context: context).simple("Hata Kodu: #002355, support@peopler.app mail adresimize durumu açıklayan bir mail atarak yardım alabilirsiniz.");
     }
   }
 }

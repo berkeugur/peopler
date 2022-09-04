@@ -24,7 +24,7 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
       if (value != null) {
         profilePhotoEditChangeCrop(photo: File(value.path));
       }
-    }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
+    }).onError((error, stackTrace) => SnackBars(context: context).simple(error.toString()));
   }
 
   _profilePhotoChangeImgFromGallery({required StateSetter stateSetter}) async {
@@ -32,7 +32,7 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
       if (value != null) {
         profilePhotoEditChangeCrop(photo: File(value.path));
       }
-    }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
+    }).onError((error, stackTrace) => SnackBars(context: context).simple(error.toString()));
   }
 
   void profilePhotoEditChangeCrop({required File photo}) async {

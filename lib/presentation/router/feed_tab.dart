@@ -4,13 +4,8 @@ import 'package:peopler/business_logic/blocs/FeedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:peopler/others/widgets/drawer.dart';
-import 'package:peopler/presentation/screens/Settings/settings.dart';
-import '../../business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
-import '../screens/ChatScreen/channel_list.dart';
 import '../tab_item.dart';
 import '../screens/feeds/FeedScreen/feed_screen.dart';
-import '../screens/feeds/FeedShare/feed_share_screen.dart';
 
 class FeedScreenNavigator extends StatefulWidget {
   final GlobalKey<FeedScreenState> feedListKey;

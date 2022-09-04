@@ -4,7 +4,6 @@ import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../core/constants/navigation/navigation_constants.dart';
-import '../screens/ChatScreen/channel_list.dart';
 import '../screens/GuestLoginScreen/guest_login_screen.dart';
 import '../screens/notification/connection_requests_screen/connection_request_screen.dart';
 import '../screens/notification/notification_screen.dart';

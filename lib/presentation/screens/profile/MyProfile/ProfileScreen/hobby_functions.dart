@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
@@ -20,14 +21,7 @@ addHobbyWithJustStartDate(context, selectedHobbyName, selectedStartYear, selecte
         (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        customSnackBar(
-            context: context,
-            title: "Başarıyla eklendi.",
-            icon: Icons.done,
-            textColor: const Color(0xFFFFFFFF),
-            bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-      );
+      SnackBars(context: context).simple("başarıyla eklendi");
       Navigator.pop(context);
     }).onError(
       (error, stackTrace) {
@@ -51,14 +45,8 @@ addHobbyWithStartAndFinishDate(context, selectedHobbyName, selectedStartYear, se
         (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        customSnackBar(
-            context: context,
-            title: "Başarıyla eklendi.",
-            icon: Icons.done,
-            textColor: const Color(0xFFFFFFFF),
-            bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-      );
+      SnackBars(context: context).simple("Başarıyla eklendi");
+
       Navigator.pop(context);
     }).onError(
       (error, stackTrace) {
@@ -115,14 +103,7 @@ deleteHobby(context, index, StateSetter setStateEditHobbyBottomSheet) {
         (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        customSnackBar(
-            context: context,
-            title: "Başarıyla silindi.",
-            icon: Icons.done,
-            textColor: const Color(0xFFFFFFFF),
-            bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-      );
+      SnackBars(context: context).simple("Silindi");
 
       setStateEditHobbyBottomSheet(() {});
     }).onError(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/others/classes/hobbies.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
@@ -1180,14 +1181,7 @@ class ProfileScreenComponentsMyProfile {
                                   if (selectedStartYear != null && selectedStartMonth != null) {
                                     return DateTime(int.parse(selectedStartYear!), monthToInt(selectedStartMonth!));
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      customSnackBar(
-                                          context: context,
-                                          title: "Boşlukları doldurunuz.",
-                                          icon: Icons.warning_outlined,
-                                          textColor: const Color(0xFFFFFFFF),
-                                          bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-                                    );
+                                    SnackBars(context: context).simple("Boşlukları Doldurunuz");
 
                                     return DateTime(3000, 1, 1);
                                   }
@@ -1197,14 +1191,7 @@ class ProfileScreenComponentsMyProfile {
                                   if (selectedFinishYear != null && selectedFinishMonth != null) {
                                     return DateTime(int.parse(selectedFinishYear!), monthToInt(selectedFinishMonth!));
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      customSnackBar(
-                                          context: context,
-                                          title: "Boşlukları doldurunuz.",
-                                          icon: Icons.warning_outlined,
-                                          textColor: const Color(0xFFFFFFFF),
-                                          bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-                                    );
+                                    SnackBars(context: context).simple("Boşlukları Doldurunuz");
 
                                     return DateTime(1, 1, 1);
                                   }
@@ -1215,14 +1202,8 @@ class ProfileScreenComponentsMyProfile {
                                   //print("başlangıç tarihini ekle bitiş tarihine şu anda yaz");
                                 } else if (getFinishDate().difference(getStartDate()).inDays < 0) {
                                   if (selectedStartYear != null && selectedStartMonth != null && selectedFinishYear != null && selectedFinishMonth != null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      customSnackBar(
-                                          context: context,
-                                          title: "Bıraktığınız tarih, başladığınız tarihten yeni olamaz!",
-                                          icon: Icons.warning_outlined,
-                                          textColor: const Color(0xFFFFFFFF),
-                                          bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-                                    );
+                                    SnackBars(context: context).simple("Boşlukları Doldurunuz");
+
                                     print("bitiş tarihi başlangıç tarihinden yeni olamaz");
                                   }
                                 } else if (isChecked == false &&
@@ -1235,14 +1216,8 @@ class ProfileScreenComponentsMyProfile {
                                       context, selectedHobbyName, selectedStartYear, selectedStartMonth, selectedFinishYear, selectedFinishMonth);
                                   print("başlangıç + bitiş tarihlerini ekle");
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    customSnackBar(
-                                        context: context,
-                                        title: "Boşlukları doldurunuz.",
-                                        icon: Icons.warning_outlined,
-                                        textColor: const Color(0xFFFFFFFF),
-                                        bgColor: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : const Color(0xFF000B21)),
-                                  );
+                                  SnackBars(context: context).simple("Boşlukları Doldurunuz");
+
                                   print("boşlukları doldurunuz!");
                                 }
                               },

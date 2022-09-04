@@ -44,7 +44,7 @@ _profilePhotoChangeImgFromCamera({required StateSetter stateSetter, required Bui
     if (value != null) {
       profilePhotoChangeCrop(photo: File(value.path), stateSetter: stateSetter);
     }
-  }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
+  }).onError((error, stackTrace) => SnackBars(context: context).simple(error.toString()));
 }
 
 _profilePhotoChangeImgFromGallery({required StateSetter stateSetter, required BuildContext context}) async {
@@ -52,7 +52,7 @@ _profilePhotoChangeImgFromGallery({required StateSetter stateSetter, required Bu
     if (value != null) {
       profilePhotoChangeCrop(photo: File(value.path), stateSetter: stateSetter);
     }
-  }).onError((error, stackTrace) => SnackBars(context: context).snackbar(error.toString()));
+  }).onError((error, stackTrace) => SnackBars(context: context).simple(error.toString()));
 }
 
 void profilePhotoChangeCrop({required File photo, required StateSetter stateSetter}) async {

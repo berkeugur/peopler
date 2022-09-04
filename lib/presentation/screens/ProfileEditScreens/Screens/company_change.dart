@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
-import 'package:peopler/others/classes/AppBars.dart';
+import 'package:peopler/components/AppBars.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Service/biography_change_service.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Service/company_change_service.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Service/education_change_service.dart';

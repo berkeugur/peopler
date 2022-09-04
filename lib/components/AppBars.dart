@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,10 +11,10 @@ class PeoplerAppBars {
   PeoplerAppBars({required this.context});
 
   // ignore: non_constant_identifier_names
-  _BACK_BUTTON(void Function()?) {
+  _BACK_BUTTON(void Function()? function) {
     return InkWell(
       borderRadius: BorderRadius.circular(99),
-      onTap: Function,
+      onTap: function,
       child: Container(
         padding: const EdgeInsets.all(16),
         child: SvgPicture.asset(

@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/data/model/user.dart';
-import 'package:peopler/others/classes/AppBars.dart';
+import 'package:peopler/components/AppBars.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Service/company_change_service.dart';
 import 'package:peopler/presentation/screens/ProfileEditScreens/Service/photos_service.dart';
@@ -55,7 +55,7 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
         photosAddCrop(photo: File(value.path));
       }
     }).onError(
-      (error, stackTrace) => SnackBars(context: context).snackbar(
+      (error, stackTrace) => SnackBars(context: context).simple(
         error.toString(),
       ),
     );
@@ -73,7 +73,7 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
         photosAddCrop(photo: File(value.path));
       }
     }).onError(
-      (error, stackTrace) => SnackBars(context: context).snackbar(
+      (error, stackTrace) => SnackBars(context: context).simple(
         error.toString(),
       ),
     );
@@ -127,11 +127,11 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
           });
         }).onError(
           (error, stackTrace) {
-            SnackBars(context: context).snackbar("error: $error");
+            SnackBars(context: context).simple("error: $error");
           },
         );
     } else {
-      SnackBars(context: context).snackbar("Yükleme Başarısız...");
+      SnackBars(context: context).simple("Yükleme Başarısız...");
     }
     Future.delayed(const Duration(seconds: 1), () {
       setStateEditProfile.value = !setStateEditProfile.value;
@@ -177,7 +177,7 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
                 });
           } else {
             SnackBars(context: context)
-                .snackbar("Yalnızca 6 adet fotoğraf yükleyebilirsiniz. \n\nDaha fazla fotoğraf ekleyebilmeniz için çalışmalarımıza devam ediyoruz.");
+                .simple("Yalnızca 6 adet fotoğraf yükleyebilirsiniz. \n\nDaha fazla fotoğraf ekleyebilmeniz için çalışmalarımıza devam ediyoruz.");
           }
         },
         label: Text(
