@@ -8,7 +8,7 @@ import '../../../../../others/locator.dart';
 import '../../SETTINGS/settings_page_functions.dart';
 import '../message_screen_functions.dart';
 
-Container messageScreenTopMenu(context) {
+Container messageScreenTopMenu(BuildContext context, AnimationController controller, String userID) {
   double _imageSize = 34;
 
   final Mode _mode = locator<Mode>();
@@ -40,7 +40,7 @@ Container messageScreenTopMenu(context) {
             ],
           ),
         ),
-        _buildMoreIcon(_mode),
+        _buildMoreIcon(_mode, context, controller, userID),
       ],
     ),
   );
@@ -121,9 +121,9 @@ Container _buildProfilePhoto(double _imageSize, context) {
       ));
 }
 
-InkWell _buildMoreIcon(Mode _mode) {
+InkWell _buildMoreIcon(Mode _mode, BuildContext context, AnimationController controller, String userID) {
   return InkWell(
-    onTap: () => op_settings_message_icon(),
+    onTap: () => op_settings_message_icon(context, controller, userID),
     child: Icon(
       Icons.more_vert_outlined,
       size: 25,

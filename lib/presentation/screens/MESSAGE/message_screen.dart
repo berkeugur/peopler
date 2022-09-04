@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
@@ -31,7 +32,7 @@ class MessageScreen extends StatefulWidget {
   _MessageScreenState createState() => _MessageScreenState();
 }
 
-class _MessageScreenState extends State<MessageScreen> {
+class _MessageScreenState extends State<MessageScreen> with TickerProviderStateMixin {
   /*
   void _scrollToBottom() {
     if (messageListController.hasClients) {
@@ -42,6 +43,14 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
  */
+  late final AnimationController _controller;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   bool emojiShowing = false;
 
   _onEmojiSelected(Emoji emoji) {
@@ -58,6 +67,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   void initState() {
+    _controller = AnimationController(vsync: this);
     _messageBloc = MessageBloc();
 
     if (widget.currentChat == null) {
@@ -100,7 +110,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     body: SafeArea(
                       child: Column(
                         children: [
-                          messageScreenTopMenu(context),
+                          messageScreenTopMenu(context, _controller, _messageBloc.currentChat?.hostID ?? "null host"),
                           MessageScreenBody(
                             messageListController: messageListController,
                           ),
@@ -173,10 +183,13 @@ class _MessageScreenState extends State<MessageScreen> {
       child: Row(
         children: [
           IconButton(
-            onPressed: () {
-              setState(() {
+            onPressed: () async {
+              FocusScope.of(context).unfocus();
+
+              await Future.delayed(Duration(milliseconds: 200), (() {
                 emojiShowing = !emojiShowing;
-              });
+              }));
+              setState(() {});
             },
             icon: Icon(
               Icons.tag_faces,
@@ -189,6 +202,9 @@ class _MessageScreenState extends State<MessageScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: TextField(
                 onTap: () {
+                  setState(() {
+                    emojiShowing = false;
+                  });
                   Future.delayed(const Duration(milliseconds: 700), (() {
                     messageListController.jumpTo(messageListController.position.maxScrollExtent);
                   }));

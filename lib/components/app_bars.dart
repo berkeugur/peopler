@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
@@ -16,11 +17,11 @@ class PeoplerAppBars {
       borderRadius: BorderRadius.circular(99),
       onTap: function,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         child: SvgPicture.asset(
           "assets/images/svg_icons/back_arrow.svg",
-          width: 20,
-          height: 20,
+          width: 24,
+          height: 24,
           color: Mode().homeScreenTitleColor(),
         ),
       ),
@@ -33,6 +34,14 @@ class PeoplerAppBars {
       title,
       textScaleFactor: 1,
       style: GoogleFonts.rubik(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w400, fontSize: 20),
+    );
+  }
+
+  _PEOPLER_TITLE() {
+    return Text(
+      ApplicationConstants.COMPANY_NAME.toLowerCase(),
+      textScaleFactor: 1,
+      style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
     );
   }
 
@@ -95,5 +104,32 @@ class PeoplerAppBars {
         title: _TITLE(
           title: title ?? "",
         ));
+  }
+
+  // ignore: non_constant_identifier_names
+  OTHER_PROFILE({Function()? function}) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      actions: [
+        IconButton(
+            onPressed: function,
+            icon: Icon(
+              Icons.more_vert,
+              color: Mode().homeScreenTitleColor(),
+            ))
+      ],
+      leading: _BACK_BUTTON(() {
+        Navigator.of(context).pop();
+        Future.delayed(
+          const Duration(milliseconds: 2000),
+          (() {
+            setStateProfileScreen.value = !setStateProfileScreen.value;
+          }),
+        );
+      }),
+      centerTitle: true,
+      title: _PEOPLER_TITLE(),
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/report_bottom_sheet.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../core/constants/navigation/navigation_constants.dart';
 
@@ -18,7 +19,8 @@ op_settings_peopler_title() {
 }
 
 // ignore: non_constant_identifier_names
-op_settings_message_icon() {
+op_settings_message_icon(BuildContext context, AnimationController controller, String userID) {
+  ReportOrBlockUser(context: context, controller: controller, userID: userID);
   if (kDebugMode) {
     print("pressed message icon");
   }

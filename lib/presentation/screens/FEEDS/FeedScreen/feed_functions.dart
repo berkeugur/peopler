@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/dialogs.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
+import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/SETTINGS/settings.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
@@ -41,16 +44,8 @@ op_message_icon(context) {
   _homeScreen.navigatorKeys[TabItem.chat]!.currentState!.pushNamed(NavigationConstants.CHAT_SCREEN);
 }
 
-tripleDotOnPressed(
-  BuildContext context,
-  String feedId,
-  String feedExplanation,
-  String userID,
-  String userDisplayName,
-  String userGender,
-  DateTime createdAt,
-  String userPhotoUrl,
-) {
+tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, String userID, String userDisplayName, String userGender, DateTime createdAt,
+    String userPhotoUrl, AnimationController animationController) {
   showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF0353EF),
@@ -64,13 +59,48 @@ tripleDotOnPressed(
                 color: Colors.white,
               ),
               title: Text(
-                'Şikayet Et',
+                'Paylaşımı Şikayet Et',
                 textScaleFactor: 1,
                 style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
                 Navigator.pop(context);
                 _showReportBottomSheet(context, feedId, feedExplanation, userID, userDisplayName, userGender, createdAt, userPhotoUrl);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              title: Text(
+                'Kullanıcıyı Şikayet Et',
+                textScaleFactor: 1,
+                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+              ),
+              onTap: () {
+                MyReport report = MyReport(userID: userID, type: "Report User", feedID: feedId, feedExplanation: feedExplanation);
+                ReportScreenService().reportUser(report: report).then((value) {
+                  Navigator.of(context).pop();
+                  PeoplerDialogs.showSuccessfulDialog(context, animationController);
+                }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.block,
+                color: Colors.white,
+              ),
+              title: Text(
+                'Kullanıcıyı Engelle',
+                textScaleFactor: 1,
+                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+              ),
+              onTap: () {
+                ReportScreenService().blockUser(userID: userID, feedID: feedId).then((value) {
+                  Navigator.of(context).pop();
+                  PeoplerDialogs.showSuccessfulDialog(context, animationController);
+                }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
               },
             ),
           ],
@@ -140,47 +170,51 @@ Future<void> _showReportBottomSheet(
               color: Colors.white,
               height: 1,
             ),
-            Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  "Bu gönderiyi neden şikayet ediyorsunuz?",
-                  textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "Bu gönderiyi neden şikayet ediyorsunuz?",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Text(
-                  "Merak etmeyin kimliğiniz gizli tutacak.",
-                  textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
-                    color: Color.fromARGB(255, 214, 214, 214),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    "Merak etmeyin kimliğiniz gizli tutacak.",
+                    textScaleFactor: 1,
+                    style: GoogleFonts.rubik(
+                      color: Color.fromARGB(255, 214, 214, 214),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
-              ),
-              _reportItem("Spam", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, createdAt),
-            ])
+                _reportItem("Spam", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Çıplaklık veya cinsellik", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Sadece bundan hoşlanmadım", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Sahtekarlık ve dolandırıcılık", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Nefret söylemi veya sembolleri", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Yanlış bilgiler", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, createdAt),
+                _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, createdAt),
+              ],
+            )
           ],
         );
       });
@@ -197,10 +231,9 @@ InkWell _reportItem(
   return InkWell(
     onTap: () {
       if (UserBloc.user != null) {
-        final FirestoreDBServiceReport _firestoreDBServiceReport = locator<FirestoreDBServiceReport>();
-
         MyReport report = MyReport(userID: userID, type: text, feedID: feedId, feedExplanation: feedExplanation);
-        _firestoreDBServiceReport.reportFeedOrUser(report);
+
+        ReportScreenService().reportFeed(report: report);
 
         Navigator.pop(context);
 

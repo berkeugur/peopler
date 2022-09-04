@@ -5,12 +5,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/dialogs.dart';
+import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/data/model/activity.dart';
+import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
+import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen_components.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/functions.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/profile_screen_components.dart';
+import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/report_bottom_sheet.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/locator.dart';
 import '../../../../../others/strings.dart';
@@ -38,14 +45,22 @@ class OthersProfileScreen extends StatefulWidget {
   _OthersProfileScreenState createState() => _OthersProfileScreenState();
 }
 
-class _OthersProfileScreenState extends State<OthersProfileScreen> {
+class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerProviderStateMixin {
   late final OtherUserBloc _otherUserBloc;
   final Mode _mode = locator<Mode>();
+  late final AnimationController _controller;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     _otherUserBloc = OtherUserBloc();
     _otherUserBloc.add(GetInitialDataEvent(userID: widget.userID, status: widget.status));
+    _controller = AnimationController(vsync: this);
     super.initState();
   }
 
@@ -61,6 +76,11 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
               child: Builder(
                 builder: (BuildContext context) {
                   return Scaffold(
+                    appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
+                      function: () async {
+                        await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
+                      },
+                    ),
                     backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
                     body: SafeArea(
                       child: _buildBody(widget.status),
@@ -99,49 +119,6 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> {
 
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: _mode.bottomMenuBackground(),
-          ),
-          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-          height: 70,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                // onTap: () => ZoomDrawer.of(context)!.toggle(),
-                onTap: () => Navigator.of(context).pop(),
-                child: SvgPicture.asset(
-                  "assets/images/svg_icons/back_arrow.svg",
-                  width: 32,
-                  height: 32,
-                  color: Mode().disabledBottomMenuItemAssetColor(),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Text(
-                "peopler",
-                textScaleFactor: 1,
-                style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
-              ),
-              const SizedBox.square(
-                dimension: 25,
-              ),
-              /*
-          InkWell(
-            onTap: () => op_message_icon(context),
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/message_icon.svg",
-              width: 25,
-              height: 25,
-              color: _mode.homeScreenIconsColor(),
-              fit: BoxFit.contain,
-            ),
-          ),
-          */
-            ],
-          ),
-        ),
         ProfileScreenComponentsMyProfile().photos(context, otherUser.photosURL, otherUser.profileURL),
         _profileScreenComponents.nameField(),
         const SizedBox(
