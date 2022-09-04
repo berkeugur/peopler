@@ -14,4 +14,6 @@ class NavigationConstants {
   static const VERIFY_SCREEN = '/verifyScreen';
   static const CREATE_PROFILE_SCREEN = '/createProfileScreen';
   static const EMAIL_AND_PASSWORD_SCREEN = '/emailAndPasswordScreen';
+  static const CHAT_SCREEN = '/chat';
+  static const INVITATIONS = '/invitations';
 }

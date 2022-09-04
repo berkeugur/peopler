@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import '../../../business_logic/blocs/LocationPermissionBloc/location_permission_event.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
-import '../../tab_item.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
   final Function onBottomTabTapped;
@@ -40,11 +40,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           return Container(
             decoration: BoxDecoration(
               boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: const Color(0xFF939393).withOpacity(0.6),
-                    blurRadius: 2.0,
-                    spreadRadius: 0,
-                    offset: const Offset(0.0, 0.75))
+                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(0.0, 0.75))
               ],
               color: _mode.bottomMenuBackground(),
             ),
@@ -81,9 +77,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == index
-              ? _mode.enabledMenuItemBackground()
-              : _mode.disabledSelectedMenuItemBackground(),
+          color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
         ),
         child: SizedBox(
@@ -91,9 +85,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/home.svg",
-            color: _homeScreen.currentTab.index == index
-                ? _mode.enabledBottomMenuItemAssetColor()
-                : _mode.disabledBottomMenuItemAssetColor(),
+            color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
             fit: BoxFit.contain,
           ),
         ),
@@ -119,9 +111,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == index
-              ? _mode.enabledMenuItemBackground()
-              : _mode.disabledSelectedMenuItemBackground(),
+          color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
         ),
         child: SizedBox(
@@ -129,9 +119,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/search.svg",
-            color: _homeScreen.currentTab.index == index
-                ? _mode.enabledBottomMenuItemAssetColor()
-                : _mode.disabledBottomMenuItemAssetColor(),
+            color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
             height: 10,
             fit: BoxFit.contain,
@@ -157,9 +145,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == index
-              ? _mode.enabledMenuItemBackground()
-              : _mode.disabledSelectedMenuItemBackground(),
+          color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
         ),
         child: SizedBox(
@@ -167,9 +153,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/message_icon.svg",
-            color: _homeScreen.currentTab.index == index
-                ? _mode.enabledBottomMenuItemAssetColor()
-                : _mode.disabledBottomMenuItemAssetColor(),
+            color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
             height: 10,
             fit: BoxFit.contain,
@@ -195,9 +179,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == index
-              ? _mode.enabledMenuItemBackground()
-              : _mode.disabledSelectedMenuItemBackground(),
+          color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
         ),
         child: SizedBox(
@@ -205,9 +187,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/notification.svg",
-            color: _homeScreen.currentTab.index == index
-                ? _mode.enabledBottomMenuItemAssetColor()
-                : _mode.disabledBottomMenuItemAssetColor(),
+            color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
             height: 10,
             fit: BoxFit.contain,
@@ -233,9 +213,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
-          color: _homeScreen.currentTab.index == index
-              ? _mode.enabledMenuItemBackground()
-              : _mode.disabledSelectedMenuItemBackground(),
+          color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
           borderRadius: BorderRadius.circular(menuItemBorderRadius),
         ),
         child: SizedBox(
@@ -243,9 +221,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           width: _menuItemWidth,
           child: SvgPicture.asset(
             "assets/images/svg_icons/profile_icon.svg",
-            color: _homeScreen.currentTab.index == index
-                ? _mode.enabledBottomMenuItemAssetColor()
-                : _mode.disabledBottomMenuItemAssetColor(),
+            color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
             width: 10,
             height: 10,
             fit: BoxFit.contain,

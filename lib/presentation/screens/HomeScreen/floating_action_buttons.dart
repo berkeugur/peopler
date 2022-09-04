@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/FeedBloc/feed_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/feeds/FeedShare/feed_share_screen.dart';
 import 'package:peopler/presentation/screens/saved/saved_screen.dart';
@@ -11,10 +13,6 @@ import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../core/constants/navigation/navigation_constants.dart';
-import '../../../others/classes/dark_light_mode_controller.dart';
-import '../../../others/locator.dart';
-import '../../tab_item.dart';
-import '../GuestLoginScreen/guest_login_screen.dart';
 
 class MyFloatingActionButtons extends StatefulWidget {
   const MyFloatingActionButtons({Key? key}) : super(key: key);

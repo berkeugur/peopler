@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
-import '../../tab_item.dart';
+
 import 'city_nearby_buttons.dart';
 
 class NoUsersExistInNearby extends StatefulWidget {
@@ -51,8 +52,7 @@ class _NoUsersExistInNearbyState extends State<NoUsersExistInNearby> {
                       """Aynı ortamı paylaştığınız peopler kullanıcısı yok. Topluluğumuzu büyütmek için çalışmaya devam ediyoruz.""",
                       textScaleFactor: 1,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.rubik(
-                          fontSize: 18, fontWeight: FontWeight.normal, color: _mode.blackAndWhiteConversion()),
+                      style: GoogleFonts.rubik(fontSize: 18, fontWeight: FontWeight.normal, color: _mode.blackAndWhiteConversion()),
                     ),
                   ),
                   Row(
@@ -90,8 +90,7 @@ class _NoUsersExistInNearbyState extends State<NoUsersExistInNearby> {
                         onTap: () async {
                           final box = context.findRenderObject() as RenderBox?;
                           await Share.share("peopler.app",
-                              subject:
-                                  "Yakınındaki insanları keşfet ve kaydet. Harika insanlardan oluşan peopler topluluğuna katıl!",
+                              subject: "Yakınındaki insanları keşfet ve kaydet. Harika insanlardan oluşan peopler topluluğuna katıl!",
                               sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
                         },
                         child: Container(

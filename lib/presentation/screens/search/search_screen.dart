@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/presentation/screens/search/city_tab.dart';
 import 'package:peopler/presentation/screens/search/nearby_tab.dart';
 import 'package:peopler/presentation/screens/search/seach_peoples_header.dart';
@@ -10,7 +12,7 @@ import '../../../business_logic/blocs/LocationBloc/bloc.dart';
 import '../../../business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
-import '../../tab_item.dart';
+
 import 'city_nearby_buttons.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -43,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
-    if(UserBloc.user != null) {
+    if (UserBloc.user != null) {
       _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
     }
   }
@@ -73,16 +75,14 @@ class _SearchScreenState extends State<SearchScreen> {
               if (state is ReadyState) {
                 int _latitude;
                 int _longitude;
-                if(UserBloc.user != null) {
+                if (UserBloc.user != null) {
                   _latitude = UserBloc.user!.latitude;
                   _longitude = UserBloc.user!.longitude;
                 } else {
                   _latitude = UserBloc.guestUser!.latitude;
                   _longitude = UserBloc.guestUser!.longitude;
                 }
-                _locationBloc.add(GetInitialSearchUsersEvent(
-                    latitude: _latitude,
-                    longitude: _longitude));
+                _locationBloc.add(GetInitialSearchUsersEvent(latitude: _latitude, longitude: _longitude));
               }
             },
             child: ChangeNotifierProvider.value(

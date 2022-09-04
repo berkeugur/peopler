@@ -263,7 +263,7 @@ class FCMAndLocalNotifications {
           final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(myContext!);
           _homeScreen.currentTab = TabItem.notifications;
           _homeScreen.changeFloatingActionButtonEvent();
-          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed('/invitations');
+          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed(NavigationConstants.INVITATIONS);
         } else if (payloadType == Strings.receiveRequest) {
           final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(myContext!);
           _homeScreen.currentTab = TabItem.notifications;

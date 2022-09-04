@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -39,7 +40,7 @@ op_peopler_title(context, ScrollController scrollController) {
 
 op_message_icon(context) {
   FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-  _homeScreen.navigatorKeys[TabItem.chat]!.currentState!.pushNamed('/chat');
+  _homeScreen.navigatorKeys[TabItem.chat]!.currentState!.pushNamed(NavigationConstants.CHAT_SCREEN);
 }
 
 tripleDotOnPressed(

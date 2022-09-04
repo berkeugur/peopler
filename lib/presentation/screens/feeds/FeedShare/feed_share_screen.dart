@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/AddAnFeedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import '../../../../business_logic/blocs/FeedBloc/bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
-import '../../../tab_item.dart';
+
 import 'feed_share_body.dart';
 
 class FeedShareScreen extends StatefulWidget {

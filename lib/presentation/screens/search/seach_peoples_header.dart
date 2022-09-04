@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
 import '../../../../business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dart';
 import '../../../../business_logic/blocs/LocationPermissionBloc/location_permission_event.dart';
@@ -10,7 +11,7 @@ import '../../../../others/classes/variables.dart';
 import '../../../others/locator.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
-import '../../tab_item.dart';
+
 import 'city_nearby_buttons.dart';
 
 class search_peoples_header extends StatelessWidget {
@@ -82,9 +83,7 @@ class search_peoples_header extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(
-              color: _cityNearbyButtons.isNearby == index
-                  ? const Color(0xFF939393).withOpacity(0.6)
-                  : const Color(0xFF939393).withOpacity(0),
+              color: _cityNearbyButtons.isNearby == index ? const Color(0xFF939393).withOpacity(0.6) : const Color(0xFF939393).withOpacity(0),
               blurRadius: 2.0,
               spreadRadius: 0,
               offset: const Offset(0.0, 0.75),

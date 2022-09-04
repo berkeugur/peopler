@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
-import '../../../tab_item.dart';
+
 import 'incoming_connection_requests.dart';
 import 'outgoing_connection_requests.dart';
 
@@ -125,9 +126,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
         margin: const EdgeInsets.only(right: 10, left: 20),
         padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
         decoration: BoxDecoration(
-          color: selectedConnectionRequestList == ConnectionRequestList.inComingRequestList
-              ? const Color(0xFF0353EF)
-              : Colors.transparent,
+          color: selectedConnectionRequestList == ConnectionRequestList.inComingRequestList ? const Color(0xFF0353EF) : Colors.transparent,
           borderRadius: BorderRadius.circular(99),
         ),
         child: Text(
@@ -135,9 +134,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             fontSize: 14,
-            color: selectedConnectionRequestList == ConnectionRequestList.inComingRequestList
-                ? Colors.white
-                : const Color(0xFF0353EF),
+            color: selectedConnectionRequestList == ConnectionRequestList.inComingRequestList ? Colors.white : const Color(0xFF0353EF),
           ),
         ),
       ),
@@ -153,9 +150,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
       child: Container(
         padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
         decoration: BoxDecoration(
-          color: selectedConnectionRequestList == ConnectionRequestList.outGoingRequestList
-              ? const Color(0xFF0353EF)
-              : Colors.transparent,
+          color: selectedConnectionRequestList == ConnectionRequestList.outGoingRequestList ? const Color(0xFF0353EF) : Colors.transparent,
           borderRadius: BorderRadius.circular(99),
         ),
         child: Text(
@@ -163,9 +158,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             fontSize: 14,
-            color: selectedConnectionRequestList == ConnectionRequestList.outGoingRequestList
-                ? Colors.white
-                : const Color(0xFF0353EF),
+            color: selectedConnectionRequestList == ConnectionRequestList.outGoingRequestList ? Colors.white : const Color(0xFF0353EF),
           ),
         ),
       ),

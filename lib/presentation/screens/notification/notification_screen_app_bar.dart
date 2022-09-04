@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/locator.dart';
-import '../../tab_item.dart';
 
 class NotificationScreenFunctions {
   void pressedTitle(context, ScrollController _scrollController) {
@@ -28,7 +29,7 @@ class NotificationScreenFunctions {
 
   void pushConnectionRequestPage(context) {
     final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-    _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed('/invitations');
+    _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed(NavigationConstants.INVITATIONS);
 
     print("bağlantı isteklerinin gösterildiği sayfaya gider");
   }
@@ -118,11 +119,7 @@ Widget notificationScreenBottomAppBar(BuildContext context) {
             decoration: BoxDecoration(
               color: _mode.bottomMenuBackground(),
               boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: const Color(0xFFE3E2E2).withOpacity(0.6),
-                    blurRadius: 1.5,
-                    spreadRadius: 0.7,
-                    offset: const Offset(0, 0))
+                BoxShadow(color: const Color(0xFFE3E2E2).withOpacity(0.6), blurRadius: 1.5, spreadRadius: 0.7, offset: const Offset(0, 0))
               ],
             ),
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),

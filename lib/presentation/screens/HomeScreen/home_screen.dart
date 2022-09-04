@@ -9,13 +9,15 @@ import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'dart:io' show Platform;
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/presentation/router/chat_tab.dart';
 import '../../../business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
+import '../../../core/constants/enums/screen_item_enum.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
-import '../../tab_item.dart';
+
 import '../feeds/FeedScreen/feed_screen.dart';
 import '../../router/feed_tab.dart';
 import '../../router/notifications_tab.dart';
@@ -52,7 +54,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
 
-    if(UserBloc.user != null) {
+    if (UserBloc.user != null) {
       FCMAndLocalNotifications().initializeFCMNotifications(context);
     }
 
@@ -80,7 +82,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 int _latitude;
                                 int _longitude;
 
-                                if(UserBloc.user != null) {
+                                if (UserBloc.user != null) {
                                   _latitude = UserBloc.user!.latitude;
                                   _longitude = UserBloc.user!.longitude;
                                 } else {
@@ -88,9 +90,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   _longitude = UserBloc.guestUser!.longitude;
                                 }
 
-                                _locationBloc.add(GetInitialSearchUsersEvent(
-                                    latitude: _latitude,
-                                    longitude: _longitude));
+                                _locationBloc.add(GetInitialSearchUsersEvent(latitude: _latitude, longitude: _longitude));
                               }
                             },
                             child: SafeArea(
