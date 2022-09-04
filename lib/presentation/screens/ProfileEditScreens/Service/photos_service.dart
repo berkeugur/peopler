@@ -5,7 +5,7 @@ import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/presentation/screens/profile_edit/profile_edit.dart';
 
-import '../../../../ui/dialogs.dart';
+import '../../../../components/dialogs.dart';
 
 class PhotoService {
   static saveChanges(context, _controller) {

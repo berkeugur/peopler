@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import '../../core/constants/navigation/navigation_constants.dart';
 import '../screens/search/search_screen.dart';
-import '../tab_item.dart';
 
 class SearchScreenNavigator extends StatefulWidget {
   const SearchScreenNavigator({

@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
-import '../../../tab_item.dart';
+
 import '../settings_page_functions.dart';
 
 Container topMenu(context) {
@@ -41,8 +41,7 @@ Container topMenu(context) {
             child: AutoSizeText(
               "peopler",
               textScaleFactor: 1,
-              style:
-                  GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+              style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
             ),
           ),
         ),

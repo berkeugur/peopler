@@ -17,7 +17,7 @@ import 'package:peopler/presentation/screens/ProfileEditScreens/Service/company_
 import 'package:peopler/presentation/screens/ProfileEditScreens/Service/photos_service.dart';
 import 'package:peopler/presentation/screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/presentation/screens/profile_edit/drag_drop_gridview.dart';
-import 'package:peopler/ui/dialogs.dart';
+import 'package:peopler/components/dialogs.dart';
 
 class ProfileEditPhotosScreen extends StatefulWidget {
   const ProfileEditPhotosScreen({Key? key}) : super(key: key);

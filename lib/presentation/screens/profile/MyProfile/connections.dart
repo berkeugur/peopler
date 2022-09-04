@@ -10,7 +10,6 @@ import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
 import '../../MessageScreen/message_screen.dart';
-import '../../clickMessage.dart';
 
 class Connection {
   final String profilePhotoUrl;
@@ -252,10 +251,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                     _userBloc.mainKey.currentState?.push(
                       MaterialPageRoute(
                           builder: (context) => MessageScreen(
-                            requestUserID: _data.id,
-                            requestProfileURL: _data.profilePhotoUrl,
-                            requestDisplayName: _data.fullName,
-                          )),
+                                requestUserID: _data.id,
+                                requestProfileURL: _data.profilePhotoUrl,
+                                requestDisplayName: _data.fullName,
+                              )),
                     );
                   },
                   child: SizedBox(

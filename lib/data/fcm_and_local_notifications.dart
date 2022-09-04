@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../others/strings.dart';
 import '../presentation/screens/MessageScreen/message_screen.dart';
-import '../presentation/tab_item.dart';
 import 'model/chat.dart';
 
 /// AWESOME NOTIFICATIONS

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -10,7 +11,7 @@ import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../data/services/db/firebase_db_report.dart';
 import '../../../../others/locator.dart';
-import '../../../tab_item.dart';
+
 import '../../guest_login_screen.dart';
 
 // ignore: non_constant_identifier_names
@@ -177,8 +178,7 @@ Future<void> _showReportBottomSheet(
               _reportItem("Zorbalık veya taciz", context, feedId, feedExplanation, userID, createdAt),
               _reportItem("Şiddet veya tehlikeli örgütler", context, feedId, feedExplanation, userID, createdAt),
               _reportItem("Fikri mülkiyet ihlali", context, feedId, feedExplanation, userID, createdAt),
-              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID,
-                  createdAt),
+              _reportItem("Yasal düzenlemeye tabi veya yasadışı ürünlerin satışı", context, feedId, feedExplanation, userID, createdAt),
               _reportItem("İntihar veya kendine zarar verme", context, feedId, feedExplanation, userID, createdAt),
               _reportItem("Yeme bozuklukları", context, feedId, feedExplanation, userID, createdAt),
             ])

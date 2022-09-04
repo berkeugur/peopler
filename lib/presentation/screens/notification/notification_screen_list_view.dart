@@ -10,7 +10,6 @@ import '../../../data/model/notifications.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import '../MessageScreen/message_screen.dart';
-import '../clickMessage.dart';
 import '../profile/OthersProfile/functions.dart';
 import '../profile/OthersProfile/profile/profile_screen_components.dart';
 
@@ -87,8 +86,8 @@ Widget customListItem(int index, context) {
   switch (_notification.notificationType) {
     case 'ReceivedRequest':
       {
-        return inComingRequestNotificationWidget(_maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _customSmallTextSize,
-            _rightColumnSize, index);
+        return inComingRequestNotificationWidget(
+            _maxWidth, _leftColumnSize, context, _notification, _centerColumnSize, _customTextSize, _customSmallTextSize, _rightColumnSize, index);
       }
     case 'TransmittedRequest':
       {
@@ -283,105 +282,105 @@ Widget acceptYourRequestWidget(
     double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
-          width: _maxWidth,
-          decoration: _boxDecoration(),
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                //color: Colors.green,
-                width: _leftColumnSize,
-                height: _leftColumnSize,
-                child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
-              ),
-              SizedBox(
-                //color: Colors.orange,
-                width: _centerColumnSize,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        child: RichText(
-                          textScaleFactor: 1,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          text: TextSpan(
-                              text: _data.requestDisplayName,
-                              style: TextStyle(
-                                color: const Color(0xFF0353EF),
-                                fontSize: _customTextSize,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: _data.didAccepted! ? ', bağlantı isteğini kabul etti.' : ', isteğinizi henüz görmemiş olabilir. Sabırlı olun :) ',
-                                  style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
-                                )
-                              ]),
+    width: _maxWidth,
+    decoration: _boxDecoration(),
+    padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          //color: Colors.green,
+          width: _leftColumnSize,
+          height: _leftColumnSize,
+          child: profilePhoto(context, _data.requestProfileURL, _data.requestUserID!),
+        ),
+        SizedBox(
+          //color: Colors.orange,
+          width: _centerColumnSize,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10, top: 5),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  child: RichText(
+                    textScaleFactor: 1,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    text: TextSpan(
+                        text: _data.requestDisplayName,
+                        style: TextStyle(
+                          color: const Color(0xFF0353EF),
+                          fontSize: _customTextSize,
                         ),
-                      ),
-                      SizedBox(
-                        child: Text(
-                          _data.requestBiography,
-                          style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
-                          textScaleFactor: 1,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          if(_data.didAccepted!) {
-                            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-                            _userBloc.mainKey.currentState?.push(
-                              MaterialPageRoute(
-                                  builder: (context) => MessageScreen(
-                                    requestUserID: _data.requestUserID!,
-                                    requestProfileURL: _data.requestProfileURL,
-                                    requestDisplayName: _data.requestDisplayName,
-                                  )),
-                            );
-                          } else {
-                            _clickGeriAl(context, _data);
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF0353EF),
-                            borderRadius: BorderRadius.circular(99),
-                          ),
-                          child: Text(
-                            _data.didAccepted! ? "Mesajlaş" : "Geri Al",
-                            textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
-                              fontSize: _customTextSize - 1,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: _data.didAccepted! ? ', bağlantı isteğini kabul etti.' : ', isteğinizi henüz görmemiş olabilir. Sabırlı olun :) ',
+                            style: TextStyle(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
+                          )
+                        ]),
                   ),
                 ),
-              ),
-              SizedBox(
-                //color: Colors.red,
-                width: _rightColumnSize,
-                height: 70,
-                child: _rightColumn(context,  _data, _customTextSize - 2),
-              )
-            ],
+                SizedBox(
+                  child: Text(
+                    _data.requestBiography,
+                    style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
+                    textScaleFactor: 1,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+                const SizedBox(
+                  height: 7,
+                ),
+                InkWell(
+                  onTap: () {
+                    if (_data.didAccepted!) {
+                      UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                      _userBloc.mainKey.currentState?.push(
+                        MaterialPageRoute(
+                            builder: (context) => MessageScreen(
+                                  requestUserID: _data.requestUserID!,
+                                  requestProfileURL: _data.requestProfileURL,
+                                  requestDisplayName: _data.requestDisplayName,
+                                )),
+                      );
+                    } else {
+                      _clickGeriAl(context, _data);
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0353EF),
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Text(
+                      _data.didAccepted! ? "Mesajlaş" : "Geri Al",
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(
+                        fontSize: _customTextSize - 1,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        );
+        ),
+        SizedBox(
+          //color: Colors.red,
+          width: _rightColumnSize,
+          height: 70,
+          child: _rightColumn(context, _data, _customTextSize - 2),
+        )
+      ],
+    ),
+  );
 }
 
 void _clickGeriAl(BuildContext context, Notifications notification) {
@@ -392,7 +391,6 @@ void _clickGeriAl(BuildContext context, Notifications notification) {
 
 Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
     double _customTextSize, double _customSmallTextSize, double _rightColumnSize, index) {
-
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -454,15 +452,15 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
                 ),
                 InkWell(
                   onTap: () {
-                    if(_data.didAccepted!) {
+                    if (_data.didAccepted!) {
                       UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                       _userBloc.mainKey.currentState?.push(
                         MaterialPageRoute(
                             builder: (context) => MessageScreen(
-                              requestUserID: _data.requestUserID!,
-                              requestProfileURL: _data.requestProfileURL,
-                              requestDisplayName: _data.requestDisplayName,
-                            )),
+                                  requestUserID: _data.requestUserID!,
+                                  requestProfileURL: _data.requestProfileURL,
+                                  requestDisplayName: _data.requestDisplayName,
+                                )),
                       );
                     } else {
                       _clickAccept(context, _data, index);
@@ -492,7 +490,7 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
           //color: Colors.red,
           width: _rightColumnSize,
           height: 70,
-          child: _rightColumn(context,  _data, _customTextSize - 2),
+          child: _rightColumn(context, _data, _customTextSize - 2),
         )
       ],
     ),
@@ -504,23 +502,15 @@ void _clickAccept(context, Notifications _data, index) {
 
   NotificationBloc notificationBloc = BlocProvider.of<NotificationBloc>(context);
 
-  notificationBloc.add(ClickAcceptEvent(
-      requestUserID: _data.requestUserID!));
-  notificationBloc.allNotificationList[index].didAccepted =
-  true;
+  notificationBloc.add(ClickAcceptEvent(requestUserID: _data.requestUserID!));
+  notificationBloc.allNotificationList[index].didAccepted = true;
 
-  String? _hostUserID = notificationBloc
-      .allNotificationList[index].requestUserID;
-  String? _hostUserName = notificationBloc
-      .allNotificationList[index].requestDisplayName;
-  String? _hostUserProfileUrl = notificationBloc
-      .allNotificationList[index].requestProfileURL;
+  String? _hostUserID = notificationBloc.allNotificationList[index].requestUserID;
+  String? _hostUserName = notificationBloc.allNotificationList[index].requestDisplayName;
+  String? _hostUserProfileUrl = notificationBloc.allNotificationList[index].requestProfileURL;
 
-  _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!,
-      hostUserName: _hostUserName,
-      hostUserProfileUrl: _hostUserProfileUrl));
+  _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
 }
-
 
 Column _rightColumn(context, Notifications _data, double _customTextSize) {
   final Mode _mode = locator<Mode>();
@@ -548,19 +538,19 @@ Column _rightColumn(context, Notifications _data, double _customTextSize) {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                        onTap: () {
-                          //delete notification function
-                          _notificationBloc.add(DeleteNotification(notificationID: _data.notificationID));
-                          Navigator.pop(context);
-                        },
-                        leading: const Icon(
-                          Icons.delete_rounded,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'Bildirimi Sil',
-                          style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
-                        ),
+                      onTap: () {
+                        //delete notification function
+                        _notificationBloc.add(DeleteNotification(notificationID: _data.notificationID));
+                        Navigator.pop(context);
+                      },
+                      leading: const Icon(
+                        Icons.delete_rounded,
+                        color: Colors.white,
+                      ),
+                      title: Text(
+                        'Bildirimi Sil',
+                        style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                      ),
                     ),
                   ],
                 );

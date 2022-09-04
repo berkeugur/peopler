@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../screens/GuestLoginScreen/guest_login_screen.dart';
-import '../tab_item.dart';
 
 class ProfileScreenNavigator extends StatefulWidget {
   const ProfileScreenNavigator({

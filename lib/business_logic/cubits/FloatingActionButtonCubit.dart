@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 
-import '../../presentation/tab_item.dart';
+import '../../core/constants/enums/tab_item_enum.dart';
 
 /*
 enum TabItem { feed, search, chat, notifications, profile }

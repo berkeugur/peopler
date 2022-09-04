@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LikedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
@@ -13,7 +14,7 @@ import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
 import '../../../../others/widgets/snack_bars.dart';
-import '../../../tab_item.dart';
+
 import '../../profile/OthersProfile/functions.dart';
 import '../../profile/OthersProfile/profile/profile_screen_components.dart';
 import 'feed_functions.dart';

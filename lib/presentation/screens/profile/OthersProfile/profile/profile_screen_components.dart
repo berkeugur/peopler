@@ -25,7 +25,6 @@ import '../../../../../data/send_notification_service.dart';
 import '../../../../../data/services/db/firestore_db_service_users.dart';
 import '../../../../../others/widgets/snack_bars.dart';
 import '../../../MessageScreen/message_screen.dart';
-import '../../../clickMessage.dart';
 
 class ProfileScreenComponentsOthersProfile {
   final MyUser profileData;
