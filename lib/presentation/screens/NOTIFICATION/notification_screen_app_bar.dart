@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/app_bars.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
@@ -56,54 +57,10 @@ ValueListenableBuilder<double> notificationScreenTopAppBar(_scrollController) {
           decoration: BoxDecoration(
             color: _mode.bottomMenuBackground(),
           ),
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
           height: Variables.animatedNotificationsHeaderTop.value,
           duration: const Duration(milliseconds: 250),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              /*
-              InkWell(
-                onTap: () => _func.backButton(context),
-                child: SvgPicture.asset(
-                  "assets/images/svg_icons/back_arrow.svg",
-                  width: 25,
-                  height: 25,
-                  color: _mode.homeScreenIconsColor(),
-                  fit: BoxFit.contain,
-                ),
-              ),
-
-               */
-              InkWell(
-                onTap: () => _func.pressedTitle(context, _scrollController),
-                child: Text(
-                  "Bildirimler",
-                  textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
-                    color: _mode.homeScreenTitleColor(),
-                    fontWeight: FontWeight.w500,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              /*
-              InkWell(
-                onTap: () {
-                  FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-                  _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed('/chat');
-                },
-                child: SvgPicture.asset(
-                  "assets/images/svg_icons/message_icon.svg",
-                  width: 25,
-                  height: 25,
-                  color: _mode.homeScreenIconsColor(),
-                  fit: BoxFit.contain,
-                ),
-              ),
-              */
-            ],
-          ),
+          child: PeoplerAppBars(context: context).NOTIFICATION(),
         );
       });
 }

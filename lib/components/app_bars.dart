@@ -5,7 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
+import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
+
+import '../others/widgets/drawer.dart';
 
 class PeoplerAppBars {
   final BuildContext context;
@@ -29,15 +32,38 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
+  _DRAWER_MENU_ICON(void Function()? function) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(99),
+      onTap: function,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          SvgPicture.asset(
+            "assets/images/svg_icons/sort.svg",
+            height: 35,
+            width: 35,
+            color: Mode().homeScreenTitleColor(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
   _TITLE({required String title}) {
     return Text(
       title,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w400, fontSize: 20),
+      style: GoogleFonts.rubik(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
     );
   }
 
-  _PEOPLER_TITLE() {
+  // ignore: non_constant_identifier_names
+  _PEOPLER_TITLE(void Function()? titleFunction) {
     return Text(
       ApplicationConstants.COMPANY_NAME.toLowerCase(),
       textScaleFactor: 1,
@@ -129,7 +155,52 @@ class PeoplerAppBars {
         );
       }),
       centerTitle: true,
-      title: _PEOPLER_TITLE(),
+      title: _PEOPLER_TITLE(() {}),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  CHANNEL_LIST() {
+    return AppBar(
+      centerTitle: true,
+      title: _PEOPLER_TITLE(() {}),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  FEEDandPROFILE({void Function()? titleFunction, void Function()? leadingFunction}) {
+    return AppBar(
+      leading: _DRAWER_MENU_ICON(leadingFunction),
+      centerTitle: true,
+      title: _PEOPLER_TITLE(() {}),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  NOTIFICATION() {
+    return AppBar(
+      toolbarHeight: Variables.animatedNotificationsHeaderTop.value,
+      title: _TITLE(title: "Bildirimler"),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  CONNECTION_REQ(void Function()? function) {
+    return AppBar(
+      leading: _BACK_BUTTON(function),
+      title: _TITLE(title: "Davetiyeler"),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
     );
   }
 }

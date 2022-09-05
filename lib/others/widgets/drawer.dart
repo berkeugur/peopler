@@ -45,8 +45,6 @@ class DrawerMenuWidget extends StatelessWidget {
       onTap: () => op_settings_icon(context),
       child: SvgPicture.asset(
         "assets/images/svg_icons/sort.svg",
-        width: 32,
-        height: 32,
         color: Mode().disabledBottomMenuItemAssetColor(),
         fit: BoxFit.contain,
       ),

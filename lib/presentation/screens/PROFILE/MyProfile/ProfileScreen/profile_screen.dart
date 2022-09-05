@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/app_bars.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
@@ -42,6 +43,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         valueListenable: setTheme,
         builder: (context, x, y) {
           return Scaffold(
+            appBar: PeoplerAppBars(context: context).FEEDandPROFILE(
+                titleFunction: () {},
+                leadingFunction: () {
+                  op_settings_icon(context);
+                }),
             backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
 
             //profile edit ekranındaki değişiklikleri uygulamak için kaydet butonuna basıldığında.
@@ -67,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          header(context),
+          //header(context),
 
           _profileScreenComponents.photos(context, profileData.photosURL, profileData.profileURL),
           _profileScreenComponents.nameField(),

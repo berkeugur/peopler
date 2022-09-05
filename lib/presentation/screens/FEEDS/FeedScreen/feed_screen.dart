@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/app_bars.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/TUTORIAL/constants.dart';
@@ -245,39 +246,14 @@ class FeedScreenState extends State<FeedScreen> {
         valueListenable: Variables.animatedAppBarHeight,
         builder: (context, value, _) {
           return AnimatedContainer(
-            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
             color: _mode.bottomMenuBackground(),
             height: Variables.animatedAppBarHeight.value,
             duration: const Duration(milliseconds: 250),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const DrawerMenuWidget(),
-                InkWell(
-                  onTap: () => op_peopler_title(context, _scrollController),
-                  child: Text(
-                    "peopler",
-                    textScaleFactor: 1,
-                    style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
-                  ),
-                ),
-                const SizedBox.square(
-                  dimension: 25,
-                ),
-                /*
-                InkWell(
-                  onTap: () => op_message_icon(context),
-                  child: SvgPicture.asset(
-                    "assets/images/svg_icons/message_icon.svg",
-                    width: 25,
-                    height: 25,
-                    color: _mode.homeScreenIconsColor(),
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                */
-              ],
-            ),
+            child: PeoplerAppBars(context: context).FEEDandPROFILE(titleFunction: () {
+              op_peopler_title(context, _scrollController);
+            }, leadingFunction: () {
+              op_settings_icon(context);
+            }),
           );
         });
   }

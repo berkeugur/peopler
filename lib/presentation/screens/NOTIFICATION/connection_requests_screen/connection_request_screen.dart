@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/app_bars.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
@@ -63,42 +64,16 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
         });
   }
 
-  Container _buildTopHeader(BuildContext context) {
-    return Container(
-      height: 70,
-      decoration: BoxDecoration(
-        color: _mode.bottomMenuBackground(),
-      ),
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () => ConnectionRequestScreenFunctions().backButton(context),
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/back_arrow.svg",
-              width: 25,
-              height: 25,
-              color: _mode.homeScreenIconsColor(),
-              fit: BoxFit.contain,
-            ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Text(
-            "Davetiyeler",
-            textScaleFactor: 1,
-            style: GoogleFonts.rubik(
-              color: _mode.homeScreenTitleColor(),
-              fontWeight: FontWeight.w500,
-              fontSize: 24,
-            ),
-          ),
-        ],
-      ),
-    );
+  Padding _buildTopHeader(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+        child: PeoplerAppBars(context: context).CONNECTION_REQ(() {
+          final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+          _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};
+          _homeScreen.changeFloatingActionButtonEvent();
+          Navigator.pop(context);
+          debugPrint("pressed back button");
+        }));
   }
 
   Container _buildBottomHeader() {
