@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/app_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../business_logic/blocs/ChatBloc/chat_bloc.dart';
-import 'channel_list_components/channel_list_top_menu.dart';
 import 'channel_list_components/channel_list_body.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -35,8 +33,8 @@ class _ChatScreenState extends State<ChatScreen> {
               appBar: PeoplerAppBars(context: context).CHANNEL_LIST(),
               backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
               body: Column(
-                children: [
-                  const ChannelListBody(),
+                children: const [
+                  ChannelListBody(),
                 ],
               ),
             ),
