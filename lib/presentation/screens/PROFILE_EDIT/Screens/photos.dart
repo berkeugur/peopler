@@ -14,6 +14,8 @@ import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/components/dialogs.dart';
 
+import '../../../../components/gallery.dart';
+
 class ProfileEditPhotosScreen extends StatefulWidget {
   const ProfileEditPhotosScreen({Key? key}) : super(key: key);
 
@@ -266,83 +268,86 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
         : _crossAxisCount == 2
             ? 30
             : 35;
-    return Stack(
-      children: [
-        Container(
-          width: (MediaQuery.of(context).size.width / _crossAxisCount),
-          height: (MediaQuery.of(context).size.width / _crossAxisCount) * (4 / 3),
-          padding: EdgeInsets.symmetric(
-            horizontal: customDeleteIconSize / 20 * 5,
-            vertical: customDeleteIconSize / 20 * 5,
-          ),
-          child: CachedNetworkImage(
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7.5),
-                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-              ),
+    return InkWell(
+      onTap: () => PeoplerGallery().openGallery(context: context, images: UserBloc.user!.photosURL, currentIndex: index, isNetworkImage: true),
+      child: Stack(
+        children: [
+          Container(
+            width: (MediaQuery.of(context).size.width / _crossAxisCount),
+            height: (MediaQuery.of(context).size.width / _crossAxisCount) * (4 / 3),
+            padding: EdgeInsets.symmetric(
+              horizontal: customDeleteIconSize / 20 * 5,
+              vertical: customDeleteIconSize / 20 * 5,
             ),
-            imageUrl: UserBloc.user!.photosURL[index],
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      title: const Text('Emin Misiniz?'), // App Permission Settings
-                      content: const Text('Bu fotoğraf kalıcı olarak silinecektir.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('İptal'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            //UserBloc.user!.photosURL.removeAt(index);
-                            await FirebaseStorage.instance.refFromURL(UserBloc.user!.photosURL[index]).delete();
-                            await FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID).update({
-                              "photosURL": FieldValue.arrayRemove([UserBloc.user!.photosURL[index]])
-                            });
-                            setState(() {});
-                            Future.delayed(const Duration(seconds: 1), () {
-                              setStateEditProfile.value = !setStateEditProfile.value;
-                            }).then((value) => setStateEditProfile.value = !setStateEditProfile.value);
-
-                            Future.delayed(const Duration(milliseconds: 500), () {
-                              setStateProfileScreen.value = !setStateProfileScreen.value;
-                            }).then(
-                              (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
-                            );
-
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Devam Et'),
-                        )
-                      ],
-                    ));
-          },
-          borderRadius: BorderRadius.circular(99),
-          child: Container(
-              width: customDeleteIconSize,
-              height: customDeleteIconSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color.fromARGB(255, 255, 255, 255),
-                border: Border.all(color: const Color(0xFF0353EF), width: 1),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.delete,
-                  size: customDeleteIconSize / 60 * 36,
-                  color: Color(0xFF0353EF),
+            child: CachedNetworkImage(
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7.5),
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                 ),
-              )),
-        ),
-      ],
+              ),
+              imageUrl: UserBloc.user!.photosURL[index],
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: const Text('Emin Misiniz?'), // App Permission Settings
+                        content: const Text('Bu fotoğraf kalıcı olarak silinecektir.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('İptal'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              //UserBloc.user!.photosURL.removeAt(index);
+                              await FirebaseStorage.instance.refFromURL(UserBloc.user!.photosURL[index]).delete();
+                              await FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID).update({
+                                "photosURL": FieldValue.arrayRemove([UserBloc.user!.photosURL[index]])
+                              });
+                              setState(() {});
+                              Future.delayed(const Duration(seconds: 1), () {
+                                setStateEditProfile.value = !setStateEditProfile.value;
+                              }).then((value) => setStateEditProfile.value = !setStateEditProfile.value);
+
+                              Future.delayed(const Duration(milliseconds: 500), () {
+                                setStateProfileScreen.value = !setStateProfileScreen.value;
+                              }).then(
+                                (value) => setStateProfileScreen.value = !setStateProfileScreen.value,
+                              );
+
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Devam Et'),
+                          )
+                        ],
+                      ));
+            },
+            borderRadius: BorderRadius.circular(99),
+            child: Container(
+                width: customDeleteIconSize,
+                height: customDeleteIconSize,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  border: Border.all(color: const Color(0xFF0353EF), width: 1),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.delete,
+                    size: customDeleteIconSize / 60 * 36,
+                    color: Color(0xFF0353EF),
+                  ),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }

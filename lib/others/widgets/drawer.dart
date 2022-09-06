@@ -10,6 +10,7 @@ import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_screen.dart';
+import 'package:peopler/presentation/screens/HOME/home_screen.dart';
 import '../../presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
 class CircularImage extends StatelessWidget {
@@ -63,52 +64,50 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     final ThemeCubit _themeCubit = BlocProvider.of<ThemeCubit>(context);
-    return Container(
-      child: Scaffold(
-        backgroundColor: Color(0xFF0353EF),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 40, bottom: 40, left: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  profilePhoto(context),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    UserBloc.user?.displayName ?? "null display name",
-                    textScaleFactor: 1,
-                    style: GoogleFonts.rubik(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  theme_change_buttons(_themeCubit),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  MenuItems(context: context, svgiconpath: "assets/images/svg_icons/home.svg", itemtext: "Ana Sayfa"),
-                  MenuItems(context: context, svgiconpath: "assets/images/svg_icons/notification.svg", itemtext: "Bildirimler"),
-                  MenuItems(context: context, svgiconpath: "assets/images/svg_icons/search.svg", itemtext: "Keşfet"),
-                  MenuItems(context: context, svgiconpath: "assets/images/svg_icons/message_icon.svg", itemtext: "Mesajlar"),
-                  MenuItems(context: context, svgiconpath: "assets/images/svg_icons/profile_icon.svg", itemtext: "Profil"),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  MenuItems(context: context, svgiconpath: "assets/images/svg_icons/settings.svg", itemtext: "Ayarlar"),
-                  MenuItems(context: context, itemtext: "Destek", icon: Icons.support_agent),
-                ],
-              )
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: Color(0xFF0353EF),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 40, bottom: 40, left: 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                profilePhoto(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  UserBloc.user?.displayName ?? "null display name",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                theme_change_buttons(_themeCubit),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/home.svg", itemtext: "Ana Sayfa"),
+                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/notification.svg", itemtext: "Bildirimler"),
+                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/search.svg", itemtext: "Keşfet"),
+                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/message_icon.svg", itemtext: "Mesajlar"),
+                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/profile_icon.svg", itemtext: "Profil"),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/settings.svg", itemtext: "Ayarlar"),
+                MenuItems(context: context, itemtext: "Destek", icon: Icons.support_agent),
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -155,7 +154,13 @@ class _MenuPageState extends State<MenuPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () => _themeCubit.openLightMode(),
+          onTap: () {
+            if (Mode.isEnableDarkMode) {
+              _themeCubit.openLightMode();
+            } else {
+              _themeCubit.openDarkMode();
+            }
+          },
           child: Container(
             decoration: BoxDecoration(
               color: Mode.isEnableDarkMode == false ? Colors.white : Colors.transparent,
@@ -274,8 +279,10 @@ class _MenuPageState extends State<MenuPage> {
 }
 
 class DrawerHomePage extends StatefulWidget {
-  final GlobalKey<FeedScreenState> feedListKey;
-  const DrawerHomePage({Key? key, required this.feedListKey}) : super(key: key);
+  //final GlobalKey<FeedScreenState> feedListKey;
+  const DrawerHomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<DrawerHomePage> createState() => _DrawerHomePageState();
@@ -290,26 +297,28 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ZoomDrawer(
-      shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
-      shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
-      showShadow: true,
-      mainScreenTapClose: true,
-      borderRadius: 24.0,
-      angle: 0,
-      style: DrawerStyle.defaultStyle,
-      // showShadow: true,
-      openCurve: Curves.fastOutSlowIn,
-      slideWidth: MediaQuery.of(context).size.width * 0.70,
-      duration: const Duration(milliseconds: 500),
-      // angle: 0.0,
-      menuBackgroundColor: const Color(0xFF0353EF),
+    return ValueListenableBuilder(
+        valueListenable: setTheme,
+        builder: (context, _, __) {
+          return ZoomDrawer(
+            shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+            shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
+            showShadow: true,
+            mainScreenTapClose: true,
+            borderRadius: 24.0,
+            angle: 0,
+            style: DrawerStyle.defaultStyle,
+            // showShadow: true,
+            openCurve: Curves.fastOutSlowIn,
+            slideWidth: MediaQuery.of(context).size.width * 0.70,
+            duration: const Duration(milliseconds: 500),
+            // angle: 0.0,
+            menuBackgroundColor: const Color(0xFF0353EF),
 
-      mainScreen: FeedScreen(
-        key: widget.feedListKey,
-      ),
-      menuScreen: MenuPage(),
-    );
+            mainScreen: HomeScreen(),
+            menuScreen: MenuPage(),
+          );
+        });
   }
 }
 

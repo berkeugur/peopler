@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/dialogs.dart';
 import 'package:peopler/components/snack_bars.dart';
@@ -20,9 +21,13 @@ import '../../../../others/locator.dart';
 op_settings_icon(context) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   if (UserBloc.user != null) {
+    ZoomDrawer.of(context)!.toggle();
+
+    /*
     _userBloc.mainKey.currentState?.push(
       MaterialPageRoute(builder: (context) => const SettingsScreen()),
     );
+    */
   } else {
     GuestAlert.dialog(context);
     /*

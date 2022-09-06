@@ -3,8 +3,7 @@ class Strings {
   static const String version = "update_v1_0";
 
   /// LinkedIn Parameters (From LinkedIn Developer Page)
-  static const String redirectUrl =
-      'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
+  static const String redirectUrl = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
   static const String clientId = '86y9muk6ijz659';
 
   /// Firebase Parameters
@@ -122,7 +121,7 @@ ProjectText txt = ProjectText();
 
 class ProjectText {
   String get peoplerTXT {
-    return "peopler";
+    return "peoplssssssssssser";
   }
 
   String get backArrowSvgTXT {

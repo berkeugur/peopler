@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/components/gallery.dart';
 import 'package:peopler/components/snack_bars.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/others/classes/hobbies.dart';
@@ -95,35 +96,49 @@ class ProfileScreenComponentsMyProfile {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: _photoHeight,
-                        width: _photoWidth,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.5),
-                          color: Colors.grey[400],
-                        ),
-                        margin: EdgeInsets.only(left: 5, right: 2.5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(7.5),
-                          child: Image.asset(
-                            "assets/profile_banners/banner1.png",
-                            fit: BoxFit.cover,
+                      InkWell(
+                        onTap: () => PeoplerGallery().openGallery(
+                            context: context,
+                            images: ["assets/profile_banners/banner1.png", "assets/profile_banners/banner2.png"],
+                            currentIndex: 0,
+                            isNetworkImage: false),
+                        child: Container(
+                          height: _photoHeight,
+                          width: _photoWidth,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.5),
+                            color: Colors.grey[400],
+                          ),
+                          margin: EdgeInsets.only(left: 5, right: 2.5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(7.5),
+                            child: Image.asset(
+                              "assets/profile_banners/banner1.png",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: _photoHeight,
-                        width: _photoWidth,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.5),
-                          color: Colors.grey[400],
-                        ),
-                        margin: EdgeInsets.only(left: 2.5, right: 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(7.5),
-                          child: Image.asset(
-                            "assets/profile_banners/banner2.png",
-                            fit: BoxFit.cover,
+                      InkWell(
+                        onTap: () => PeoplerGallery().openGallery(
+                            context: context,
+                            images: ["assets/profile_banners/banner1.png", "assets/profile_banners/banner2.png"],
+                            currentIndex: 1,
+                            isNetworkImage: false),
+                        child: Container(
+                          height: _photoHeight,
+                          width: _photoWidth,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(7.5),
+                            color: Colors.grey[400],
+                          ),
+                          margin: EdgeInsets.only(left: 2.5, right: 5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(7.5),
+                            child: Image.asset(
+                              "assets/profile_banners/banner2.png",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -140,43 +155,50 @@ class ProfileScreenComponentsMyProfile {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            height: _photoHeight,
-                            width: _photoWidth,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7.5),
-                              color: Colors.grey[400],
-                            ),
-                            margin: EdgeInsets.only(left: 5, right: 2.5),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(7.5),
-                              child: CachedNetworkImage(
-                                imageBuilder: (context, imageProvider) => Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(7.5),
-                                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                          InkWell(
+                            onTap: () => PeoplerGallery().openGallery(context: context, images: photos, currentIndex: 0, isNetworkImage: true),
+                            child: Container(
+                              height: _photoHeight,
+                              width: _photoWidth,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7.5),
+                                color: Colors.grey[400],
+                              ),
+                              margin: EdgeInsets.only(left: 5, right: 2.5),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(7.5),
+                                child: CachedNetworkImage(
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(7.5),
+                                      image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                    ),
                                   ),
+                                  imageUrl: photos.first,
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                      ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
-                                imageUrl: photos.first,
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
-                                errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
                             ),
                           ),
-                          Container(
-                            height: _photoHeight,
-                            width: _photoWidth,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7.5),
-                              color: Colors.grey[400],
-                            ),
-                            margin: EdgeInsets.only(left: 2.5, right: 5),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(7.5),
-                              child: Image.asset(
-                                "assets/profile_banners/banner1.png",
-                                fit: BoxFit.cover,
+                          InkWell(
+                            onTap: () => PeoplerGallery()
+                                .openGallery(context: context, images: ["assets/profile_banners/banner1.png"], currentIndex: 0, isNetworkImage: false),
+                            child: Container(
+                              height: _photoHeight,
+                              width: _photoWidth,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(7.5),
+                                color: Colors.grey[400],
+                              ),
+                              margin: EdgeInsets.only(left: 2.5, right: 5),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(7.5),
+                                child: Image.asset(
+                                  "assets/profile_banners/banner1.png",
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
@@ -197,49 +219,52 @@ class ProfileScreenComponentsMyProfile {
     Size _size = MediaQuery.of(context).size;
     double _screenWidth = _size.width;
     double _photoSize = _screenWidth / 3.4;
-    return Stack(
-      children: [
-        Container(
-          height: _photoSize,
-          width: _photoSize,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(999),
+    return InkWell(
+      onTap: () => PeoplerGallery().openGallery(context: context, images: [photoURL], currentIndex: 0, isNetworkImage: true),
+      child: Stack(
+        children: [
+          Container(
+            height: _photoSize,
+            width: _photoSize,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(
+                  width: 5,
+                  color: _mode.search_peoples_scaffold_background() as Color,
+                )),
+            child: const CircleAvatar(
+              backgroundColor: Color(0xFF0353EF),
+              child: Text(
+                "ppl",
+                textScaleFactor: 1,
+              ),
+            ),
+          ),
+          Container(
+            height: _photoSize,
+            width: _photoSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
               border: Border.all(
                 width: 5,
                 color: _mode.search_peoples_scaffold_background() as Color,
-              )),
-          child: const CircleAvatar(
-            backgroundColor: Color(0xFF0353EF),
-            child: Text(
-              "ppl",
-              textScaleFactor: 1,
-            ),
-          ),
-        ),
-        Container(
-          height: _photoSize,
-          width: _photoSize,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              width: 5,
-              color: _mode.search_peoples_scaffold_background() as Color,
-            ),
-          ),
-          child: //_userBloc != null ?
-              CachedNetworkImage(
-            imageUrl: photoURL,
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
               ),
             ),
-            progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            child: //_userBloc != null ?
+                CachedNetworkImage(
+              imageUrl: photoURL,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+              progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -337,33 +362,36 @@ class ProfileScreenComponentsMyProfile {
                                       ),
                                     ),
                                   ))
-                              : Container(
-                                  height: _photoHeight,
-                                  width: _photoWidth,
-                                  decoration: BoxDecoration(
-                                    borderRadius: _customBorderRadius(),
-                                    color: Colors.grey[400],
-                                  ),
-                                  margin: EdgeInsets.only(
-                                      left: index == 0 && photos.length >= 3
-                                          ? 5
-                                          : photos.length == 1
-                                              ? 10
-                                              : _photoPadding,
-                                      right: _photoPadding),
-                                  child: ClipRRect(
-                                    borderRadius: _customBorderRadius(),
-                                    child: CachedNetworkImage(
-                                      imageBuilder: (context, imageProvider) => Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(7.5),
-                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                              : InkWell(
+                                  onTap: () => PeoplerGallery().openGallery(context: context, images: photos, currentIndex: index, isNetworkImage: true),
+                                  child: Container(
+                                    height: _photoHeight,
+                                    width: _photoWidth,
+                                    decoration: BoxDecoration(
+                                      borderRadius: _customBorderRadius(),
+                                      color: Colors.grey[400],
+                                    ),
+                                    margin: EdgeInsets.only(
+                                        left: index == 0 && photos.length >= 3
+                                            ? 5
+                                            : photos.length == 1
+                                                ? 10
+                                                : _photoPadding,
+                                        right: _photoPadding),
+                                    child: ClipRRect(
+                                      borderRadius: _customBorderRadius(),
+                                      child: CachedNetworkImage(
+                                        imageBuilder: (context, imageProvider) => Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(7.5),
+                                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                          ),
                                         ),
+                                        imageUrl: photos[index],
+                                        progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                            borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                        errorWidget: (context, url, error) => Icon(Icons.error),
                                       ),
-                                      imageUrl: photos[index],
-                                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                          ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
-                                      errorWidget: (context, url, error) => Icon(Icons.error),
                                     ),
                                   ),
                                 );

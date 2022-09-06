@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_zoom_drawer/config.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
@@ -93,29 +95,27 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 _locationBloc.add(GetInitialSearchUsersEvent(latitude: _latitude, longitude: _longitude));
                               }
                             },
-                            child: SafeArea(
-                              child: Scaffold(
-                                backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
-                                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                                floatingActionButton: const MyFloatingActionButtons(),
-                                body: IndexedStack(
-                                  index: _homeScreen.currentTab.index,
-                                  children: [
-                                    FeedScreenNavigator(
-                                      feedListKey: feedListKey,
-                                    ),
-                                    const SearchScreenNavigator(),
-                                    const ChatScreenNavigator(),
-                                    const NotificationScreenNavigator(),
-                                    const ProfileScreenNavigator()
-                                  ],
-                                ),
-                                bottomNavigationBar: MyBottomNavigationBar(
-                                    // Callback Function, when another tab is clicked, this method will run
-                                    onBottomTabTapped: (index) {
-                                  _buildOnBottomTabTapped(index);
-                                }),
+                            child: Scaffold(
+                              backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
+                              floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                              floatingActionButton: const MyFloatingActionButtons(),
+                              body: IndexedStack(
+                                index: _homeScreen.currentTab.index,
+                                children: [
+                                  FeedScreenNavigator(
+                                    feedListKey: feedListKey,
+                                  ),
+                                  const SearchScreenNavigator(),
+                                  const ChatScreenNavigator(),
+                                  const NotificationScreenNavigator(),
+                                  const ProfileScreenNavigator()
+                                ],
                               ),
+                              bottomNavigationBar: MyBottomNavigationBar(
+                                  // Callback Function, when another tab is clicked, this method will run
+                                  onBottomTabTapped: (index) {
+                                _buildOnBottomTabTapped(index);
+                              }),
                             ));
                       });
                 }),

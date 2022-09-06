@@ -73,41 +73,35 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
             onWillPop: () => popOtherUserScreen(context),
             child: BlocProvider<OtherUserBloc>(
               create: (context) => _otherUserBloc,
-              child: Builder(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
-                      function: () async {
-                        await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
-                      },
-                    ),
-                    backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-                    body: SafeArea(
-                      child: _buildBody(widget.status),
-                    ),
-                  );
-                },
-              ),
+              child: Builder(builder: (BuildContext context) {
+                return Scaffold(
+                  appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
+                    function: () async {
+                      await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
+                    },
+                  ),
+                  backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
+                  body: _buildBody(widget.status),
+                );
+              }),
             ),
           );
         });
   }
 
   Widget _buildBody(SendRequestButtonStatus status) {
-    return Container(
-      child: SingleChildScrollView(
-        child: BlocBuilder<OtherUserBloc, OtherUserState>(
-          bloc: _otherUserBloc,
-          builder: (context, state) {
-            if (state is InitialOtherUserState) {
-              return _initialOtherUserStateWidget(context);
-            } else if (state is OtherUserLoadedState) {
-              return _userLoadedStateWidget(context, state.otherUser, state.mutualConnectionUserIDs, state.myActivities, state.status);
-            } else {
-              return const Text("Impossible");
-            }
-          },
-        ),
+    return SingleChildScrollView(
+      child: BlocBuilder<OtherUserBloc, OtherUserState>(
+        bloc: _otherUserBloc,
+        builder: (context, state) {
+          if (state is InitialOtherUserState) {
+            return _initialOtherUserStateWidget(context);
+          } else if (state is OtherUserLoadedState) {
+            return _userLoadedStateWidget(context, state.otherUser, state.mutualConnectionUserIDs, state.myActivities, state.status);
+          } else {
+            return const Text("Impossible");
+          }
+        },
       ),
     );
   }
@@ -179,45 +173,11 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
 
   Column _initialOtherUserStateWidget(context) {
     return Column(children: [
-      header(context),
       SizedBox(
           height: MediaQuery.of(context).size.height,
           child: const Center(
             child: CircularProgressIndicator(),
           )),
     ]);
-  }
-
-  Widget header(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: _mode.bottomMenuBackground(),
-      ),
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      height: 70,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () => popOtherUserScreen(context),
-            child: SvgPicture.asset(
-              txt.backArrowSvgTXT,
-              width: 25,
-              height: 25,
-              color: _mode.homeScreenIconsColor(),
-              fit: BoxFit.contain,
-            ),
-          ),
-          Text(
-            txt.peoplerTXT,
-            textScaleFactor: 1,
-            style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 24),
-          ),
-          const SizedBox.square(
-            dimension: 25,
-          )
-        ],
-      ),
-    );
   }
 }

@@ -15,7 +15,7 @@ class PeoplerAppBars {
   PeoplerAppBars({required this.context});
 
   // ignore: non_constant_identifier_names
-  _BACK_BUTTON(void Function()? function) {
+  _BACK_BUTTON({void Function()? function, Color? color}) {
     return InkWell(
       borderRadius: BorderRadius.circular(99),
       onTap: function,
@@ -25,7 +25,7 @@ class PeoplerAppBars {
           "assets/images/svg_icons/back_arrow.svg",
           width: 24,
           height: 24,
-          color: Mode().homeScreenTitleColor(),
+          color: color ?? Mode().homeScreenTitleColor(),
         ),
       ),
     );
@@ -76,15 +76,17 @@ class PeoplerAppBars {
     return AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        leading: _BACK_BUTTON(() {
-          Navigator.of(context).pop();
-          Future.delayed(
-            const Duration(milliseconds: 2000),
-            (() {
-              setStateProfileScreen.value = !setStateProfileScreen.value;
-            }),
-          );
-        }),
+        leading: _BACK_BUTTON(
+          function: () {
+            Navigator.of(context).pop();
+            Future.delayed(
+              const Duration(milliseconds: 2000),
+              (() {
+                setStateProfileScreen.value = !setStateProfileScreen.value;
+              }),
+            );
+          },
+        ),
         centerTitle: true,
         title: _TITLE(
           title: "Profili Düzenle",
@@ -118,7 +120,7 @@ class PeoplerAppBars {
                   ),
                 )
         ],
-        leading: _BACK_BUTTON(() {
+        leading: _BACK_BUTTON(function: () {
           Navigator.of(context).pop();
           Future.delayed(
             const Duration(milliseconds: 2000),
@@ -145,7 +147,7 @@ class PeoplerAppBars {
               color: Mode().homeScreenTitleColor(),
             ))
       ],
-      leading: _BACK_BUTTON(() {
+      leading: _BACK_BUTTON(function: () {
         Navigator.of(context).pop();
         Future.delayed(
           const Duration(milliseconds: 2000),
@@ -196,11 +198,36 @@ class PeoplerAppBars {
   // ignore: non_constant_identifier_names
   CONNECTION_REQ(void Function()? function) {
     return AppBar(
-      leading: _BACK_BUTTON(function),
+      leading: _BACK_BUTTON(function: function),
       title: _TITLE(title: "Davetiyeler"),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,
+    );
+  }
+
+  GALLERY() {
+    return AppBar(
+      leading: _BACK_BUTTON(
+        function: () => Navigator.of(context).pop(),
+        color: Colors.white,
+      ),
+      shadowColor: Colors.black,
+      backgroundColor: Colors.black,
+      actions: true
+          ? null
+          // ignore: dead_code
+          : [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.white,
+                ),
+              )
+            ],
     );
   }
 }
