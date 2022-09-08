@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
@@ -123,7 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 15),
           _profileScreenComponents.activityList(context, UserBloc.myActivities),
           const SizedBox(height: 10),
-          _profileScreenComponents.experiencesList(context),
+          ProfileHobbyField(profileData: profileData),
+          const SizedBox(height: 30),
+          //_profileScreenComponents.experiencesList(context),
         ],
       ),
     );

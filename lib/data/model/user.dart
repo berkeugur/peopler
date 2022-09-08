@@ -15,7 +15,7 @@ class MyUser {
   String profileURL = "";
   DateTime? createdAt;
   DateTime? updatedAt;
-  List<String> hobbies = [];
+  List<dynamic> hobbies = [];
   List<String> photosURL = [];
   List<String> connectionUserIDs = [];
   List<String> receivedRequestUserIDs = [];
@@ -56,31 +56,25 @@ class MyUser {
     };
   }
 
-   void updateFromPublicMap(Map<String, dynamic> map) {
-     userID = map['userID'];
-     pplName = map['pplName'];
-     displayName = map['displayName'];
-     gender = map['gender'];
-     city = map['city'];
-     biography = map['biography'];
-     schoolName = map['schoolName'];
-     currentJobName = map['currentJobName'];
-     company = map['company'];
-     isProfileVisible = map['isProfileVisible'];
-     profileURL = map['profileURL'];
-     createdAt = map['createdAt'].runtimeType == DateTime ? map['createdAt'] : map['createdAt'].toDate();
-     updatedAt = map['updatedAt'].runtimeType == DateTime ? map['updatedAt'] : map['updatedAt'].toDate();
-     hobbies = map['hobbies'].map<String>((data) => data.toString()).toList();
-     photosURL = map['photosURL'].map<String>((data) => data.toString()).toList();
-     connectionUserIDs = map['connectionUserIDs']
-         .map<String>((data) => data.toString())
-         .toList();
-     receivedRequestUserIDs = map['receivedRequestUserIDs']
-         .map<String>((data) => data.toString())
-         .toList();
-     transmittedRequestUserIDs = map['transmittedRequestUserIDs']
-         .map<String>((data) => data.toString())
-         .toList();
+  void updateFromPublicMap(Map<String, dynamic> map) {
+    userID = map['userID'];
+    pplName = map['pplName'];
+    displayName = map['displayName'];
+    gender = map['gender'];
+    city = map['city'];
+    biography = map['biography'];
+    schoolName = map['schoolName'];
+    currentJobName = map['currentJobName'];
+    company = map['company'];
+    isProfileVisible = map['isProfileVisible'];
+    profileURL = map['profileURL'];
+    createdAt = map['createdAt'].runtimeType == DateTime ? map['createdAt'] : map['createdAt'].toDate();
+    updatedAt = map['updatedAt'].runtimeType == DateTime ? map['updatedAt'] : map['updatedAt'].toDate();
+    hobbies = map['hobbies'];
+    photosURL = map['photosURL'].map<String>((data) => data.toString()).toList();
+    connectionUserIDs = map['connectionUserIDs'].map<String>((data) => data.toString()).toList();
+    receivedRequestUserIDs = map['receivedRequestUserIDs'].map<String>((data) => data.toString()).toList();
+    transmittedRequestUserIDs = map['transmittedRequestUserIDs'].map<String>((data) => data.toString()).toList();
   }
 
   Map<String, dynamic> toPrivateMap() {

@@ -44,3 +44,57 @@ feed ekranında eklenebilir bir özellik
 https://www.joypixels.com/emoji/animated
 mesajlarda feedlerde veya uygulamanın farklı yerlerinde kullanabileceğimiz $200 lık bir paket
 
+
+Tüm hobiler bottom sheet
+
+
+showModalBottomSheet(
+                                  context: context,
+                                  backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
+                                  builder: (context) {
+                                    return StatefulBuilder(builder: (context, setStateEditHobbyBottomSheet) {
+                                      return ListView.builder(
+                                          itemCount: UserBloc.user!.hobbies.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return ListTile(
+                                              leading: MediaQuery.of(context).size.width < 320
+                                                  ? const SizedBox.shrink()
+                                                  : Stack(
+                                                      children: [
+                                                        Container(
+                                                          height: 50,
+                                                          width: 50,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(999),
+                                                              border: Border.all(
+                                                                width: 1,
+                                                                color: _mode.search_peoples_scaffold_background() as Color,
+                                                              )),
+                                                          child: CircleAvatar(
+                                                            backgroundColor: Color(0xFF0353EF),
+                                                            child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                            height: 50,
+                                                            width: 50,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(999),
+                                                                border: Border.all(
+                                                                  width: 1,
+                                                                  color: _mode.search_peoples_scaffold_background() as Color,
+                                                                )),
+                                                            child: hobbyItem(0, "da2332")),
+                                                      ],
+                                                    ),
+                                              title: Text("123ş", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                              subtitle: Text(
+                                                "123222",
+                                                textScaleFactor: 1,
+                                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                                              ),
+                                            );
+                                          });
+                                    });
+                                  });
+

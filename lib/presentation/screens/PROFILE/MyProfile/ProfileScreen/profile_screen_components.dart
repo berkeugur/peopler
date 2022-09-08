@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
-import 'package:peopler/components/gallery.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/gallery.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/data/model/activity.dart';
+import 'package:peopler/data/model/hobbymodel.dart';
 import 'package:peopler/others/classes/hobbies.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/AllActivityListScreen/all_activity_list.dart';
@@ -771,24 +773,6 @@ class ProfileScreenComponentsMyProfile {
                         parent: NeverScrollableScrollPhysics(),
                       ),
                       itemBuilder: (context, index) {
-                        String hobbyDateRange(index) {
-                          DateTime _startDate =
-                              DateTime(int.parse(profileData.hobbies[index].split("%")[2]), monthToInt(profileData.hobbies[index].split("%")[1]));
-                          DateTime _finishDate = profileData.hobbies[index].split("%").length == 3
-                              ? DateTime.now()
-                              : DateTime(int.parse(profileData.hobbies[index].split("%")[4]), monthToInt(profileData.hobbies[index].split("%")[3]));
-
-                          int _days = _finishDate.difference(_startDate).inDays;
-                          int _months = _days ~/ 30 != 0 ? _days ~/ 30 : 1;
-                          if (_months < 12) {
-                            return "$_months Ay";
-                          } else if (_months >= 12) {
-                            return "${_months ~/ 12} Yıl " + (_months % 12 != 0 ? "${_months % 12} Ay" : "");
-                          } else {
-                            return "error";
-                          }
-                        }
-
                         if (profileData.hobbies.length > numberOfExperience.value && index == numberOfExperience.value - 1) {
                           return InkWell(
                             onTap: () {
@@ -800,33 +784,6 @@ class ProfileScreenComponentsMyProfile {
                                       return ListView.builder(
                                           itemCount: UserBloc.user!.hobbies.length,
                                           itemBuilder: (BuildContext context, int index) {
-                                            String hobbyDateRange(index) {
-                                              DateTime _startDate = DateTime(
-                                                  int.parse(profileData.hobbies[index].split("%")[2]), monthToInt(profileData.hobbies[index].split("%")[1]));
-                                              DateTime _finishDate = profileData.hobbies[index].split("%").length == 3
-                                                  ? DateTime.now()
-                                                  : DateTime(int.parse(profileData.hobbies[index].split("%")[4]),
-                                                      monthToInt(profileData.hobbies[index].split("%")[3]));
-
-                                              int _days = _finishDate.difference(_startDate).inDays;
-                                              int _months = _days ~/ 30 != 0 ? _days ~/ 30 : 1;
-                                              if (_months < 12) {
-                                                return "$_months Ay";
-                                              } else if (_months >= 12) {
-                                                return "${_months ~/ 12} Yıl " + (_months % 12 != 0 ? "${_months % 12} Ay" : "");
-                                              } else {
-                                                return "error";
-                                              }
-                                            }
-
-                                            String? _hobbyName = UserBloc.user!.hobbies[index].split("%")[0];
-                                            String? _hobbyStartYear = UserBloc.user!.hobbies[index].split("%")[2];
-                                            String? _hobbyStartMonth = UserBloc.user!.hobbies[index].split("%")[1];
-                                            String? _hobbyFinishYear =
-                                                UserBloc.user!.hobbies[index].split("%").length == 3 ? null : UserBloc.user!.hobbies[index].split("%")[4];
-                                            String? _hobbyFinishMonth =
-                                                UserBloc.user!.hobbies[index].split("%").length == 3 ? null : UserBloc.user!.hobbies[index].split("%")[3];
-
                                             return ListTile(
                                               leading: MediaQuery.of(context).size.width < 320
                                                   ? const SizedBox.shrink()
@@ -855,17 +812,12 @@ class ProfileScreenComponentsMyProfile {
                                                                   width: 1,
                                                                   color: _mode.search_peoples_scaffold_background() as Color,
                                                                 )),
-                                                            child: hobbyItem(0, profileData.hobbies[index].split("%").first)),
+                                                            child: hobbyItem(0, "da2332")),
                                                       ],
                                                     ),
-                                              title: Text(_hobbyName, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                              title: Text("123ş", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
                                               subtitle: Text(
-                                                "${profileData.hobbies[index].split("%")[1]} ${profileData.hobbies[index].split("%")[2]}" +
-                                                    (profileData.hobbies[index].split("%").length == 3
-                                                        ? " - halen"
-                                                        : " - ${profileData.hobbies[index].split("%")[3]} ${profileData.hobbies[index].split("%")[4]}") +
-                                                    " ~ " +
-                                                    hobbyDateRange(index),
+                                                "123222",
                                                 textScaleFactor: 1,
                                                 style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                               ),
@@ -946,7 +898,7 @@ class ProfileScreenComponentsMyProfile {
                                                     width: 1,
                                                     color: _mode.search_peoples_scaffold_background() as Color,
                                                   )),
-                                              child: hobbyItem(0, profileData.hobbies[index].split("%").first)),
+                                              child: hobbyItem(0, "asd22f4")),
                                         ],
                                       ),
                                 const SizedBox(
@@ -957,19 +909,14 @@ class ProfileScreenComponentsMyProfile {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      profileData.hobbies[index].split("%")[0],
+                                      HobbyModel.fromJson(profileData.hobbies[index]).subtitles?.first.subtitle ?? "null",
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                          "${profileData.hobbies[index].split("%")[1]} ${profileData.hobbies[index].split("%")[2]}" +
-                                              (profileData.hobbies[index].split("%").length == 3
-                                                  ? " - halen"
-                                                  : " - ${profileData.hobbies[index].split("%")[3]} ${profileData.hobbies[index].split("%")[4]}") +
-                                              " ~ " +
-                                              hobbyDateRange(index),
+                                          "denem#1111",
                                           textScaleFactor: 1,
                                           style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                         ),
@@ -1275,30 +1222,6 @@ class ProfileScreenComponentsMyProfile {
                     return ListView.builder(
                         itemCount: UserBloc.user!.hobbies.length,
                         itemBuilder: (BuildContext context, int index) {
-                          String hobbyDateRange(index) {
-                            DateTime _startDate =
-                                DateTime(int.parse(profileData.hobbies[index].split("%")[2]), monthToInt(profileData.hobbies[index].split("%")[1]));
-                            DateTime _finishDate = profileData.hobbies[index].split("%").length == 3
-                                ? DateTime.now()
-                                : DateTime(int.parse(profileData.hobbies[index].split("%")[4]), monthToInt(profileData.hobbies[index].split("%")[3]));
-
-                            int _days = _finishDate.difference(_startDate).inDays;
-                            int _months = _days ~/ 30 != 0 ? _days ~/ 30 : 1;
-                            if (_months < 12) {
-                              return "$_months Ay";
-                            } else if (_months >= 12) {
-                              return "${_months ~/ 12} Yıl " + (_months % 12 != 0 ? "${_months % 12} Ay" : "");
-                            } else {
-                              return "error";
-                            }
-                          }
-
-                          String? _hobbyName = UserBloc.user!.hobbies[index].split("%")[0];
-                          String? _hobbyStartYear = UserBloc.user!.hobbies[index].split("%")[2];
-                          String? _hobbyStartMonth = UserBloc.user!.hobbies[index].split("%")[1];
-                          String? _hobbyFinishYear = UserBloc.user!.hobbies[index].split("%").length == 3 ? null : UserBloc.user!.hobbies[index].split("%")[4];
-                          String? _hobbyFinishMonth = UserBloc.user!.hobbies[index].split("%").length == 3 ? null : UserBloc.user!.hobbies[index].split("%")[3];
-
                           return ListTile(
                             leading: MediaQuery.of(context).size.width < 320
                                 ? const SizedBox.shrink()
@@ -1327,7 +1250,7 @@ class ProfileScreenComponentsMyProfile {
                                                 width: 1,
                                                 color: _mode.search_peoples_scaffold_background() as Color,
                                               )),
-                                          child: hobbyItem(0, profileData.hobbies[index].split("%").first)),
+                                          child: hobbyItem(0, "sad2365d5")),
                                     ],
                                   ),
                             trailing: IconButton(
@@ -1339,14 +1262,9 @@ class ProfileScreenComponentsMyProfile {
                                 color: Mode().blackAndWhiteConversion(),
                               ),
                             ),
-                            title: Text(_hobbyName, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                            title: Text("5s2252", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
                             subtitle: Text(
-                              "${profileData.hobbies[index].split("%")[1]} ${profileData.hobbies[index].split("%")[2]}" +
-                                  (profileData.hobbies[index].split("%").length == 3
-                                      ? " - halen"
-                                      : " - ${profileData.hobbies[index].split("%")[3]} ${profileData.hobbies[index].split("%")[4]}") +
-                                  " ~ " +
-                                  hobbyDateRange(index),
+                              "5588dsd",
                               textScaleFactor: 1,
                               style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                             ),
@@ -1536,7 +1454,7 @@ class ProfileScreenComponentsMyProfile {
         color: Colors.white, //Colors.orange,
       ),
       child: SvgPicture.asset(
-        "assets/images/hobby_badges/$hobbyName.svg",
+        "assets/images/hobby_badges/chess.svg",
         fit: BoxFit.contain,
         width: _size,
         height: _size,

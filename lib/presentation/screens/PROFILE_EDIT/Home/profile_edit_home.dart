@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
-import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/menu_item.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_photo.dart';

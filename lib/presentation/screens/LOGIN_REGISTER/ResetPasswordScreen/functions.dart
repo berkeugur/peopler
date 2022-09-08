@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
 import '../../../../others/locator.dart';

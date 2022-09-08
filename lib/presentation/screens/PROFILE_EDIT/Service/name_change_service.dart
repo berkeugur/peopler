@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
-import 'package:peopler/components/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 
 class NameChangeService {
   static Future saveChanges(context, nameController, _controller) async {

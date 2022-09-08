@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/others/widgets/drawer.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/TUTORIAL/constants.dart';

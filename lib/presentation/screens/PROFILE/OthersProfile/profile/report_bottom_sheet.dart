@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
-import 'package:peopler/components/dialogs.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';

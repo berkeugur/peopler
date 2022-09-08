@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
@@ -13,7 +13,7 @@ addHobbyWithJustStartDate(context, selectedHobbyName, selectedStartYear, selecte
     ..update({
       "hobbies": FieldValue.arrayUnion(["$selectedHobbyName%$selectedStartMonth%$selectedStartYear"])
     }).then((value) async {
-      UserBloc.user!.hobbies.add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear");
+      //UserBloc.user!.hobbies.add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear");
 
       Future.delayed(const Duration(milliseconds: 500), () {
         setStateProfileScreen.value = !setStateProfileScreen.value;
@@ -38,7 +38,7 @@ addHobbyWithStartAndFinishDate(context, selectedHobbyName, selectedStartYear, se
     ..update({
       "hobbies": FieldValue.arrayUnion(["$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear"])
     }).then((value) async {
-      UserBloc.user!.hobbies.add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear");
+      //UserBloc.user!.hobbies.add("$selectedHobbyName%$selectedStartMonth%$selectedStartYear%$selectedFinishMonth%$selectedFinishYear");
       Future.delayed(const Duration(milliseconds: 500), () {
         setStateProfileScreen.value = !setStateProfileScreen.value;
       }).then(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
@@ -271,10 +271,12 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                         ),
                                         child: CupertinoSearchTextField(
                                           onTap: () async {
+                                            /*
                                             Future.delayed(const Duration(milliseconds: 500), () {
                                               _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent - 50,
                                                   duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                             });
+                                            */
                                             setState(() {});
                                             setStateBottomSheet(() {});
                                           },

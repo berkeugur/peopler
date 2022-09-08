@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-import '../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../core/constants/app/animations_constants.dart';
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../core/constants/app/animations_constants.dart';
 
 class PeoplerGallery {
   void openGallery({required BuildContext context, required List<String> images, required int currentIndex, required bool isNetworkImage}) {

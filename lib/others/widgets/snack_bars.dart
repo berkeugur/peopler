@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';

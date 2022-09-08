@@ -8,13 +8,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
-import 'package:peopler/components/snack_bars.dart';
-import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
-import 'package:peopler/components/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 
-import '../../../../components/gallery.dart';
+import '../../../../components/FlutterWidgets/gallery.dart';
 
 class ProfileEditPhotosScreen extends StatefulWidget {
   const ProfileEditPhotosScreen({Key? key}) : super(key: key);

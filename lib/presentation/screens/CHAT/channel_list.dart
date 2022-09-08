@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/components/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../business_logic/blocs/ChatBloc/chat_bloc.dart';
 import 'channel_list_components/channel_list_body.dart';

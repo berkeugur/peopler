@@ -818,24 +818,6 @@ class ProfileScreenComponentsOthersProfile {
                         parent: NeverScrollableScrollPhysics(),
                       ),
                       itemBuilder: (context, index) {
-                        String hobbyDateRange(index) {
-                          DateTime _startDate =
-                              DateTime(int.parse(profileData.hobbies[index].split("%")[2]), monthToInt(profileData.hobbies[index].split("%")[1]));
-                          DateTime _finishDate = profileData.hobbies[index].split("%").length == 3
-                              ? DateTime.now()
-                              : DateTime(int.parse(profileData.hobbies[index].split("%")[4]), monthToInt(profileData.hobbies[index].split("%")[3]));
-
-                          int _days = _finishDate.difference(_startDate).inDays;
-                          int _months = _days ~/ 30 != 0 ? _days ~/ 30 : 1;
-                          if (_months < 12) {
-                            return "$_months Ay";
-                          } else if (_months >= 12) {
-                            return "${_months ~/ 12} Yıl " + (_months % 12 != 0 ? "${_months % 12} Ay" : "");
-                          } else {
-                            return "error";
-                          }
-                        }
-
                         if (profileData.hobbies.length > numberOfExperience.value && index == numberOfExperience.value - 1) {
                           return InkWell(
                             onTap: () {
@@ -912,7 +894,7 @@ class ProfileScreenComponentsOthersProfile {
                                                     width: 1,
                                                     color: _mode.search_peoples_scaffold_background() as Color,
                                                   )),
-                                              child: hobbyItem(0, profileData.hobbies[index].split("%").first)),
+                                              child: hobbyItem(0, "hghg4425")),
                                         ],
                                       ),
                                 const SizedBox(
@@ -923,19 +905,14 @@ class ProfileScreenComponentsOthersProfile {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      profileData.hobbies[index].split("%")[0],
+                                      "r434rgf",
                                       textScaleFactor: 1,
                                       style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
                                         Text(
-                                          "${profileData.hobbies[index].split("%")[1]} ${profileData.hobbies[index].split("%")[2]}" +
-                                              (profileData.hobbies[index].split("%").length == 3
-                                                  ? " - halen"
-                                                  : " - ${profileData.hobbies[index].split("%")[3]} ${profileData.hobbies[index].split("%")[4]}") +
-                                              " ~ " +
-                                              hobbyDateRange(index),
+                                          "sd213fdgdf",
                                           textScaleFactor: 1,
                                           style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                         ),

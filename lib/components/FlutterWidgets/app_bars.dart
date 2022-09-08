@@ -8,7 +8,7 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
-import '../others/widgets/drawer.dart';
+import '../../others/widgets/drawer.dart';
 
 class PeoplerAppBars {
   final BuildContext context;

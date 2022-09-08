@@ -5,9 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/components/app_bars.dart';
-import 'package:peopler/components/dialogs.dart';
-import 'package:peopler/components/snack_bars.dart';
+import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
@@ -166,7 +167,8 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
                 myActivities: _otherUserBloc.activities)
             .activityList(context),
         const SizedBox(height: 10),
-        _profileScreenComponents.experiencesList(context),
+        ProfileHobbyField(profileData: _otherUserBloc.otherUser!),
+        //_profileScreenComponents.experiencesList(context),
       ],
     );
   }
