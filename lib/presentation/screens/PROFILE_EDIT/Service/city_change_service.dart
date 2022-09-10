@@ -24,7 +24,7 @@ class CityChangeService {
               setStateProfileScreen.value = !setStateProfileScreen.value;
             },
           );
-          PeoplerDialogs.showSuccessfulDialog(context, _controller).then((value) => Navigator.of(context).pop());
+          PeoplerDialogs().showSuccessfulDialog(context, _controller).then((value) => Navigator.of(context).pop());
         });
       } else {
         SnackBars(context: context).simple("Herhangi bir değişiklik yapmadınız!");

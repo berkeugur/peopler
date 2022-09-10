@@ -1,32 +1,6 @@
-enum HobbyTypes {
-  archery,
-  camping,
-  carpentry,
-  chef,
-  chess,
-  cinema,
-  collections,
-  dancing,
-  eSports,
-  fishing,
-  fitness,
-  gardener,
-  makePicture,
-  martialArts,
-  origami,
-  playInstruments,
-  readingBook,
-  rideHorse,
-  swimming,
-  takePhoto,
-  theater,
-  travel,
-  volunteerWork,
-  walking,
-  watchingMovie,
-  writing,
-  yoga
-}
+import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/core/constants/enums/hobby_types_enum.dart';
+import 'package:peopler/data/model/HobbyModels/hobbymodel.dart';
 
 class Hobby {
   stringToHobbyTypes(String? text) {
@@ -259,6 +233,19 @@ class Hobby {
 
       case HobbyTypes.yoga:
         return "Meditasyon Yapmak";
+    }
+  }
+
+  bool isHobbyHas(String selectedHobbyName) {
+    int counter = 0;
+    List.generate(UserBloc.user!.hobbies.length, (index) {
+      HobbyModel hobbyItem = HobbyModel.fromJson(UserBloc.user!.hobbies[index]);
+      hobbyItem.title == selectedHobbyName ? counter++ : null;
+    });
+    if (counter == 0) {
+      return false;
+    } else {
+      return true;
     }
   }
 

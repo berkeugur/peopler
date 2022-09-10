@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/constants/enums/send_req_button_status_enum.dart';
 import '../../../presentation/screens/PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 @immutable

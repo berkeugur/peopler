@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/user.dart';
 
+import '../../../core/constants/enums/send_req_button_status_enum.dart';
 import '../../../presentation/screens/PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 abstract class OtherUserState extends Equatable {

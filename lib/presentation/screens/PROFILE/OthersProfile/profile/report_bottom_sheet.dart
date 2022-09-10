@@ -131,7 +131,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                     if (otherUserBloc.otherUser != null) {
                       await ReportScreenService().blockUser(userID: otherUserBloc.otherUser!.userID).then((value) {
                         Navigator.of(context).pop();
-                        PeoplerDialogs.showSuccessfulDialog(context, controller);
+                        PeoplerDialogs().showSuccessfulDialog(context, controller);
                       }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
                     } else {
                       SnackBars(context: context).simple("other user bloc other user null");
@@ -139,7 +139,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                   } else if (otherUserBloc == null && userID != null) {
                     await ReportScreenService().blockUser(userID: userID).then((value) {
                       Navigator.of(context).pop();
-                      PeoplerDialogs.showSuccessfulDialog(context, controller);
+                      PeoplerDialogs().showSuccessfulDialog(context, controller);
                     }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
                   }
                 } else {

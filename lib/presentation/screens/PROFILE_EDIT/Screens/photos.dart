@@ -115,7 +115,7 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
             setStateProfileScreen.value = !setStateProfileScreen.value;
             setStateProfileScreen.value = !setStateProfileScreen.value;
             setState(() {});
-            PeoplerDialogs.showSuccessfulDialog(context, _controller).then((value) => Future.delayed(
+            PeoplerDialogs().showSuccessfulDialog(context, _controller).then((value) => Future.delayed(
                     Duration(
                       milliseconds: 1200,
                     ), (() {

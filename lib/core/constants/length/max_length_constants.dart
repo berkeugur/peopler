@@ -10,4 +10,5 @@ class MaxLengthConstants {
   static const int SCHOOLNAME = 100;
   static const int JOBNAME = 100;
   static const int COMPANYNAME = 100;
+  static const int HOBBY_SUGGEST = 50;
 }

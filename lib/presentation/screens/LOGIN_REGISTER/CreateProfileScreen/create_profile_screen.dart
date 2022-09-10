@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
@@ -391,7 +392,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           FocusScope.of(context).unfocus();
         },
         onSubmitted: (_) => FocusScope.of(context).unfocus(),
-        maxLength: 50,
+        maxLength: MaxLengthConstants.BIOGRAPHY,
         controller: bioController,
         textInputAction: TextInputAction.done,
         decoration: const InputDecoration(

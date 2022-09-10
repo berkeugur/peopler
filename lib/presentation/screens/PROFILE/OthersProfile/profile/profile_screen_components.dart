@@ -5,9 +5,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/city_bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
+import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
+import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/user.dart';
-import 'package:peopler/others/classes/hobbies.dart';
+import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/hobby_functions.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/all_activity_list.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -354,8 +357,9 @@ class ProfileScreenComponentsOthersProfile {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(2.5),
+          SizedBox(
+            height: 16,
+            width: 16,
             child: SvgPicture.asset(
               "assets/images/svg_icons/saved.svg",
               color: Colors.white,
@@ -363,6 +367,7 @@ class ProfileScreenComponentsOthersProfile {
               fit: BoxFit.contain,
             ),
           ),
+          const SizedBox.square(dimension: 5),
           Text(
             "Kaydet",
             textScaleFactor: 1,
@@ -420,14 +425,49 @@ class ProfileScreenComponentsOthersProfile {
         CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
         String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-        _sendNotificationService.sendNotification(
-            Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+        await _sendNotificationService
+            .sendNotification(
+          Strings.sendRequest,
+          _token,
+          "",
+          UserBloc.user!.displayName,
+          UserBloc.user!.profileURL,
+          UserBloc.user!.userID,
+        )
+            .then((value) {
+          setTheme.value = !setTheme.value;
+          Reloader.isConnected.value = !Reloader.isConnected.value;
+        });
       },
-      child: Text(
-        "Bağlantı Kur",
-        textScaleFactor: 1,
-        style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
-      ),
+      child: ValueListenableBuilder(
+          valueListenable: Reloader.isConnected,
+          builder: (contex, _, __) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                true
+                    ? SizedBox.shrink()
+                    : SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: SvgPicture.asset(
+                          "assets/images/svg_icons/saved.svg",
+                          color: Colors.white,
+                          matchTextDirection: true,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                const SizedBox.square(dimension: 5),
+                Text(
+                  Reloader.isConnected.value ? "Geri Al" : "Bağlantı Kur",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+                ),
+                const SizedBox.square(dimension: 5)
+              ],
+            );
+          }),
     );
   }
 
@@ -436,23 +476,25 @@ class ProfileScreenComponentsOthersProfile {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(2.5),
-          child: SvgPicture.asset(
-            "assets/images/svg_icons/saved.svg",
-            color: Colors.white,
-            matchTextDirection: true,
-            fit: BoxFit.contain,
-          ),
-        ),
+        true
+            ? SizedBox.shrink()
+            : SizedBox(
+                height: 16,
+                width: 16,
+                child: SvgPicture.asset(
+                  "assets/images/svg_icons/saved.svg",
+                  color: Colors.white,
+                  matchTextDirection: true,
+                  fit: BoxFit.contain,
+                ),
+              ),
+        const SizedBox.square(dimension: 5),
         Text(
           "İstek Gönderildi",
           textScaleFactor: 1,
           style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
         ),
-        const SizedBox.square(
-          dimension: 5,
-        )
+        const SizedBox.square(dimension: 5)
       ],
     );
   }
@@ -495,15 +537,17 @@ class ProfileScreenComponentsOthersProfile {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(2.5),
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/saved.svg",
-              color: Colors.white,
-              matchTextDirection: true,
-              fit: BoxFit.contain,
-            ),
-          ),
+          true
+              ? SizedBox.shrink()
+              : Padding(
+                  padding: const EdgeInsets.all(2.5),
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/saved.svg",
+                    color: Colors.white,
+                    matchTextDirection: true,
+                    fit: BoxFit.contain,
+                  ),
+                ),
           Text(
             _isAccepted ? "Mesajlaş" : "Kabul Et",
             textScaleFactor: 1,
@@ -1103,13 +1147,4 @@ class ProfileScreenComponentsOthersProfile {
       ),
     );
   }
-}
-
-enum SendRequestButtonStatus {
-  save, // If I have opened other user's profile from "nearby"
-  saved, // If I have added other user in nearby and waiting for timeout
-  connect, // If I have opened other user's profile from "feeds, city"
-  requestSent, // If I have sent a request and waiting for him/her to accept
-  accept, // If other user sent me a connection request and waiting for me to accept
-  connected // If we are friends!
 }

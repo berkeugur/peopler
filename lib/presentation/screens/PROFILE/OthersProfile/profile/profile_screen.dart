@@ -9,6 +9,7 @@ import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
@@ -75,14 +76,16 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
             child: BlocProvider<OtherUserBloc>(
               create: (context) => _otherUserBloc,
               child: Builder(builder: (BuildContext context) {
-                return Scaffold(
-                  appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
-                    function: () async {
-                      await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
-                    },
+                return ScaffoldMessenger(
+                  child: Scaffold(
+                    appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
+                      function: () async {
+                        await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
+                      },
+                    ),
+                    backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
+                    body: _buildBody(widget.status),
                   ),
-                  backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-                  body: _buildBody(widget.status),
                 );
               }),
             ),
@@ -162,10 +165,10 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
         ///123321 MyUser Profile kısmında UserBloc.myActivites işe yarıyor
         ///ancak Others Userda OtherUserBloc().myActivities late hatası veriyor
         ProfileScreenComponentsOthersProfile(
-                profileData: _otherUserBloc.otherUser!,
-                mutualConnectionUserIDs: _otherUserBloc.mutualConnectionUserIDs,
-                myActivities: _otherUserBloc.activities)
-            .activityList(context),
+          profileData: _otherUserBloc.otherUser!,
+          mutualConnectionUserIDs: _otherUserBloc.mutualConnectionUserIDs,
+          myActivities: _otherUserBloc.activities,
+        ).activityList(context),
         const SizedBox(height: 10),
         ProfileHobbyField(profileData: _otherUserBloc.otherUser!),
         //_profileScreenComponents.experiencesList(context),

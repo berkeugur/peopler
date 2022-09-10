@@ -25,7 +25,7 @@ class NameChangeService {
                 setStateProfileScreen.value = !setStateProfileScreen.value;
               },
             );
-            PeoplerDialogs.showSuccessfulDialog(context, _controller).then((value) => Navigator.of(context).pop());
+            PeoplerDialogs().showSuccessfulDialog(context, _controller).then((value) => Navigator.of(context).pop());
           });
         } else {
           SnackBars(context: context).simple("En az 7 karakter kullanmalısınız!");

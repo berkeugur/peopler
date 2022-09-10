@@ -87,7 +87,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
                 MyReport report = MyReport(userID: userID, type: "Report User", feedID: feedId, feedExplanation: feedExplanation);
                 ReportScreenService().reportUser(report: report).then((value) {
                   Navigator.of(context).pop();
-                  PeoplerDialogs.showSuccessfulDialog(context, animationController);
+                  PeoplerDialogs().showSuccessfulDialog(context, animationController);
                 }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
               },
             ),
@@ -104,7 +104,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
               onTap: () {
                 ReportScreenService().blockUser(userID: userID, feedID: feedId).then((value) {
                   Navigator.of(context).pop();
-                  PeoplerDialogs.showSuccessfulDialog(context, animationController);
+                  PeoplerDialogs().showSuccessfulDialog(context, animationController);
                 }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
               },
             ),

@@ -3,7 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'package:peopler/core/constants/app/animations_constants.dart';
 
 class PeoplerDialogs {
-  static Future showSuccessfulDialog(BuildContext ctx, AnimationController controller) async => await showDialog(
+  Future showSuccessfulDialog(BuildContext ctx, AnimationController controller) async => await showDialog(
         barrierColor: Colors.transparent,
         context: ctx,
         builder: (ctx) => Dialog(
