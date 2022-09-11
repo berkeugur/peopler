@@ -9,6 +9,7 @@ import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
+import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
 import 'package:peopler/presentation/screens/SEARCH/searching_animation.dart';
@@ -121,7 +122,7 @@ class _NearbyTabState extends State<NearbyTab> {
                                 builder: (context, state) {
                                   if (state is InitialSearchState) {
                                     // return _initialUsersStateWidget();
-                                    return const SearchingCase();
+                                    return SearchingCase();
                                   } else if (state is UsersNotExistSearchState) {
                                     return const EmptyList(
                                       emptyListType: EmptyListType.environment,
@@ -170,22 +171,39 @@ class _NearbyTabState extends State<NearbyTab> {
   SizedBox _noLocationWidget() {
     return SizedBox(
       height: MediaQuery.of(widget.context).size.height,
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const Center(
-          child: Text(
-            "Yakınınızdaki kişilerin sizi bulabilmesi için konum özelliğini açmanız gerekiyor.",
-            textScaleFactor: 1,
-            style: TextStyle(color: Colors.black, fontSize: 20),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          SearchingCase(
+            height: 200,
+            width: MediaQuery.of(context).size.width * 0.6,
+            svgIconPath: SVG_PATHS.locationPinPath,
           ),
-        ),
-        TextButton(
-            child: const Text(
-              "Konumu Aç",
+          SizedBox(
+            height: 50,
+          ),
+          Center(
+            child: Text(
+              "Yakınınızdaki kişilerin sizi bulabilmesi için konum özelliğini açmanız gerekiyor.",
               textScaleFactor: 1,
-              style: TextStyle(color: Colors.black, fontSize: 20),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline6,
+              //sstyle: TextStyle(color: Colors.black, fontSize: 20),
             ),
-            onPressed: () => _locationPermissionBloc.add(GetLocationPermissionEvent())),
-      ]),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          OutlinedButton(
+              child: Text(
+                "Konumu Aç",
+                textScaleFactor: 1,
+                style: Theme.of(context).textTheme.labelLarge,
+                //style: TextStyle(color: Colors.black, fontSize: 20),
+              ),
+              onPressed: () => _locationPermissionBloc.add(GetLocationPermissionEvent())),
+        ]),
+      ),
     );
   }
 

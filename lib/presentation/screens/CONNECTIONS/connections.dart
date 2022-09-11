@@ -5,11 +5,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/presentation/screens/PROFILE/MyProfile/connections_service.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/presentation/screens/CONNECTIONS/connections_service.dart';
+import 'package:peopler/presentation/screens/MESSAGE/message_screen.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
-import '../../MESSAGE/message_screen.dart';
 
 class Connection {
   final String profilePhotoUrl;
@@ -82,10 +83,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         valueListenable: setTheme,
         builder: (context, x, y) {
           return Scaffold(
+            appBar: PeoplerAppBars(context: context).CONNECTIONS,
             backgroundColor: _mode.search_peoples_scaffold_background(),
             body: Column(
               children: [
-                _connections_header(),
+                //_connections_header(),
                 _number_of_total_connections(),
                 Expanded(
                   child: Container(

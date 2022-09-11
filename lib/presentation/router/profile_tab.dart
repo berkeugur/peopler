@@ -5,7 +5,7 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../screens/GUEST_LOGIN/guest_login_screen.dart';
 

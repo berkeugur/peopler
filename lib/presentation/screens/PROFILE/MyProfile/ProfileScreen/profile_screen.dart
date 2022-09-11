@@ -5,7 +5,7 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/data/model/user.dart';
-import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen_components.dart';
@@ -44,7 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         valueListenable: setTheme,
         builder: (context, x, y) {
           return Scaffold(
-            appBar: PeoplerAppBars(context: context).FEEDandPROFILE(
+            appBar: PeoplerAppBars(context: context).MYPROFILE(
                 titleFunction: () {},
                 leadingFunction: () {
                   op_settings_icon(context);
@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _profileScreenComponents.activityList(context, UserBloc.myActivities),
           const SizedBox(height: 10),
           ProfileHobbyField(profileData: profileData),
-          const SizedBox(height: 30),
+          //const SizedBox(height: 30),
           //_profileScreenComponents.experiencesList(context),
         ],
       ),

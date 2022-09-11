@@ -5,18 +5,19 @@ class SnackBars {
 
   SnackBars({required this.context});
 
-  simple(String content) {
+  final String _closeLabelText = 'kapat';
+
+  simple(String text) {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Theme.of(context).primaryColor,
-        content: Text(content),
+        content: Text(text),
         action: SnackBarAction(
-          label: 'kapat',
+          label: _closeLabelText,
           textColor: Colors.white,
           onPressed: () {
             ScaffoldMessenger.of(context).clearSnackBars();
-            // Some code to undo the change.
           },
         ),
       ),

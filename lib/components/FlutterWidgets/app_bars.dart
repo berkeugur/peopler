@@ -8,7 +8,7 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
-import '../../others/widgets/drawer.dart';
+import 'drawer.dart';
 
 class PeoplerAppBars {
   final BuildContext context;
@@ -173,9 +173,21 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  FEEDandPROFILE({void Function()? titleFunction, void Function()? leadingFunction}) {
+  FEED({void Function()? titleFunction, void Function()? leadingFunction}) {
     return AppBar(
       leading: _DRAWER_MENU_ICON(leadingFunction),
+      centerTitle: true,
+      title: _PEOPLER_TITLE(() {}),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  MYPROFILE({void Function()? titleFunction, void Function()? leadingFunction}) {
+    return AppBar(
+      //leading: _DRAWER_MENU_ICON(leadingFunction),
       centerTitle: true,
       title: _PEOPLER_TITLE(() {}),
       backgroundColor: Colors.transparent,
@@ -228,6 +240,18 @@ class PeoplerAppBars {
                 ),
               )
             ],
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  AppBar get CONNECTIONS {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      leading: _BACK_BUTTON(
+        function: () => Navigator.of(context).pop(),
+      ),
+      title: _TITLE(title: 'Bağlantılar'),
     );
   }
 }

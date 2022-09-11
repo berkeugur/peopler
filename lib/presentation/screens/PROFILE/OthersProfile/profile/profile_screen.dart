@@ -14,7 +14,7 @@ import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
-import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen_components.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/functions.dart';

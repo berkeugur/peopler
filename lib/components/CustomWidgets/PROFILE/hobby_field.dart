@@ -74,16 +74,16 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                widget.profileData.hobbies.length == 0 ? SizedBox.shrink() : _buildHeaderTitle(),
+                widget.profileData.hobbies.length == 0 ? const SizedBox.shrink() : _buildHeaderTitle(),
                 widget.profileData.userID != UserBloc.user!.userID
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : Row(
                         children: [
                           IconButton(
                               onPressed: () {
                                 isEditModeActive.value = !isEditModeActive.value;
                               },
-                              icon: Icon(Icons.edit)),
+                              icon: const Icon(Icons.edit)),
                           IconButton(
                               onPressed: () async {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -274,15 +274,15 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
             ),
           ),
         ),
-        widget.profileData.hobbies.length == 0 ? SizedBox.shrink() : const SizedBox(height: 1, child: Divider()),
+        widget.profileData.hobbies.isEmpty ? const SizedBox.shrink() : const SizedBox(height: 1, child: Divider()),
         SizedBox(
-          height: 2000,
           child: MasonryGridView.count(
             physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.all(20),
             itemCount: widget.profileData.hobbies.length,
             crossAxisCount: 2,
             mainAxisSpacing: 4,
+            shrinkWrap: true,
             crossAxisSpacing: 4,
             itemBuilder: (context, index) {
               HobbyModel hobby = HobbyModel.fromJson(
@@ -495,12 +495,12 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Divider(),
+                        const Divider(),
                         OutlinedButton(
                           onPressed: () async {
                             await HobbyService().delete(context, hobby);
                           },
-                          child: Text("KALDIR"),
+                          child: const Text("KALDIR"),
                         ),
                       ],
                     ))

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/services/remote_config/remote_config.dart';
-import 'package:peopler/others/widgets/drawer.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/BegForPermissionScreen/beg_for_permission_screen.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/EmailAndPasswordScreen/email_pass_screen.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/GenderSelectScreen/gender_select_screen.dart';
