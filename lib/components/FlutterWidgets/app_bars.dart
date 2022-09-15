@@ -73,7 +73,7 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  Widget? PROFILE_EDIT() {
+  AppBar get PROFILE_EDIT {
     return AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,

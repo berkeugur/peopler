@@ -34,7 +34,7 @@ class _ProfileEditHomeState extends State<ProfileEditHome> {
         builder: (context, _, __) {
           return Scaffold(
             backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-            appBar: PeoplerAppBars(context: context).PROFILE_EDIT(),
+            appBar: PeoplerAppBars(context: context).PROFILE_EDIT,
             body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

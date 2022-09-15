@@ -8,10 +8,12 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
+import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_screen.dart';
 import 'package:peopler/presentation/screens/HOME/home_screen.dart';
 import '../../presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
+import '../../presentation/screens/SETTINGS/settings.dart';
 
 class CircularImage extends StatelessWidget {
   final double _width, _height;
@@ -65,7 +67,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     final _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Scaffold(
-      backgroundColor: Color(0xFF0353EF),
+      backgroundColor: const Color(0xFF0353EF),
       body: Padding(
         padding: const EdgeInsets.only(top: 40, bottom: 40, left: 40),
         child: Column(
@@ -103,6 +105,29 @@ class _MenuPageState extends State<MenuPage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                TextButton(
+                  onPressed: () {
+                    UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                    if (UserBloc.user != null) {
+                      ZoomDrawer.of(context)!.toggle();
+                      _userBloc.mainKey.currentState?.push(
+                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      );
+                    } else {
+                      GuestAlert.dialog(context);
+                      /*
+    _userBloc.mainKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) => const GuestLoginScreen(),
+      ),
+    );*/
+                    }
+                  },
+                  child: Text(
+                    "deneme",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
                 MenuItems(context: context, svgiconpath: "assets/images/svg_icons/settings.svg", itemtext: "Ayarlar"),
                 MenuItems(context: context, itemtext: "Destek", icon: Icons.support_agent),
               ],
@@ -174,7 +199,7 @@ class _MenuPageState extends State<MenuPage> {
                     "assets/images/svg_icons/light_mode.svg",
                     width: 15,
                     height: 15,
-                    color: Mode.isEnableDarkMode == false ? Color(0xFF0353EF) : Colors.white,
+                    color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
@@ -184,7 +209,7 @@ class _MenuPageState extends State<MenuPage> {
                     "Aydınlık",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
-                      color: Mode.isEnableDarkMode == false ? Color(0xFF0353EF) : Colors.white,
+                      color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
                     ),
                   ),
                 ],
@@ -210,7 +235,7 @@ class _MenuPageState extends State<MenuPage> {
                     "assets/images/svg_icons/dark_mode.svg",
                     width: 15,
                     height: 15,
-                    color: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : Colors.white,
+                    color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
@@ -220,7 +245,7 @@ class _MenuPageState extends State<MenuPage> {
                     "Karanlık",
                     textScaleFactor: 1,
                     style: GoogleFonts.rubik(
-                      color: Mode.isEnableDarkMode == true ? Color(0xFF0353EF) : Colors.white,
+                      color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
                     ),
                   ),
                 ],
@@ -315,8 +340,8 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
             // angle: 0.0,
             menuBackgroundColor: const Color(0xFF0353EF),
 
-            mainScreen: HomeScreen(),
-            menuScreen: MenuPage(),
+            mainScreen: const HomeScreen(),
+            menuScreen: const MenuPage(),
           );
         });
   }
