@@ -63,7 +63,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
-    final ThemeCubit _themeCubit = BlocProvider.of<ThemeCubit>(context);
+    final _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Scaffold(
       backgroundColor: Color(0xFF0353EF),
       body: Padding(
@@ -113,11 +113,11 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  profilePhoto(context) {
-    final MyUser profileData = UserBloc.user!;
-    Size _size = MediaQuery.of(context).size;
-    double _screenWidth = _size.width;
-    double _photoSize = _screenWidth / 4.2;
+  Stack profilePhoto(BuildContext context) {
+    final profileData = UserBloc.user!;
+    final _size = MediaQuery.of(context).size;
+    final _screenWidth = _size.width;
+    final _photoSize = _screenWidth / 4.2;
     return Stack(
       children: [
         Container(

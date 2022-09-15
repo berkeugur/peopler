@@ -57,15 +57,15 @@ class MyUser {
   }
 
   void updateFromPublicMap(Map<String, dynamic> map) {
-    userID = map['userID'];
-    pplName = map['pplName'];
-    displayName = map['displayName'];
-    gender = map['gender'];
-    city = map['city'];
-    biography = map['biography'];
-    schoolName = map['schoolName'];
-    currentJobName = map['currentJobName'];
-    company = map['company'];
+    userID = map['userID'] as String;
+    pplName = map['pplName'] as String;
+    displayName = map['displayName'] as String;
+    gender = map['gender'] as String;
+    city = map['city'] as String;
+    biography = map['biography'] as String;
+    schoolName = map['schoolName'] as String;
+    currentJobName = map['currentJobName'] as String;
+    company = map['company'] as String;
     isProfileVisible = map['isProfileVisible'];
     profileURL = map['profileURL'];
     createdAt = map['createdAt'].runtimeType == DateTime ? map['createdAt'] : map['createdAt'].toDate();
@@ -92,14 +92,14 @@ class MyUser {
   }
 
   void updateFromPrivateMap(Map<String, dynamic> map) {
-    email = map['email'];
-    isTheAccountConfirmed = map['isTheAccountConfirmed'];
-    missingInfo = map['missingInfo'];
-    region = map['region'];
-    latitude = map['latitude'];
-    longitude = map['longitude'];
-    savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList();
-    numOfSendRequest = map['numOfSendRequest'];
+    email = map['email'] as String;
+    isTheAccountConfirmed = map['isTheAccountConfirmed'] as bool;
+    missingInfo = map['missingInfo'] as bool;
+    region = map['region'] as String;
+    latitude = map['latitude'] as int;
+    longitude = map['longitude'] as int;
+    savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList() as List<String>;
+    numOfSendRequest = map['numOfSendRequest'] as int;
   }
 
   String randomNumberGenerator() {

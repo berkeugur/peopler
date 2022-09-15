@@ -13,7 +13,7 @@ class PeoplerAppBars {
   PeoplerAppBars({required this.context});
 
   // ignore: non_constant_identifier_names
-  _BACK_BUTTON({void Function()? function, Color? color}) {
+  Widget _BACK_BUTTON({void Function()? function, Color? color}) {
     return InkWell(
       borderRadius: BorderRadius.circular(99),
       onTap: function ??
@@ -55,7 +55,7 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  _TITLE({required String title}) {
+  Widget _TITLE({required String title}) {
     return Text(
       title,
       textScaleFactor: 1,
@@ -64,7 +64,7 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  _PEOPLER_TITLE(void Function()? titleFunction) {
+  Widget _PEOPLER_TITLE(void Function()? titleFunction) {
     return Text(
       ApplicationConstants.COMPANY_NAME.toLowerCase(),
       textScaleFactor: 1,
@@ -73,7 +73,7 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  PROFILE_EDIT() {
+  Widget? PROFILE_EDIT() {
     return AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,

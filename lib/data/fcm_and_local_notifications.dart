@@ -141,13 +141,13 @@ class FCMAndLocalNotifications {
               id: 2,
               channelKey: Strings.keyMain,
               title: '',
-              body: message["displayName"] + ' size bağlantı isteği gönderdi',
+              body: (message["displayName"] as String) + ' size bağlantı isteği gönderdi',
               showWhen: true,
               displayOnForeground: true,
               displayOnBackground: true,
               notificationLayout: NotificationLayout.Messaging,
               roundedLargeIcon: true,
-              largeIcon: message["profileURL"],
+              largeIcon: (message["profileURL"] as String),
               payload: {'payload': Strings.sendRequest},
               summary: 'Yeni Bağlantı İsteği'));
     } else if (Platform.isIOS) {
@@ -174,13 +174,13 @@ class FCMAndLocalNotifications {
               id: 3,
               channelKey: Strings.keyMain,
               title: '',
-              body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
+              body: (message["displayName"] as String) + ' bağlantı isteğinizi kabul etti.',
               showWhen: true,
               displayOnForeground: true,
               displayOnBackground: true,
               notificationLayout: NotificationLayout.Messaging,
               roundedLargeIcon: true,
-              largeIcon: message["profileURL"],
+              largeIcon: (message["profileURL"] as String),
               payload: {'payload': Strings.receiveRequest},
               summary: 'Yeni Bağlantı'));
     } else if (Platform.isIOS) {

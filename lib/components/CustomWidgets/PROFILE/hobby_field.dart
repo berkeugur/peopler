@@ -1,21 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
-import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
-import 'package:peopler/data/model/HobbyModels/hobby_suggest_model.dart';
+import 'package:peopler/data/model/HobbyModels/hobbies.dart';
+import 'package:peopler/data/model/HobbyModels/hobbymodel.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
-import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/presentation/screen_services/hobby_add_service.dart';
-import '../../../data/model/HobbyModels/hobbymodel.dart';
-import '../../../presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class ProfileHobbyField extends StatefulWidget {
   final MyUser profileData;
