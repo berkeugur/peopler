@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import '../../../../../data/model/activity.dart';
 import '../../../../../data/model/user.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
@@ -29,38 +30,9 @@ class _AllActivityListOthersProfileState extends State<AllActivityListOthersProf
         builder: (context, x, y) {
           return Scaffold(
             backgroundColor: _mode.search_peoples_scaffold_background(),
+            appBar: PeoplerAppBars(context: context).ACTIVITYIES,
             body: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: _mode.bottomMenuBackground(),
-                  ),
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  height: 70,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () => popOtherUserScreen(context),
-                        child: SvgPicture.asset(
-                          txt.backArrowSvgTXT,
-                          width: 25,
-                          height: 25,
-                          color: _mode.homeScreenIconsColor(),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Text(
-                        txt.peoplerTXT,
-                        textScaleFactor: 1,
-                        style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 24),
-                      ),
-                      const SizedBox.square(
-                        dimension: 25,
-                      )
-                    ],
-                  ),
-                ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -316,7 +288,7 @@ class _AllActivityListOthersProfileState extends State<AllActivityListOthersProf
   Widget _buildFeedScreenExplanation(index, BuildContext context) {
     final Mode _mode = locator<Mode>();
     return Container(
-      color: Colors.purple,
+      //color: Colors.purple,
       child: Padding(
         padding: MediaQuery.of(context).size.width < 340 ? const EdgeInsets.only(right: 10.0) : const EdgeInsets.only(right: 20.0),
         child: Text(
@@ -356,8 +328,8 @@ class _AllActivityListOthersProfileState extends State<AllActivityListOthersProf
     final Mode _mode = locator<Mode>();
     double screeenWidth = MediaQuery.of(context).size.width;
     return Container(
-      color: Colors.red,
-      width: screeenWidth - 190,
+      // color: Colors.red,
+      width: screeenWidth - 200,
       child: Text(
         widget.myActivities[index].userDisplayName,
         textScaleFactor: 1,

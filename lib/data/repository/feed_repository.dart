@@ -37,7 +37,7 @@ class FeedRepository {
 
     if (feedList.isEmpty) return [];
 
-    for (int index=0; index < feedList.length; index++) {
+    for (int index = 0; index < feedList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(feedList[index].userID);
       feedList[index].userDisplayName = _user!.displayName;
       feedList[index].userPhotoUrl = _user.profileURL;
@@ -68,6 +68,7 @@ class FeedRepository {
     _myActivity.feedExplanation = myFeed.feedExplanation;
     _myActivity.userDisplayName = myFeed.userDisplayName;
     _myActivity.userPhotoUrl = myFeed.userPhotoUrl;
+    print("this activity= ${_myActivity.toMap()}");
 
     await _firestoreDBServiceUsers.addActivity(myFeed.userID, _myActivity);
 

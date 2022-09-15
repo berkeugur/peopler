@@ -553,7 +553,7 @@ class ProfileScreenComponentsMyProfile {
       children: [
         SvgPicture.asset(
           "assets/images/svg_icons/up_arrow.svg",
-          color: _mode.blackAndWhiteConversion(),
+          color: Colors.green,
           fit: BoxFit.contain,
         ),
         //build   },

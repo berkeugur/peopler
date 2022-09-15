@@ -1,0 +1,4 @@
+enum SubscriptionTypes {
+  plus,
+  premium,
+}

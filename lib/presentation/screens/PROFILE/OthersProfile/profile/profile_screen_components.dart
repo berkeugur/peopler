@@ -659,7 +659,7 @@ class ProfileScreenComponentsOthersProfile {
       children: [
         SvgPicture.asset(
           "assets/images/svg_icons/up_arrow.svg",
-          color: Colors.pink,
+          color: Colors.green,
           fit: BoxFit.contain,
         ),
         //build   },

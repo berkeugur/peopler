@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import '../../../../../../data/model/activity.dart';
 import '../../../../../data/model/user.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -28,115 +29,80 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
         builder: (context, x, y) {
           return SafeArea(
             child: Scaffold(
+              appBar: PeoplerAppBars(context: context).ACTIVITYIES,
               backgroundColor: _mode.search_peoples_scaffold_background(),
-              body: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: _mode.bottomMenuBackground(),
-                    ),
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    height: 70,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: SvgPicture.asset(
-                            txt.backArrowSvgTXT,
-                            width: 25,
-                            height: 25,
-                            color: _mode.homeScreenIconsColor(),
-                            fit: BoxFit.contain,
-                          ),
+              body: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      child: Text(
+                        "Hareketler",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(
+                          color: _mode.blackAndWhiteConversion(),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Text(
-                          txt.peoplerTXT,
-                          textScaleFactor: 1,
-                          style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 24),
-                        ),
-                        const SizedBox.square(
-                          dimension: 25,
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                            child: Text(
-                              "Hareketler",
-                              textScaleFactor: 1,
-                              style: GoogleFonts.rubik(
-                                color: _mode.blackAndWhiteConversion(),
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              //i use +1 because last index for less more see more widget
-                              itemCount: widget.myActivities.length,
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(
-                                parent: NeverScrollableScrollPhysics(),
-                              ),
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: _mode.bottomMenuBackground(),
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
-                                    ],
-                                    //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "#" + widget.profileData.pplName!,
-                                                style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
-                                              ),
-                                              Text(
-                                                " " + activityText(index),
-                                                style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
-                                              ),
-                                            ],
-                                          ),
-                                          // Text("+9 :)   0 :("),
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: _mode.homeScreenFeedBackgroundColor(),
-                                          borderRadius: BorderRadius.circular(10),
-                                          boxShadow: <BoxShadow>[
-                                            BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 1, spreadRadius: 0.2, offset: const Offset(0, 0))
-                                          ],
-                                        ),
-                                        child: feedView(context, index),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ],
                       ),
                     ),
-                  )
-                ],
+                    ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        //i use +1 because last index for less more see more widget
+                        itemCount: widget.myActivities.length,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(
+                          parent: NeverScrollableScrollPhysics(),
+                        ),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: _mode.bottomMenuBackground(),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                              ],
+                              //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "#" + widget.profileData.pplName!,
+                                          style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                                        ),
+                                        Text(
+                                          " " + activityText(index),
+                                          style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
+                                        ),
+                                      ],
+                                    ),
+                                    // Text("+9 :)   0 :("),
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: _mode.homeScreenFeedBackgroundColor(),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 1, spreadRadius: 0.2, offset: const Offset(0, 0))
+                                    ],
+                                  ),
+                                  child: feedView(context, index),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ],
+                ),
               ),
             ),
           );
@@ -371,6 +337,8 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
   }
 
   Container _buildFeedScreenFeedUserPhoto(int index) {
+    print(widget.myActivities[index].toMap().toString());
+    print(widget.myActivities[index].userPhotoUrl);
     String imageUrl = widget.myActivities[index].userPhotoUrl != ''
         ? widget.myActivities[index].userPhotoUrl
         : 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png';

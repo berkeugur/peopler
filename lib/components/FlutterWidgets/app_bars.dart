@@ -8,8 +8,6 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
-import 'drawer.dart';
-
 class PeoplerAppBars {
   final BuildContext context;
   PeoplerAppBars({required this.context});
@@ -18,7 +16,10 @@ class PeoplerAppBars {
   _BACK_BUTTON({void Function()? function, Color? color}) {
     return InkWell(
       borderRadius: BorderRadius.circular(99),
-      onTap: function,
+      onTap: function ??
+          () {
+            Navigator.of(context).pop();
+          },
       child: Container(
         padding: const EdgeInsets.all(14),
         child: SvgPicture.asset(
@@ -252,6 +253,18 @@ class PeoplerAppBars {
         function: () => Navigator.of(context).pop(),
       ),
       title: _TITLE(title: 'Bağlantılar'),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  AppBar get ACTIVITYIES {
+    return AppBar(
+      centerTitle: true,
+      leading: _BACK_BUTTON(),
+      title: _PEOPLER_TITLE(() {}),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
     );
   }
 }
