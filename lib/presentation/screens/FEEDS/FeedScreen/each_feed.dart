@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,8 +8,10 @@ import 'package:peopler/business_logic/blocs/LikedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
+import 'package:peopler/presentation/screens/COMMENTS/feed_comments.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
@@ -62,7 +65,9 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
               margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
               padding: widget.index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
               decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+                boxShadow: <BoxShadow>[
+                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                ],
                 color: _mode.homeScreenFeedBackgroundColor(),
               ),
               child: Row(
@@ -137,6 +142,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                               create: (context) => _likedBloc,
                               child: _buildLikeDislikeIcons(
                                 context,
+                                widget.myFeed.feedID,
                               )),
                         )
                       ],
@@ -149,15 +155,37 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
     }
   }
 
-  Row _buildLikeDislikeIcons(BuildContext context) {
+  Row _buildLikeDislikeIcons(BuildContext context, String feedID) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildDislike(),
-        SizedBox(
-          width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.1 : 600 * 0.1,
+        WidgetVisibility.isCommentsVisiable
+            ? TextButton(
+                onPressed: () {
+                  if (kDebugMode) {
+                    print("feedID: $feedID");
+                  }
+                  BlocProvider.of<UserBloc>(context).mainKey.currentState?.push(
+                        MaterialPageRoute(
+                          builder: (context) => FeedComments(
+                            feedID: feedID,
+                          ),
+                        ),
+                      );
+                },
+                child: const Text("Yorumlar"),
+              )
+            : const SizedBox.shrink(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            _buildDislike(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.1 : 600 * 0.1,
+            ),
+            _buildLike(),
+          ],
         ),
-        _buildLike(),
       ],
     );
   }
@@ -298,7 +326,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
             imageUrl: widget.myFeed.userPhotoUrl,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
