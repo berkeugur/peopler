@@ -3,6 +3,7 @@ import 'package:peopler/data/model/CommentModels/sub_comment_model.dart';
 
 class Comment {
   String? comment;
+  String? commentID;
   int? liked;
   int? disliked;
   String? fromUserID;
@@ -10,6 +11,7 @@ class Comment {
 
   Comment({
     this.comment,
+    this.commentID,
     this.liked,
     this.disliked,
     this.fromUserID,
@@ -18,6 +20,7 @@ class Comment {
 
   Comment.fromJson(Map<String, dynamic> json) {
     comment = json['comment'];
+    commentID = json['commentID'];
     liked = json['liked'];
     disliked = json['disliked'];
     fromUserID = json['fromUserID'];
@@ -27,6 +30,7 @@ class Comment {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['comment'] = comment;
+    data['commentID'] = commentID;
     data['liked'] = liked;
     data['disliked'] = disliked;
     data['fromUserID'] = fromUserID;
