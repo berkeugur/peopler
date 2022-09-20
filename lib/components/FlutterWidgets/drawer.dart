@@ -347,6 +347,7 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
   }
 }
 
+/*
 class DrawerProfilePage extends StatefulWidget {
   const DrawerProfilePage({Key? key}) : super(key: key);
 
@@ -383,3 +384,4 @@ class _DrawerProfilePageState extends State<DrawerProfilePage> {
     );
   }
 }
+ */

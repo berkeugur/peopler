@@ -45,6 +45,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final CityBloc _cityBloc;
   late final NotificationBloc _notificationBloc;
   late final PurchaseGetOfferBloc _purchaseGetOfferBloc;
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+    _pageController = PageController(initialPage: _homeScreen.currentTab.index);
 
     if (UserBloc.user != null) {
       FCMAndLocalNotifications().initializeFCMNotifications(context);
@@ -99,18 +101,21 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
                               floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                               floatingActionButton: const MyFloatingActionButtons(),
-                              body: IndexedStack(
-                                index: _homeScreen.currentTab.index,
-                                children: [
-                                  FeedScreenNavigator(
-                                    feedListKey: feedListKey,
+                              body: PageView(
+                                    controller: _pageController,
+                                    onPageChanged: (index) {
+                                      _buildOnBottomTabTapped(index);
+                                    },
+                                    children: [
+                                      FeedScreenNavigator(
+                                        feedListKey: feedListKey,
+                                      ),
+                                      const NotificationScreenNavigator(),
+                                      const SearchScreenNavigator(),
+                                      const ChatScreenNavigator(),
+                                      const ProfileScreenNavigator()
+                                    ],
                                   ),
-                                  const SearchScreenNavigator(),
-                                  const ChatScreenNavigator(),
-                                  const NotificationScreenNavigator(),
-                                  const ProfileScreenNavigator()
-                                ],
-                              ),
                               bottomNavigationBar: MyBottomNavigationBar(
                                   // Callback Function, when another tab is clicked, this method will run
                                   onBottomTabTapped: (index) {
@@ -127,6 +132,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     TabItem _oldTab = _homeScreen.currentTab;
     _homeScreen.currentTab = TabItem.values[index];
     _homeScreen.changeFloatingActionButtonEvent();
+    _pageController.jumpToPage(_homeScreen.currentTab.index);
 
     /// When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
     if (_oldTab == TabItem.feed && TabItem.values[index] == TabItem.feed && _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {

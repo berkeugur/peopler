@@ -6,6 +6,7 @@ import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../screens/GUEST_LOGIN/guest_login_screen.dart';
 
@@ -27,6 +28,7 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
   @override
   Widget build(BuildContext context) {
     FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
@@ -45,10 +47,10 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
                   }
 
                   return MaterialPageRoute(
-                    builder: (context) => const DrawerProfilePage(),
+                    builder: (context) => const ProfileScreen(),
                   );
                 default:
-                  debugPrint('ERROR: Notification Tab Router unknown route');
+                  debugPrint('ERROR: Profile Tab Router unknown route');
                   return null;
               }
             },

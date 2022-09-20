@@ -1,1 +1,1 @@
-enum TabItem { feed, search, chat, notifications, profile }
+enum TabItem { feed, notifications, search, chat, profile }
