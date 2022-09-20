@@ -102,9 +102,11 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                               floatingActionButton: const MyFloatingActionButtons(),
                               body: PageView(
+                                    scrollDirection: Axis.horizontal,
                                     controller: _pageController,
                                     onPageChanged: (index) {
-                                      _buildOnBottomTabTapped(index);
+                                      _homeScreen.currentTab = TabItem.values[index];
+                                      _homeScreen.changeFloatingActionButtonEvent();
                                     },
                                     children: [
                                       FeedScreenNavigator(
