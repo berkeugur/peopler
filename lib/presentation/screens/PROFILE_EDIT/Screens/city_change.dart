@@ -7,6 +7,7 @@ import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/city_change_service.dart';
 
 import '../../../../others/functions/search_functions.dart';
+import '../../../../others/widgets/snack_bars.dart';
 
 class ProfileEditCityChangeScreen extends StatefulWidget {
   const ProfileEditCityChangeScreen({Key? key}) : super(key: key);
@@ -87,8 +88,13 @@ class _EditFieldState extends State<EditField> {
       ),
       child: InkWell(
         onTap: () {
+
+          if(UserBloc.entitlement != "premium") {
+            showCityChangeWarning(context);
+            return;
+          }
+
           filterSearchResults("".replaceAll(" ", ""), setState);
-          print("deney başarılı");
 
           showModalBottomSheet(
               isScrollControlled: true,

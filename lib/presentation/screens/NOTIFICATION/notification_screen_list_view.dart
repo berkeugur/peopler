@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import '../../../data/model/chat.dart';
 import '../../../data/model/notifications.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
+import '../../../others/widgets/snack_bars.dart';
 import '../MESSAGE/message_screen.dart';
 import '../PROFILE/OthersProfile/functions.dart';
 import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
@@ -385,6 +387,11 @@ Widget acceptYourRequestWidget(
 }
 
 void _clickGeriAl(BuildContext context, Notifications notification) {
+  if(UserBloc.entitlement == "free") {
+    showGeriAlWarning(context);
+    return;
+  }
+
   NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
   String requestUserID = notification.requestUserID!;
   _notificationBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));

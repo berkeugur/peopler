@@ -15,12 +15,12 @@ import '../classes/dark_light_mode_controller.dart';
 //
 //
 
-showNumOfConnectionRequestsConsumed(BuildContext context) {
+showFreeUser(BuildContext context, String text) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        content: const Text("İstek gönderme haklarınızı tükettiniz. Sınırsız istek için plus veya premium hesaba geçin."),
+        content: Text(text),
         actions: [
           TextButton(
             child: const Text("İptal"),
@@ -41,6 +41,10 @@ showNumOfConnectionRequestsConsumed(BuildContext context) {
   );
 }
 
+showNumOfConnectionRequestsConsumed(BuildContext context) {
+  showFreeUser(context, "İstek gönderme haklarınızı tükettiniz. Sınırsız istek için plus veya premium hesaba geçin.");
+}
+
 showRestNumOfConnectionRequests(BuildContext context) {
   SnackBars(context: context).simple("Kalan istek gönderme hakkınız ${UserBloc.user!.numOfSendRequest - 1}");
 }
@@ -51,4 +55,12 @@ showYouNeedToLogin(BuildContext context) {
 
 showYouNeedToLoginSave(BuildContext context) {
   SnackBars(context: context).simple("Başkalarını kaydedebilmek için giriş yapmalısınız.");
+}
+
+showCityChangeWarning(BuildContext context) {
+  showFreeUser(context, "Şehir değiştirebilmek için premium hesaba geçmelisiniz.");
+}
+
+showGeriAlWarning(BuildContext context) {
+  showFreeUser(context, "İsteğinizi geri çekebilmek için premium veya plus hesaba geçmelisiniz.");
 }

@@ -447,7 +447,7 @@ class ProfileScreenComponentsOthersProfile {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 true
-                    ? SizedBox.shrink()
+                    ? const SizedBox.shrink()
                     : SizedBox(
                         height: 16,
                         width: 16,
@@ -477,7 +477,7 @@ class ProfileScreenComponentsOthersProfile {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         true
-            ? SizedBox.shrink()
+            ? const SizedBox.shrink()
             : SizedBox(
                 height: 16,
                 width: 16,

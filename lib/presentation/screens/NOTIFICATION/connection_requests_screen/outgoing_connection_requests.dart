@@ -8,6 +8,7 @@ import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/empty_list.dart';
+import '../../../../others/widgets/snack_bars.dart';
 import '../notification_screen_list_view.dart';
 
 class OutGoingConnectionRequestList extends StatefulWidget {
@@ -223,6 +224,11 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
               children: [
                 InkWell(
                   onTap: () {
+                    if(UserBloc.entitlement == "free") {
+                      showGeriAlWarning(context);
+                      return;
+                    }
+
                     String requestUserID = _notificationTransmittedBloc.allTransmittedList[index].requestUserID!;
                     _notificationTransmittedBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
                   },
