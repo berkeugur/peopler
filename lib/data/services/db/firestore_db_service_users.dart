@@ -401,8 +401,6 @@ class FirestoreDBServiceUsers {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection("private")
-          .doc("private")
           .update({"savedUserIDs": FieldValue.arrayUnion([requestUserID])});
       return true;
     } catch (e) {
@@ -437,13 +435,26 @@ class FirestoreDBServiceUsers {
     }
   }
 
+  Future<bool> deleteUserFromSavedUsers(
+      String myUserID, String deletedUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .collection('savedUsers')
+          .doc(deletedUserID)
+          .delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<bool> deleteSaveUserIDsField(String myUserID, String requestUserID) async {
     try {
       await _firebaseDB
           .collection('users')
           .doc(myUserID)
-          .collection("private")
-          .doc("private")
           .update({"savedUserIDs": FieldValue.arrayRemove([requestUserID])});
       return true;
     } catch (e) {
@@ -474,21 +485,6 @@ class FirestoreDBServiceUsers {
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
-      return false;
-    }
-  }
-
-  Future<bool> deleteUserFromSavedUsers(
-      String myUserID, String deletedUserID) async {
-    try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('savedUsers')
-          .doc(deletedUserID)
-          .delete();
-      return true;
-    } catch (e) {
       return false;
     }
   }
@@ -702,4 +698,30 @@ class FirestoreDBServiceUsers {
   }
 
   /// ********************************************************************/
+
+  Future<bool> updateWhoBlockedYou(String myUserID, String requestUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .update({"whoBlockedYou": FieldValue.arrayUnion([requestUserID])});
+      return true;
+    } catch (e) {
+      debugPrint('Update whoBlockedYou fail');
+      return false;
+    }
+  }
+
+  Future<bool> updateBlockedUsers(String myUserID, String requestUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .update({"blockedUsers": FieldValue.arrayUnion([requestUserID])});
+      return true;
+    } catch (e) {
+      debugPrint('Update blockedUsers fail');
+      return false;
+    }
+  }
 }

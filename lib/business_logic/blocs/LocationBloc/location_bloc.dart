@@ -5,11 +5,13 @@ import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
+import 'dart:async';
 
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final LocationRepository _locationRepository = locator<LocationRepository>();
 
   static List<MyUser> allUserList = [];
+  StreamSubscription? _streamSubscription;
 
   List<String> _queryList = List.filled(9, '');
 
@@ -34,6 +36,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
 
       if (UserBloc.user!.connectionUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (UserBloc.user!.whoBlockedYou.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (UserBloc.user!.blockedUsers.contains(tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
     }
@@ -129,5 +139,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<TrigUsersNotExistSearchStateEvent>((event, emit) async {
       emit(UsersNotExistSearchState());
     });
+
+  }
+
+  @override
+  Future<void> close() async {
+    if (_streamSubscription != null) {
+      _streamSubscription?.cancel();
+    }
+    super.close();
   }
 }

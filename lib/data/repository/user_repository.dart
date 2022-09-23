@@ -238,4 +238,20 @@ class UserRepository {
     await _firestoreDBServiceUsers.deleteUserFromConnections(myUserID, otherUserID);
     await _firestoreDBServiceUsers.deleteUserFromConnections(otherUserID, myUserID);
   }
+
+  Future<void> blockUser(String myUserID, String otherUserID) async {
+    /// Remove from saved users for me
+    _firestoreDBServiceUsers.deleteUserFromSavedUsers(myUserID, otherUserID);
+    _firestoreDBServiceUsers.deleteSaveUserIDsField(myUserID, otherUserID);
+    /// Remove from saved users for otherUser
+    _firestoreDBServiceUsers.deleteUserFromSavedUsers(otherUserID, myUserID);
+    _firestoreDBServiceUsers.deleteSaveUserIDsField(otherUserID, myUserID);
+
+    /// Remove connection
+    removeConnection(myUserID, otherUserID);
+
+    /// Update blockedUsers for you and whoBlockedYou for requestUser
+    await _firestoreDBServiceUsers.updateBlockedUsers(myUserID, otherUserID);
+    await _firestoreDBServiceUsers.updateWhoBlockedYou(otherUserID, myUserID);
+  }
 }

@@ -34,6 +34,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         if (UserBloc.user!.connectionUserIDs.contains(tempUser.userID)) {
           userList.removeWhere((item) => item.userID == tempUser.userID);
         }
+
+        if (UserBloc.user!.whoBlockedYou.contains(tempUser.userID)) {
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
+
+        if (UserBloc.user!.blockedUsers.contains(tempUser.userID)) {
+          userList.removeWhere((item) => item.userID == tempUser.userID);
+        }
       }
     }
   }

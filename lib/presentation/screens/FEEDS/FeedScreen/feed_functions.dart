@@ -102,7 +102,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
                 style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
-                ReportScreenService().blockUser(userID: userID, feedID: feedId).then((value) {
+                ReportScreenService().blockUser(blockUserID: userID, feedID: feedId).then((value) {
                   Navigator.of(context).pop();
                   PeoplerDialogs().showSuccessfulDialog(context, animationController);
                 }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));

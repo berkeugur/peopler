@@ -74,6 +74,7 @@ dependencies:
   provider: ^6.0.2
   pull_to_refresh_flutter3: ^2.0.1
   purchases_flutter: ^3.10.0
+  rxdart: ^0.27.5
   share_plus: ^4.0.4
   webview_flutter: ^3.0.4
   workmanager: ^0.5.0

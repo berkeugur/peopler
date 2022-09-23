@@ -17,9 +17,12 @@ class MyUser {
   DateTime? updatedAt;
   List<dynamic> hobbies = [];
   List<String> photosURL = [];
+  List<String> savedUserIDs = [];
   List<String> connectionUserIDs = [];
   List<String> receivedRequestUserIDs = [];
   List<String> transmittedRequestUserIDs = [];
+  List<String> blockedUsers = [];
+  List<String> whoBlockedYou = [];
 
   /// Firebase Rules private fields
   String email = "";
@@ -28,7 +31,6 @@ class MyUser {
   String region = 'empty';
   int latitude = 0;
   int longitude = 0;
-  List<String> savedUserIDs = [];
   int numOfSendRequest = 15;
 
   MyUser();
@@ -50,9 +52,12 @@ class MyUser {
       'updatedAt': updatedAt ?? DateTime.now(),
       'hobbies': hobbies,
       'photosURL': photosURL,
+      'savedUserIDs': savedUserIDs,
       'connectionUserIDs': connectionUserIDs,
       'receivedRequestUserIDs': receivedRequestUserIDs,
       'transmittedRequestUserIDs': transmittedRequestUserIDs,
+      'blockedUsers': blockedUsers,
+      'whoBlockedYou': whoBlockedYou,
     };
   }
 
@@ -72,9 +77,12 @@ class MyUser {
     updatedAt = map['updatedAt'].runtimeType == DateTime ? map['updatedAt'] : map['updatedAt'].toDate();
     hobbies = map['hobbies'];
     photosURL = map['photosURL'].map<String>((data) => data.toString()).toList();
+    savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList();
     connectionUserIDs = map['connectionUserIDs'].map<String>((data) => data.toString()).toList();
     receivedRequestUserIDs = map['receivedRequestUserIDs'].map<String>((data) => data.toString()).toList();
     transmittedRequestUserIDs = map['transmittedRequestUserIDs'].map<String>((data) => data.toString()).toList();
+    blockedUsers = map['blockedUsers'].map<String>((data) => data.toString()).toList();
+    whoBlockedYou = map['whoBlockedYou'].map<String>((data) => data.toString()).toList();
   }
 
   Map<String, dynamic> toPrivateMap() {
@@ -86,7 +94,6 @@ class MyUser {
       'region': region,
       'latitude': latitude,
       'longitude': longitude,
-      'savedUserIDs': savedUserIDs,
       'numOfSendRequest': numOfSendRequest,
     };
   }
@@ -98,7 +105,6 @@ class MyUser {
     region = map['region'] as String;
     latitude = map['latitude'] as int;
     longitude = map['longitude'] as int;
-    savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList() as List<String>;
     numOfSendRequest = map['numOfSendRequest'] as int;
   }
 
