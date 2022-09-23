@@ -43,7 +43,7 @@ class search_peoples_header extends StatelessWidget {
                 height: Variables.animatedSearchPeopleHeaderHeight.value,
                 color: _mode.search_peoples_scaffold_background(),
                 child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     padding: EdgeInsets.only(
                       top: _size.width < 340 ? 35 : 30.0,
                       bottom: 5.0,

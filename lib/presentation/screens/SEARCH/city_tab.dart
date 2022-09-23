@@ -62,9 +62,15 @@ class CityTabState extends State<CityTab> {
   final Mode _mode = locator<Mode>();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
 
     if (UserBloc.user == null) {
       return const GuestLoginScreenBody();
@@ -99,7 +105,7 @@ class CityTabState extends State<CityTab> {
                   child: Container(
                     color: Mode().homeScreenScaffoldBackgroundColor(),
                     child: RefreshIndicator(
-                      color: Color(0xFF0353EF),
+                      color: const Color(0xFF0353EF),
                       displacement: 80.0,
                       onRefresh: () async {
                         /// Refresh users

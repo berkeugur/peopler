@@ -101,7 +101,10 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
                               floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                               floatingActionButton: const MyFloatingActionButtons(),
-                              body: PageView(
+                              body:
+
+                              /*
+                              PageView(
                                     scrollDirection: Axis.horizontal,
                                     controller: _pageController,
                                     onPageChanged: (index) {
@@ -118,6 +121,20 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       const ProfileScreenNavigator()
                                     ],
                                   ),
+                               */
+                              IndexedStack(
+                                index: _homeScreen.currentTab.index,
+                                children: [
+                                  FeedScreenNavigator(
+                                    feedListKey: feedListKey,
+                                  ),
+                                  const NotificationScreenNavigator(),
+                                  const SearchScreenNavigator(),
+                                  const ChatScreenNavigator(),
+                                  const ProfileScreenNavigator()
+                                ],
+                              ),
+
                               bottomNavigationBar: MyBottomNavigationBar(
                                   // Callback Function, when another tab is clicked, this method will run
                                   onBottomTabTapped: (index) {
@@ -134,7 +151,9 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     TabItem _oldTab = _homeScreen.currentTab;
     _homeScreen.currentTab = TabItem.values[index];
     _homeScreen.changeFloatingActionButtonEvent();
-    _pageController.jumpToPage(_homeScreen.currentTab.index);
+
+    // Below code will be uncommented if pageview is used
+    // _pageController.jumpToPage(_homeScreen.currentTab.index);
 
     /// When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
     if (_oldTab == TabItem.feed && TabItem.values[index] == TabItem.feed && _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {

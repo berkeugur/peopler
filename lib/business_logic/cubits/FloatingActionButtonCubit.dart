@@ -14,51 +14,21 @@ class FloatingActionButtonCubit extends Cubit<bool> {
 
   TabItem currentTab = TabItem.feed;
 
-  final Map<TabItem, ScreenItem> _currentScreen = {
+  Map<TabItem, ScreenItem> currentScreen = {
     TabItem.feed: ScreenItem.feedScreen,
+    TabItem.notifications: ScreenItem.notificationScreen,
     TabItem.search: ScreenItem.searchNearByScreen,
     TabItem.chat: ScreenItem.chatScreen,
-    TabItem.notifications: ScreenItem.notificationScreen,
     TabItem.profile: ScreenItem.profileScreen,
   };
 
-  final Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
+  Map<TabItem, GlobalKey<NavigatorState>> navigatorKeys = {
     TabItem.feed: GlobalKey<NavigatorState>(),
+    TabItem.notifications: GlobalKey<NavigatorState>(),
     TabItem.search: GlobalKey<NavigatorState>(),
     TabItem.chat: GlobalKey<NavigatorState>(),
-    TabItem.notifications: GlobalKey<NavigatorState>(),
     TabItem.profile: GlobalKey<NavigatorState>(),
   };
-
-  Map<TabItem, ScreenItem> get currentScreen {
-    return {
-      TabItem.feed: _currentScreen[TabItem.feed]!,
-      TabItem.search: _currentScreen[TabItem.search]!,
-      TabItem.chat: _currentScreen[TabItem.chat]!,
-      TabItem.notifications: _currentScreen[TabItem.notifications]!,
-      TabItem.profile: _currentScreen[TabItem.profile]!,
-    };
-  }
-
-  Map<TabItem, GlobalKey<NavigatorState>> get navigatorKeys {
-    return {
-      TabItem.feed: _navigatorKeys[TabItem.feed]!,
-      TabItem.search: _navigatorKeys[TabItem.search]!,
-      TabItem.chat: _navigatorKeys[TabItem.chat]!,
-      TabItem.notifications: _navigatorKeys[TabItem.notifications]!,
-      TabItem.profile: _navigatorKeys[TabItem.profile]!,
-    };
-  }
-
-  set currentScreen(Map<TabItem, ScreenItem> value) {
-    _currentScreen[value.entries.first.key] = value.entries.first.value;
-    // notifyListeners();
-  }
-
-  set navigatorKeys(Map<TabItem, GlobalKey<NavigatorState>> value) {
-    _navigatorKeys[value.entries.first.key] = value.entries.first.value;
-    // notifyListeners();
-  }
 
   FloatingActionButtonCubit() : super(true);
 
