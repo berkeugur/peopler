@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/city_bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
@@ -345,6 +346,8 @@ class ProfileScreenComponentsOthersProfile {
     return InkWell(
       onTap: () {
         SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
+        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+        CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
 
         MyUser otherUser = LocationBloc.allUserList.singleWhere((element) => element.userID == otherUserID);
         _savedBloc.add(ClickSaveButtonEvent(savedUser: otherUser, myUserID: UserBloc.user!.userID));
@@ -352,6 +355,9 @@ class ProfileScreenComponentsOthersProfile {
         String _deletedUserID = otherUser.userID;
         LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
         CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+
+        _cityBloc.add(TrigUsersNotExistCityStateEvent());
+        _locationBloc.add(TrigUsersNotExistSearchStateEvent());
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

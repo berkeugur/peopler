@@ -315,6 +315,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   setState(() {
                     _savedBloc.add(DeleteSavedUserEvent(savedUserID: _savedBloc.allRequestList[index].userID));
                     _savedBloc.allRequestList.removeWhere((element) => element.userID == _savedBloc.allRequestList[index].userID);
+                    _savedBloc.add(TrigUserNotExistSavedStateEvent());
                   });
                 },
                 child: Container(

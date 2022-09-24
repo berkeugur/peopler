@@ -121,7 +121,9 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
     });
 
     on<TrigUserNotExistSavedStateEvent>((event, emit) async {
-      emit(UserNotExistSavedState());
+      if(_allSavedUserList.isEmpty) {
+        emit(UserNotExistSavedState());
+      }
     });
   }
 }

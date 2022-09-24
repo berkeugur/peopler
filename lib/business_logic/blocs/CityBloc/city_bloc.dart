@@ -131,7 +131,9 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     });
 
     on<TrigUsersNotExistCityStateEvent>((event, emit) async {
-      emit(UsersNotExistCityState());
+      if(allUserList.isEmpty) {
+        emit(UsersNotExistCityState());
+      }
     });
   }
 }

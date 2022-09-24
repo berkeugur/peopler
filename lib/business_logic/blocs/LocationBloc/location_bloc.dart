@@ -137,7 +137,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     });
 
     on<TrigUsersNotExistSearchStateEvent>((event, emit) async {
-      emit(UsersNotExistSearchState());
+      if(allUserList.isEmpty) {
+        emit(UsersNotExistSearchState());
+      }
     });
 
   }

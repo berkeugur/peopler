@@ -584,6 +584,9 @@ class _NearbyTabState extends State<NearbyTab> {
                             return InkWell(
                               onTap: () async {
                                 if (UserBloc.user != null) {
+                                  LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+                                  CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
+
                                   _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
                                   String _deletedUserID = LocationBloc.allUserList[index].userID;
 
@@ -596,9 +599,8 @@ class _NearbyTabState extends State<NearbyTab> {
                                   widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                   widget.showWidgetsKeyCity.currentState?.setState(() {});
 
-                                  if (LocationBloc.allUserList.isEmpty) {
-                                    _locationBloc.add(TrigUsersNotExistSearchStateEvent());
-                                  }
+                                  _cityBloc.add(TrigUsersNotExistCityStateEvent());
+                                  _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                                 } else {
                                   showYouNeedToLoginSave(context);
                                 }

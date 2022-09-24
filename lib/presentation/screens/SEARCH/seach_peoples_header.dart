@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import '../../../../business_logic/blocs/LocationPermissionBloc/location_permiss
 import '../../../../business_logic/blocs/LocationPermissionBloc/location_permission_event.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/classes/variables.dart';
+import '../../../data/repository/location_repository.dart';
 import '../../../others/locator.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
@@ -67,7 +69,7 @@ class search_peoples_header extends StatelessWidget {
     CityNearbyButtons _cityNearbyButtons = Provider.of<CityNearbyButtons>(context);
 
     return InkWell(
-      onTap: () {
+      onTap: () async {
         _cityNearbyButtons.isNearby = index;
 
         if (_cityNearbyButtons.isNearby == true) {
