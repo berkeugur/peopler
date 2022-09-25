@@ -29,6 +29,7 @@ theme_settings_field(context) {
       Row(
         children: [
           InkWell(
+            borderRadius: BorderRadius.circular(999),
             onTap: () => _themeCubit.openLightMode(),
             child: Container(
               decoration: BoxDecoration(
@@ -65,6 +66,7 @@ theme_settings_field(context) {
             width: 20,
           ),
           InkWell(
+            borderRadius: BorderRadius.circular(999),
             onTap: () => _themeCubit.openDarkMode(),
             child: Container(
               decoration: BoxDecoration(

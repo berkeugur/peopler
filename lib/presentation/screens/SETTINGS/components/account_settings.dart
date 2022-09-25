@@ -33,32 +33,38 @@ accountSettings(context) {
           height: 10,
         ),
         InkWell(
+          borderRadius: BorderRadius.circular(999),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const BlockedUsersScreen(),
             ),
           ),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                "assets/images/svg_icons/password_lock.svg",
-                width: 20,
-                height: 20,
-                color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Text(
-                "Engellenen Kullanıcılar",
-                textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                  fontSize: 16,
-                  color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  "assets/images/svg_icons/password_lock.svg",
+                  width: 20,
+                  height: 20,
+                  color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
+                  fit: BoxFit.contain,
                 ),
-              ),
-            ],
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "Engellenen Kullanıcılar",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(
+                    fontSize: 16,
+                    color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         //Container(width: 10,height: 1,color: _mode.settings_custom_2(),margin: EdgeInsets.only(left: 30),)

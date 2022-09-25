@@ -113,7 +113,7 @@ class _MenuPageState extends State<MenuPage> {
                         context: context,
                         builder: (context) => AlertDialog(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                          contentPadding: EdgeInsets.only(top: 20.0, bottom: 5),
+                          contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
                           content: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
