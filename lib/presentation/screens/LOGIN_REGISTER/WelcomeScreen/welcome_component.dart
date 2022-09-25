@@ -173,7 +173,7 @@ Center continueText(context) {
             text: "kullanım",
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                termOfUseTextOnPressed(context);
+                show_privacy_policy(context);
               },
           ),
           TextSpan(
@@ -192,7 +192,7 @@ Center continueText(context) {
             text: "şartlarımızı",
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                termOfUseTextOnPressed(context);
+                show_privacy_policy(context);
               },
           ),
           TextSpan(

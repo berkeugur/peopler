@@ -22,8 +22,6 @@ enum HobbyTypes {
   theater,
   travel,
   volunteerWork,
-  walking,
-  watchingMovie,
+
   writing,
-  yoga
 }

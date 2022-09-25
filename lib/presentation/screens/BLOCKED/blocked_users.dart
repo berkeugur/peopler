@@ -86,6 +86,8 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                    contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
                                     content: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,9 +134,6 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
                                         ),
                                         TextButton(
                                           onPressed: () => Navigator.of(context).pop(),

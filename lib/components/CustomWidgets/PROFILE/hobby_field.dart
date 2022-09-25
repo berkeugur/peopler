@@ -103,8 +103,8 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                   context: context,
                                   constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.7),
                                   backgroundColor: Colors.transparent,
-                                  builder: (context) {
-                                    return StatefulBuilder(builder: (context, setStatebs) {
+                                  builder: (contextSMBS) {
+                                    return StatefulBuilder(builder: (contextSB, setStatebs) {
                                       return SingleChildScrollView(
                                         child: Column(
                                           children: [
@@ -236,12 +236,17 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                                     SnackBars(context: context).simple("Bir hobi seçiniz");
                                                   }
                                                 } else if (_currentPage == 1 && selectedValue != null) {
-                                                  HobbyService().addNew(
+                                                  HobbyService()
+                                                      .addNew(
                                                     context: context,
                                                     selectedValue: selectedValue!,
                                                     selectedSubHobbyIndex: selectedSubHobbyIndex,
-                                                  );
-                                                  SnackBars(context: context).simple("page 2");
+                                                  )
+                                                      .then((value) {
+                                                    selectedSubHobbyIndex = [];
+                                                    selectedValue = null;
+                                                  });
+                                                  SnackBars(context: context).simple("Başarıyla eklendi");
                                                 } else {
                                                   SnackBars(context: context).simple("error");
                                                 }

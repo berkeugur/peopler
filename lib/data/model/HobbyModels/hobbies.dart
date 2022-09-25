@@ -57,8 +57,7 @@ class Hobby {
         return "watchingMovie";
       case "Yazı Yazmak":
         return "writing";
-      case "Meditasyon Yapmak":
-        return "yoga";
+
       default:
         return "yoga";
     }
@@ -135,19 +134,11 @@ class Hobby {
       case "Gönüllü Çalışmalarda Bulunmak":
         return HobbyTypes.volunteerWork;
 
-      case "Yürüyüş Yapmak":
-        return HobbyTypes.walking;
-
-      case "Film/Dizi İzlemek":
-        return HobbyTypes.watchingMovie;
-
       case "Yazı Yazmak":
         return HobbyTypes.writing;
 
-      case "Meditasyon Yapmak":
-        return HobbyTypes.yoga;
       default:
-        return HobbyTypes.yoga;
+        return HobbyTypes.writing;
     }
   }
 
@@ -222,17 +213,8 @@ class Hobby {
       case HobbyTypes.volunteerWork:
         return "Gönüllü Çalışmalarda Bulunmak";
 
-      case HobbyTypes.walking:
-        return "Yürüyüş Yapmak";
-
-      case HobbyTypes.watchingMovie:
-        return "Film/Dizi İzlemek";
-
       case HobbyTypes.writing:
         return "Yazı Yazmak";
-
-      case HobbyTypes.yoga:
-        return "Meditasyon Yapmak";
     }
   }
 
@@ -252,116 +234,205 @@ class Hobby {
   List<String>? subHobby(HobbyTypes types) {
     switch (types) {
       case HobbyTypes.archery:
-        return null;
+        return [
+          "Modern Okçuluk",
+          "Geleneksel Okçuluk",
+        ];
 
       case HobbyTypes.camping:
-        return null;
+        return [
+          "Araba Kampı",
+          "Vahşi Doğa Kampı",
+          "Kış Kampı",
+        ];
 
       case HobbyTypes.carpentry:
-        return null;
+        return [
+          "İleri Düzey",
+          "Orta Düzey",
+          "Başlangıç Aşaması",
+        ];
 
       case HobbyTypes.chef:
         return [
-          "Amerikan Mutfağı",
-          "Çin Mutfağı",
-          "Fas Mutfağı",
-          "Fransız Mutfağı",
-          "Hint Mutfağı",
-          "İtalyan Mutfağı",
-          "Japon Mutfağı",
-          "Kore Mutfağı",
-          "Lübnan Mutfağı",
-          "Meksika Mutfağı",
-          "Osmanlı Mutfağı",
-          "Türk Mutfağı",
-          "Uzakdoğu Mutfağı",
-          "Yunan Mutfağı"
+          "Dünya Mutfakları",
+          "Eğlenceli Tarifler",
+          "Sporcu Tarifleri",
         ];
 
       case HobbyTypes.chess:
-        return ["Başlangıç Seviyesi", "Orta Seviye", "İleri Seviye"];
+        return [
+          "İleri Düzey",
+          "Orta Düzey",
+          "Başlangıç Aşaması",
+        ];
 
       case HobbyTypes.cinema:
         return [
-          "Aksiyon",
-          "Komedi",
-          "Belgesel",
-          "Bilim Kurgu",
-          "Dini",
-          "Dramatik",
-          "Eğitim",
-          "Erotik",
-          "Fantastik",
-          "Gerilim",
-          "Korku",
-          "Macera",
-          "Savaş",
-          "Spor",
-          "Suç",
-          "Tarih",
-          "Yaşam Öyküsü"
+          "Aksiyon Filmleri",
+          "Anime Filmler",
+          "Sanat Filmleri",
+          "Belgeseller",
+          "Bilim Kurgu Filmleri",
+          "Çocuk ve Aile",
+          "Dramalar",
+          "Fantastik Kurgular",
+          "Gerilim Filmleri",
+          "Kısa Filmler",
+          "Klasikler",
+          "Komediler",
+          "Korku Filmleri",
+          "Müzikaller",
+          "Romantizm",
+          "Yerli Filmler",
+          "Biyogrofi",
         ];
 
       case HobbyTypes.collections:
-        return ["Pul", "Madeni Para", "Çizgi Roman", "Anı", "Kartpostal", "Gazoz Kapağı", "Rozet", "Antika"];
+        return [
+          "Pullar",
+          "Madeni Paralar",
+          "Anı",
+          "Oyunlar",
+          "Kitaplar",
+          "Deniz Kabukları",
+          "DVD'ler",
+          "Peçeteler",
+          "Kartpostallar",
+          "Kapaklar",
+          "Rozet",
+          "Antika",
+        ];
 
       case HobbyTypes.dancing:
         return [
-          "Rock",
-          "Broadway",
           "Bale",
-          "Ça-ça",
-          "Disko",
-          "Foxtrot",
           "Salsa",
           "Breakdance",
-          "Türk halk oyunları",
-          "Hip Hop",
-          "Jazz",
-          "Jive",
+          "Modern Dans",
+          "Kalipso",
+          "Samba",
           "Tango",
+          "Vals",
+          "Zumba",
           "Zeybek",
-          "Roman"
         ];
 
       case HobbyTypes.eSports:
-        return ["CS:GO", "League of Legends", "Dota 2", "PUBG", "Fortnite"];
+        return [
+          "CS:GO",
+          "League of Legends",
+          "Dota 2",
+          "PUBG",
+          "Fortnite",
+          "Overwatch",
+          "Call of Duty",
+          "Hearthstone",
+          "PES",
+          "FIFA",
+        ];
 
       case HobbyTypes.fishing:
-        return ["Kıyı balıkçılığı", "Tekne Balıkçılığı", "Kano Balıkçılığı", "Sazan Avı", "Buz Balıkçılığı"];
+        return [
+          "Olta",
+          "Zıpkın",
+          "Ağ",
+        ];
 
       case HobbyTypes.fitness:
-        return ["Amatör", "Profesyonel"];
+        return [
+          "Power Lifting",
+          "Body Building",
+          "Cross Fit",
+          "Profesyonel",
+        ];
 
       case HobbyTypes.gardener:
-        return null;
+        return [
+          "İleri Seviye",
+          "Orta Seviye",
+          "Başlangıç Aşaması",
+        ];
 
       case HobbyTypes.makePicture:
-        return null;
+        return [
+          "Portre Resim",
+          "Figür Resim",
+          "Nü Resim",
+          "Perspektif",
+          "Pastoral",
+          "Grafiti",
+        ];
 
       case HobbyTypes.martialArts:
-        return null;
+        return [
+          "Karete",
+          "Tekvando",
+          "Judo",
+          "Aikido",
+          "Jujutsu",
+        ];
 
       case HobbyTypes.origami:
-        return null;
+        return [
+          "Parçalı Origami",
+          "Klasik Origami",
+        ];
 
       case HobbyTypes.playInstruments:
-        return null;
+        return [
+          "Keman",
+          "Bateri",
+          "Piyano",
+          "Ney",
+          "Gitar",
+          "Saz",
+        ];
 
       case HobbyTypes.readingBook:
-        return null;
+        return [
+          "Kişisel Gelişim",
+          "Bilim Kurgu",
+          "Fantastik Kurgu",
+          "Hikaye",
+          "Roman",
+          "Şiir",
+          "Biyografi",
+          "Tarih",
+          "Felsefe",
+          "Mitoloji",
+        ];
 
       case HobbyTypes.rideHorse:
-        return null;
+        return [
+          "İleri Seviye",
+          "Orta Seviye",
+          "Başlangıç Aşaması",
+        ];
 
       case HobbyTypes.swimming:
-        return null;
+        return [
+          "İleri Seviye",
+          "Orta Seviye",
+          "Başlangıç Aşaması",
+        ];
 
       case HobbyTypes.takePhoto:
-        return null;
+        return [
+          "İleri Seviye",
+          "Orta Seviye",
+          "Başlangıç Aşaması",
+        ];
 
       case HobbyTypes.theater:
-        return null;
+        return [
+          "Trajedi",
+          "Komedi",
+          "Drama",
+          "Opera",
+          "Pandomim",
+          "Müzikal",
+        ];
 
       case HobbyTypes.travel:
         return null;
@@ -369,17 +440,12 @@ class Hobby {
       case HobbyTypes.volunteerWork:
         return null;
 
-      case HobbyTypes.walking:
-        return null;
-
-      case HobbyTypes.watchingMovie:
-        return null;
-
       case HobbyTypes.writing:
-        return null;
-
-      case HobbyTypes.yoga:
-        return null;
+        return [
+          "İleri Seviye",
+          "Orta Seviye",
+          "Başlangıç Aşaması",
+        ];
     }
   }
 
@@ -413,10 +479,7 @@ class Hobby {
       Hobby().name(HobbyTypes.theater),
       Hobby().name(HobbyTypes.travel),
       Hobby().name(HobbyTypes.volunteerWork),
-      Hobby().name(HobbyTypes.walking),
-      Hobby().name(HobbyTypes.watchingMovie),
       Hobby().name(HobbyTypes.writing),
-      Hobby().name(HobbyTypes.yoga),
     ];
   }
 }
