@@ -314,6 +314,10 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
               return;
             }
 
+            if(UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
+              return;
+            }
+
             if (widget.myFeed.userID != UserBloc.user!.userID) {
               openOthersProfile(context, widget.myFeed.userID, SendRequestButtonStatus.connect);
             } else {
