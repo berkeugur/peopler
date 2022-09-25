@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/city_bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
@@ -19,6 +20,7 @@ import '../../../../../../others/locator.dart';
 import '../../../../../../others/strings.dart';
 import '../../../../../business_logic/blocs/ChatBloc/bloc.dart';
 import '../../../../../business_logic/blocs/NotificationBloc/bloc.dart';
+import '../../../../../business_logic/blocs/OtherUserBloc/other_user_bloc.dart';
 import '../../../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../../data/model/chat.dart';
@@ -337,6 +339,8 @@ class ProfileScreenComponentsOthersProfile {
         return _buildAcceptStatus(context, otherUser.userID, otherUser);
       case SendRequestButtonStatus.connected:
         return _buildConnectedStatus(otherUser, context);
+      case SendRequestButtonStatus.blocked:
+        return _buildBlockedStatus(context, otherUser.userID);
       default:
         return const Text("error");
     }
@@ -349,6 +353,9 @@ class ProfileScreenComponentsOthersProfile {
 
         MyUser otherUser = LocationBloc.allUserList.singleWhere((element) => element.userID == otherUserID);
         _savedBloc.add(ClickSaveButtonEvent(savedUser: otherUser, myUserID: UserBloc.user!.userID));
+
+        OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
+        _otherUserBloc.add(TrigStatusEvent(status: SendRequestButtonStatus.saved));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -393,6 +400,9 @@ class ProfileScreenComponentsOthersProfile {
           showNumOfConnectionRequestsConsumed(context);
           return;
         }
+
+        OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
+        _otherUserBloc.add(TrigStatusEvent(status: SendRequestButtonStatus.requestSent));
 
         SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
 
@@ -459,6 +469,43 @@ class ProfileScreenComponentsOthersProfile {
     );
   }
 
+  InkWell _buildBlockedStatus(BuildContext context, String otherUserID) {
+    return InkWell(
+      onTap: () async {
+        final UserRepository _userRepository = locator<UserRepository>();
+        _userRepository.unblockUser(UserBloc.user!.userID, otherUserID);
+
+        OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
+        _otherUserBloc.add(TrigStatusEvent(status: SendRequestButtonStatus.connect));
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          true
+              ? const SizedBox.shrink()
+              : SizedBox(
+            height: 16,
+            width: 16,
+            child: SvgPicture.asset(
+              "assets/images/svg_icons/saved.svg",
+              color: Colors.white,
+              matchTextDirection: true,
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox.square(dimension: 5),
+          Text(
+            "Engeli Kaldır",
+            textScaleFactor: 1,
+            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+          ),
+          const SizedBox.square(dimension: 5)
+        ],
+      ),
+    );
+  }
+
   Widget _buildRequestSentStatus(BuildContext context, String otherUserID) {
     return InkWell(
       onTap: () {
@@ -466,6 +513,9 @@ class ProfileScreenComponentsOthersProfile {
           showGeriAlWarning(context);
           return;
         }
+
+        OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
+        _otherUserBloc.add(TrigStatusEvent(status: SendRequestButtonStatus.connect));
 
         NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
         _notificationBloc.add(GeriAlButtonEvent(requestUserID: otherUserID));
@@ -499,38 +549,24 @@ class ProfileScreenComponentsOthersProfile {
   }
 
   InkWell _buildAcceptStatus(BuildContext context, String otherUserID, MyUser otherUser) {
-    bool _isAccepted = false;
     return InkWell(
       onTap: () {
-        print("butona tıklandı");
-        if (_isAccepted) {
-          UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-          _userBloc.mainKey.currentState?.push(
-            MaterialPageRoute(
-                builder: (context) => MessageScreen(
-                      requestUserID: otherUser.userID,
-                      requestProfileURL: otherUser.profileURL,
-                      requestDisplayName: otherUser.displayName,
-                    )),
-          );
-        } else {
-          print("istek henüz kabul edilmedi");
-          NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-          Notifications _notification = _notificationBloc.allNotificationList.singleWhere((element) => element.requestUserID == otherUserID);
+        OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
+        _otherUserBloc.add(TrigStatusEvent(status: SendRequestButtonStatus.connected));
 
-          ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
+        NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+        Notifications _notification = _notificationBloc.allNotificationList.singleWhere((element) => element.requestUserID == otherUserID);
 
-          _notificationBloc.add(ClickAcceptEvent(requestUserID: otherUserID));
-          _notification.didAccepted = true;
+        ChatBloc _chatBloc = BlocProvider.of<ChatBloc>(context);
 
-          _isAccepted = true;
+        _notificationBloc.add(ClickAcceptEvent(requestUserID: otherUserID));
+        _notification.didAccepted = true;
 
-          String? _hostUserID = _notification.requestUserID;
-          String? _hostUserName = _notification.requestDisplayName;
-          String? _hostUserProfileUrl = _notification.requestProfileURL;
+        String? _hostUserID = _notification.requestUserID;
+        String? _hostUserName = _notification.requestDisplayName;
+        String? _hostUserProfileUrl = _notification.requestProfileURL;
 
-          _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
-        }
+        _chatBloc.add(CreateChatEvent(hostUserID: _hostUserID!, hostUserName: _hostUserName, hostUserProfileUrl: _hostUserProfileUrl));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -548,7 +584,7 @@ class ProfileScreenComponentsOthersProfile {
                   ),
                 ),
           Text(
-            _isAccepted ? "Mesajlaş" : "Kabul Et",
+            "Kabul Et",
             textScaleFactor: 1,
             style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),

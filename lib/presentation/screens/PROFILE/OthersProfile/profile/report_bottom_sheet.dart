@@ -126,24 +126,26 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                 style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
               ),
               onTap: () async {
-                if (UserBloc.user != null) {
-                  if (otherUserBloc != null) {
-                    if (otherUserBloc.otherUser != null) {
-                      await BlockAndReportService().blockUser(blockUserID: otherUserBloc.otherUser!.userID).then((value) {
-                        Navigator.of(context).pop();
-                        PeoplerDialogs().showSuccessfulDialog(context, controller);
-                      }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
-                    } else {
-                      SnackBars(context: context).simple("other user bloc other user null");
-                    }
-                  } else if (otherUserBloc == null && userID != null) {
-                    await BlockAndReportService().blockUser(blockUserID: userID).then((value) {
-                      Navigator.of(context).pop();
-                      PeoplerDialogs().showSuccessfulDialog(context, controller);
-                    }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
-                  }
-                } else {
+                if (UserBloc.user == null) {
                   GuestAlert.dialog(context);
+                  return;
+                }
+
+                if (otherUserBloc != null) {
+                  if (otherUserBloc.otherUser == null) {
+                    SnackBars(context: context).simple("other user bloc other user null");
+                    return;
+                  }
+
+                  await BlockAndReportService().blockUser(blockUserID: otherUserBloc.otherUser!.userID).then((value) {
+                    Navigator.of(context).pop();
+                    PeoplerDialogs().showSuccessfulDialog(context, controller);
+                  }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
+                } else if (otherUserBloc == null && userID != null) {
+                  await BlockAndReportService().blockUser(blockUserID: userID).then((value) {
+                    Navigator.of(context).pop();
+                    PeoplerDialogs().showSuccessfulDialog(context, controller);
+                  }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
                 }
               },
             ),

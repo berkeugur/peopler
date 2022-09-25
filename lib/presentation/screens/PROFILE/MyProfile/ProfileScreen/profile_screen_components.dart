@@ -477,10 +477,8 @@ class ProfileScreenComponentsMyProfile {
           InkWell(
             borderRadius: BorderRadius.circular(99),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ConnectionsScreen()),
-              );
+              UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+              _userBloc.mainKey.currentState?.push(MaterialPageRoute(builder: (context) => const ConnectionsScreen()));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -496,7 +494,7 @@ class ProfileScreenComponentsMyProfile {
                     Icons.people,
                     color: Colors.grey[500],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   UserBloc.user!.connectionUserIDs.isNotEmpty

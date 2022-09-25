@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
@@ -17,9 +19,14 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
   late final List<MyActivity> activities;
   late final SendRequestButtonStatus status;
 
+  StreamSubscription? _streamSubscription;
+  bool _newUserListenListener = false;
+
   OtherUserBloc() : super(InitialOtherUserState()) {
     on<GetInitialDataEvent>((event, emit) async {
       try {
+        emit(InitialOtherUserState());
+
         /// Get otherUser object from database
         otherUser = await _userRepository.getUserWithUserId(event.userID);
 
@@ -32,7 +39,10 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
         activities = await _userRepository.getActivities(event.userID);
 
         /// Find status with him/her
-        if (UserBloc.user!.savedUserIDs.toSet().contains(event.userID)) {
+        if(UserBloc.user!.blockedUsers.toSet().contains(event.userID)) {
+          /// Check if I have blocked other user
+          status = SendRequestButtonStatus.blocked;
+        } else if (UserBloc.user!.savedUserIDs.toSet().contains(event.userID)) {
           /// Check if I have already saved other user
           status = SendRequestButtonStatus.saved;
         } else if (event.status == SendRequestButtonStatus.save) {
@@ -53,9 +63,31 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
         }
 
         emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status));
+
+        if (_newUserListenListener == false) {
+          _newUserListenListener = true;
+          _streamSubscription = _userRepository
+              .getMyUserWithStream(UserBloc.user!.userID)
+              .listen((myUser) async {
+
+            add(NewUserListenerEvent(myUser: myUser));
+          });
+        }
       } catch (e) {
         emit(OtherUserNotFoundState());
         debugPrint("other user not found" + e.toString());
+      }
+    });
+
+    on<TrigStatusEvent>((event, emit) async {
+      emit(InitialOtherUserState());
+      emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, event.status));
+    });
+
+    on<NewUserListenerEvent>((event, emit) async {
+      if(event.myUser.blockedUsers.toSet().contains(otherUser!.userID)) {
+        /// Check if I have blocked other user
+        add(TrigStatusEvent(status: SendRequestButtonStatus.blocked));
       }
     });
 
@@ -65,5 +97,13 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
       status = SendRequestButtonStatus.connect;
       emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status));
     });
+  }
+
+  @override
+  Future<void> close() async {
+    if (_streamSubscription != null) {
+      _streamSubscription?.cancel();
+    }
+    super.close();
   }
 }
