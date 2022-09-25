@@ -332,7 +332,7 @@ class ProfileScreenComponentsOthersProfile {
       case SendRequestButtonStatus.connect:
         return _buildConnectStatus(context, otherUser.userID);
       case SendRequestButtonStatus.requestSent:
-        return _buildRequestSentStatus();
+        return _buildRequestSentStatus(context, otherUser.userID);
       case SendRequestButtonStatus.accept:
         return _buildAcceptStatus(context, otherUser.userID, otherUser);
       case SendRequestButtonStatus.connected:
@@ -346,18 +346,9 @@ class ProfileScreenComponentsOthersProfile {
     return InkWell(
       onTap: () {
         SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
-        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
-        CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
 
         MyUser otherUser = LocationBloc.allUserList.singleWhere((element) => element.userID == otherUserID);
         _savedBloc.add(ClickSaveButtonEvent(savedUser: otherUser, myUserID: UserBloc.user!.userID));
-
-        String _deletedUserID = otherUser.userID;
-        LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-        CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-
-        _cityBloc.add(TrigUsersNotExistCityStateEvent());
-        _locationBloc.add(TrigUsersNotExistSearchStateEvent());
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -426,10 +417,6 @@ class ProfileScreenComponentsOthersProfile {
 
         _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
-        String _deletedUserID = otherUser.userID;
-        LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-        CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-
         String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
         await _sendNotificationService
             .sendNotification(
@@ -442,13 +429,9 @@ class ProfileScreenComponentsOthersProfile {
         )
             .then((value) {
           setTheme.value = !setTheme.value;
-          Reloader.isConnected.value = !Reloader.isConnected.value;
         });
       },
-      child: ValueListenableBuilder(
-          valueListenable: Reloader.isConnected,
-          builder: (contex, _, __) {
-            return Row(
+      child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -466,25 +449,34 @@ class ProfileScreenComponentsOthersProfile {
                       ),
                 const SizedBox.square(dimension: 5),
                 Text(
-                  Reloader.isConnected.value ? "Geri Al" : "Bağlantı Kur",
+                  "Bağlantı Kur",
                   textScaleFactor: 1,
                   style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
                 ),
                 const SizedBox.square(dimension: 5)
               ],
-            );
-          }),
+            ),
     );
   }
 
-  Row _buildRequestSentStatus() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        true
-            ? const SizedBox.shrink()
-            : SizedBox(
+  Widget _buildRequestSentStatus(BuildContext context, String otherUserID) {
+    return InkWell(
+      onTap: () {
+        if(UserBloc.entitlement == "free") {
+          showGeriAlWarning(context);
+          return;
+        }
+
+        NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+        _notificationBloc.add(GeriAlButtonEvent(requestUserID: otherUserID));
+      },
+      child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              true
+                  ? const SizedBox.shrink()
+                  : SizedBox(
                 height: 16,
                 width: 16,
                 child: SvgPicture.asset(
@@ -494,15 +486,16 @@ class ProfileScreenComponentsOthersProfile {
                   fit: BoxFit.contain,
                 ),
               ),
-        const SizedBox.square(dimension: 5),
-        Text(
-          "İstek Gönderildi",
-          textScaleFactor: 1,
-          style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
-        ),
-        const SizedBox.square(dimension: 5)
-      ],
-    );
+              const SizedBox.square(dimension: 5),
+              Text(
+                "Geri Al",
+                textScaleFactor: 1,
+                style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+              ),
+              const SizedBox.square(dimension: 5)
+            ],
+          ),
+        );
   }
 
   InkWell _buildAcceptStatus(BuildContext context, String otherUserID, MyUser otherUser) {
@@ -544,7 +537,7 @@ class ProfileScreenComponentsOthersProfile {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           true
-              ? SizedBox.shrink()
+              ? const SizedBox.shrink()
               : Padding(
                   padding: const EdgeInsets.all(2.5),
                   child: SvgPicture.asset(

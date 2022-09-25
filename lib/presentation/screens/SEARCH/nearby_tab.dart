@@ -92,19 +92,8 @@ class _NearbyTabState extends State<NearbyTab> {
                   color: Color(0xFF0353EF),
                   displacement: 80.0,
                   onRefresh: () async {
-                    int _latitude;
-                    int _longitude;
-
-                    if (UserBloc.user != null) {
-                      _latitude = UserBloc.user!.latitude;
-                      _longitude = UserBloc.user!.longitude;
-                    } else {
-                      _latitude = UserBloc.guestUser!.latitude;
-                      _longitude = UserBloc.guestUser!.longitude;
-                    }
-
                     /// Refresh users
-                    await _locationBloc.getRefreshIndicatorData(_latitude, _longitude);
+                    await _locationBloc.getRefreshIndicatorData();
                   },
                   child: SingleChildScrollView(
                     controller: _searchPeopleListControllerNearby,
@@ -479,11 +468,14 @@ class _NearbyTabState extends State<NearbyTab> {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
+                    CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
+
                     String _deletedUserID = LocationBloc.allUserList[index].userID;
                     LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                     CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                    widget.showWidgetsKeyNearby.currentState?.setState(() {});
-                    widget.showWidgetsKeyCity.currentState?.setState(() {});
+
+                    _cityBloc.add(TrigUsersNotExistCityStateEvent());
+                    _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                   },
                   child: Container(
                     alignment: Alignment.topRight,
@@ -588,19 +580,12 @@ class _NearbyTabState extends State<NearbyTab> {
                                   CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
 
                                   _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
-                                  String _deletedUserID = LocationBloc.allUserList[index].userID;
-
-                                  LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                                  CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
                                   Provider.of<SaveButton>(context, listen: false).saveUser();
                                   await Future.delayed(const Duration(milliseconds: 1500));
 
                                   widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                   widget.showWidgetsKeyCity.currentState?.setState(() {});
-
-                                  _cityBloc.add(TrigUsersNotExistCityStateEvent());
-                                  _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                                 } else {
                                   showYouNeedToLoginSave(context);
                                 }

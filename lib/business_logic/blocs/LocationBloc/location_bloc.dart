@@ -3,62 +3,76 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/repository/location_repository.dart';
+import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
 import 'dart:async';
 
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final LocationRepository _locationRepository = locator<LocationRepository>();
+  final UserRepository _userRepository = locator<UserRepository>();
 
   static List<MyUser> allUserList = [];
   StreamSubscription? _streamSubscription;
+  bool _newUserListenListener = false;
 
   List<String> _queryList = List.filled(9, '');
 
-  void removeUnnecessaryUsersFromUserList(List<MyUser> userList) {
+  void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
     /// Remove myself from list
-    userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
+    userList.removeWhere((item) => item.userID == myUser.userID);
 
     List<MyUser> tempList = [...userList];
     for (MyUser tempUser in tempList) {
-      if (UserBloc.user!.savedUserIDs.contains(tempUser.userID)) {
+      if (myUser.savedUserIDs.contains(tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
 
-      if (UserBloc.user!.transmittedRequestUserIDs.contains(
+      if (myUser.transmittedRequestUserIDs.contains(
           tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
 
-      if (UserBloc.user!.receivedRequestUserIDs.contains(
+      if (myUser.receivedRequestUserIDs.contains(
           tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
 
-      if (UserBloc.user!.connectionUserIDs.contains(tempUser.userID)) {
+      if (myUser.connectionUserIDs.contains(tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
 
-      if (UserBloc.user!.whoBlockedYou.contains(tempUser.userID)) {
+      if (myUser.whoBlockedYou.contains(tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
 
-      if (UserBloc.user!.blockedUsers.contains(tempUser.userID)) {
+      if (myUser.blockedUsers.contains(tempUser.userID)) {
         userList.removeWhere((item) => item.userID == tempUser.userID);
       }
     }
   }
 
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
-  Future<void> getRefreshIndicatorData(int latitude, int longitude) async {
+  Future<void> getRefreshIndicatorData() async {
     try {
+        int _latitude;
+        int _longitude;
+
+        if (UserBloc.user != null) {
+          _latitude = UserBloc.user!.latitude;
+          _longitude = UserBloc.user!.longitude;
+        } else {
+          _latitude = UserBloc.guestUser!.latitude;
+          _longitude = UserBloc.guestUser!.longitude;
+        }
+
         _locationRepository.restartRepositoryCache();
 
-        _queryList = await _locationRepository.determineQueryList(latitude, longitude);
+        _queryList = await _locationRepository.determineQueryList(_latitude, _longitude);
         List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
 
         if(UserBloc.user != null) {
-          removeUnnecessaryUsersFromUserList(userList);
+          removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
         }
 
         allUserList = [];
@@ -89,16 +103,24 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
 
         if(UserBloc.user != null) {
-          removeUnnecessaryUsersFromUserList(userList);
+          removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
         }
-
-        // await Future.delayed(const Duration(seconds: 2));
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           emit(UsersLoadedSearchState());
         } else {
           emit(UsersNotExistSearchState());
+        }
+
+        if (_newUserListenListener == false) {
+          _newUserListenListener = true;
+          _streamSubscription = _userRepository
+              .getMyUserWithStream(UserBloc.user!.userID)
+              .listen((myUser) async {
+
+            add(NewUserListenerEvent(myUser: myUser));
+          });
         }
       } catch (e) {
         debugPrint("Blocta initial location hata:" + e.toString());
@@ -112,7 +134,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
 
         if(UserBloc.user != null) {
-          removeUnnecessaryUsersFromUserList(userList);
+          removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
         }
 
         // await Future.delayed(const Duration(seconds: 2));
@@ -139,9 +161,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<TrigUsersNotExistSearchStateEvent>((event, emit) async {
       if(allUserList.isEmpty) {
         emit(UsersNotExistSearchState());
+      } else {
+        emit(NewUsersLoadingSearchState());
+        emit(UsersLoadedSearchState());
       }
     });
 
+    on<NewUserListenerEvent>((event, emit) async {
+      removeUnnecessaryUsersFromUserList(allUserList, event.myUser);
+      add(TrigUsersNotExistSearchStateEvent());
+    });
   }
 
   @override

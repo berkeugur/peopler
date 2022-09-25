@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
@@ -341,12 +342,15 @@ class CityTabState extends State<CityTab> {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
+                    LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+                    CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
+
                     String _deletedUserID = CityBloc.allUserList[index].userID;
                     LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                     CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
-                    widget.showWidgetsKeyNearby.currentState?.setState(() {});
-                    widget.showWidgetsKeyCity.currentState?.setState(() {});
+                    _cityBloc.add(TrigUsersNotExistCityStateEvent());
+                    _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                   },
                   child: Container(
                     alignment: Alignment.topRight,
@@ -444,6 +448,8 @@ class CityTabState extends State<CityTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
+                                LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+
                                 if (UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                   return;
@@ -463,10 +469,6 @@ class CityTabState extends State<CityTab> {
 
                                 _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
-                                String _deletedUserID = CityBloc.allUserList[index].userID;
-                                LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                                CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-
                                 if (UserBloc.entitlement == "free") {
                                   showRestNumOfConnectionRequests(context);
                                 }
@@ -480,10 +482,6 @@ class CityTabState extends State<CityTab> {
 
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                 widget.showWidgetsKeyCity.currentState?.setState(() {});
-
-                                if (CityBloc.allUserList.isEmpty) {
-                                  _cityBloc.add(TrigUsersNotExistCityStateEvent());
-                                }
                               },
                               child: Center(
                                 child: Container(

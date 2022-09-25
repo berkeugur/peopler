@@ -34,7 +34,7 @@ class FirestoreDBServiceUsers {
     }
 
     Map<String, dynamic> _readUserPublicMap = documentSnapshot.data() as Map<String, dynamic>;
-    _myUser.updateFromPublicMap(_readUserPublicMap);
+    _myUser.fromPublicMap(_readUserPublicMap);
 
     /// PRIVATE FIELD
     documentSnapshot = await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').get();
@@ -45,7 +45,7 @@ class FirestoreDBServiceUsers {
     }
 
     Map<String, dynamic> _readUserPrivateMap = documentSnapshot.data() as Map<String, dynamic>;
-    _myUser.updateFromPrivateMap(_readUserPrivateMap);
+    _myUser.fromPrivateMap(_readUserPrivateMap);
 
     return _myUser;
   }
@@ -59,7 +59,7 @@ class FirestoreDBServiceUsers {
     return snapShot.map(
             (myUser) {
               MyUser _user = MyUser();
-              _user.updateFromPublicMap(myUser.data() as Map<String, dynamic>);
+              _user.fromPublicMap(myUser.data() as Map<String, dynamic>);
               return _user;
             }
     );
@@ -79,7 +79,7 @@ class FirestoreDBServiceUsers {
 
     Map<String, dynamic> _readUserMap = documentSnapshot.data() as Map<String, dynamic>;
     MyUser _user = MyUser();
-    _user.updateFromPublicMap(_readUserMap);
+    _user.fromPublicMap(_readUserMap);
     return _user;
   }
 
@@ -301,7 +301,7 @@ class FirestoreDBServiceUsers {
           .get();
 
       MyUser _currentUser = MyUser();
-      _currentUser.updateFromPublicMap(_userDocument.data() as Map<String, dynamic>);
+      _currentUser.fromPublicMap(_userDocument.data() as Map<String, dynamic>);
       _allUsers.add(_currentUser);
     }
 
@@ -331,7 +331,7 @@ class FirestoreDBServiceUsers {
     List<MyUser> _allUsers = [];
     for (DocumentSnapshot snap in _querySnapshot.docs) {
       MyUser _currentUser = MyUser();
-      _currentUser.updateFromPublicMap(snap.data() as Map<String, dynamic>);
+      _currentUser.fromPublicMap(snap.data() as Map<String, dynamic>);
       _allUsers.add(_currentUser);
     }
 

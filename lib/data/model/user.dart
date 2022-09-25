@@ -61,7 +61,7 @@ class MyUser {
     };
   }
 
-  void updateFromPublicMap(Map<String, dynamic> map) {
+  void fromPublicMap(Map<String, dynamic> map) {
     userID = map['userID'] as String;
     pplName = map['pplName'] as String;
     displayName = map['displayName'] as String;
@@ -98,7 +98,7 @@ class MyUser {
     };
   }
 
-  void updateFromPrivateMap(Map<String, dynamic> map) {
+  void fromPrivateMap(Map<String, dynamic> map) {
     email = map['email'] as String;
     isTheAccountConfirmed = map['isTheAccountConfirmed'] as bool;
     missingInfo = map['missingInfo'] as bool;

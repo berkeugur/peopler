@@ -51,7 +51,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       _streamSubscription = _userRepository
           .getMyUserWithStream(UserBloc.user!.userID)
           .listen((updatedUser) async {
-        UserBloc.user!.updateFromPublicMap(updatedUser.toPublicMap());
+        UserBloc.user!.fromPublicMap(updatedUser.toPublicMap());
 
         List<MyUser> tempList = [...CityBloc.allUserList];
         for(MyUser tempUser in  tempList){

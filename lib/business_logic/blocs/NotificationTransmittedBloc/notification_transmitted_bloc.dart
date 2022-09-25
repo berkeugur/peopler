@@ -86,9 +86,13 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
         _allTransmittedList.removeWhere((element) => element.requestUserID == event.requestUserID);
 
-        emit(NewNotificationTransmittedLoadingState());
+        if(_allTransmittedList.isEmpty) {
+          emit(NotificationTransmittedNotExistState());
+        } else {
+          emit(NotificationTransmittedLoadedState());
+        }
+
         await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);
-        emit(NotificationTransmittedLoadedState());
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }

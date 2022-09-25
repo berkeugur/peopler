@@ -393,8 +393,7 @@ void _clickGeriAl(BuildContext context, Notifications notification) {
   }
 
   NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-  String requestUserID = notification.requestUserID!;
-  _notificationBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
+  _notificationBloc.add(GeriAlButtonEvent(requestUserID: notification.requestUserID!));
 }
 
 Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,

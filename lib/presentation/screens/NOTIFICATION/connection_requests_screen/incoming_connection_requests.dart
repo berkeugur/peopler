@@ -452,8 +452,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
     Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
     return InkWell(
       onTap: () {
-        _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!));
-        _notificationReceivedBloc.allReceivedList.removeAt(index);
+        _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!, index: index));
         setState(() {});
       },
       child: Container(
