@@ -11,7 +11,7 @@ import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/pro
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 
 class HobbyService {
-  addNew({required BuildContext context, required String selectedValue, required List selectedSubHobbyIndex}) async {
+  Future addNew({required BuildContext context, required String selectedValue, required List selectedSubHobbyIndex}) async {
     await FirebaseFirestore.instance.collection("users").doc(UserBloc.user!.userID).update(
       {
         "hobbies": FieldValue.arrayUnion(
@@ -36,6 +36,7 @@ class HobbyService {
           const Duration(milliseconds: 500),
           () {
             setStateProfileScreen.value = !setStateProfileScreen.value;
+            selectedSubHobbyIndex = [];
           },
         );
       },
