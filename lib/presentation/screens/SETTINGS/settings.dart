@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:peopler/presentation/screens/SETTINGS/components/account_settings.dart';
 import 'package:peopler/presentation/screens/SETTINGS/settings_page_functions.dart';
 
 import '../../../others/classes/dark_light_mode_controller.dart';
@@ -84,6 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             toggleSwitches(context, setState: setState),
                             changePasswordField(context),
+                            accountSettings(context),
                             about_field(context),
                             const SizedBox(
                               height: 30,

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/others/locator.dart';
 import 'package:peopler/presentation/screens/BLOCKED/blocked_users.dart';
-import '../../../../others/classes/dark_light_mode_controller.dart';
-import '../../../../others/locator.dart';
-import '../settings.dart';
-import '../settings_page_functions.dart';
+import 'package:peopler/presentation/screens/SETTINGS/settings.dart';
+import 'package:peopler/presentation/screens/SETTINGS/settings_page_functions.dart';
 
-changePasswordField(context) {
+import '../../../../others/classes/dark_light_mode_controller.dart';
+
+accountSettings(context) {
   final Mode _mode = locator<Mode>();
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -19,7 +20,7 @@ changePasswordField(context) {
           height: 20,
         ),
         Text(
-          "Güvenlik",
+          "Hesabım",
           textScaleFactor: 1,
           style: GoogleFonts.rubik(
             fontWeight: FontWeight.w400,
@@ -27,11 +28,16 @@ changePasswordField(context) {
             color: _mode.settings_setting_title(),
           ),
         ),
+
         const SizedBox(
           height: 10,
         ),
         InkWell(
-          onTap: () => op_change_password(context),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BlockedUsersScreen(),
+            ),
+          ),
           child: Row(
             children: [
               SvgPicture.asset(
@@ -45,7 +51,7 @@ changePasswordField(context) {
                 width: 5,
               ),
               Text(
-                "Şifre Değiştir",
+                "Engellenen Kullanıcılar",
                 textScaleFactor: 1,
                 style: GoogleFonts.rubik(
                   fontSize: 16,
@@ -55,7 +61,6 @@ changePasswordField(context) {
             ],
           ),
         ),
-
         //Container(width: 10,height: 1,color: _mode.settings_custom_2(),margin: EdgeInsets.only(left: 30),)
       ],
     ),

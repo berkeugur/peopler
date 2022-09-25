@@ -12,6 +12,7 @@ import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_screen.dart';
 import 'package:peopler/presentation/screens/HOME/home_screen.dart';
+import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import '../../presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 import '../../presentation/screens/SETTINGS/settings.dart';
 
@@ -65,11 +66,12 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
+    double _height = MediaQuery.of(context).size.height;
     final _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Scaffold(
       backgroundColor: const Color(0xFF0353EF),
       body: Padding(
-        padding: const EdgeInsets.only(top: 40, bottom: 40, left: 40),
+        padding: EdgeInsets.only(top: _height * 0.1, bottom: _height * 0.1, left: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,24 +91,131 @@ class _MenuPageState extends State<MenuPage> {
                 const SizedBox(
                   height: 15,
                 ),
-                theme_change_buttons(_themeCubit),
+                //theme_change_buttons(_themeCubit),
               ],
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  const Divider(
+                    color: Colors.white,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(999),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                          contentPadding: EdgeInsets.only(top: 20.0, bottom: 5),
+                          content: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "Etkinliklerim Bölümü Deneme Aşamasındadır.",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Divider(),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              InkWell(
+                                onTap: () async {},
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(999),
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 10,
+                                  ),
+                                  child: Text(
+                                    "E-Posta İle Haber Ver",
+                                    style: GoogleFonts.rubik(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  "KAPAT",
+                                  style: GoogleFonts.rubik(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "Etkinlikler",
+                            textScaleFactor: 1,
+                            style: GoogleFonts.rubik(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  //MenuItems(context: context, svgiconpath: "assets/images/svg_icons/home.svg", itemtext: "Ana Sayfa"),
+                  //MenuItems(context: context, svgiconpath: "assets/images/svg_icons/notification.svg", itemtext: "Bildirimler"),
+                  //MenuItems(context: context, svgiconpath: "assets/images/svg_icons/search.svg", itemtext: "Keşfet"),
+                  //MenuItems(context: context, svgiconpath: "assets/images/svg_icons/message_icon.svg", itemtext: "Mesajlar"),
+                  //MenuItems(context: context, svgiconpath: "assets/images/svg_icons/profile_icon.svg", itemtext: "Profil"),
+                ],
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/home.svg", itemtext: "Ana Sayfa"),
-                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/notification.svg", itemtext: "Bildirimler"),
-                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/search.svg", itemtext: "Keşfet"),
-                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/message_icon.svg", itemtext: "Mesajlar"),
-                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/profile_icon.svg", itemtext: "Profil"),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextButton(
-                  onPressed: () {
+                const Divider(
+                  color: Colors.white,
+                ),
+                MenuItems(
+                  context: context,
+                  svgiconpath: "assets/images/svg_icons/settings.svg",
+                  itemtext: "Ayarlar",
+                  function: () {
                     UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                     if (UserBloc.user != null) {
                       ZoomDrawer.of(context)!.toggle();
@@ -123,12 +232,7 @@ class _MenuPageState extends State<MenuPage> {
     );*/
                     }
                   },
-                  child: Text(
-                    "deneme",
-                    style: TextStyle(color: Colors.red),
-                  ),
                 ),
-                MenuItems(context: context, svgiconpath: "assets/images/svg_icons/settings.svg", itemtext: "Ayarlar"),
                 MenuItems(context: context, itemtext: "Destek", icon: Icons.support_agent),
               ],
             )
@@ -174,6 +278,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Row theme_change_buttons(ThemeCubit _themeCubit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -257,46 +362,46 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget MenuItems({
-    required BuildContext context,
-    String? svgiconpath,
-    required String itemtext,
-    IconData? icon,
-  }) {
+  Widget MenuItems({required BuildContext context, String? svgiconpath, required String itemtext, IconData? icon, void Function()? function}) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 10),
       child: InkWell(
-        onTap: () => op_settings_icon(context),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            icon != null
-                ? Icon(
-                    icon,
-                    size: 25,
-                    color: Colors.white,
-                  )
-                : svgiconpath != null
-                    ? SvgPicture.asset(
-                        svgiconpath,
-                        width: 25,
-                        color: Colors.white,
-                        fit: BoxFit.contain,
-                      )
-                    : const SizedBox.square(
-                        dimension: 25,
-                      ),
-            const SizedBox(
-              width: 40,
-            ),
-            Text(
-              itemtext,
-              textScaleFactor: 1,
-              textAlign: TextAlign.left,
-              style: GoogleFonts.rubik(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
-            )
-          ],
+        borderRadius: BorderRadius.circular(999),
+        onTap: function ?? printf("null menu items function"),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              icon != null
+                  ? Icon(
+                      icon,
+                      size: 25,
+                      color: Colors.white,
+                    )
+                  : svgiconpath != null
+                      ? SvgPicture.asset(
+                          svgiconpath,
+                          width: 25,
+                          color: Colors.white,
+                          fit: BoxFit.contain,
+                        )
+                      : const SizedBox.square(
+                          dimension: 25,
+                        ),
+              const SizedBox(
+                width: 30,
+              ),
+              Text(
+                itemtext,
+                textScaleFactor: 1,
+                textAlign: TextAlign.left,
+                style: GoogleFonts.rubik(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+              )
+            ],
+          ),
         ),
       ),
     );
