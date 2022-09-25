@@ -219,6 +219,17 @@ class PeoplerAppBars {
     );
   }
 
+  // ignore: non_constant_identifier_names
+  AppBar get BLOCKED_USERS {
+    return AppBar(
+      leading: _BACK_BUTTON(),
+      title: _TITLE(title: "Engellenen Kullanıcılar"),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
   GALLERY() {
     return AppBar(
       leading: _BACK_BUTTON(

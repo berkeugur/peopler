@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/presentation/screens/BLOCKED/blocked_users.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../settings.dart';
@@ -45,6 +46,39 @@ changePasswordField(context) {
               ),
               Text(
                 "Şifre Değiştir",
+                textScaleFactor: 1,
+                style: GoogleFonts.rubik(
+                  fontSize: 16,
+                  color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(
+          height: 10,
+        ),
+        InkWell(
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const BlockedUsersScreen(),
+            ),
+          ),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/images/svg_icons/password_lock.svg",
+                width: 20,
+                height: 20,
+                color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                "Engellenen Kullanıcılar",
                 textScaleFactor: 1,
                 style: GoogleFonts.rubik(
                   fontSize: 16,

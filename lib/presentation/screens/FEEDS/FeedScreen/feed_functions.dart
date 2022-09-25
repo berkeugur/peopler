@@ -85,7 +85,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
               ),
               onTap: () {
                 MyReport report = MyReport(userID: userID, type: "Report User", feedID: feedId, feedExplanation: feedExplanation);
-                ReportScreenService().reportUser(report: report).then((value) {
+                BlockAndReportService().reportUser(report: report).then((value) {
                   Navigator.of(context).pop();
                   PeoplerDialogs().showSuccessfulDialog(context, animationController);
                 }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
@@ -102,7 +102,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
                 style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
-                ReportScreenService().blockUser(blockUserID: userID, feedID: feedId).then((value) {
+                BlockAndReportService().blockUser(blockUserID: userID, feedID: feedId).then((value) {
                   Navigator.of(context).pop();
                   PeoplerDialogs().showSuccessfulDialog(context, animationController);
                 }).onError((error, stackTrace) => SnackBars(context: context).simple("$error"));
@@ -238,7 +238,7 @@ InkWell _reportItem(
       if (UserBloc.user != null) {
         MyReport report = MyReport(userID: userID, type: text, feedID: feedId, feedExplanation: feedExplanation);
 
-        ReportScreenService().reportFeed(report: report);
+        BlockAndReportService().reportFeed(report: report);
 
         Navigator.pop(context);
 

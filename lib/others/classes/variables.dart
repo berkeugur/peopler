@@ -36,4 +36,6 @@ class Variables {
 
   static ValueNotifier<double> animatedNotificationsHeaderTop = ValueNotifier(70);
   static ValueNotifier<double> animatedNotificationHeaderBottom = ValueNotifier(50);
+
+  static ValueNotifier<List<Map<String, dynamic>>> blockedUsersData = ValueNotifier([]);
 }
