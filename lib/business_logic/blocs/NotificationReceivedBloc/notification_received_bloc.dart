@@ -70,7 +70,7 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
       }
     });
 
-    on<ClickAcceptEvent>((event, emit) async {
+    on<ClickAcceptReceivedEvent>((event, emit) async {
       try {
         await _notificationRepository.acceptConnectionRequest(UserBloc.user!.userID, event.requestUserID);
 
@@ -85,7 +85,9 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
 
     on<ClickNotAcceptEvent>((event, emit) async {
       try {
+        UserBloc.user!.receivedRequestUserIDs.remove(event.requestUserID);
         _allReceivedList.removeAt(event.index);
+
         if(_allReceivedList.isEmpty) {
           emit(NotificationReceivedNotExistState());
         }

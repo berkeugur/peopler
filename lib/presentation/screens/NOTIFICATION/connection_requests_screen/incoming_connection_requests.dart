@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/ChatBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 
+import '../../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../../business_logic/blocs/NotificationReceivedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../data/model/chat.dart';
@@ -453,7 +454,6 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
     return InkWell(
       onTap: () {
         _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!, index: index));
-        setState(() {});
       },
       child: Container(
         height: _buttonSize,
@@ -462,7 +462,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
             borderRadius: BorderRadius.circular(99),
             border: Border.all(
               width: 1,
-              color: Color(0xFF959595),
+              color: const Color(0xFF959595),
             )),
         child: const Icon(
           Icons.close,
@@ -476,7 +476,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
     Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
     return InkWell(
       onTap: () {
-        _notificationReceivedBloc.add(ClickAcceptEvent(requestUserID: _currentItem.requestUserID!));
+        _notificationReceivedBloc.add(ClickAcceptReceivedEvent(requestUserID: _currentItem.requestUserID!));
         _notificationReceivedBloc.allReceivedList[index].didAccepted = true;
 
         setState(() {});

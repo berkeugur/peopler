@@ -126,14 +126,14 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         int index = _allNotificationList.indexWhere((element) => element.notificationID == event.notificationID);
         _allNotificationList.removeAt(index);
 
-        await _notificationRepository.makeNotificationInvisible(UserBloc.user!.userID, event.notificationID);
-
-        if(state is NotificationLoadedState1) {
-          emit(NotificationLoadedState2());
+        if(_allNotificationList.isEmpty) {
+          emit(NotificationNotExistState());
         } else {
+          emit(NotificationsLoadingState());
           emit(NotificationLoadedState1());
         }
 
+        await _notificationRepository.makeNotificationInvisible(UserBloc.user!.userID, event.notificationID);
       } catch (e) {
         debugPrint("Blocta DeleteNotification hata:" + e.toString());
       }

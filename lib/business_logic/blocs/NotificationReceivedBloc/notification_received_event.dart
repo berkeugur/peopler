@@ -15,10 +15,10 @@ class GetInitialDataEvent extends NotificationReceivedEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class ClickAcceptEvent extends NotificationReceivedEvent {
+class ClickAcceptReceivedEvent extends NotificationReceivedEvent {
   final String requestUserID;
 
-  ClickAcceptEvent({
+  ClickAcceptReceivedEvent({
     required this.requestUserID,
   });
 
