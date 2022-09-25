@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -108,10 +110,18 @@ class _MenuPageState extends State<MenuPage> {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(999),
-                    onTap: () {
-                      showDialog(
+                    onTap: () async {
+                      await FirebaseFirestore.instance.collection("eventsbutton").doc().set({
+                        "createdAt": Timestamp.now(),
+                        "cretedMonth": Timestamp.now().toDate().month,
+                        "cretedYear": Timestamp.now().toDate().year,
+                        "cretedDay": Timestamp.now().toDate().day,
+                        "isNeedEmailNotification": false,
+                        "createdFromUserID": UserBloc.user?.userID,
+                      });
+                      await showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
+                        builder: (contextSD) => AlertDialog(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
                           contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
                           content: Column(
@@ -120,7 +130,7 @@ class _MenuPageState extends State<MenuPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "Etkinliklerim Bölümü Deneme Aşamasındadır.",
+                                "Etkinlikler Bölümü Deneme Aşamasındadır.",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.rubik(
                                   fontSize: 18,
@@ -135,7 +145,19 @@ class _MenuPageState extends State<MenuPage> {
                                 height: 10,
                               ),
                               InkWell(
-                                onTap: () async {},
+                                onTap: () async {
+                                  await FirebaseFirestore.instance.collection("eventsbutton").doc().set({
+                                    "createdAt": Timestamp.now(),
+                                    "cretedMonth": Timestamp.now().toDate().month,
+                                    "cretedYear": Timestamp.now().toDate().year,
+                                    "cretedDay": Timestamp.now().toDate().day,
+                                    "createdFromUserID": UserBloc.user?.userID,
+                                    "isNeedEmailNotification": true,
+                                    "createdFromUserEmail": UserBloc.user?.email,
+                                  }).then((value) {
+                                    Navigator.of(context).pop();
+                                  });
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(999),

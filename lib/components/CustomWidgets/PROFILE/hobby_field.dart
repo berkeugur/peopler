@@ -238,11 +238,14 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                                 } else if (_currentPage == 1 && selectedValue != null) {
                                                   HobbyService()
                                                       .addNew(
-                                                        context: context,
-                                                        selectedValue: selectedValue!,
-                                                        selectedSubHobbyIndex: selectedSubHobbyIndex,
-                                                      )
-                                                      .then((value) => selectedSubHobbyIndex = []);
+                                                    context: context,
+                                                    selectedValue: selectedValue!,
+                                                    selectedSubHobbyIndex: selectedSubHobbyIndex,
+                                                  )
+                                                      .then((value) {
+                                                    selectedSubHobbyIndex = [];
+                                                    selectedValue = null;
+                                                  });
                                                   SnackBars(context: context).simple("Başarıyla eklendi");
                                                 } else {
                                                   SnackBars(context: context).simple("error");
