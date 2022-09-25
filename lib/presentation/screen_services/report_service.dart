@@ -16,17 +16,23 @@ class BlockAndReportService {
 
   ///to be used in both feed and message and profile screens
   Future<void> blockUser({required String blockUserID, String? feedID}) async {
+    ///local change
+    UserBloc.user?.blockedUsers.add(blockUserID);
+
     final UserRepository _userRepository = locator<UserRepository>();
-    _userRepository.blockUser(UserBloc.user!.userID, blockUserID);
+    await _userRepository.blockUser(UserBloc.user!.userID, blockUserID);
   }
 
   Future<void> unblockUser({required String blockUserID}) async {
     Future.delayed(
       const Duration(seconds: 1),
-      (() {
+      (() async {
         ///local change
         UserBloc.user?.blockedUsers.remove(blockUserID);
         Reloader.isUnBlocked.value = !Reloader.isUnBlocked.value;
+
+        final UserRepository _userRepository = locator<UserRepository>();
+        await _userRepository.unblockUser(UserBloc.user!.userID, blockUserID);
       }),
     );
   }

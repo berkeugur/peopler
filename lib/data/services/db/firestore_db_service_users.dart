@@ -724,4 +724,30 @@ class FirestoreDBServiceUsers {
       return false;
     }
   }
+
+  Future<bool> deleteFromWhoBlockedYou(String myUserID, String requestUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .update({"whoBlockedYou": FieldValue.arrayRemove([requestUserID])});
+      return true;
+    } catch (e) {
+      debugPrint('Update whoBlockedYou fail');
+      return false;
+    }
+  }
+
+  Future<bool> deleteFromBlockedUsers(String myUserID, String requestUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .update({"blockedUsers": FieldValue.arrayRemove([requestUserID])});
+      return true;
+    } catch (e) {
+      debugPrint('Update blockedUsers fail');
+      return false;
+    }
+  }
 }

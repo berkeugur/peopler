@@ -102,7 +102,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    //Text("1 saat önce",style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(),fontSize: 14),),
+                                    (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID) ||  (UserBloc.user == null) ? const SizedBox.shrink() :
                                     IconButton(
                                       onPressed: () {
                                         tripleDotOnPressed(

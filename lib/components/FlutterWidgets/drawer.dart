@@ -123,7 +123,7 @@ class _MenuPageState extends State<MenuPage> {
     );*/
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     "deneme",
                     style: TextStyle(color: Colors.red),
                   ),

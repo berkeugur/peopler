@@ -254,4 +254,10 @@ class UserRepository {
     await _firestoreDBServiceUsers.updateBlockedUsers(myUserID, otherUserID);
     await _firestoreDBServiceUsers.updateWhoBlockedYou(otherUserID, myUserID);
   }
+
+  Future<void> unblockUser(String myUserID, String otherUserID) async {
+    /// Update blockedUsers for you and whoBlockedYou for requestUser
+    await _firestoreDBServiceUsers.deleteFromBlockedUsers(myUserID, otherUserID);
+    await _firestoreDBServiceUsers.deleteFromWhoBlockedYou(otherUserID, myUserID);
+  }
 }

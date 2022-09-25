@@ -71,11 +71,11 @@ class CityTabState extends State<CityTab> {
 
   @override
   Widget build(BuildContext context) {
-    _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
-
     if (UserBloc.user == null) {
       return const GuestLoginScreenBody();
     }
+
+    _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
 
     return ValueListenableBuilder(
         valueListenable: setTheme,
