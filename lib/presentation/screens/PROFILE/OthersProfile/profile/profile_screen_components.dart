@@ -339,15 +339,9 @@ class ProfileScreenComponentsOthersProfile {
       case SendRequestButtonStatus.accept:
         return _buildAcceptStatus(context, otherUser.userID, otherUser);
       case SendRequestButtonStatus.connected:
-<<<<<<< Updated upstream
-        return _buildConnectedStatus(otherUser, context);
-      case SendRequestButtonStatus.blocked:
-        return _buildBlockedStatus(context, otherUser.userID);
-=======
         return OtherProfileService().isMyConnection(otherProfileID: otherUser.userID)
             ? _buildConnectedStatus(otherUser, context)
             : _buildConnectStatus(context, otherUser.userID);
->>>>>>> Stashed changes
       default:
         return const Text("error");
     }
@@ -492,15 +486,15 @@ class ProfileScreenComponentsOthersProfile {
           true
               ? const SizedBox.shrink()
               : SizedBox(
-            height: 16,
-            width: 16,
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/saved.svg",
-              color: Colors.white,
-              matchTextDirection: true,
-              fit: BoxFit.contain,
-            ),
-          ),
+                  height: 16,
+                  width: 16,
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/saved.svg",
+                    color: Colors.white,
+                    matchTextDirection: true,
+                    fit: BoxFit.contain,
+                  ),
+                ),
           const SizedBox.square(dimension: 5),
           Text(
             "Engeli Kaldır",
