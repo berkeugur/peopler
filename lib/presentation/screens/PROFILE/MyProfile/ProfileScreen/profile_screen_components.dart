@@ -392,7 +392,7 @@ class ProfileScreenComponentsMyProfile {
                                         imageUrl: photos[index],
                                         progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
                                             borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
-                                        errorWidget: (context, url, error) => Icon(Icons.error),
+                                        errorWidget: (context, url, error) => const Icon(Icons.error),
                                       ),
                                     ),
                                   ),

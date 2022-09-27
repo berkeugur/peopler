@@ -9,25 +9,13 @@ import '../../../data/model/user.dart';
 abstract class LocationEvent extends Equatable {}
 
 class GetInitialSearchUsersEvent extends LocationEvent {
-  final int latitude;
-  final int longitude;
-  GetInitialSearchUsersEvent({
-    required this.latitude, required this.longitude,
-  });
-
   @override
-  List<Object> get props => [latitude, longitude];
+  List<Object> get props => [];
 }
 
 class GetMoreSearchUsersEvent extends LocationEvent {
-  final int latitude;
-  final int longitude;
-  GetMoreSearchUsersEvent({
-    required this.latitude, required this.longitude,
-  });
-
   @override
-  List<Object> get props => [latitude, longitude];
+  List<Object> get props => [];
 }
 
 class TrigNewUsersLoadingSearchStateEvent extends LocationEvent {

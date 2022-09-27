@@ -94,12 +94,23 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     /******************************************************************************************/
     on<GetInitialSearchUsersEvent>((event, emit) async {
       try {
+        int _latitude;
+        int _longitude;
+
+        if (UserBloc.user != null) {
+          _latitude = UserBloc.user!.latitude;
+          _longitude = UserBloc.user!.longitude;
+        } else {
+          _latitude = UserBloc.guestUser!.latitude;
+          _longitude = UserBloc.guestUser!.longitude;
+        }
+
         emit(InitialSearchState());
 
         allUserList = [];
         _locationRepository.restartRepositoryCache();
 
-        _queryList = await _locationRepository.determineQueryList(event.latitude, event.longitude);
+        _queryList = await _locationRepository.determineQueryList(_latitude, _longitude);
         List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
 
         if(UserBloc.user != null) {

@@ -99,5 +99,4 @@ op_sign_out(context) {
     print("pressed  op_sign_out");
   }
   _userBloc.add(signOutEvent());
-  _userBloc.mainKey.currentState?.pushReplacementNamed(NavigationConstants.WELCOME);
 }

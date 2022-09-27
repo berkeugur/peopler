@@ -9,6 +9,7 @@ import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedShare/feed_share_screen.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen.dart';
+import 'package:restart_app/restart_app.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
@@ -95,8 +96,9 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           )),
                       TextButton(
                           onPressed: () {
-                            UserBloc _userBloc = BlocProvider.of(context);
-                            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+                            Restart.restartApp();
+                            // UserBloc _userBloc = BlocProvider.of(context);
+                            // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                           },
                           child: Text(
                             "Giriş Yap",
@@ -177,8 +179,9 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           )),
                       TextButton(
                           onPressed: () {
-                            UserBloc _userBloc = BlocProvider.of(context);
-                            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+                            Restart.restartApp();
+                            // UserBloc _userBloc = BlocProvider.of(context);
+                            // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                           },
                           child: Text(
                             "Giriş Yap",

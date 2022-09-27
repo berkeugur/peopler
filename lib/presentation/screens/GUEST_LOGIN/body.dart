@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:restart_app/restart_app.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 
@@ -39,8 +40,9 @@ class _GuestLoginScreenBodyState extends State<GuestLoginScreenBody> {
           ),
           text: "Giriş Yap",
           onPressed: () {
-            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-            _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+            Restart.restartApp();
+            // UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+            // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
           },
         ),
       ],

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:restart_app/restart_app.dart';
 import '../../../data/in_app_purchases.dart';
 import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
@@ -84,8 +85,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await _userRepository.deleteToken(user!.userID);
         await _userRepository.signOut();
         await Purchases.logOut();
-        user = null;
-        emit(SignedOutState());
+        Restart.restartApp();
       } catch (e) {
         debugPrint("Signed Out Basarisiz" + e.toString());
       }

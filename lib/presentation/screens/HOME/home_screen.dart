@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
@@ -14,9 +15,11 @@ import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/presentation/router/chat_tab.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 import '../../../business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../core/constants/enums/screen_item_enum.dart';
+import '../../../data/repository/location_repository.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 
@@ -45,7 +48,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final CityBloc _cityBloc;
   late final NotificationBloc _notificationBloc;
   late final PurchaseGetOfferBloc _purchaseGetOfferBloc;
-  late PageController _pageController;
+  late PreloadPageController _pageController;
 
   @override
   void initState() {
@@ -56,7 +59,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _locationBloc = BlocProvider.of<LocationBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _pageController = PageController(initialPage: _homeScreen.currentTab.index);
+    _pageController = PreloadPageController(initialPage: _homeScreen.currentTab.index);
 
     if (UserBloc.user != null) {
       FCMAndLocalNotifications().initializeFCMNotifications(context);
@@ -83,18 +86,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         return BlocListener<LocationUpdateBloc, LocationUpdateState>(
                             listener: (BuildContext context, state) {
                               if (state is PositionUpdatedState) {
-                                int _latitude;
-                                int _longitude;
-
-                                if (UserBloc.user != null) {
-                                  _latitude = UserBloc.user!.latitude;
-                                  _longitude = UserBloc.user!.longitude;
-                                } else {
-                                  _latitude = UserBloc.guestUser!.latitude;
-                                  _longitude = UserBloc.guestUser!.longitude;
-                                }
-
-                                _locationBloc.add(GetInitialSearchUsersEvent(latitude: _latitude, longitude: _longitude));
+                                _locationBloc.add(GetInitialSearchUsersEvent());
                               }
                             },
                             child: Scaffold(
@@ -102,26 +94,36 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                               floatingActionButton: const MyFloatingActionButtons(),
                               body:
-
-                              /*
-                              PageView(
-                                    scrollDirection: Axis.horizontal,
+                                  /*
+                                  PreloadPageView.builder(
+                                    preloadPagesCount: 5,
+                                    itemBuilder: (BuildContext context, int position) {
+                                      switch (position) {
+                                        case 1:
+                                          return FeedScreenNavigator(
+                                            feedListKey: feedListKey,
+                                          );
+                                        case 2:
+                                          return const NotificationScreenNavigator();
+                                        case 3:
+                                          return const SearchScreenNavigator();
+                                        case 4:
+                                          return const ChatScreenNavigator();
+                                        case 5:
+                                          return const ProfileScreenNavigator();
+                                        default:
+                                          return const ProfileScreenNavigator();
+                                      }
+                                    },
                                     controller: _pageController,
-                                    onPageChanged: (index) {
-                                      _homeScreen.currentTab = TabItem.values[index];
+                                    onPageChanged: (int position) {
+                                      _homeScreen.currentTab = TabItem.values[position];
                                       _homeScreen.changeFloatingActionButtonEvent();
                                     },
-                                    children: [
-                                      FeedScreenNavigator(
-                                        feedListKey: feedListKey,
-                                      ),
-                                      const NotificationScreenNavigator(),
-                                      const SearchScreenNavigator(),
-                                      const ChatScreenNavigator(),
-                                      const ProfileScreenNavigator()
-                                    ],
                                   ),
-                               */
+                                   */
+
+
                               IndexedStack(
                                 index: _homeScreen.currentTab.index,
                                 children: [
@@ -135,6 +137,8 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 ],
                               ),
 
+
+
                               bottomNavigationBar: MyBottomNavigationBar(
                                   // Callback Function, when another tab is clicked, this method will run
                                   onBottomTabTapped: (index) {
@@ -147,7 +151,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         });
   }
 
-  void _buildOnBottomTabTapped(index) {
+  Future<void> _buildOnBottomTabTapped(index) async {
     TabItem _oldTab = _homeScreen.currentTab;
     _homeScreen.currentTab = TabItem.values[index];
     _homeScreen.changeFloatingActionButtonEvent();
@@ -160,13 +164,20 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       feedListKey.currentState!.scrollToTop();
     }
 
-    /// When both currentTab and clicked tab are Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
-    if (_oldTab == TabItem.search && TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
+    /// When clicked tab is Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
+    if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
       _locationPermissionBloc.add(GetLocationPermissionEvent());
+
+      final LocationRepository _locationRepository = locator<LocationRepository>();
+      LocationPermission _permission = await _locationRepository.checkPermissions();
+      if (_permission == LocationPermission.whileInUse || _permission == LocationPermission.always) {
+        LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+        _locationBloc.add(GetInitialSearchUsersEvent());
+      }
     }
 
-    /// When both currentTab and clicked tab are Search tab button, and screen item is cityUsers, then trig City Bloc
-    if (_oldTab == TabItem.search && TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
+    /// When clicked tab is Search tab button, and screen item is cityUsers, then trig City Bloc
+    if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
       _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
     }
   }

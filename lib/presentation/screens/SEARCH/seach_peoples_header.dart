@@ -5,11 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
-import '../../../../business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dart';
-import '../../../../business_logic/blocs/LocationPermissionBloc/location_permission_event.dart';
+import '../../../../business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/classes/variables.dart';
-import '../../../business_logic/blocs/LocationBloc/location_bloc.dart';
+import '../../../business_logic/blocs/LocationBloc/bloc.dart';
 import '../../../data/repository/location_repository.dart';
 import '../../../others/locator.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
@@ -76,6 +75,13 @@ class search_peoples_header extends StatelessWidget {
         if (_cityNearbyButtons.isNearby == true) {
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.searchNearByScreen};
           _locationPermissionBloc.add(GetLocationPermissionEvent());
+
+          final LocationRepository _locationRepository = locator<LocationRepository>();
+          LocationPermission _permission = await _locationRepository.checkPermissions();
+          if (_permission == LocationPermission.whileInUse || _permission == LocationPermission.always) {
+            LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+            _locationBloc.add(GetInitialSearchUsersEvent());
+          }
         } else {
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.searchCityScreen};
         }
