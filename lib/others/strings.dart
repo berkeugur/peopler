@@ -33,12 +33,14 @@ class Strings {
   static const String activityDisliked = "disliked";
 
   static const List<String> cityData = [
+    "İstanbul",
+    "Ankara",
+    "İzmir",
     "Adana",
     "Adıyaman",
     "Afyonkarahisar",
     "Ağrı",
     "Amasya",
-    "Ankara",
     "Antalya",
     "Artvin",
     "Aydın",
@@ -66,8 +68,6 @@ class Strings {
     "Hatay",
     "Isparta",
     "Mersin",
-    "İstanbul",
-    "İzmir",
     "Kars",
     "Kastamonu",
     "Kayseri",

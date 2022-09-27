@@ -9,7 +9,9 @@ _imgFromCamera({required StateSetter stateSetter}) async {
 
   stateSetter(() {
     //_image = File(image!.path);
-    photoCrop(photo: File(image!.path), stateSetter: stateSetter);
+    if (image != null) {
+      photoCrop(photo: File(image.path), stateSetter: stateSetter);
+    }
   });
 }
 
@@ -18,7 +20,9 @@ _imgFromGallery({required StateSetter stateSetter}) async {
 
   stateSetter(() {
     //_image = File(image!.path);
-    photoCrop(photo: File(image!.path), stateSetter: stateSetter);
+    if (image != null) {
+      photoCrop(photo: File(image.path), stateSetter: stateSetter);
+    }
   });
 }
 

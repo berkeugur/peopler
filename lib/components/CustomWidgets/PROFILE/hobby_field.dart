@@ -77,10 +77,14 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                               onPressed: () {
                                 isEditModeActive.value = !isEditModeActive.value;
                               },
-                              icon: Icon(
-                                Icons.edit,
-                                color: Mode().blackAndWhiteConversion(),
-                              )),
+                              icon: ValueListenableBuilder(
+                                  valueListenable: isEditModeActive,
+                                  builder: (context, _, __) {
+                                    return Icon(
+                                      isEditModeActive.value ? Icons.edit_off : Icons.edit,
+                                      color: Mode().blackAndWhiteConversion(),
+                                    );
+                                  })),
                           IconButton(
                               onPressed: () async {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {

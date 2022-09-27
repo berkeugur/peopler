@@ -549,13 +549,13 @@ class _NearbyTabState extends State<NearbyTab> {
                           child: Stack(
                             children: [
                               LocationBloc.allUserList[index].hobbies.isNotEmpty
-                                  ? hobbyItem(index, 0, LocationBloc.allUserList[index].hobbies[0])
+                                  ? hobbyItem(index, 0, LocationBloc.allUserList[index].hobbies[0]["title"])
                                   : const SizedBox(),
                               LocationBloc.allUserList[index].hobbies.length >= 2
-                                  ? hobbyItem(index, 25, LocationBloc.allUserList[index].hobbies[1])
+                                  ? hobbyItem(index, 25, LocationBloc.allUserList[index].hobbies[1]["title"])
                                   : const SizedBox(),
                               LocationBloc.allUserList[index].hobbies.length >= 3
-                                  ? hobbyItem(index, 50, LocationBloc.allUserList[index].hobbies[2])
+                                  ? hobbyItem(index, 50, LocationBloc.allUserList[index].hobbies[2]["title"])
                                   : const SizedBox(),
                             ],
                           ),
