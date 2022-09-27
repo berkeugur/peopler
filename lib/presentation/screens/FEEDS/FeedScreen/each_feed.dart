@@ -102,27 +102,28 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID) ||  (UserBloc.user == null) ? const SizedBox.shrink() :
-                                    IconButton(
-                                      onPressed: () {
-                                        tripleDotOnPressed(
-                                          context,
-                                          widget.myFeed.feedID,
-                                          widget.myFeed.feedExplanation,
-                                          widget.myFeed.userID,
-                                          widget.myFeed.userDisplayName,
-                                          widget.myFeed.userGender,
-                                          widget.myFeed.createdAt,
-                                          widget.myFeed.userPhotoUrl,
-                                          _controller,
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.more_vert_outlined,
-                                        color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
-                                        size: 25,
-                                      ),
-                                    )
+                                    (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID) || (UserBloc.user == null)
+                                        ? const SizedBox.shrink()
+                                        : IconButton(
+                                            onPressed: () {
+                                              tripleDotOnPressed(
+                                                context,
+                                                widget.myFeed.feedID,
+                                                widget.myFeed.feedExplanation,
+                                                widget.myFeed.userID,
+                                                widget.myFeed.userDisplayName,
+                                                widget.myFeed.userGender,
+                                                widget.myFeed.createdAt,
+                                                widget.myFeed.userPhotoUrl,
+                                                _controller,
+                                              );
+                                            },
+                                            icon: Icon(
+                                              Icons.more_vert_outlined,
+                                              color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
+                                              size: 25,
+                                            ),
+                                          )
                                   ],
                                 )
                               ],
@@ -168,7 +169,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                   BlocProvider.of<UserBloc>(context).mainKey.currentState?.push(
                         MaterialPageRoute(
                           builder: (context) => FeedComments(
-                            feedID: feedID,
+                            feed: widget.myFeed,
                           ),
                         ),
                       );
@@ -314,7 +315,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
               return;
             }
 
-            if(UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
+            if (UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
               return;
             }
 

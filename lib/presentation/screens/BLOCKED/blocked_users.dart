@@ -67,130 +67,146 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                 future: getBlockedUsersData(UserBloc.user?.blockedUsers ?? []),
                 builder: (context, snapshot) {
                   if (snapshot.hasData || snapshot.connectionState == ConnectionState.done) {
-                    return ListView.separated(
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          color: Mode().blackAndWhiteConversion(),
-                        );
-                      },
-                      shrinkWrap: true,
-                      itemCount: UserBloc.user?.blockedUsers.length ?? 0,
-                      itemBuilder: (context, index) {
-                        //Burada kaldık Userblock user blockuserdaki userları göstermemiz lazım sadece ama çektiğimiz her userı gösteriyor şu anda
-                        //user block usredaki user id lerden biri eğer blockedUsersData içerisinde var ise blocked users data dan verileri çekip göstermemiz gerekiyor.
-                        int customIndex = Variables.blockedUsersData.value.indexWhere((element) => element["userID"] == UserBloc.user?.blockedUsers[index]);
-                        var data = Variables.blockedUsersData.value[customIndex];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0,
-                          ),
-                          child: ListTile(
-                            trailing: IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                                    contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
-                                    content: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          "${data["displayName"]} kullanıcısının engelini kalırmak üzeresiniz.",
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.rubik(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        const Divider(),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        InkWell(
-                                          onTap: () async {
-                                            await BlockAndReportService().unblockUser(blockUserID: data["userID"]).then((values) async {
-                                              //Reloader.isUnBlocked.value = !Reloader.isUnBlocked.value;
-                                              Navigator.of(context).pop();
-                                              await PeoplerDialogs().showSuccessfulDialog(context, _controller);
-                                            });
-                                            //Reloader.isUnBlocked.value = !Reloader.isUnBlocked.value;
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(999),
-                                              color: Theme.of(context).primaryColor,
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 30,
-                                              vertical: 10,
-                                            ),
-                                            child: Text(
-                                              "Engeli Kaldır",
-                                              style: GoogleFonts.rubik(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.of(context).pop(),
-                                          child: Text(
-                                            "İPTAL",
-                                            style: GoogleFonts.rubik(
-                                              color: Theme.of(context).primaryColor,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.lock_open,
-                                color: Color(0xFF0353EF),
-                              ),
-                            ),
-                            subtitle: Text(
-                              data["biography"] ?? "error biography",
-                              style: GoogleFonts.rubik(
-                                color: Mode().blackAndWhiteConversion(),
-                              ),
-                            ),
-                            title: Text(
-                              data["displayName"] ?? "error display name",
-                              style: GoogleFonts.rubik(
-                                color: Mode().blackAndWhiteConversion(),
-                              ),
-                            ),
-                            leading: SizedBox(
-                              height: 50,
-                              width: 50,
-                              child: CachedNetworkImage(
-                                imageUrl: data["profileURL"] ?? 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png',
-                                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                    ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
-                                imageBuilder: (context, imageProvider) => Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                                  ),
+                    return (UserBloc.user?.blockedUsers.length == null || UserBloc.user?.blockedUsers.length == 0)
+                        ? Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(40.0),
+                              child: Text(
+                                "Engellenmiş kullanıcı bulunmamaktadır.",
+                                textAlign: TextAlign.center,
+                                textScaleFactor: 1,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
+                          )
+                        : ListView.separated(
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                color: Mode().blackAndWhiteConversion(),
+                              );
+                            },
+                            shrinkWrap: true,
+                            itemCount: UserBloc.user?.blockedUsers.length ?? 0,
+                            itemBuilder: (context, index) {
+                              //Burada kaldık Userblock user blockuserdaki userları göstermemiz lazım sadece ama çektiğimiz her userı gösteriyor şu anda
+                              //user block usredaki user id lerden biri eğer blockedUsersData içerisinde var ise blocked users data dan verileri çekip göstermemiz gerekiyor.
+                              int customIndex =
+                                  Variables.blockedUsersData.value.indexWhere((element) => element["userID"] == UserBloc.user?.blockedUsers[index]);
+                              var data = Variables.blockedUsersData.value[customIndex];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0,
+                                ),
+                                child: ListTile(
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                          contentPadding: const EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                          content: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                "${data["displayName"]} kullanıcısının engelini kalırmak üzeresiniz.",
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.rubik(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Divider(),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              InkWell(
+                                                onTap: () async {
+                                                  await BlockAndReportService().unblockUser(blockUserID: data["userID"]).then((values) async {
+                                                    //Reloader.isUnBlocked.value = !Reloader.isUnBlocked.value;
+                                                    Navigator.of(context).pop();
+                                                    await PeoplerDialogs().showSuccessfulDialog(context, _controller);
+                                                  });
+                                                  //Reloader.isUnBlocked.value = !Reloader.isUnBlocked.value;
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(999),
+                                                    color: Theme.of(context).primaryColor,
+                                                  ),
+                                                  padding: const EdgeInsets.symmetric(
+                                                    horizontal: 30,
+                                                    vertical: 10,
+                                                  ),
+                                                  child: Text(
+                                                    "Engeli Kaldır",
+                                                    style: GoogleFonts.rubik(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.of(context).pop(),
+                                                child: Text(
+                                                  "İPTAL",
+                                                  style: GoogleFonts.rubik(
+                                                    color: Theme.of(context).primaryColor,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.lock_open,
+                                      color: Color(0xFF0353EF),
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    data["biography"] ?? "error biography",
+                                    style: GoogleFonts.rubik(
+                                      color: Mode().blackAndWhiteConversion(),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    data["displayName"] ?? "error display name",
+                                    style: GoogleFonts.rubik(
+                                      color: Mode().blackAndWhiteConversion(),
+                                    ),
+                                  ),
+                                  leading: SizedBox(
+                                    height: 50,
+                                    width: 50,
+                                    child: CachedNetworkImage(
+                                      imageUrl: data["profileURL"] ?? 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png',
+                                      progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                          borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
                   } else {
                     return const Center(child: CircularProgressIndicator());
                   }

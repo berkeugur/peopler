@@ -188,7 +188,7 @@ class PeoplerAppBars {
   // ignore: non_constant_identifier_names
   MYPROFILE({void Function()? titleFunction, void Function()? leadingFunction}) {
     return AppBar(
-      //leading: _DRAWER_MENU_ICON(leadingFunction),
+      leading: _DRAWER_MENU_ICON(leadingFunction),
       centerTitle: true,
       title: _PEOPLER_TITLE(() {}),
       backgroundColor: Colors.transparent,
@@ -224,6 +224,17 @@ class PeoplerAppBars {
     return AppBar(
       leading: _BACK_BUTTON(),
       title: _TITLE(title: "Engellenen Kullanıcılar"),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  AppBar get COMMENTS {
+    return AppBar(
+      leading: _BACK_BUTTON(),
+      title: _TITLE(title: "Yorumlar"),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,

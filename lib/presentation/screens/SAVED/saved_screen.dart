@@ -47,6 +47,7 @@ class _SavedScreenState extends State<SavedScreen> {
     Size _size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
         body: MultiValueListenableBuilder(
             valueListenables: [
               Variables.animatedSearchPeopleHeaderHeight,
