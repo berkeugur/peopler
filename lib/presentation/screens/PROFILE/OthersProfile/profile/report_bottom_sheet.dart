@@ -3,9 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
+import 'package:peopler/presentation/screen_services/other_profile_service.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';
+import 'package:peopler/presentation/screens/PROFILE/OthersProfile/functions.dart';
+import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
 import '../../../../../business_logic/blocs/OtherUserBloc/other_user_bloc.dart';
 
@@ -115,6 +119,35 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Visibility(
+              visible: OtherProfileService().isMyConnection(otherProfileID: otherUserBloc?.otherUser?.userID),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.person_off_outlined,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Bağlantıyı Sil',
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                ),
+                onTap: () async {
+                  if (UserBloc.user != null) {
+                    if (otherUserBloc != null && otherUserBloc.otherUser != null) {
+                      //remove connection function
+                      OtherProfileService().removeConnection(otherUserID: otherUserBloc.otherUser!.userID).then((value) {
+                        Reloader().reload(reloadItem: Reloader.otherUserProfileReload);
+                        Navigator.of(context).pop();
+                      });
+                    } else {
+                      printf("otheruserbloc null remove connection list tile");
+                    }
+                  } else {
+                    GuestAlert.dialog(context);
+                  }
+                },
+              ),
+            ),
             ListTile(
               leading: const Icon(
                 Icons.report_gmailerrorred,
