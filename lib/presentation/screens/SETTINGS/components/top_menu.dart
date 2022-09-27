@@ -34,15 +34,12 @@ Container topMenu(context) {
             ),
           ),
         ),
-        InkWell(
-          onTap: () => op_settings_peopler_title(),
-          child: SizedBox(
-            width: 140,
-            child: AutoSizeText(
-              "peopler",
-              textScaleFactor: 1,
-              style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
-            ),
+        SizedBox(
+          width: 140,
+          child: AutoSizeText(
+            "peopler",
+            textScaleFactor: 1,
+            style: GoogleFonts.spartan(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
           ),
         ),
         SizedBox.square(

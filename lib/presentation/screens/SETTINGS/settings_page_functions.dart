@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/report_bottom_sheet.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
+import 'package:peopler/presentation/screens/PROFILE/OthersProfile/functions.dart';
 
 ///op = On Pressed
 // ignore: non_constant_identifier_names
@@ -12,7 +14,8 @@ op_settings_back_arrow(context) {
 }
 
 // ignore: non_constant_identifier_names
-op_settings_peopler_title() {
+op_settings_peopler_title(BuildContext context, String otherUserID) {
+  openOthersProfile(context, otherUserID, SendRequestButtonStatus.connected);
   if (kDebugMode) {
     print("pressed peopler title");
   }
@@ -27,7 +30,8 @@ op_settings_message_icon(BuildContext context, AnimationController controller, S
 }
 
 // ignore: non_constant_identifier_names
-op_settings_ppl_photo() {
+op_settings_ppl_photo(BuildContext context, String otherUserID) {
+  openOthersProfile(context, otherUserID, SendRequestButtonStatus.connected);
   if (kDebugMode) {
     print("pressed op_settings_ppl_photo");
   }

@@ -70,7 +70,7 @@ Row _buildOnlineStatus() {
 InkWell _buildDisplayName(Mode _mode, context) {
   final MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
   return InkWell(
-    onTap: () => op_settings_peopler_title(),
+    onTap: () => op_settings_peopler_title(context, _messageBloc.currentChat!.hostID),
     child: Text(
       _messageBloc.currentChat!.hostUserName,
       textScaleFactor: 1,
@@ -79,46 +79,49 @@ InkWell _buildDisplayName(Mode _mode, context) {
   );
 }
 
-Container _buildProfilePhoto(double _imageSize, context) {
+InkWell _buildProfilePhoto(double _imageSize, context) {
   final MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
-  return Container(
-      height: _imageSize,
-      width: _imageSize,
-      margin: const EdgeInsets.only(right: 15, left: 10),
-      child: CircleAvatar(
-        backgroundImage:
-            /*
-                  ImageNetwork(
-                    image: _image,
-                    imageCache: CachedNetworkImageProvider(_image),
-                    height: _imageSize,
-                    width: _imageSize,
-                    duration: 500,
-                    curve: Curves.easeIn,
-                    onPointer: true,
-                    debugPrint: false,
-                    fullScreen: false,
-                    fitAndroidIos: BoxFit.cover,
-                    fitWeb: BoxFitWeb.cover,
-                    borderRadius: BorderRadius.circular(70),
-                    onLoading: const CircularProgressIndicator(
-                      color: Colors.indigoAccent,
+  return InkWell(
+    onTap: () => op_settings_ppl_photo(context, _messageBloc.currentChat!.hostID),
+    child: Container(
+        height: _imageSize,
+        width: _imageSize,
+        margin: const EdgeInsets.only(right: 15, left: 10),
+        child: CircleAvatar(
+          backgroundImage:
+              /*
+                    ImageNetwork(
+                      image: _image,
+                      imageCache: CachedNetworkImageProvider(_image),
+                      height: _imageSize,
+                      width: _imageSize,
+                      duration: 500,
+                      curve: Curves.easeIn,
+                      onPointer: true,
+                      debugPrint: false,
+                      fullScreen: false,
+                      fitAndroidIos: BoxFit.cover,
+                      fitWeb: BoxFitWeb.cover,
+                      borderRadius: BorderRadius.circular(70),
+                      onLoading: const CircularProgressIndicator(
+                        color: Colors.indigoAccent,
+                      ),
+                      onError: const Icon(
+                        Icons.error,
+                        color: Colors.blue,
+                      ),
+                      onTap: () {
+                        debugPrint("©gabriel_patrick_souza");
+                      },
                     ),
-                    onError: const Icon(
-                      Icons.error,
-                      color: Colors.blue,
-                    ),
-                    onTap: () {
-                      debugPrint("©gabriel_patrick_souza");
-                    },
-                  ),
-                   */
+                     */
 
-            NetworkImage(
-          _messageBloc.currentChat!.hostUserProfileUrl,
-        ),
-        backgroundColor: Colors.transparent,
-      ));
+              NetworkImage(
+            _messageBloc.currentChat!.hostUserProfileUrl,
+          ),
+          backgroundColor: Colors.transparent,
+        )),
+  );
 }
 
 InkWell _buildMoreIcon(Mode _mode, BuildContext context, AnimationController controller, String userID) {

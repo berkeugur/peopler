@@ -89,7 +89,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
                       },
                     ),
                     backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-                    body: _buildBody(widget.status),
+                    body: _buildBody(),
                   ),
                 );
               }),
@@ -98,7 +98,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
         });
   }
 
-  Widget _buildBody(SendRequestButtonStatus status) {
+  Widget _buildBody() {
     return SingleChildScrollView(
       child: BlocBuilder<OtherUserBloc, OtherUserState>(
         bloc: _otherUserBloc,
