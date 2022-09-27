@@ -77,7 +77,10 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                               onPressed: () {
                                 isEditModeActive.value = !isEditModeActive.value;
                               },
-                              icon: const Icon(Icons.edit)),
+                              icon: Icon(
+                                Icons.edit,
+                                color: Mode().blackAndWhiteConversion(),
+                              )),
                           IconButton(
                               onPressed: () async {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -114,7 +117,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                               child: Column(
                                                 children: [
                                                   _bottomSheetHeader(context),
-                                                  const Divider(
+                                                  Divider(
                                                     height: 1,
                                                   ),
                                                   SizedBox(
@@ -139,7 +142,9 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                                                       ),
                                                                       value: value,
                                                                       groupValue: selectedValue,
-                                                                      title: Text(value),
+                                                                      title: Text(
+                                                                        value,
+                                                                      ),
                                                                       onChanged: (value) => setStatebs(() => selectedValue = value!),
                                                                     ),
                                                                     const Divider(),
@@ -266,7 +271,10 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                   },
                                 );
                               },
-                              icon: const Icon(Icons.add_box)),
+                              icon: Icon(
+                                Icons.add_box,
+                                color: Mode().blackAndWhiteConversion(),
+                              )),
                         ],
                       ),
               ],
@@ -296,12 +304,15 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                   );
                   return Column(
                     children: [
-                      const Divider(),
+                      Divider(
+                        color: Mode().blackAndWhiteConversion()!.withOpacity(0.5),
+                      ),
                       Text(
                         _subtitles.subtitle.toString() + (_subtitles.level == null ? "" : (" (" + _subtitles.level.toString() + ")")),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.rubik(
                           fontSize: 14,
+                          color: Mode().blackAndWhiteConversion(),
                         ),
                       ),
                     ],
@@ -494,7 +505,9 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Divider(),
+                        Divider(
+                          color: Mode().blackAndWhiteConversion()!.withOpacity(0.5),
+                        ),
                         OutlinedButton(
                           onPressed: () async {
                             await HobbyService().delete(context, hobby);
@@ -526,7 +539,11 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
     return Text(
       hobby.title ?? "null",
       textAlign: TextAlign.center,
-      style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w500),
+      style: GoogleFonts.rubik(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: Mode().blackAndWhiteConversion(),
+      ),
     );
   }
 }

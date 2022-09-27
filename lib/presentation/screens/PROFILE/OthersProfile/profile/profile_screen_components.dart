@@ -13,6 +13,7 @@ import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
+import 'package:peopler/presentation/screen_services/other_profile_service.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/hobby_functions.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/all_activity_list.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -338,9 +339,9 @@ class ProfileScreenComponentsOthersProfile {
       case SendRequestButtonStatus.accept:
         return _buildAcceptStatus(context, otherUser.userID, otherUser);
       case SendRequestButtonStatus.connected:
-        return _buildConnectedStatus(otherUser, context);
-      case SendRequestButtonStatus.blocked:
-        return _buildBlockedStatus(context, otherUser.userID);
+        return OtherProfileService().isMyConnection(otherProfileID: otherUser.userID)
+            ? _buildConnectedStatus(otherUser, context)
+            : _buildConnectStatus(context, otherUser.userID);
       default:
         return const Text("error");
     }
@@ -442,30 +443,30 @@ class ProfileScreenComponentsOthersProfile {
         });
       },
       child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                true
-                    ? const SizedBox.shrink()
-                    : SizedBox(
-                        height: 16,
-                        width: 16,
-                        child: SvgPicture.asset(
-                          "assets/images/svg_icons/saved.svg",
-                          color: Colors.white,
-                          matchTextDirection: true,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                const SizedBox.square(dimension: 5),
-                Text(
-                  "Bağlantı Kur",
-                  textScaleFactor: 1,
-                  style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          true
+              ? const SizedBox.shrink()
+              : SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/saved.svg",
+                    color: Colors.white,
+                    matchTextDirection: true,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-                const SizedBox.square(dimension: 5)
-              ],
-            ),
+          const SizedBox.square(dimension: 5),
+          Text(
+            "Bağlantı Kur",
+            textScaleFactor: 1,
+            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+          ),
+          const SizedBox.square(dimension: 5)
+        ],
+      ),
     );
   }
 
@@ -485,15 +486,15 @@ class ProfileScreenComponentsOthersProfile {
           true
               ? const SizedBox.shrink()
               : SizedBox(
-            height: 16,
-            width: 16,
-            child: SvgPicture.asset(
-              "assets/images/svg_icons/saved.svg",
-              color: Colors.white,
-              matchTextDirection: true,
-              fit: BoxFit.contain,
-            ),
-          ),
+                  height: 16,
+                  width: 16,
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/saved.svg",
+                    color: Colors.white,
+                    matchTextDirection: true,
+                    fit: BoxFit.contain,
+                  ),
+                ),
           const SizedBox.square(dimension: 5),
           Text(
             "Engeli Kaldır",
@@ -509,7 +510,7 @@ class ProfileScreenComponentsOthersProfile {
   Widget _buildRequestSentStatus(BuildContext context, String otherUserID) {
     return InkWell(
       onTap: () {
-        if(UserBloc.entitlement == "free") {
+        if (UserBloc.entitlement == "free") {
           showGeriAlWarning(context);
           return;
         }
@@ -521,31 +522,31 @@ class ProfileScreenComponentsOthersProfile {
         _notificationBloc.add(GeriAlButtonEvent(requestUserID: otherUserID));
       },
       child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              true
-                  ? const SizedBox.shrink()
-                  : SizedBox(
-                height: 16,
-                width: 16,
-                child: SvgPicture.asset(
-                  "assets/images/svg_icons/saved.svg",
-                  color: Colors.white,
-                  matchTextDirection: true,
-                  fit: BoxFit.contain,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          true
+              ? const SizedBox.shrink()
+              : SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: SvgPicture.asset(
+                    "assets/images/svg_icons/saved.svg",
+                    color: Colors.white,
+                    matchTextDirection: true,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              const SizedBox.square(dimension: 5),
-              Text(
-                "Geri Al",
-                textScaleFactor: 1,
-                style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
-              ),
-              const SizedBox.square(dimension: 5)
-            ],
+          const SizedBox.square(dimension: 5),
+          Text(
+            "Geri Al",
+            textScaleFactor: 1,
+            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
-        );
+          const SizedBox.square(dimension: 5)
+        ],
+      ),
+    );
   }
 
   InkWell _buildAcceptStatus(BuildContext context, String otherUserID, MyUser otherUser) {

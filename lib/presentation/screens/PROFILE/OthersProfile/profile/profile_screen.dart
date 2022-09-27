@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
@@ -10,6 +11,7 @@ import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
+import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
@@ -68,8 +70,11 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: setTheme,
+    return MultiValueListenableBuilder(
+        valueListenables: [
+          setTheme,
+          Reloader.otherUserProfileReload,
+        ],
         builder: (context, x, y) {
           return WillPopScope(
             onWillPop: () => popOtherUserScreen(context),

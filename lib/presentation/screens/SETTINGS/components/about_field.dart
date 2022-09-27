@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
@@ -32,7 +36,128 @@ about_field(context) {
         ),
         InkWell(
           borderRadius: BorderRadius.circular(999),
-          onTap: () => op_suggestion_or_complaint(),
+          onTap: () {
+            TextEditingController _controller = TextEditingController();
+            showDialog(
+              context: context,
+              builder: (_ctx) {
+                return AlertDialog(
+                  title: const Text("Destek"),
+                  content: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0353EF),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: TextFormField(
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).unfocus();
+                      },
+                      autofocus: true,
+                      keyboardType: TextInputType.text,
+                      cursorColor: Colors.white,
+                      maxLength: MaxLengthConstants.SUGGEST,
+                      controller: _controller,
+                      textInputAction: TextInputAction.send,
+                      autocorrect: true,
+                      decoration: const InputDecoration(
+                        counterText: "",
+                        contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
+                        hintMaxLines: 1,
+                        border: InputBorder.none,
+                        hintText: 'Mesajınız',
+                        hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                      ),
+                      style: const TextStyle(
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("iptal"),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        if (_controller.text.isNotEmpty) {
+                          await FirebaseFirestore.instance.collection("supports").doc().set({
+                            "message": _controller.text,
+                            "fromUserID": UserBloc.user?.userID,
+                            "fromUserEmail": UserBloc.user?.email,
+                            "createdAt": Timestamp.now(),
+                          }).then((value) {
+                            Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              builder: (contextSD) => AlertDialog(
+                                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                content: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.rubik(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Divider(),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(999),
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                        child: Text(
+                                          "TAMAM",
+                                          style: GoogleFonts.rubik(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                        } else {
+                          SnackBars(context: context).simple("boş bırakmayınız");
+                        }
+                      },
+                      child: const Text("Gönder"),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 0),
             child: Row(

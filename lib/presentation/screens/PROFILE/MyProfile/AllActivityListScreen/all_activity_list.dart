@@ -297,7 +297,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
 
   Text _buildFeedScreenNumberOfConnections() {
     final Mode _mode = locator<Mode>();
-    int numberOfConnections = 622;
+    int numberOfConnections = 999;
     bool caseStatus = numberOfConnections > 500 ? true : false;
     String numberOfConnectionString;
 

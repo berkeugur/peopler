@@ -9,6 +9,7 @@ import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/core/constants/queries/queries.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
+import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
@@ -57,6 +58,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
         appBar: PeoplerAppBars(context: context).BLOCKED_USERS,
         body: ValueListenableBuilder(
             valueListenable: Reloader.isUnBlocked,
@@ -67,7 +69,9 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                   if (snapshot.hasData || snapshot.connectionState == ConnectionState.done) {
                     return ListView.separated(
                       separatorBuilder: (context, index) {
-                        return const Divider();
+                        return Divider(
+                          color: Mode().blackAndWhiteConversion(),
+                        );
                       },
                       shrinkWrap: true,
                       itemCount: UserBloc.user?.blockedUsers.length ?? 0,
@@ -155,8 +159,18 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                 color: Color(0xFF0353EF),
                               ),
                             ),
-                            subtitle: Text(data["biography"] ?? "error biography"),
-                            title: Text(data["displayName"] ?? "error display name"),
+                            subtitle: Text(
+                              data["biography"] ?? "error biography",
+                              style: GoogleFonts.rubik(
+                                color: Mode().blackAndWhiteConversion(),
+                              ),
+                            ),
+                            title: Text(
+                              data["displayName"] ?? "error display name",
+                              style: GoogleFonts.rubik(
+                                color: Mode().blackAndWhiteConversion(),
+                              ),
+                            ),
                             leading: SizedBox(
                               height: 50,
                               width: 50,
