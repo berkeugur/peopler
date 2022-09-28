@@ -196,12 +196,15 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         onPressed: () {
           if (UserBloc.user?.city != "" && bioController.text.isNotEmpty) {
             UserBloc.user?.biography = bioController.text;
+
+            /// Upload Profile Photo
+            if (image != null) {
+              _userBloc.add(uploadProfilePhoto(imageFile: image!));
+            }
+
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
               _userBloc.add(updateUserInfoForLinkedInEvent());
-              if (image != null) {
-                _userBloc.add(uploadProfilePhoto(imageFile: image!));
-              }
               final LocationRepository _locationRepository = locator<LocationRepository>();
               _locationRepository.requestPermission();
               Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);

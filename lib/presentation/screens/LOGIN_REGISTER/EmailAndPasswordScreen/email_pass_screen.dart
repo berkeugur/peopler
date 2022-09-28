@@ -5,8 +5,10 @@ import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/widgets/snack_bars.dart';
 
@@ -348,8 +350,11 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                   bloc: _userBloc,
                                   listener: (context, UserState state) {
                                     if (state is SignedInNotVerifiedState) {
-                                      _userBloc.add(waitForVerificationEvent());
-                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.VERIFY_SCREEN, (Route<dynamic> route) => false);
+                                      /// Request Permission and navigate to BEG_FOR_PERMISSION_SCREEN
+                                      final LocationRepository _locationRepository = locator<LocationRepository>();
+                                      _locationRepository.requestPermission();
+                                      _userBloc.add(waitFor15minutes());
+                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                                     } else if (state is InvalidEmailState) {
                                       SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                                     } else if (state is SigningInState) {

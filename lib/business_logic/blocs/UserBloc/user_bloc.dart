@@ -37,6 +37,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
      */
   };
 
+  Timer? _timer;
+
   Future<void> signedInUserPreparations() async {
     /// Get activities related to user
     myActivities = await _userRepository.getActivities(user!.userID);
@@ -112,12 +114,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         /// Three seconds timeout is set to getCurrentUser
         user = await _userRepository.getCurrentUser().timeout(const Duration(seconds: 5));
+
+        DateTime? _countDownFinishTime;
+        if(user != null) {
+          _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
+        }
+
         if (user == null) {
           emit(SignedOutState());
         } else if (user?.missingInfo == true) {
           emit(SignedInMissingInfoState());
-        } else if (user?.isTheAccountConfirmed == false) {
+        } else if (user?.isTheAccountConfirmed == false && _countDownFinishTime!.isBefore(DateTime.now())) {
           emit(SignedInNotVerifiedState());
+        } else if (user?.isTheAccountConfirmed == false && _countDownFinishTime!.isAfter(DateTime.now())) {
+          add(waitFor15minutes());
+          emit(SignedInState());
         } else {
           await signedInUserPreparations();
           emit(SignedInState());
@@ -251,6 +262,23 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
+    on<waitFor15minutes>((event, emit) async {
+      user = await _userRepository.getCurrentUser();
+      await signedInUserPreparations();
+      emit(SignedInState());
+
+      _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+        /// Check for isEmailVerifid
+        add(waitForVerificationEvent());
+
+        /// Check for 15 minutes timed out
+        DateTime _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
+        if (user?.isTheAccountConfirmed == false && _countDownFinishTime.isBefore(DateTime.now())) {
+          Restart.restartApp();
+        }
+      });
+    });
+
     on<resendVerificationLink>((event, emit) async {
       await _userRepository.sendEmailVerification();
     });
@@ -265,8 +293,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<deleteUser>((event, emit) async {
       await _userRepository.deleteUser(user!.userID, user!.region);
-      user = null;
-      emit(InitialUserState());
+      Restart.restartApp();
     });
   }
 
@@ -274,6 +301,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> close() async {
     if (_streamSubscription != null) {
       _streamSubscription?.cancel();
+    }
+
+    if(_timer != null) {
+      _timer?.cancel();
     }
     super.close();
   }

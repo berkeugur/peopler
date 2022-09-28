@@ -29,9 +29,6 @@ class VerificationScreen extends StatelessWidget {
               if (state is SignedInState) {
                 timer.cancel();
 
-                /// Upload Profile Photo
-                _userBloc.add(uploadProfilePhoto(imageFile: image));
-
                 /// Request Permission
                 final LocationRepository _locationRepository = locator<LocationRepository>();
                 _locationRepository.requestPermission();
