@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:peopler/data/model/activity.dart';
 import '../../../data/model/user.dart';
 import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
-import '../../../presentation/screens/PROFILE/OthersProfile/profile/profile_screen_components.dart';
 import 'bloc.dart';
 
 class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
@@ -17,7 +15,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
   MyUser? otherUser;
   late final List<String> mutualConnectionUserIDs;
   late final List<MyActivity> activities;
-  late final SendRequestButtonStatus status;
+  SendRequestButtonStatus? status;
 
   StreamSubscription? _streamSubscription;
   bool _newUserListenListener = false;
@@ -62,7 +60,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
           status = SendRequestButtonStatus.connect;
         }
 
-        emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status));
+        emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status!));
 
         if (_newUserListenListener == false) {
           _newUserListenListener = true;
@@ -95,7 +93,7 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
       emit(InitialOtherUserState());
       await _userRepository.removeConnection(UserBloc.user!.userID, event.otherUserID);
       status = SendRequestButtonStatus.connect;
-      emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status));
+      emit(OtherUserLoadedState(otherUser!, mutualConnectionUserIDs, activities, status!));
     });
   }
 

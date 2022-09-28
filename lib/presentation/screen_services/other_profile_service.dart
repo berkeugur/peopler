@@ -5,10 +5,9 @@ import '../../business_logic/blocs/OtherUserBloc/bloc.dart';
 import '../screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
 class OtherProfileService {
-  Future removeConnection({required BuildContext context, required String otherUserID}) async {
-    OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
+  Future removeConnection({required OtherUserBloc otherUserBloc, required BuildContext context, required String otherUserID}) async {
     UserBloc.user?.connectionUserIDs.remove(otherUserID);
-    _otherUserBloc.add(RemoveConnectionEvent(otherUserID: otherUserID));
+    otherUserBloc.add(RemoveConnectionEvent(otherUserID: otherUserID));
     Future.delayed(Duration.zero);
   }
 

@@ -63,10 +63,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
                   /// Call another ChatBloc event named NewChatListenerEvent
                   add(NewChatListenerEvent(updatedChat: updatedChat));
+                } else {
+                  add(TrigChatNotExistStateEvent());
                 }
           });
         }
       }
+    });
+
+    on<TrigChatNotExistStateEvent>((event, emit) async {
+        emit(ChatNotExistState());
     });
 
     on<NewChatListenerEvent>((event, emit) async {

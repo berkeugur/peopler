@@ -135,7 +135,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                   if (UserBloc.user != null) {
                     if (otherUserBloc != null && otherUserBloc.otherUser != null) {
                       //remove connection function
-                      OtherProfileService().removeConnection(otherUserID: otherUserBloc.otherUser!.userID).then((value) {
+                      OtherProfileService().removeConnection(context: context, otherUserID: otherUserBloc.otherUser!.userID, otherUserBloc: otherUserBloc).then((value) {
                         Reloader().reload(reloadItem: Reloader.otherUserProfileReload);
                         Navigator.of(context).pop();
                       });

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart' hide NestedScrollView;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_zoom_drawer/config.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
