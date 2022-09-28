@@ -65,7 +65,6 @@ class CityTabState extends State<CityTab> {
   @override
   void initState() {
     _cityBloc = BlocProvider.of<CityBloc>(context);
-    print(CityBloc.allUserList[1].hobbies..toString());
     _savedBloc = BlocProvider.of<SavedBloc>(context);
     super.initState();
   }
