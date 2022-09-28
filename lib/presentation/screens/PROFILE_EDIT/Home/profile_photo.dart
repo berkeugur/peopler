@@ -1,13 +1,13 @@
 import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
+import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 
 class ProfilePhotoEdit extends StatefulWidget {
   const ProfilePhotoEdit({Key? key}) : super(key: key);
@@ -47,18 +47,11 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
       //.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile);
     }
 
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       setStateEditProfile.value = !setStateEditProfile.value;
     }).then((value) async {
-      print("çalıştı ************** pp ");
-      Reference _storageReference = FirebaseStorage.instance.ref().child(UserBloc.user!.userID).child("profile_photo").child("profile_photo.png");
-      await _storageReference.putFile(newProfileimage!);
-      //gs://peopler-2376c.appspot.com/G4yKPJketQU8dm2GjDfeZZXHt8Z2/profile_photo/profile_photo.png
-      print(_storageReference.fullPath);
-      print(FirebaseStorage.instance.ref(_storageReference.fullPath));
-      UserBloc.user!.profileURL = await FirebaseStorage.instance.ref(_storageReference.fullPath).getDownloadURL();
-
-      newProfileimage = null;
+      UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+      _userBloc.add(uploadProfilePhoto(imageFile: newProfileimage));
       setStateEditProfile.value = !setStateEditProfile.value;
     });
   }
