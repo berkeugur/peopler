@@ -68,7 +68,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                widget.profileData.hobbies.length == 0 ? const SizedBox.shrink() : _buildHeaderTitle(),
+                widget.profileData.hobbies.length == 0 && widget.profileData.userID != UserBloc.user?.userID ? const SizedBox.shrink() : _buildHeaderTitle(),
                 widget.profileData.userID != UserBloc.user!.userID
                     ? const SizedBox.shrink()
                     : Row(
@@ -77,10 +77,14 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                               onPressed: () {
                                 isEditModeActive.value = !isEditModeActive.value;
                               },
-                              icon: Icon(
-                                Icons.edit,
-                                color: Mode().blackAndWhiteConversion(),
-                              )),
+                              icon: ValueListenableBuilder(
+                                  valueListenable: isEditModeActive,
+                                  builder: (context, _, __) {
+                                    return Icon(
+                                      isEditModeActive.value ? Icons.edit_off : Icons.edit,
+                                      color: Mode().blackAndWhiteConversion(),
+                                    );
+                                  })),
                           IconButton(
                               onPressed: () async {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -232,7 +236,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                                           "Bu hobiyi zaten daha önce eklemişsiniz. İsterseniz güncelleyebilir veya silip tekrar ekleyebilirsiniz.");
                                                     } else {
                                                       if (controller.hasClients) {
-                                                        controller.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.bounceIn);
+                                                        controller.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.linear);
                                                       } else {
                                                         SnackBars(context: context).simple(controller.hasClients.toString());
                                                       }

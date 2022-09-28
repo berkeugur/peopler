@@ -7,7 +7,7 @@ enum SubscriptionType { plus, premium }
 
 enum SubscriptionPlan { oneMonth, threeMonth, sixMonth }
 
-printf(String text) {
+printf(dynamic text) {
   // ignore: avoid_print
   return print(text);
 }

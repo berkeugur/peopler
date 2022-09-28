@@ -10,6 +10,7 @@ import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
+import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
 import 'package:peopler/presentation/screens/SEARCH/searching_animation.dart';
@@ -549,13 +550,13 @@ class _NearbyTabState extends State<NearbyTab> {
                           child: Stack(
                             children: [
                               LocationBloc.allUserList[index].hobbies.isNotEmpty
-                                  ? hobbyItem(index, 0, LocationBloc.allUserList[index].hobbies[0])
+                                  ? hobbyItem(index, 0, LocationBloc.allUserList[index].hobbies[0]["title"])
                                   : const SizedBox(),
                               LocationBloc.allUserList[index].hobbies.length >= 2
-                                  ? hobbyItem(index, 25, LocationBloc.allUserList[index].hobbies[1])
+                                  ? hobbyItem(index, 25, LocationBloc.allUserList[index].hobbies[1]["title"])
                                   : const SizedBox(),
                               LocationBloc.allUserList[index].hobbies.length >= 3
-                                  ? hobbyItem(index, 50, LocationBloc.allUserList[index].hobbies[2])
+                                  ? hobbyItem(index, 50, LocationBloc.allUserList[index].hobbies[2]["title"])
                                   : const SizedBox(),
                             ],
                           ),
@@ -671,7 +672,8 @@ class _NearbyTabState extends State<NearbyTab> {
     );
   }
 
-  Container hobbyItem(int index, double marginLeft, hobbyName) {
+  Container hobbyItem(int index, double marginLeft, String hobbyName) {
+    hobbyName = Hobby().stringToHobbyTypes(hobbyName);
     double _size = 34;
     return Container(
       height: _size,

@@ -7,7 +7,7 @@ class Comment {
   int? liked;
   int? disliked;
   String? fromUserID;
-  DateTime? createdAt;
+  Timestamp? createdAt;
 
   Comment({
     this.comment,
@@ -24,7 +24,7 @@ class Comment {
     liked = json['liked'];
     disliked = json['disliked'];
     fromUserID = json['fromUserID'];
-    createdAt = (json['createdAt'] as Timestamp).toDate();
+    createdAt = json['createdAt'] as Timestamp;
   }
 
   Map<String, dynamic> toJson() {
@@ -34,7 +34,7 @@ class Comment {
     data['liked'] = liked;
     data['disliked'] = disliked;
     data['fromUserID'] = fromUserID;
-    data['createdAt'] = (createdAt as Timestamp).toDate();
+    data['createdAt'] = createdAt as Timestamp;
 
     return data;
   }

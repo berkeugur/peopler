@@ -65,6 +65,7 @@ class CityTabState extends State<CityTab> {
   @override
   void initState() {
     _cityBloc = BlocProvider.of<CityBloc>(context);
+    print(CityBloc.allUserList[1].hobbies..toString());
     _savedBloc = BlocProvider.of<SavedBloc>(context);
     super.initState();
   }
@@ -424,12 +425,14 @@ class CityTabState extends State<CityTab> {
                         child: Center(
                           child: Stack(
                             children: [
-                              CityBloc.allUserList[index].hobbies.isNotEmpty ? hobbyItem(index, 0, "213123") : const SizedBox(),
+                              CityBloc.allUserList[index].hobbies.isNotEmpty
+                                  ? hobbyItem(index, 0, CityBloc.allUserList[index].hobbies[0]["title"])
+                                  : const SizedBox(),
                               CityBloc.allUserList[index].hobbies.length >= 2
-                                  ? hobbyItem(index, 25, "CityBloc.allUserList[index].hobbies[1].split(" ").first")
+                                  ? hobbyItem(index, 25, CityBloc.allUserList[index].hobbies[1]["title"])
                                   : const SizedBox(),
                               CityBloc.allUserList[index].hobbies.length >= 3
-                                  ? hobbyItem(index, 50, "CityBloc.allUserList[index].hobbies[2].split(" ").first")
+                                  ? hobbyItem(index, 50, CityBloc.allUserList[index].hobbies[2]["title"])
                                   : const SizedBox(),
                             ],
                           ),
