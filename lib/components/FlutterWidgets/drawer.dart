@@ -391,7 +391,7 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Stack profilePhoto(BuildContext context) {
-    final profileData = UserBloc.user!;
+    final MyUser? profileData = UserBloc.user;
     final _size = MediaQuery.of(context).size;
     final _screenWidth = _size.width;
     final _photoSize = _screenWidth / 4.2;
@@ -417,7 +417,8 @@ class _MenuPageState extends State<MenuPage> {
               CircleAvatar(
             radius: 999,
             backgroundImage: NetworkImage(
-              profileData.profileURL,
+              profileData?.profileURL ??
+                  "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fdefault_profile_photo.png?alt=media&token=4e206459-e4cb-4bad-944b-7f5aaf074d9b",
             ),
             backgroundColor: Colors.transparent,
           ),
