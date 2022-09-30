@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/core/constants/reloader/reload.dart';
 
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/connectivity_repository.dart';
@@ -12,6 +13,23 @@ import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/widgets/snack_bars.dart';
 import 'login_screen.dart';
+
+Future<void> signInFunction({required BuildContext context}) async {
+  //await Future.delayed(Duration(seconds: 10));
+  final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
+  bool _connection = await _connectivityRepository.checkConnection(context);
+  if (_connection == false) return;
+
+  if (loginEmailController.text.isEmpty && loginPasswordController.text.isEmpty) {
+    SnackBars(context: context).simple("Lütfen e posta adresinizi ve şifrenizi girin.");
+  } else if (loginEmailController.text.isEmpty) {
+    SnackBars(context: context).simple("Lütfen e posta adresinizi girin.");
+  } else if (loginPasswordController.text.isEmpty) {
+    SnackBars(context: context).simple("Lütfen şifrenizi girin.");
+  } else if (loginEmailController.text.isNotEmpty && loginPasswordController.text.isNotEmpty) {
+    BlocProvider.of<UserBloc>(context).add(signInWithEmailandPasswordEvent(email: loginEmailController.text, password: loginPasswordController.text));
+  }
+}
 
 Center signInButton(context) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
@@ -31,33 +49,35 @@ Center signInButton(context) {
           SnackBars(context: context).simple("Hatalı şifre girdiniz.\nŞifrenizi unuttuysanız sıfırlayabilirsiniz");
         }
       },
-      child: Container(
-        height: 40,
-        width: 140,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: const Color(0xFF0353EF),
-        ),
-        child: TextButton(
-          onPressed: () async {
-            final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
-            bool _connection = await _connectivityRepository.checkConnection(context);
-            if (_connection == false) return;
-
-            if (loginEmailController.text.isEmpty && loginPasswordController.text.isEmpty) {
-              SnackBars(context: context).simple("Lütfen e posta adresinizi ve şifrenizi girin.");
-            } else if (loginEmailController.text.isEmpty) {
-              SnackBars(context: context).simple("Lütfen e posta adresinizi girin.");
-            } else if (loginPasswordController.text.isEmpty) {
-              SnackBars(context: context).simple("Lütfen şifrenizi girin.");
-            } else if (loginEmailController.text.isNotEmpty && loginPasswordController.text.isNotEmpty) {
-              _userBloc.add(signInWithEmailandPasswordEvent(email: loginEmailController.text, password: loginPasswordController.text));
-            }
-          },
-          child: Text(
-            "Giriş Yap",
-            textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
+      child: InkWell(
+        onTap: () async {
+          Reloader.isLoginButtonTapped.value = true;
+          await signInFunction(context: context).then(
+            (value) => Reloader.isLoginButtonTapped.value = false,
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.all(5),
+          height: 40,
+          width: 140,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: const Color(0xFF0353EF),
+          ),
+          child: Center(
+            child: ValueListenableBuilder(
+                valueListenable: Reloader.isLoginButtonTapped,
+                builder: (context, _, __) {
+                  return Reloader.isLoginButtonTapped.value == true
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : Text(
+                          "Giriş Yap",
+                          textScaleFactor: 1,
+                          style: GoogleFonts.rubik(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
+                        );
+                }),
           ),
         ),
       ),
