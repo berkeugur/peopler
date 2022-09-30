@@ -777,12 +777,62 @@ class ProfileScreenComponentsOthersProfile {
                         if (index == numberOfActivity.value - 1) {
                           return InkWell(
                             onTap: () {
-                              /*
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AllActivityListOthersProfile(profileData: profileData, myActivities: myActivities)),
+                              showDialog(
+                                context: context,
+                                builder: (contextSD) => AlertDialog(
+                                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                  contentPadding: const EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                  content: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Yakında...",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.rubik(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(contextSD).pop();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(999),
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                            vertical: 10,
+                                          ),
+                                          child: Text(
+                                            "TAMAM",
+                                            style: GoogleFonts.rubik(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
-                               */
+                              /*
+                              
 
                               UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                               _userBloc.mainKey.currentState?.push(
@@ -793,6 +843,7 @@ class ProfileScreenComponentsOthersProfile {
                                   ? numberOfActivity.value = myActivities.length + 1
                                   : numberOfActivity.value = minNumberOfActivity + 1;
                               debugPrint("çalıştı .........");
+                              */
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10.0),
@@ -901,6 +952,60 @@ class ProfileScreenComponentsOthersProfile {
                         if (profileData.hobbies.length > numberOfExperience.value && index == numberOfExperience.value - 1) {
                           return InkWell(
                             onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (contextSD) => AlertDialog(
+                                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                  contentPadding: const EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                  content: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Yakında...",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.rubik(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(contextSD).pop();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(999),
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                            vertical: 10,
+                                          ),
+                                          child: Text(
+                                            "TAMAM",
+                                            style: GoogleFonts.rubik(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
                               /*
                               Navigator.push(
                                 context,

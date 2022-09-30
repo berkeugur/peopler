@@ -60,7 +60,7 @@ class ProfileScreenComponentsMyProfile {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             decoration: BoxDecoration(
               color: Mode().homeScreenScaffoldBackgroundColor(),
-              boxShadow: <BoxShadow>[BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+              boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
             ),
             child: Text(
               biography,
@@ -111,7 +111,7 @@ class ProfileScreenComponentsMyProfile {
                             borderRadius: BorderRadius.circular(7.5),
                             color: Colors.grey[400],
                           ),
-                          margin: EdgeInsets.only(left: 5, right: 2.5),
+                          margin: const EdgeInsets.only(left: 5, right: 2.5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7.5),
                             child: Image.asset(
@@ -134,7 +134,7 @@ class ProfileScreenComponentsMyProfile {
                             borderRadius: BorderRadius.circular(7.5),
                             color: Colors.grey[400],
                           ),
-                          margin: EdgeInsets.only(left: 2.5, right: 5),
+                          margin: const EdgeInsets.only(left: 2.5, right: 5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(7.5),
                             child: Image.asset(
@@ -166,7 +166,7 @@ class ProfileScreenComponentsMyProfile {
                                 borderRadius: BorderRadius.circular(7.5),
                                 color: Colors.grey[400],
                               ),
-                              margin: EdgeInsets.only(left: 5, right: 2.5),
+                              margin: const EdgeInsets.only(left: 5, right: 2.5),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(7.5),
                                 child: CachedNetworkImage(
@@ -179,7 +179,7 @@ class ProfileScreenComponentsMyProfile {
                                   imageUrl: photos.first,
                                   progressIndicatorBuilder: (context, url, downloadProgress) =>
                                       ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                 ),
                               ),
                             ),
@@ -194,7 +194,7 @@ class ProfileScreenComponentsMyProfile {
                                 borderRadius: BorderRadius.circular(7.5),
                                 color: Colors.grey[400],
                               ),
-                              margin: EdgeInsets.only(left: 2.5, right: 5),
+                              margin: const EdgeInsets.only(left: 2.5, right: 5),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(7.5),
                                 child: Image.asset(
@@ -262,7 +262,7 @@ class ProfileScreenComponentsMyProfile {
                 ),
               ),
               progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
         ],
@@ -634,18 +634,70 @@ class ProfileScreenComponentsMyProfile {
                         if (index == numberOfActivity.value - 1) {
                           return InkWell(
                             onTap: () {
-                              /*
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: activities)),
+                              showDialog(
+                                context: context,
+                                builder: (contextSD) => AlertDialog(
+                                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                  contentPadding: const EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                  content: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Yakında...",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.rubik(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(contextSD).pop();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(999),
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                            vertical: 10,
+                                          ),
+                                          child: Text(
+                                            "TAMAM",
+                                            style: GoogleFonts.rubik(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               );
-                               */
+                              /*
+                             
+                              
 
+                          
                               UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                               _userBloc.mainKey.currentState?.push(
                                 MaterialPageRoute(builder: (context) => AllActivityListMyProfile(profileData: profileData, myActivities: activities)),
                               );
-
+ */
                               debugPrint("çalıştı .........");
                             },
                             child: Container(
@@ -653,7 +705,7 @@ class ProfileScreenComponentsMyProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
@@ -671,7 +723,7 @@ class ProfileScreenComponentsMyProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -693,7 +745,7 @@ class ProfileScreenComponentsMyProfile {
                                   ],
                                 ),
                                 MediaQuery.of(context).size.width < 320
-                                    ? SizedBox.shrink()
+                                    ? const SizedBox.shrink()
                                     : Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
@@ -752,7 +804,7 @@ class ProfileScreenComponentsMyProfile {
                       decoration: BoxDecoration(
                         color: _mode.bottomMenuBackground(),
                         boxShadow: <BoxShadow>[
-                          BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                         ],
                         //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                       ),
@@ -797,7 +849,7 @@ class ProfileScreenComponentsMyProfile {
                                                                 color: _mode.search_peoples_scaffold_background() as Color,
                                                               )),
                                                           child: CircleAvatar(
-                                                            backgroundColor: Color(0xFF0353EF),
+                                                            backgroundColor: const Color(0xFF0353EF),
                                                             child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
                                                           ),
                                                         ),
@@ -845,7 +897,7 @@ class ProfileScreenComponentsMyProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
@@ -863,7 +915,7 @@ class ProfileScreenComponentsMyProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -883,7 +935,7 @@ class ProfileScreenComponentsMyProfile {
                                                   color: _mode.search_peoples_scaffold_background() as Color,
                                                 )),
                                             child: CircleAvatar(
-                                              backgroundColor: Color(0xFF0353EF),
+                                              backgroundColor: const Color(0xFF0353EF),
                                               child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
                                             ),
                                           ),
@@ -944,7 +996,7 @@ class ProfileScreenComponentsMyProfile {
               String? selectedFinishMonth;
               bool isChecked = true;
 
-              Duration _duration = Duration(milliseconds: 600);
+              Duration _duration = const Duration(milliseconds: 600);
 
               showDialog(
                   context: context,
@@ -1075,7 +1127,7 @@ class ProfileScreenComponentsMyProfile {
                                       ),
                                       child: Checkbox(
                                         checkColor: Colors.white,
-                                        activeColor: Color(0xFF0353EF),
+                                        activeColor: const Color(0xFF0353EF),
                                         value: isChecked,
                                         onChanged: (bool? value) {
                                           Future.delayed(_duration, () {
@@ -1108,7 +1160,7 @@ class ProfileScreenComponentsMyProfile {
                                 'iptal',
                                 textScaleFactor: 1,
                                 style: GoogleFonts.rubik(
-                                  color: Color(0xFF0353EF),
+                                  color: const Color(0xFF0353EF),
                                 ),
                               )),
                           TextButton(
@@ -1196,7 +1248,7 @@ class ProfileScreenComponentsMyProfile {
                                 'ekle',
                                 textScaleFactor: 1,
                                 style: GoogleFonts.rubik(
-                                  color: Color(0xFF0353EF),
+                                  color: const Color(0xFF0353EF),
                                 ),
                               )),
                         ],
@@ -1235,7 +1287,7 @@ class ProfileScreenComponentsMyProfile {
                                               color: _mode.search_peoples_scaffold_background() as Color,
                                             )),
                                         child: CircleAvatar(
-                                          backgroundColor: Color(0xFF0353EF),
+                                          backgroundColor: const Color(0xFF0353EF),
                                           child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
                                         ),
                                       ),
