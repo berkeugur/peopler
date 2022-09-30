@@ -57,10 +57,13 @@ class BottomButtons extends StatelessWidget {
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: Text(
-                        "ATLA",
-                        textScaleFactor: 1,
-                        style: GoogleFonts.rubik(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "ATLA",
+                          textScaleFactor: 1,
+                          style: GoogleFonts.rubik(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
+                        ),
                       ),
                     ),
                   ],
