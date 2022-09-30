@@ -63,7 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         context: context,
                         builder: (_ctx) {
                           return AlertDialog(
-                            title: const Text("Haber Verelim"),
+                            title: const Text("Bekleme Listesine Başvur"),
                             content: Container(
                               alignment: Alignment.center,
                               height: 50,
@@ -170,7 +170,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                     SnackBars(context: context).simple("boş bırakmayınız");
                                   }
                                 },
-                                child: const Text("Gönder"),
+                                child: const Text("Başvur"),
                               ),
                             ],
                           );
