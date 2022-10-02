@@ -80,5 +80,22 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         debugPrint("Blocta get more data NotificationTransmitted hata:" + e.toString());
       }
     });
+
+    on<GeriAlButtonEvent>((event, emit) async {
+      try {
+        UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
+        _allTransmittedList.removeWhere((element) => element.requestUserID == event.requestUserID);
+
+        if(_allTransmittedList.isEmpty) {
+          emit(NotificationTransmittedNotExistState());
+        } else {
+          emit(NotificationTransmittedLoadedState());
+        }
+
+        await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);
+      } catch (e) {
+        debugPrint("Blocta geri al error:" + e.toString());
+      }
+    });
   }
 }

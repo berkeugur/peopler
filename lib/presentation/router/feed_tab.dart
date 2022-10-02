@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/FeedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/others/widgets/drawer.dart';
-import 'package:peopler/presentation/screens/Settings/settings.dart';
-import '../../business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
-import '../screens/ChatScreen/channel_list.dart';
-import '../tab_item.dart';
-import '../screens/feeds/FeedScreen/feed_screen.dart';
-import '../screens/feeds/FeedShare/feed_share_screen.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+
+import '../screens/FEEDS/FeedScreen/feed_screen.dart';
 
 class FeedScreenNavigator extends StatefulWidget {
   final GlobalKey<FeedScreenState> feedListKey;
@@ -39,17 +37,17 @@ class _FeedScreenNavigatorState extends State<FeedScreenNavigator> with Automati
         builder: (context, x, y) {
           return Navigator(
             key: _homeScreen.navigatorKeys[TabItem.feed],
-            initialRoute: '/',
+            initialRoute: NavigationConstants.INITIAL_ROUTE,
             onGenerateRoute: (routeSettings) {
               switch (routeSettings.name) {
-                case '/':
+                case NavigationConstants.INITIAL_ROUTE:
                   _homeScreen.currentScreen = {TabItem.feed: ScreenItem.feedScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
 
                   return MaterialPageRoute(
                       builder: (context) => MultiBlocProvider(
-                          child: DrawerHomePage(
-                            feedListKey: widget.feedListKey,
+                          child: FeedScreen(
+                            key: widget.feedListKey,
                           ),
                           providers: [BlocProvider.value(value: _feedBloc), BlocProvider.value(value: _homeScreen)]));
                 /*

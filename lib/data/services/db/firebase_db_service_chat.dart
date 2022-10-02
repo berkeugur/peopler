@@ -119,4 +119,18 @@ class FirestoreDBServiceChat {
       return false;
     }
   }
+
+  Future<bool> deleteChat(String currentUserID, String otherUserID) async {
+    try {
+      await _firebaseDB
+          .collection('users')
+          .doc(currentUserID)
+          .collection('chats')
+          .doc(otherUserID)
+          .delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

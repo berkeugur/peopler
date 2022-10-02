@@ -5,12 +5,13 @@ import 'package:image_picker/image_picker.dart';
 
 File? image;
 _imgFromCamera({required StateSetter stateSetter}) async {
-  XFile? image = await ImagePicker()
-      .pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
+  XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
 
   stateSetter(() {
     //_image = File(image!.path);
-    photoCrop(photo: File(image!.path), stateSetter: stateSetter);
+    if (image != null) {
+      photoCrop(photo: File(image.path), stateSetter: stateSetter);
+    }
   });
 }
 
@@ -19,7 +20,9 @@ _imgFromGallery({required StateSetter stateSetter}) async {
 
   stateSetter(() {
     //_image = File(image!.path);
-    photoCrop(photo: File(image!.path), stateSetter: stateSetter);
+    if (image != null) {
+      photoCrop(photo: File(image.path), stateSetter: stateSetter);
+    }
   });
 }
 
@@ -57,8 +60,8 @@ void photoCrop({required File photo, required StateSetter stateSetter}) async {
     aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
     cropStyle: CropStyle.circle,
     compressFormat: ImageCompressFormat.png,
-    iosUiSettings: IOSUiSettings(),
-    androidUiSettings: AndroidUiSettings(
+    iosUiSettings: const IOSUiSettings(),
+    androidUiSettings: const AndroidUiSettings(
         //toolbarColor: Color(0xFF0353EF),
         //toolbarWidgetColor: Colors.white,
         //cropGridColor: Colors.white,

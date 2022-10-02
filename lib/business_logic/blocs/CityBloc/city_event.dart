@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
+import '../../../data/model/user.dart';
+
 
 @immutable
 abstract class CityEvent extends Equatable {}
@@ -35,4 +37,14 @@ class TrigUsersLoadedCityStateEvent extends CityEvent {
 class TrigUsersNotExistCityStateEvent extends CityEvent {
   @override
   List<Object> get props => [];
+}
+
+class NewUserListenerEvent extends CityEvent {
+  final MyUser myUser;
+  NewUserListenerEvent({
+    required this.myUser,
+  });
+
+  @override
+  List<Object> get props => [myUser];
 }

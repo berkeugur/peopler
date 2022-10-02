@@ -50,4 +50,7 @@ class CreateChatEvent extends ChatEvent {
   List<Object> get props => [hostUserID, hostUserName, hostUserProfileUrl];
 }
 
-
+class TrigChatNotExistStateEvent extends ChatEvent {
+  @override
+  List<Object> get props => [];
+}

@@ -63,7 +63,7 @@ class SavedRepository {
   }
 
 
-  // When the "Send Connection Request" button is clicked, this function run
+  /// When the "Send Connection Request" button is clicked, this function run
   Future<void> saveConnectionRequest(SavedUser myUser, SavedUser requestUser) async {
     Notifications myNotification = Notifications();
     myNotification.notificationID = requestUser.userID;
@@ -83,6 +83,12 @@ class SavedRepository {
 
     await deleteSavedUser(myUser.userID, requestUser.userID);
   }
+
+  Future<void> decrementNumOfSendRequest(String userID) async {
+    await _firestoreDBServiceUsers.decrementNumOfSendRequest(userID);
+  }
+
+
 
   // When the "close" button is clicked, this function run
   Future<void> deleteSavedUser(String myUserID, String savedUserID) async {

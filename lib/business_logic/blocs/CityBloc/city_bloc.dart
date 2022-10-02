@@ -1,15 +1,56 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/repository/location_repository.dart';
+import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
   final LocationRepository _locationRepository = locator<LocationRepository>();
+  final UserRepository _userRepository = locator<UserRepository>();
 
   static List<MyUser> allUserList = [];
+
+  StreamSubscription? _streamSubscription;
+  bool _newUserListenListener = false;
+
+  void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
+    /// Remove myself from list
+    userList.removeWhere((item) => item.userID == myUser.userID);
+
+    List<MyUser> tempList = [...userList];
+    for (MyUser tempUser in tempList) {
+      if (myUser.savedUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.transmittedRequestUserIDs.contains(
+          tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.receivedRequestUserIDs.contains(
+          tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.connectionUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.whoBlockedYou.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.blockedUsers.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+    }
+  }
 
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData(String city) async {
@@ -19,30 +60,9 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
       List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(city, allUserList);
 
-      /// Remove myself from list
-      userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
-
-      List<MyUser> tempList = [...userList];
-      for(MyUser tempUser in  tempList){
-        if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-
-        if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-
-        if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-
-        if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-          userList.removeWhere((item) => item.userID == tempUser.userID);
-        }
-      }
+      removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
       /// await Future.delayed(const Duration(seconds: 2));
-
       if (userList.isNotEmpty) {
         allUserList.addAll(userList);
         add(TrigUsersLoadedCityStateEvent());
@@ -68,35 +88,24 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
 
-        /// Remove myself from list
-        userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
-
-        List<MyUser> tempList = [...userList];
-        for(MyUser tempUser in  tempList){
-          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-        }
+        removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
         /// await Future.delayed(const Duration(seconds: 2));
-
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           emit(UsersLoadedCityState());
         } else {
           emit(UsersNotExistCityState());
+        }
+
+        if (_newUserListenListener == false) {
+          _newUserListenListener = true;
+          _streamSubscription = _userRepository
+              .getMyUserWithStream(UserBloc.user!.userID)
+              .listen((myUser) async {
+
+            add(NewUserListenerEvent(myUser: myUser));
+          });
         }
       } catch (e) {
         debugPrint("Blocta initial location hata:" + e.toString());
@@ -113,30 +122,9 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
 
-        /// Remove myself from list
-        userList.removeWhere((item) => item.userID == UserBloc.user!.userID);
-
-        List<MyUser> tempList = [...userList];
-        for(MyUser tempUser in  tempList){
-          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-            userList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-        }
+        removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
         /// await Future.delayed(const Duration(seconds: 2));
-
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           emit(UsersLoadedCityState());
@@ -154,13 +142,29 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     ///******************************************************************************************
     ///******************************************************************************************
     ///******************************************************************************************
-
     on<TrigUsersLoadedCityStateEvent>((event, emit) async {
       emit(UsersLoadedCityState());
     });
 
     on<TrigUsersNotExistCityStateEvent>((event, emit) async {
-      emit(UsersNotExistCityState());
+      if(allUserList.isEmpty) {
+        emit(UsersNotExistCityState());
+      } else {
+        emit(NewUsersLoadingCityState());
+        emit(UsersLoadedCityState());
+      }
     });
+    on<NewUserListenerEvent>((event, emit) async {
+      removeUnnecessaryUsersFromUserList(allUserList, event.myUser);
+      add(TrigUsersNotExistCityStateEvent());
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    if (_streamSubscription != null) {
+      _streamSubscription?.cancel();
+    }
+    super.close();
   }
 }

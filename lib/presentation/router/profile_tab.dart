@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import '../screens/profile/MyProfile/ProfileScreen/profile_screen.dart';
-import '../tab_item.dart';
+import 'package:peopler/core/constants/enums/screen_item_enum.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../screens/GUEST_LOGIN/guest_login_screen.dart';
 
 class ProfileScreenNavigator extends StatefulWidget {
   const ProfileScreenNavigator({
@@ -23,22 +28,29 @@ class _ProfileScreenNavigatorState extends State<ProfileScreenNavigator> with Au
   @override
   Widget build(BuildContext context) {
     FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
           return Navigator(
             key: _homeScreen.navigatorKeys[TabItem.profile],
-            initialRoute: '/',
+            initialRoute: NavigationConstants.INITIAL_ROUTE,
             onGenerateRoute: (routeSettings) {
               switch (routeSettings.name) {
-                case '/':
+                case NavigationConstants.INITIAL_ROUTE:
                   _homeScreen.currentScreen = {TabItem.profile: ScreenItem.profileScreen};
                   _homeScreen.changeFloatingActionButtonEvent();
+                  if (UserBloc.user == null) {
+                    return MaterialPageRoute(
+                      builder: (context) => const GuestLoginScreen(),
+                    );
+                  }
+
                   return MaterialPageRoute(
                     builder: (context) => const ProfileScreen(),
                   );
                 default:
-                  debugPrint('ERROR: Notification Tab Router unknown route');
+                  debugPrint('ERROR: Profile Tab Router unknown route');
                   return null;
               }
             },

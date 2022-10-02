@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:restart_app/restart_app.dart';
 import '../../../data/in_app_purchases.dart';
 import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
@@ -17,6 +18,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   static late List<MyActivity> myActivities;
   static MyUser? user;
+  static MyUser? guestUser;
 
   final GlobalKey<NavigatorState> mainKey;
 
@@ -24,7 +26,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   bool _userListener = false;
 
   static LogInResult? revenueCatResult;
-  static String? entitlement;
+  static String entitlement = "free";
+
+  static final Set<String> adminUsers = {
+    /*
+    "mertsalar137@gmail.com",
+    "mail@berkeugur.com",
+    "alimetehanpetek@gmail.com",
+    "ahmetrtmkk@hotmail.com",
+     */
+  };
 
   Future<void> signedInUserPreparations() async {
     /// Get activities related to user
@@ -38,53 +49,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     if (_userListener == false) {
       _userListener = true;
-      _streamSubscription = _userRepository
-          .getMyUserWithStream(UserBloc.user!.userID)
-          .listen((updatedUser) async {
-        UserBloc.user!.updateFromPublicMap(updatedUser.toPublicMap());
-
-        List<MyUser> tempList = [...CityBloc.allUserList];
-        for(MyUser tempUser in  tempList){
-          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-            CityBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-        }
-
-        tempList = [...LocationBloc.allUserList];
-        for(MyUser tempUser in  tempList){
-          if(UserBloc.user!.savedUserIDs.contains(tempUser.userID)){
-            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.transmittedRequestUserIDs.contains(tempUser.userID)){
-            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
-            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-
-          if(UserBloc.user!.connectionUserIDs.contains(tempUser.userID)){
-            LocationBloc.allUserList.removeWhere((item) => item.userID == tempUser.userID);
-          }
-        }
+      _streamSubscription = _userRepository.getMyUserWithStream(UserBloc.user!.userID).listen((updatedUser) async {
+        UserBloc.user!.fromPublicMap(updatedUser.toPublicMap());
       });
     }
   }
 
   Future initPurchaserInfoStream() async {
+    updatePurchaseStatus();
     Purchases.addPurchaserInfoUpdateListener((purchaserInfo) async {
       updatePurchaseStatus();
     });
@@ -95,6 +67,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
     entitlement = entitlements.isEmpty ? "free" : entitlements[0].toString();
+
+    if (user == null) {
+      return;
+    }
+
+    if (adminUsers.contains(user!.email)) {
+      entitlement = "admin";
+    }
   }
 
   UserBloc(this.mainKey) : super(InitialUserState()) {
@@ -103,8 +83,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await _userRepository.deleteToken(user!.userID);
         await _userRepository.signOut();
         await Purchases.logOut();
-        user = null;
-        emit(SignedOutState());
+        Restart.restartApp();
       } catch (e) {
         debugPrint("Signed Out Basarisiz" + e.toString());
       }
@@ -116,8 +95,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<uploadProfilePhoto>((event, emit) async {
       if (event.imageFile != null) {
-        String downloadLink =
-            await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile!);
+        String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile!);
         await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
         user?.profileURL = downloadLink;
       } else {
@@ -232,8 +210,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             emit(EmailAlreadyInUseState());
             break;
         }
-        print(e.code);
-        print(e.message);
+        debugPrint(e.code);
+        debugPrint(e.message);
       } catch (e) {
         debugPrint('unhandled exceptions');
       }
@@ -252,8 +230,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             emit(UserNotFoundState());
             break;
         }
-        print(e.code);
-        print(e.message);
+        debugPrint(e.code);
+        debugPrint(e.message);
       } catch (e) {
         debugPrint('unhandled exceptions');
       }

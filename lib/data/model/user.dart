@@ -15,11 +15,14 @@ class MyUser {
   String profileURL = "";
   DateTime? createdAt;
   DateTime? updatedAt;
-  List<String> hobbies = [];
+  List<dynamic> hobbies = [];
   List<String> photosURL = [];
+  List<String> savedUserIDs = [];
   List<String> connectionUserIDs = [];
   List<String> receivedRequestUserIDs = [];
   List<String> transmittedRequestUserIDs = [];
+  List<String> blockedUsers = [];
+  List<String> whoBlockedYou = [];
 
   /// Firebase Rules private fields
   String email = "";
@@ -28,7 +31,7 @@ class MyUser {
   String region = 'empty';
   int latitude = 0;
   int longitude = 0;
-  List<String> savedUserIDs = [];
+  int numOfSendRequest = 15;
 
   MyUser();
 
@@ -49,37 +52,37 @@ class MyUser {
       'updatedAt': updatedAt ?? DateTime.now(),
       'hobbies': hobbies,
       'photosURL': photosURL,
+      'savedUserIDs': savedUserIDs,
       'connectionUserIDs': connectionUserIDs,
       'receivedRequestUserIDs': receivedRequestUserIDs,
       'transmittedRequestUserIDs': transmittedRequestUserIDs,
+      'blockedUsers': blockedUsers,
+      'whoBlockedYou': whoBlockedYou,
     };
   }
 
-   void updateFromPublicMap(Map<String, dynamic> map) {
-     userID = map['userID'];
-     pplName = map['pplName'];
-     displayName = map['displayName'];
-     gender = map['gender'];
-     city = map['city'];
-     biography = map['biography'];
-     schoolName = map['schoolName'];
-     currentJobName = map['currentJobName'];
-     company = map['company'];
-     isProfileVisible = map['isProfileVisible'];
-     profileURL = map['profileURL'];
-     createdAt = map['createdAt'].runtimeType == DateTime ? map['createdAt'] : map['createdAt'].toDate();
-     updatedAt = map['updatedAt'].runtimeType == DateTime ? map['updatedAt'] : map['updatedAt'].toDate();
-     hobbies = map['hobbies'].map<String>((data) => data.toString()).toList();
-     photosURL = map['photosURL'].map<String>((data) => data.toString()).toList();
-     connectionUserIDs = map['connectionUserIDs']
-         .map<String>((data) => data.toString())
-         .toList();
-     receivedRequestUserIDs = map['receivedRequestUserIDs']
-         .map<String>((data) => data.toString())
-         .toList();
-     transmittedRequestUserIDs = map['transmittedRequestUserIDs']
-         .map<String>((data) => data.toString())
-         .toList();
+  void fromPublicMap(Map<String, dynamic> map) {
+    userID = map['userID'] as String;
+    pplName = map['pplName'] as String;
+    displayName = map['displayName'] as String;
+    gender = map['gender'] as String;
+    city = map['city'] as String;
+    biography = map['biography'] as String;
+    schoolName = map['schoolName'] as String;
+    currentJobName = map['currentJobName'] as String;
+    company = map['company'] as String;
+    isProfileVisible = map['isProfileVisible'];
+    profileURL = map['profileURL'];
+    createdAt = map['createdAt'].runtimeType == DateTime ? map['createdAt'] : map['createdAt'].toDate();
+    updatedAt = map['updatedAt'].runtimeType == DateTime ? map['updatedAt'] : map['updatedAt'].toDate();
+    hobbies = map['hobbies'];
+    photosURL = map['photosURL'].map<String>((data) => data.toString()).toList();
+    savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList();
+    connectionUserIDs = map['connectionUserIDs'].map<String>((data) => data.toString()).toList();
+    receivedRequestUserIDs = map['receivedRequestUserIDs'].map<String>((data) => data.toString()).toList();
+    transmittedRequestUserIDs = map['transmittedRequestUserIDs'].map<String>((data) => data.toString()).toList();
+    blockedUsers = map['blockedUsers'].map<String>((data) => data.toString()).toList();
+    whoBlockedYou = map['whoBlockedYou'].map<String>((data) => data.toString()).toList();
   }
 
   Map<String, dynamic> toPrivateMap() {
@@ -91,18 +94,18 @@ class MyUser {
       'region': region,
       'latitude': latitude,
       'longitude': longitude,
-      'savedUserIDs': savedUserIDs,
+      'numOfSendRequest': numOfSendRequest,
     };
   }
 
-  void updateFromPrivateMap(Map<String, dynamic> map) {
-    email = map['email'];
-    isTheAccountConfirmed = map['isTheAccountConfirmed'];
-    missingInfo = map['missingInfo'];
-    region = map['region'];
-    latitude = map['latitude'];
-    longitude = map['longitude'];
-    savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList();
+  void fromPrivateMap(Map<String, dynamic> map) {
+    email = map['email'] as String;
+    isTheAccountConfirmed = map['isTheAccountConfirmed'] as bool;
+    missingInfo = map['missingInfo'] as bool;
+    region = map['region'] as String;
+    latitude = map['latitude'] as int;
+    longitude = map['longitude'] as int;
+    numOfSendRequest = map['numOfSendRequest'] as int;
   }
 
   String randomNumberGenerator() {

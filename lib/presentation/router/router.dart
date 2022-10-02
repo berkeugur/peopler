@@ -1,63 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/BegForPermissionScreen/beg_for_permission_screen.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/EmailAndPasswordScreen/email_pass_screen.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/GenderSelectScreen/gender_select_screen.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/LinkedInLoginScreen/linkedin_login.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/ResetPasswordScreen/reset_password.dart';
-import 'package:peopler/presentation/screens/LoginAndRegisterScreen/VerificationScreen/verification_screen.dart';
-
-import '../../business_logic/blocs/FeedBloc/feed_bloc.dart';
-import '../screens/HomeScreen/home_screen.dart';
-import '../screens/LoginAndRegisterScreen/CreateProfileScreen/create_profile_screen.dart';
-import '../screens/LoginAndRegisterScreen/LoginScreen/login_screen.dart';
-import '../screens/LoginAndRegisterScreen/NameAndSurnameScreen/name_screen.dart';
-import '../screens/LoginAndRegisterScreen/WelcomeScreen/welcome.dart';
-import '../screens/OnBoardingScreen/onboardingscreen.dart';
-import '../screens/SplashScreen/splash_screen.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/data/services/remote_config/remote_config.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/BegForPermissionScreen/beg_for_permission_screen.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/EmailAndPasswordScreen/email_pass_screen.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/GenderSelectScreen/gender_select_screen.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/LinkedInLoginScreen/linkedin_login.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/ResetPasswordScreen/reset_password.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/VerificationScreen/verification_screen.dart';
+import 'package:peopler/presentation/screens/MAINTENANCE/maintenance_screen.dart';
+import '../../others/locator.dart';
+import '../screens/HOME/home_screen.dart';
+import '../screens/LOGIN_REGISTER/CreateProfileScreen/create_profile_screen.dart';
+import '../screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
+import '../screens/LOGIN_REGISTER/NameAndSurnameScreen/name_screen.dart';
+import '../screens/LOGIN_REGISTER/WelcomeScreen/welcome.dart';
+import '../screens/ONBOARDING/onboardingscreen.dart';
+import '../screens/SPLASH/splash_screen.dart';
+import '../screens/UPDATE/update_screen.dart';
 
 class LoginRouter {
   // final FeedBloc _feedBloc = FeedBloc();
   // final SavedBloc _savedBloc = SavedBloc();
 
-  Route? onGenerateRoute(RouteSettings routeSettings)  {
+  Route? onGenerateRoute(RouteSettings routeSettings) {
+    final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
+    if (_remoteConfigService.isMaintenance()) {
+      return MaterialPageRoute(builder: (_) => const MaintenanceScreen());
+    }
+
+    if (_remoteConfigService.isUpdate()) {
+      return MaterialPageRoute(builder: (_) => const UpdateScreen());
+    }
+
     switch (routeSettings.name) {
-      case '/':
+      case NavigationConstants.INITIAL_ROUTE:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case '/onBoardingScreen':
+      case NavigationConstants.ON_BOARDING:
         return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
-      case '/welcomeScreen':
+      case NavigationConstants.WELCOME:
         return MaterialPageRoute(builder: (_) => const WelcomeScreen());
-      case '/nameScreen':
+      case NavigationConstants.NAME_SCREEN:
         return MaterialPageRoute(builder: (_) => const NameScreen());
-      case '/loginScreen':
+      case NavigationConstants.LOGIN_SCREEN:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case '/genderSelectScreen':
+      case NavigationConstants.GENDER_SELECT_SCREEN:
         return MaterialPageRoute(builder: (_) => const GenderSelectScreen());
-      case '/resetPasswordScreen':
+      case NavigationConstants.RESET_PASSWORD_SCREEN:
         return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
-      case '/begForPermissionScreen':
+      case NavigationConstants.BEG_FOR_PERMISSION_SCREEN:
         return MaterialPageRoute(builder: (_) => const BegForPermissionScreen());
-      case '/homeScreen':
-        return MaterialPageRoute(builder: (_) =>  const HomeScreen());
-
-            /*
-            MaterialPageRoute(
-                builder: (_) => MultiBlocProvider(providers: [
-                  BlocProvider<FeedBloc>.value(value: _feedBloc),
-                  BlocProvider<SavedBloc>.value(value: _savedBloc),
-                    ], child: const HomeScreen()));
-             */
-      case '/verifyScreen':
+      case NavigationConstants.HOME_SCREEN:
+        return MaterialPageRoute(builder: (_) => const DrawerHomePage());
+      case NavigationConstants.VERIFY_SCREEN:
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
-      case '/createProfileScreen':
+      case NavigationConstants.CREATE_PROFILE_SCREEN:
         return MaterialPageRoute(builder: (_) => const CreateProfileScreen());
-      case '/emailAndPasswordScreen':
+      case NavigationConstants.EMAIL_AND_PASSWORD_SCREEN:
         return MaterialPageRoute(builder: (_) => const EmailAndPasswordScreen());
-      case '/linkedInLoginScreen':
+      case NavigationConstants.LINKEDIN_LOGIN_SCREEN:
         return MaterialPageRoute(builder: (_) => const LinkedInPage());
-
 
       default:
         debugPrint('ERROR: Login Router unknown route');
@@ -65,3 +67,11 @@ class LoginRouter {
     }
   }
 }
+
+      /*
+            MaterialPageRoute(
+                builder: (_) => MultiBlocProvider(providers: [
+                  BlocProvider<FeedBloc>.value(value: _feedBloc),
+                  BlocProvider<SavedBloc>.value(value: _savedBloc),
+                    ], child: const HomeScreen()));
+             */

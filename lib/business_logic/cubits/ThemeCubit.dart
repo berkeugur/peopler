@@ -7,9 +7,10 @@ ValueNotifier<bool> setTheme = ValueNotifier(true);
 class ThemeCubit extends Cubit<bool> {
   ThemeCubit() : super(true);
 
-  Future<void> openLightMode() async {
+  openLightMode() {
     Mode.isEnableDarkMode = false;
     Mode.isEnableDarkModeNotifier.value = false;
+    setTheme.value = !setTheme.value;
     Future.delayed(const Duration(milliseconds: 500), () {
       setTheme.value = !setTheme.value;
       Mode.isEnableDarkMode = false;
@@ -22,9 +23,10 @@ class ThemeCubit extends Cubit<bool> {
     emit(true);
   }
 
-  Future<void> openDarkMode() async {
+  openDarkMode() {
     Mode.isEnableDarkMode = true;
     Mode.isEnableDarkModeNotifier.value = true;
+    setTheme.value = !setTheme.value;
     Future.delayed(const Duration(milliseconds: 500), () {
       setTheme.value = !setTheme.value;
       Mode.isEnableDarkMode = true;

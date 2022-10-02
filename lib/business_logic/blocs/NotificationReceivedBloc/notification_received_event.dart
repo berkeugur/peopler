@@ -15,10 +15,10 @@ class GetInitialDataEvent extends NotificationReceivedEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class ClickAcceptEvent extends NotificationReceivedEvent {
+class ClickAcceptReceivedEvent extends NotificationReceivedEvent {
   final String requestUserID;
 
-  ClickAcceptEvent({
+  ClickAcceptReceivedEvent({
     required this.requestUserID,
   });
 
@@ -28,11 +28,13 @@ class ClickAcceptEvent extends NotificationReceivedEvent {
 
 class ClickNotAcceptEvent extends NotificationReceivedEvent {
   final String requestUserID;
+  final int index;
 
   ClickNotAcceptEvent({
     required this.requestUserID,
+    required this.index
   });
 
   @override
-  List<Object> get props => [requestUserID];
+  List<Object> get props => [requestUserID, index];
 }

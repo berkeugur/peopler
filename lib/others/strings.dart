@@ -1,7 +1,9 @@
 class Strings {
+  /// VERSION
+  static const String version = "update_v1_0";
+
   /// LinkedIn Parameters (From LinkedIn Developer Page)
-  static const String redirectUrl =
-      'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
+  static const String redirectUrl = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
   static const String clientId = '86y9muk6ijz659';
 
   /// Firebase Parameters
@@ -31,12 +33,14 @@ class Strings {
   static const String activityDisliked = "disliked";
 
   static const List<String> cityData = [
+    "İstanbul",
+    "Ankara",
+    "İzmir",
     "Adana",
     "Adıyaman",
     "Afyonkarahisar",
     "Ağrı",
     "Amasya",
-    "Ankara",
     "Antalya",
     "Artvin",
     "Aydın",
@@ -64,8 +68,6 @@ class Strings {
     "Hatay",
     "Isparta",
     "Mersin",
-    "İstanbul",
-    "İzmir",
     "Kars",
     "Kastamonu",
     "Kayseri",
@@ -119,7 +121,7 @@ ProjectText txt = ProjectText();
 
 class ProjectText {
   String get peoplerTXT {
-    return "peopler";
+    return "peoplssssssssssser";
   }
 
   String get backArrowSvgTXT {

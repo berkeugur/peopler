@@ -28,9 +28,6 @@ double menuItemHeight = 38;
 double menuItemWidth = 54;
 double menuItemBorderRadius = 19;
 
-///feed share screen text field length
-int customMaxLength = 140;
-
 class Variables {
   static ValueNotifier<double> animatedContainerHeight = ValueNotifier(30);
   static ValueNotifier<double> animatedAppBarHeight = ValueNotifier(70);
@@ -39,4 +36,8 @@ class Variables {
 
   static ValueNotifier<double> animatedNotificationsHeaderTop = ValueNotifier(70);
   static ValueNotifier<double> animatedNotificationHeaderBottom = ValueNotifier(50);
+
+  static ValueNotifier<List<Map<String, dynamic>>> blockedUsersData = ValueNotifier([]);
+
+  static Map<String, Map<String, dynamic>?> savedUserData = {};
 }

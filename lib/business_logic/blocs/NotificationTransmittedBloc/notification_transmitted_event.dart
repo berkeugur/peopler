@@ -15,6 +15,17 @@ class GetInitialDataEvent extends NotificationTransmittedEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
+class GeriAlButtonEvent extends NotificationTransmittedEvent {
+  final String requestUserID;
+  GeriAlButtonEvent({
+    required this.requestUserID,
+  });
+
+  @override
+  List<Object> get props => [requestUserID];
+}
+
+
 /*
 class AddMyNotificationTransmittedEvent extends NotificationTransmittedEvent {
   MyNotificationTransmitted myNotificationTransmitted;

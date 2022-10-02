@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import '../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../others/strings.dart';
-import '../presentation/screens/MessageScreen/message_screen.dart';
-import '../presentation/tab_item.dart';
+import '../presentation/screens/MESSAGE/message_screen.dart';
 import 'model/chat.dart';
 
 /// AWESOME NOTIFICATIONS
@@ -32,14 +33,11 @@ class FCMAndLocalNotifications {
   static BuildContext? myContext;
 
   static final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  static final GeolocatorPlatform _geolocatorPlatform =
-      GeolocatorPlatform.instance;
-  static final AwesomeNotifications awesomeNotificationsPlugin =
-      AwesomeNotifications();
+  static final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  static final AwesomeNotifications awesomeNotificationsPlugin = AwesomeNotifications();
 
   /// Make this class singleton
-  static final FCMAndLocalNotifications _singleton =
-      FCMAndLocalNotifications._internal();
+  static final FCMAndLocalNotifications _singleton = FCMAndLocalNotifications._internal();
   factory FCMAndLocalNotifications() {
     return _singleton;
   }
@@ -91,16 +89,12 @@ class FCMAndLocalNotifications {
     String? _token = await _fcm.getToken();
     debugPrint(_token!);
     User? _currentUser = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance
-        .doc("tokens/" + _currentUser!.uid)
-        .set({"token": _token});
+    await FirebaseFirestore.instance.doc("tokens/" + _currentUser!.uid).set({"token": _token});
 
     /// If current user's token is refreshed because of some reason, then update it on database also.
     _fcm.onTokenRefresh.listen((newToken) async {
       User? _currentUser = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance
-          .doc("tokens/" + _currentUser!.uid)
-          .set({"token": newToken});
+      await FirebaseFirestore.instance.doc("tokens/" + _currentUser!.uid).set({"token": newToken});
     });
 
     /// For IOS, foreground notifications
@@ -129,48 +123,34 @@ class FCMAndLocalNotifications {
   static Future showNotificationForDebugPurposes(String error) async {
     await awesomeNotificationsPlugin.createNotification(
         content: NotificationContent(
-            id: 0,
-            channelKey: Strings.keyDebug,
-            title: 'Location for Debug Purposes',
-            body: error,
-            payload: {'payload': ''},
-            summary: 'debug'
-            ));
+            id: 0, channelKey: Strings.keyDebug, title: 'Location for Debug Purposes', body: error, payload: {'payload': ''}, summary: 'debug'));
   }
 
-  static Future showNotificationForLocationPermissions(
-      String title, String body, String payloadType) async {
+  static Future showNotificationForLocationPermissions(String title, String body, String payloadType) async {
     await awesomeNotificationsPlugin.createNotification(
-        content: NotificationContent(
-            id: 1,
-            channelKey: Strings.keyPermission,
-            title: title,
-            body: body,
-            payload: {'payload': payloadType},
-            summary: 'Permission'
-            ));
+        content:
+            NotificationContent(id: 1, channelKey: Strings.keyPermission, title: title, body: body, payload: {'payload': payloadType}, summary: 'Permission'));
   }
 
   /// If a user sent a connection request to you
   static void showSendRequestNotification(Map<String, dynamic> message) async {
     // message["displayName"] // message["message"] // message["profileURL"] // message["userID"]
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       await awesomeNotificationsPlugin.createNotification(
-        content: NotificationContent(
-            id: 2,
-            channelKey: Strings.keyMain,
-            title: '',
-            body: message["displayName"] + ' size bağlantı isteği gönderdi',
-            showWhen: true,
-            displayOnForeground: true,
-            displayOnBackground: true,
-            notificationLayout: NotificationLayout.Messaging,
-            roundedLargeIcon: true,
-            largeIcon: message["profileURL"],
-            payload: {'payload': Strings.sendRequest},
-            summary: 'Yeni Bağlantı İsteği'
-            ));
-    } else if(Platform.isIOS) {
+          content: NotificationContent(
+              id: 2,
+              channelKey: Strings.keyMain,
+              title: '',
+              body: (message["displayName"] as String) + ' size bağlantı isteği gönderdi',
+              showWhen: true,
+              displayOnForeground: true,
+              displayOnBackground: true,
+              notificationLayout: NotificationLayout.Messaging,
+              roundedLargeIcon: true,
+              largeIcon: (message["profileURL"] as String),
+              payload: {'payload': Strings.sendRequest},
+              summary: 'Yeni Bağlantı İsteği'));
+    } else if (Platform.isIOS) {
       await awesomeNotificationsPlugin.createNotification(
           content: NotificationContent(
               id: 2,
@@ -182,30 +162,28 @@ class FCMAndLocalNotifications {
               displayOnBackground: true,
               notificationLayout: NotificationLayout.Messaging,
               payload: {'payload': Strings.sendRequest},
-              summary: ''
-          ));
+              summary: ''));
     }
   }
 
   /// If a user accepted your connection request
-  static void showReceivedRequestNotification(
-      Map<String, dynamic> message) async {
-    if(Platform.isAndroid) {
+  static void showReceivedRequestNotification(Map<String, dynamic> message) async {
+    if (Platform.isAndroid) {
       await awesomeNotificationsPlugin.createNotification(
           content: NotificationContent(
               id: 3,
               channelKey: Strings.keyMain,
               title: '',
-              body: message["displayName"] + ' bağlantı isteğinizi kabul etti.',
+              body: (message["displayName"] as String) + ' bağlantı isteğinizi kabul etti.',
               showWhen: true,
               displayOnForeground: true,
               displayOnBackground: true,
               notificationLayout: NotificationLayout.Messaging,
               roundedLargeIcon: true,
-              largeIcon: message["profileURL"],
+              largeIcon: (message["profileURL"] as String),
               payload: {'payload': Strings.receiveRequest},
               summary: 'Yeni Bağlantı'));
-    } else if(Platform.isIOS) {
+    } else if (Platform.isIOS) {
       await awesomeNotificationsPlugin.createNotification(
           content: NotificationContent(
               id: 3,
@@ -224,7 +202,7 @@ class FCMAndLocalNotifications {
   /// If your connection send you a message
   static void showIncomingMessage(Map<String, dynamic> message) async {
     // message["displayName"] // message["message"] // message["profileURL"] // message["userID"]
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       await awesomeNotificationsPlugin.createNotification(
           content: NotificationContent(
               id: 4,
@@ -237,15 +215,9 @@ class FCMAndLocalNotifications {
               notificationLayout: NotificationLayout.Messaging,
               roundedLargeIcon: true,
               largeIcon: message["profileURL"],
-              payload: {
-                'payload': Strings.message,
-                'userID': message['userID'],
-                'displayName': message['displayName'],
-                'profileURL': message['profileURL']
-              },
-              summary: message["displayName"]
-          ));
-    } else if(Platform.isIOS) {
+              payload: {'payload': Strings.message, 'userID': message['userID'], 'displayName': message['displayName'], 'profileURL': message['profileURL']},
+              summary: message["displayName"]));
+    } else if (Platform.isIOS) {
       await awesomeNotificationsPlugin.createNotification(
           content: NotificationContent(
               id: 4,
@@ -256,14 +228,8 @@ class FCMAndLocalNotifications {
               displayOnForeground: true,
               displayOnBackground: true,
               notificationLayout: NotificationLayout.Messaging,
-              payload: {
-                'payload': Strings.message,
-                'userID': message['userID'],
-                'displayName': message['displayName'],
-                'profileURL': message['profileURL']
-              },
-              summary: ''
-          ));
+              payload: {'payload': Strings.message, 'userID': message['userID'], 'displayName': message['displayName'], 'profileURL': message['profileURL']},
+              summary: ''));
     }
   }
 
@@ -294,38 +260,23 @@ class FCMAndLocalNotifications {
 
       if (receivedAction.channelKey == Strings.keyMain) {
         if (payloadType == Strings.sendRequest) {
-          final FloatingActionButtonCubit _homeScreen =
-              BlocProvider.of<FloatingActionButtonCubit>(myContext!);
+          final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(myContext!);
           _homeScreen.currentTab = TabItem.notifications;
           _homeScreen.changeFloatingActionButtonEvent();
-          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!
-              .pushNamed('/invitations');
+          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed(NavigationConstants.INVITATIONS);
         } else if (payloadType == Strings.receiveRequest) {
-          final FloatingActionButtonCubit _homeScreen =
-              BlocProvider.of<FloatingActionButtonCubit>(myContext!);
+          final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(myContext!);
           _homeScreen.currentTab = TabItem.notifications;
           _homeScreen.changeFloatingActionButtonEvent();
-          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!
-              .pushNamed('/');
+          _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed(NavigationConstants.INITIAL_ROUTE);
         } else if (payloadType == Strings.message) {
-          Chat currentChat = Chat(
-              hostID: receivedAction.payload!['userID']!,
-              isLastMessageFromMe: false,
-              isLastMessageReceivedByHost: true,
-              isLastMessageSeenByHost: true,
-              lastMessageCreatedAt: DateTime.now(),
-              lastMessage: "",
-              numberOfMessagesThatIHaveNotOpened: 0);
-
-          currentChat.hostUserProfileUrl =
-              receivedAction.payload!['profileURL']!;
-          currentChat.hostUserName = receivedAction.payload!['displayName']!;
-
           UserBloc _userBloc = BlocProvider.of<UserBloc>(myContext!);
           _userBloc.mainKey.currentState?.push(
             MaterialPageRoute(
                 builder: (context) => MessageScreen(
-                      currentChat: currentChat,
+                      requestUserID: receivedAction.payload!['userID']!,
+                      requestProfileURL: receivedAction.payload!['profileURL']!,
+                      requestDisplayName: receivedAction.payload!['displayName']!,
                     )),
           );
         } else {

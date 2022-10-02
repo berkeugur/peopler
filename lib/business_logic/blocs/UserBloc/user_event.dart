@@ -61,6 +61,12 @@ class waitForVerificationEvent extends UserEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
+class waitFor15minutes extends UserEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
 class createUserWithEmailAndPasswordEvent extends UserEvent {
   String email;
   String password;

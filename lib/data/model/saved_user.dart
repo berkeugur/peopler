@@ -1,7 +1,7 @@
 class SavedUser {
   String userID = "";
   DateTime? createdAt;
-  int countDownDurationMinutes = 1440;  // 24 hour
+  int countDownDurationMinutes = 1440; // 24 hour
   bool isCountdownFinished = false;
 
   /// Below fields does not exists in Firestore, get them through /users collection
@@ -10,9 +10,9 @@ class SavedUser {
   String biography = "";
   String gender = "";
   String pplName = "";
-  List<String> hobbies = [];
+  List<dynamic> hobbies = [];
 
-  SavedUser(){
+  SavedUser() {
     createdAt = DateTime.now();
   }
 

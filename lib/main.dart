@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
@@ -22,6 +23,7 @@ import 'others/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp();
   }
@@ -30,8 +32,12 @@ void main() async {
   await FirebaseMessaging.instance.requestPermission();
 
   await setupLocator();
-
+  await initializationSplash(null);
   runApp(MyApp());
+}
+
+Future<void> initializationSplash(BuildContext? context) async {
+  Future.delayed(Duration.zero);
 }
 
 class MyApp extends StatelessWidget {
@@ -43,40 +49,48 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: setTheme,
-        builder: (context, x, y) {
-          return MultiBlocProvider(
-              providers: [
-                BlocProvider<FeedBloc>(create: (context) => FeedBloc()),
-                BlocProvider<SavedBloc>(create: (context) => SavedBloc()),
-
-                BlocProvider<CityBloc>(create: (context) => CityBloc()),
-                BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
-                BlocProvider<UserBloc>(create: (context) => UserBloc(mainKey)),
-                BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
-                BlocProvider<LocationUpdateBloc>(
-                    create: (context) => LocationUpdateBloc()),
-                BlocProvider<LocationPermissionBloc>(
-                    create: (context) => LocationPermissionBloc()),
-                BlocProvider<FloatingActionButtonCubit>(
-                    create: (context) => FloatingActionButtonCubit()),
-                BlocProvider<NotificationTransmittedBloc>(
-                    create: (context) => NotificationTransmittedBloc()),
-                BlocProvider<NotificationReceivedBloc>(
-                    create: (context) => NotificationReceivedBloc()),
-                BlocProvider<NotificationBloc>(
-                    create: (context) => NotificationBloc()),
-                BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
-                BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
-                BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => PurchaseMakePurchaseBloc()),
-              ],
-              child: MaterialApp(
-                  navigatorKey: mainKey,
-                  debugShowCheckedModeBanner: false,
-                  theme: ThemeData(
-                    primarySwatch: Colors.blue,
+      valueListenable: setTheme,
+      builder: (context, x, y) {
+        return MultiBlocProvider(
+            providers: [
+              BlocProvider<FeedBloc>(create: (context) => FeedBloc()),
+              BlocProvider<SavedBloc>(create: (context) => SavedBloc()),
+              BlocProvider<CityBloc>(create: (context) => CityBloc()),
+              BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
+              BlocProvider<UserBloc>(create: (context) => UserBloc(mainKey)),
+              BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
+              BlocProvider<LocationUpdateBloc>(create: (context) => LocationUpdateBloc()),
+              BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
+              BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
+              BlocProvider<NotificationTransmittedBloc>(create: (context) => NotificationTransmittedBloc()),
+              BlocProvider<NotificationReceivedBloc>(create: (context) => NotificationReceivedBloc()),
+              BlocProvider<NotificationBloc>(create: (context) => NotificationBloc()),
+              BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
+              BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
+              BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => PurchaseMakePurchaseBloc()),
+            ],
+            child: MaterialApp(
+                navigatorKey: mainKey,
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  primarySwatch: const MaterialColor(
+                    0xFF0353EF,
+                    <int, Color>{
+                      50: Color(0xFF0353EF),
+                      100: Color(0xFF0353EF),
+                      200: Color(0xFF0353EF),
+                      300: Color(0xFF0353EF),
+                      400: Color(0xFF0353EF),
+                      500: Color(0xFF0353EF),
+                      600: Color(0xFF0353EF),
+                      700: Color(0xFF0353EF),
+                      800: Color(0xFF0353EF),
+                      900: Color(0xFF0353EF),
+                    },
                   ),
-                  onGenerateRoute: _loginRouter.onGenerateRoute));
-        });
+                ),
+                onGenerateRoute: _loginRouter.onGenerateRoute));
+      },
+    );
   }
 }
