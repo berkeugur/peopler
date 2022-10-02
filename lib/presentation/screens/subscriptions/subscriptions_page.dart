@@ -25,14 +25,17 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         case SubscriptionPlan.threeMonth:
           return "%" +
               (100 -
-                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3) * 100) /
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) /
+                                  3) *
+                              100) /
                           SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
                   .toStringAsFixed(0) +
               " indirim";
         case SubscriptionPlan.sixMonth:
           return "%" +
               (100 -
-                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) * 100) /
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) *
+                              100) /
                           SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
                   .toStringAsFixed(0) +
               " indirim";
@@ -46,14 +49,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         case SubscriptionPlan.threeMonth:
           return "%" +
               (100 -
-                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3) * 100) /
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) /
+                                  3) *
+                              100) /
                           SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
                   .toStringAsFixed(0) +
               " indirim";
         case SubscriptionPlan.sixMonth:
           return "%" +
               (100 -
-                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6) * 100) /
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) /
+                                  6) *
+                              100) /
                           SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
                   .toStringAsFixed(0) +
               " indirim";
@@ -246,7 +253,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPremiumPlanIndex == 0 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        margin: selectedPremiumPlanIndex == 0
+            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
+            : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
@@ -379,7 +388,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPremiumPlanIndex == 1 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        margin: selectedPremiumPlanIndex == 1
+            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
+            : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
@@ -513,7 +524,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPremiumPlanIndex == 2 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        margin: selectedPremiumPlanIndex == 2
+            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
+            : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
@@ -623,11 +636,14 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       child: InkWell(
         onTap: () {
           if (selectedPremiumPlanIndex == 0) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium, context: context);
+            SubscriptionService()
+                .purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium, context: context);
           } else if (selectedPremiumPlanIndex == 1) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium, context: context);
+            SubscriptionService()
+                .purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium, context: context);
           } else if (selectedPremiumPlanIndex == 2) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium, context: context);
+            SubscriptionService()
+                .purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium, context: context);
           } else {
             debugPrint("3 index var else imkansız.");
           }
@@ -662,7 +678,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
 
     return Container(
         padding: const EdgeInsets.symmetric(vertical: 40),
-        height: 500,
+        height: 300,
         child: Column(
           children: [
             CarouselSlider(
@@ -680,7 +696,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               builder: (context, state) {
                 if (state is PurchaseGetOfferLoadedState) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 0),
                     child: Row(
                       children: [
                         _buildSixMonthPlusWidget(context),
@@ -710,7 +726,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPlusPlanIndex == 0 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        margin: selectedPlusPlanIndex == 0
+            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
+            : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
@@ -843,7 +861,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPlusPlanIndex == 1 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        margin: selectedPlusPlanIndex == 1
+            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
+            : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
@@ -976,7 +996,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
       },
       child: Container(
         width: (MediaQuery.of(context).size.width - 100) / 3,
-        margin: selectedPlusPlanIndex == 2 ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20) : const EdgeInsets.all(5),
+        margin: selectedPlusPlanIndex == 2
+            ? const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 20)
+            : const EdgeInsets.all(5),
         height: 150,
         decoration: BoxDecoration(
           border: Border.all(
@@ -1082,41 +1104,36 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
 
   Container _buildBuyImmediatelyPlusButton() {
     return Container(
-      margin: const EdgeInsets.all(40),
       child: InkWell(
         onTap: () {
           debugPrint("selected premium plan index = $selectedPlusPlanIndex");
           if (selectedPlusPlanIndex == 0) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus, context: context);
+            SubscriptionService()
+                .purchaseButton(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus, context: context);
           } else if (selectedPlusPlanIndex == 1) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus, context: context);
+            SubscriptionService()
+                .purchaseButton(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus, context: context);
           } else if (selectedPlusPlanIndex == 2) {
-            SubscriptionService().purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus, context: context);
+            SubscriptionService()
+                .purchaseButton(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus, context: context);
           } else {
             debugPrint("3 index var else imkansız.");
           }
         },
         child: Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(99),
-            color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "HEMEN SATIN AL",
-                textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                  color: scaffoldColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              )
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(99),
+              color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+            ),
+            child: Text(
+              "HEMEN SATIN AL",
+              textScaleFactor: 1,
+              style: GoogleFonts.rubik(
+                color: scaffoldColor,
+                fontWeight: FontWeight.w500,
+              ),
+            )),
       ),
     );
   }
