@@ -1,14 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
-import 'package:peopler/presentation/screens/REGISTER/city_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/email_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/gender_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/name_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/biography_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/password_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/profile_photo.dart';
+import 'package:peopler/core/constants/enums/register_screens_enum.dart';
+import 'package:peopler/others/functions/image_picker_functions.dart';
+import 'package:peopler/presentation/screens/REGISTER/FAB_functions/completion_fab.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/city_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/email_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/gender_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/name_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/biography_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/FAB_functions/next_page_fab.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/password_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/Screens/profile_photo.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -25,16 +30,27 @@ class _RegisterScreensState extends State<RegisterScreens> {
 
   TextEditingController displayNameController = TextEditingController();
   ValueNotifier<GenderTypes?> selectedGender = ValueNotifier(null);
+  TextEditingController biographyController = TextEditingController();
+  ValueNotifier<String?> selecetCity = ValueNotifier(null);
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   void initState() {
     super.initState();
     displayNameController = TextEditingController();
     _pageController = PageController();
+    biographyController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
+    displayNameController.dispose();
     _pageController.dispose();
+    biographyController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -50,24 +66,64 @@ class _RegisterScreensState extends State<RegisterScreens> {
         context: context,
         selectedType: selectedGender,
       ),
-      RegisterBiography(pageController: _pageController),
-      RegisterCitySelect(),
-      RegisterEmail(pageController: _pageController),
-      RegisterPassword(pageController: _pageController),
-      RegisterProfilePhoto(),
-    ];
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          printf("basıldı");
-          FocusScope.of(context).unfocus();
-          await _pageController.nextPage(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linear,
-          );
-        },
-        child: const Icon(Icons.arrow_forward_ios),
+      registerBiography(
+        context: context,
+        pageController: _pageController,
+        textEditingController: biographyController,
       ),
+      registerCitySelect(
+        selecetCity: selecetCity,
+      ),
+      registerEmail(
+        context: context,
+        pageController: _pageController,
+        textEditingController: emailController,
+      ),
+      registerPassword(
+        context: context,
+        pageController: _pageController,
+        textEditingController: passwordController,
+      ),
+      registerProfilePhoto(
+        context: context,
+        stateSetter: setState,
+      ),
+    ];
+
+    return Scaffold(
+      floatingActionButton: currentPageValue.value == pages.length - 1
+          ? FloatingActionButton.extended(
+              onPressed: () async {
+                await completionFABFuncion(
+                  context,
+                  _pageController,
+                  currentPageValue,
+                  selectedGender,
+                  biographyController,
+                  selecetCity,
+                  emailController,
+                  passwordController,
+                  displayNameController,
+                );
+              },
+              label: const Text("Tamamla"),
+              icon: const Icon(Icons.done),
+            )
+          : FloatingActionButton(
+              onPressed: () async {
+                await nextPageFABFunction(
+                  context,
+                  _pageController,
+                  currentPageValue,
+                  selectedGender,
+                  biographyController,
+                  selecetCity,
+                  emailController,
+                  passwordController,
+                );
+              },
+              child: const Icon(Icons.arrow_forward_ios),
+            ),
       appBar: PeoplerAppBars(context: context).REGISTER,
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -121,6 +177,7 @@ class _RegisterScreensState extends State<RegisterScreens> {
                       controller: _pageController,
                       onPageChanged: (int index) {
                         //FocusScope.of(context).unfocus();
+                        setState(() {});
                         currentPageValue.value = index;
                       },
                       physics: const BouncingScrollPhysics(),
