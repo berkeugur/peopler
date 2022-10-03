@@ -5,6 +5,7 @@ import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_screens.dart';
 
 const String wpPeoplerTitle = "peopler";
 const String wpAreYouAlreadyMember = "Zaten üye misin?";
@@ -189,6 +190,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ),
                   ),
+                  OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => RegisterScreens(),
+                        ));
+                      },
+                      child: Text("yeni kayıt ekranları")),
                   areYouAlreadyMemberText(
                     onPressed: () {
                       areYouAlreadyMemberOnPressed(context);
