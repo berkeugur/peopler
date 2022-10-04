@@ -29,32 +29,28 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 const SizedBox.square(
                   dimension: 20,
                 ),
-                Container(
-                  //color: Colors.orange,
-                  child: Text(
-                    "Konum servisi arka planda çalışsın mı?",
-                    textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+                Text(
+                  "Arka planda konum servisini kullan",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox.square(
                   dimension: 10,
                 ),
-                Container(
-                  //color: Colors.yellow,
-                  child: Text(
-                    "Uygulama kapalıyken bile peopler topluluğuyla etkileşime geçebilirsiniz. \n\nVerilerinizin gizliliği ve batarya performansı için endişelenmeyin. ",
-                    textScaleFactor: 1,
-                    style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
+                Text(
+                  "Bu uygulama kapalı olsa bile aynı ortamınızdaki insanları görüntüleyebilmeniz için ve onların da sizi görüntüleyebilmesi için konum bilginizi kullanır. \n\nİzin veriyor musunuz? ",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
               ],
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /*
                 InkWell(
@@ -80,16 +76,38 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 const SizedBox.square(
                   dimension: 10,
                 ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(99),
-                  onTap: () {
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: Colors.white),
+                  ),
+                  //borderRadius: BorderRadius.circular(99),
+                  onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                   },
                   child: Container(
                     //color: Colors.purple,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     child: Text(
-                      "Devam Et",
+                      "İzin Ver",
+                      // "Bu adımı atla",
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox.square(
+                  dimension: 10,
+                ),
+                InkWell(
+                  borderRadius: BorderRadius.circular(99),
+                  onTap: () {
+                    //
+                  },
+                  child: Container(
+                    //color: Colors.purple,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    child: Text(
+                      "İstemiyorum",
                       // "Bu adımı atla",
                       textScaleFactor: 1,
                       style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
