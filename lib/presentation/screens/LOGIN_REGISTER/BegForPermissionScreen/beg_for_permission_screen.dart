@@ -48,73 +48,73 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 ),
               ],
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                /*
-                InkWell(
-                  onTap: () async {
-                    final LocationRepository _locationRepository = locator<LocationRepository>();
-                    _locationRepository.openPermissionSettings();
-                    // We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
-                    await Future.delayed(const Duration(seconds: 10));
-                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
-                    child: Center(
-                        child: Text(
-                          "Her zaman izin ver",
-                          textScaleFactor: 1,
-                          style: GoogleFonts.rubik(fontSize: 14, fontWeight: FontWeight.w700, color: Color(0xFF0353EF)),
-                        )),
-                  ),
-                ),
-                 */
-                const SizedBox.square(
-                  dimension: 10,
-                ),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.white),
-                  ),
-                  //borderRadius: BorderRadius.circular(99),
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
-                  },
-                  child: Container(
-                    //color: Colors.purple,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    child: Text(
-                      "İzin Ver",
-                      // "Bu adımı atla",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  /*
+                  InkWell(
+                    onTap: () async {
+                      final LocationRepository _locationRepository = locator<LocationRepository>();
+                      _locationRepository.openPermissionSettings();
+                      // We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
+                      await Future.delayed(const Duration(seconds: 10));
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
+                      child: Center(
+                          child: Text(
+                            "Her zaman izin ver",
+                            textScaleFactor: 1,
+                            style: GoogleFonts.rubik(fontSize: 14, fontWeight: FontWeight.w700, color: Color(0xFF0353EF)),
+                          )),
                     ),
                   ),
-                ),
-                const SizedBox.square(
-                  dimension: 10,
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(99),
-                  onTap: () {
-                    //
-                  },
-                  child: Container(
-                    //color: Colors.purple,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    child: Text(
-                      "İstemiyorum",
-                      // "Bu adımı atla",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                   */
+                  const SizedBox.square(
+                    dimension: 10,
+                  ),
+                  InkWell(
+                    //borderRadius: BorderRadius.circular(99),
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
+                      //color: Colors.purple,
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      child: Text(
+                        "Konum Servisini Kullan",
+                        // "Bu adımı atla",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF0353EF)),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox.square(
+                    dimension: 10,
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(99),
+                    onTap: () {
+                      //
+                    },
+                    child: Container(
+                      //color: Colors.purple,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      child: Text(
+                        "Şimdi Değil",
+                        // "Bu adımı atla",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),
