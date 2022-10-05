@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
@@ -20,7 +19,8 @@ import 'message_screen_functions.dart';
 TextEditingController messageController = TextEditingController();
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key, this.requestUserID, this.requestProfileURL, this.requestDisplayName, this.currentChat}) : super(key: key);
+  const MessageScreen({Key? key, this.requestUserID, this.requestProfileURL, this.requestDisplayName, this.currentChat})
+      : super(key: key);
 
   final String? requestUserID;
   final String? requestProfileURL;
@@ -121,7 +121,7 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
                               height: 250,
                               child: EmojiPicker(
                                   textEditingController: messageController,
-                                  onEmojiSelected: (Category category, Emoji emoji) {
+                                  onEmojiSelected: (Category? category, Emoji emoji) {
                                     _onEmojiSelected(emoji);
                                   },
                                   onBackspacePressed: _onBackspacePressed,
@@ -137,7 +137,6 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
                                       indicatorColor: Colors.blue,
                                       iconColor: Colors.grey,
                                       iconColorSelected: Colors.blue,
-                                      progressIndicatorColor: Colors.blue,
                                       backspaceColor: Colors.blue,
                                       skinToneDialogBgColor: Colors.white,
                                       skinToneIndicatorColor: Colors.grey,
@@ -175,7 +174,13 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
       duration: const Duration(milliseconds: 500),
       width: _size.width,
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(0.0, 0.75))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: const Color(0xFF939393).withOpacity(0.6),
+              blurRadius: 2.0,
+              spreadRadius: 0,
+              offset: const Offset(0.0, 0.75))
+        ],
         color: _mode.enabledMenuItemBackground(),
       ),
       height: 50,
