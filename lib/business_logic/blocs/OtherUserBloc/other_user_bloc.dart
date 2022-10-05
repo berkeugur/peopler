@@ -99,9 +99,13 @@ class OtherUserBloc extends Bloc<OtherUserEvent, OtherUserState> {
 
   @override
   Future<void> close() async {
+    await closeStreams();
+    await super.close();
+  }
+
+  Future<void> closeStreams() async {
     if (_streamSubscription != null) {
-      _streamSubscription?.cancel();
+      await _streamSubscription?.cancel();
     }
-    super.close();
   }
 }

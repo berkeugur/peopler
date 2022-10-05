@@ -301,9 +301,6 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
   }
 
   Container _buildFeedScreenFeedUserPhoto(context) {
-    String imageUrl =
-        widget.myFeed.userPhotoUrl != '' ? widget.myFeed.userPhotoUrl : 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png';
-
     return Container(
         height: 60,
         width: 60,

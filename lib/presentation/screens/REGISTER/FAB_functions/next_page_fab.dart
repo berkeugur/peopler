@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 import 'package:peopler/presentation/screens/CONNECTIONS/connections_service.dart';
-
 import '../../../../core/constants/enums/register_screens_enum.dart';
 
 Future<void> nextPageFABFunction(

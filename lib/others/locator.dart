@@ -62,7 +62,7 @@ Future<void> setupLocator() async {
   FCMAndLocalNotifications.initializeAwesomeNotifications();
 
   /// Work Manager
-  // await MyWorkManager.create();
+  await MyWorkManager.create();
 
   /// Send Notification Service
   locator.registerLazySingleton(() => SendNotificationService());

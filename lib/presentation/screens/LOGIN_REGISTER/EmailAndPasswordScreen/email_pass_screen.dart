@@ -359,9 +359,6 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                   bloc: _userBloc,
                                   listener: (context, UserState state) {
                                     if (state is SignedInNotVerifiedState) {
-                                      /// Request Permission and navigate to BEG_FOR_PERMISSION_SCREEN
-                                      final LocationRepository _locationRepository = locator<LocationRepository>();
-                                      _locationRepository.requestPermission();
                                       _userBloc.add(waitFor15minutes());
                                       Navigator.of(context)
                                           .pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);

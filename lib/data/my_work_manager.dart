@@ -1,5 +1,3 @@
-/*
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -229,5 +227,3 @@ Future<bool> fetchBackgroundFunction() async {
       "Basarili ${_position.toString()}");
   return Future.value(true);
 }
-
-*/

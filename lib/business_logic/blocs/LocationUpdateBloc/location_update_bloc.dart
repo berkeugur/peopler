@@ -145,7 +145,6 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
     ///--------------- WORK MANAGER - BACKGROUND ----------------------------//
 
     on<StartLocationUpdatesBackground>((event, emit) async {
-      /*
         if (UserBloc.user != null) {
           const storage = FlutterSecureStorage();
 
@@ -161,7 +160,6 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
           /// Start work manager fetch location on background
           MyWorkManager.fetchLocationBackground();
         }
-       */
     });
 
     ///---------------------------------------------------------//
