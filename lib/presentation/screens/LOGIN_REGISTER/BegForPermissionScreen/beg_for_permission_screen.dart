@@ -57,7 +57,11 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                   dimension: 10,
                 ),
                 Text(
+<<<<<<< Updated upstream
                   "Bu uygulama kapalı olsa bile aynı ortamınızdaki insanları görüntüleyebilmeniz için ve onların da sizi görüntüleyebilmesi için konum bilginizi kullanır. \n\nİzin veriyor musunuz? \n\nTam konumun kimseyle paylaşılmaz",
+=======
+                  "Bu uygulama kapalı olsa bile aynı ortamınızdaki insanları görüntüleyebilmeniz için ve onların da sizi görüntüleyebilmesi için konum bilginizi kullanır. \nTam konumun kimse ile paylaşılmaz.\n\nİzin veriyor musunuz? ",
+>>>>>>> Stashed changes
                   textScaleFactor: 1,
                   style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
@@ -85,7 +89,12 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                       //color: Colors.purple,
                       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                       child: Text(
+<<<<<<< Updated upstream
                         "Her zaman izin ver",
+=======
+                        "İzin Ver",
+                        // "Bu adımı atla",
+>>>>>>> Stashed changes
                         textScaleFactor: 1,
                         style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF0353EF)),
                       ),
