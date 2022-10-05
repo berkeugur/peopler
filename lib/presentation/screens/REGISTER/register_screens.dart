@@ -1,10 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
-import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
-import 'package:peopler/core/constants/enums/register_screens_enum.dart';
-import 'package:peopler/others/functions/image_picker_functions.dart';
 import 'package:peopler/presentation/screens/REGISTER/FAB_functions/completion_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/city_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/email_screen.dart';
@@ -14,7 +10,6 @@ import 'package:peopler/presentation/screens/REGISTER/Screens/biography_screen.d
 import 'package:peopler/presentation/screens/REGISTER/FAB_functions/next_page_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/password_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/profile_photo.dart';
-import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class RegisterScreens extends StatefulWidget {
