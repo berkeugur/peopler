@@ -13,10 +13,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final UserRepository _userRepository = locator<UserRepository>();
 
   static List<MyUser> allUserList = [];
-  StreamSubscription? _streamSubscription;
-  bool _newUserListenListener = false;
+  static StreamSubscription? _streamSubscription;
+  static bool _newUserListenListener = false;
 
-  List<String> _queryList = List.filled(9, '');
+  static List<String> _queryList = List.filled(9, '');
 
   void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
     /// Remove myself from list
@@ -186,9 +186,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   @override
   Future<void> close() async {
+    await closeStreams();
+    await super.close();
+  }
+
+  static Future<void> closeStreams() async {
     if (_streamSubscription != null) {
-      _streamSubscription?.cancel();
+      await _streamSubscription?.cancel();
     }
-    super.close();
   }
 }

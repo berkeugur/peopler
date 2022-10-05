@@ -53,7 +53,7 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
 
         } else if (_permission == LocationPermission.whileInUse) {
           /// When notification button clicked, open Permission Settings
-          // await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Uygulamanız arka planda çalışırken bulunabilir olmanız için ayarlardan Her zaman İzin Ver seçiniz.', Strings.permissionSettings);
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!', Strings.permissionSettings);
 
           /// Since permission already given, no problem, then check for location
           add(LocationSettingListener());
@@ -115,7 +115,7 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
     on<OpenSettingsClicked>((event, emit) async {
       await _locationRepository.openPermissionSettings();
       /// This delay is used to navigate user to refresh screen after 2 seconds because while AppSettings opening, user should not see that screen change in app.
-      // await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
       emit(NoPermissionClickSettingsState());
     });
 

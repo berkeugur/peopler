@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
@@ -13,9 +16,21 @@ class BegForPermissionScreen extends StatefulWidget {
 
 class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
   @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 1), () async {
+      final LocationRepository _locationRepository = locator<LocationRepository>();
+      LocationPermission _permission = await _locationRepository.checkPermissions();
+      if (_permission != LocationPermission.whileInUse && _permission != LocationPermission.always) {
+        _locationRepository.requestPermission();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0353EF),
+      backgroundColor: const Color(0xFF0353EF),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -29,74 +44,75 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 const SizedBox.square(
                   dimension: 20,
                 ),
-                Container(
-                  //color: Colors.orange,
-                  child: Text(
-                    "Konum servisi arka planda çalışsın mı?",
-                    textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
+                Text(
+                  "Arka planda konum servisini kullan",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox.square(
                   dimension: 10,
                 ),
-                Container(
-                  //color: Colors.yellow,
-                  child: Text(
-                    "Uygulama kapalıyken bile peopler topluluğuyla etkileşime geçebilirsiniz. \n\nVerilerinizin gizliliği ve batarya performansı için endişelenmeyin. ",
-                    textScaleFactor: 1,
-                    style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
-                  ),
+                Text(
+                  "Bu uygulama kapalı olsa bile aynı ortamınızdaki insanları görüntüleyebilmeniz için ve onların da sizi görüntüleyebilmesi için konum bilginizi kullanır. \nTam konumun kimse ile paylaşılmaz.\n\nİzin veriyor musunuz? ",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
               ],
             ),
-            Column(
-              children: [
-                /*
-                InkWell(
-                  onTap: () async {
-                    final LocationRepository _locationRepository = locator<LocationRepository>();
-                    _locationRepository.openPermissionSettings();
-                    // We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
-                    await Future.delayed(const Duration(seconds: 10));
-                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
-                    child: Center(
-                        child: Text(
-                          "Her zaman izin ver",
-                          textScaleFactor: 1,
-                          style: GoogleFonts.rubik(fontSize: 14, fontWeight: FontWeight.w700, color: Color(0xFF0353EF)),
-                        )),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox.square(
+                    dimension: 10,
                   ),
-                ),
-                 */
-                const SizedBox.square(
-                  dimension: 10,
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(99),
-                  onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
-                  },
-                  child: Container(
-                    //color: Colors.purple,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    child: Text(
-                      "Devam Et",
-                      // "Bu adımı atla",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                  InkWell(
+                    //borderRadius: BorderRadius.circular(99),
+                    onTap: () async {
+                      final LocationRepository _locationRepository = locator<LocationRepository>();
+                      _locationRepository.openPermissionSettings();
+
+                      /// We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
+                      await Future.delayed(const Duration(seconds: 3));
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
+                      //color: Colors.purple,
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      child: Text(
+                        "İzin Ver",
+                        // "Bu adımı atla",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF0353EF)),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox.square(
+                    dimension: 10,
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(99),
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                    },
+                    child: Container(
+                      //color: Colors.purple,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      child: Text(
+                        "Şimdi Değil",
+                        textScaleFactor: 1,
+                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),

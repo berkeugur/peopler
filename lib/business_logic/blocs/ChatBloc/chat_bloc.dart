@@ -16,10 +16,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   List<Chat> get allChatList => _allChatList;
 
   static const int _numberOfElements = 20;
-  Chat? _lastSelectedChat;
-  StreamSubscription? _streamSubscription;
-  bool _newChatListenListener = false;
-  bool _hasMore = true;
+  static Chat? _lastSelectedChat;
+  static StreamSubscription? _streamSubscription;
+  static bool _newChatListenListener = false;
+  static bool _hasMore = true;
 
   ChatBloc() : super(InitialChatState()) {
     on<GetChatWithPaginationEvent>((event, emit) async {
@@ -131,9 +131,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   @override
   Future<void> close() async {
+    await closeStreams();
+    await super.close();
+  }
+
+  static Future<void> closeStreams() async {
     if (_streamSubscription != null) {
-      _streamSubscription?.cancel();
+      await _streamSubscription?.cancel();
     }
-    super.close();
   }
 }

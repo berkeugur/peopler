@@ -15,8 +15,8 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
   static List<MyUser> allUserList = [];
 
-  StreamSubscription? _streamSubscription;
-  bool _newUserListenListener = false;
+  static StreamSubscription? _streamSubscription;
+  static bool _newUserListenListener = false;
 
   void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
     /// Remove myself from list
@@ -108,7 +108,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
           });
         }
       } catch (e) {
-        debugPrint("Blocta initial location hata:" + e.toString());
+        debugPrint("Blocta initial city hata:" + e.toString());
       }
     });
 
@@ -162,9 +162,13 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
   @override
   Future<void> close() async {
+    await closeStreams();
+    await super.close();
+  }
+
+  static Future<void> closeStreams() async {
     if (_streamSubscription != null) {
-      _streamSubscription?.cancel();
+      await _streamSubscription?.cancel();
     }
-    super.close();
   }
 }

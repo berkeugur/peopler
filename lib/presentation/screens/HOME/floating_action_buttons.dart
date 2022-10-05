@@ -80,7 +80,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     title: Text(
                       "Giriş Yapmalısınız.",
                       style: GoogleFonts.rubik(
-                        color: Color(0xFF0353EF),
+                        color: const Color(0xFF0353EF),
                       ),
                     ),
                     actions: [
@@ -91,7 +91,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           child: Text(
                             "Kapat",
                             style: GoogleFonts.rubik(
-                              color: Color(0xFF0353EF),
+                              color: const Color(0xFF0353EF),
                             ),
                           )),
                       TextButton(
@@ -103,7 +103,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           child: Text(
                             "Giriş Yap",
                             style: GoogleFonts.rubik(
-                              color: Color(0xFF0353EF),
+                              color: const Color(0xFF0353EF),
                             ),
                           )),
                     ],
@@ -163,7 +163,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     title: Text(
                       "Giriş Yapmalısınız.",
                       style: GoogleFonts.rubik(
-                        color: Color(0xFF0353EF),
+                        color: const Color(0xFF0353EF),
                       ),
                     ),
                     actions: [
@@ -174,19 +174,17 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           child: Text(
                             "Kapat",
                             style: GoogleFonts.rubik(
-                              color: Color(0xFF0353EF),
+                              color: const Color(0xFF0353EF),
                             ),
                           )),
                       TextButton(
                           onPressed: () {
                             Restart.restartApp();
-                            // UserBloc _userBloc = BlocProvider.of(context);
-                            // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                           },
                           child: Text(
                             "Giriş Yap",
                             style: GoogleFonts.rubik(
-                              color: Color(0xFF0353EF),
+                              color: const Color(0xFF0353EF),
                             ),
                           )),
                     ],

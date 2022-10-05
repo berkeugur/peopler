@@ -74,7 +74,6 @@ op_change_password(context) {
 op_delete_account(BuildContext context) {
   UserBloc _userBloc = BlocProvider.of(context);
   _userBloc.add(deleteUser());
-  _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
 }
 
 op_suggestion_or_complaint() {

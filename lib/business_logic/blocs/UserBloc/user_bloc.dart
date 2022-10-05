@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/ChatBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../../data/in_app_purchases.dart';
@@ -22,8 +24,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   final GlobalKey<NavigatorState> mainKey;
 
-  StreamSubscription? _streamSubscription;
-  bool _userListener = false;
+  static StreamSubscription? _streamSubscription;
+  static bool _userListener = false;
 
   static LogInResult? revenueCatResult;
   static String entitlement = "free";
@@ -55,6 +57,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  Future<void> closeStreams() async {
+    await close();
+    await CityBloc.closeStreams();
+    await LocationBloc.closeStreams();
+    await NotificationBloc.closeStreams();
+    await ChatBloc.closeStreams();
+  }
+
   Future initPurchaserInfoStream() async {
     updatePurchaseStatus();
     Purchases.addPurchaserInfoUpdateListener((purchaserInfo) async {
@@ -80,6 +90,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc(this.mainKey) : super(InitialUserState()) {
     on<signOutEvent>((event, emit) async {
       try {
+        await closeStreams();
         await _userRepository.deleteToken(user!.userID);
         await _userRepository.signOut();
         await Purchases.logOut();
@@ -261,9 +272,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
 
     on<deleteUser>((event, emit) async {
+      await closeStreams();
       await _userRepository.deleteUser(user!.userID, user!.region);
-      user = null;
-      emit(InitialUserState());
+      Restart.restartApp();
     });
   }
 

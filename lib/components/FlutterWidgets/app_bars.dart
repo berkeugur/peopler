@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
@@ -18,6 +19,7 @@ class PeoplerAppBars {
       borderRadius: BorderRadius.circular(99),
       onTap: function ??
           () {
+            FocusScope.of(context).unfocus();
             Navigator.of(context).pop();
           },
       child: Container(
@@ -55,11 +57,11 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  Widget _TITLE({required String title}) {
+  Widget _TITLE({required String title, Color? color}) {
     return Text(
       title,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
+      style: GoogleFonts.rubik(color: color ?? Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
     );
   }
 
@@ -238,6 +240,29 @@ class PeoplerAppBars {
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  AppBar get REGISTER {
+    return AppBar(
+      leading: _BACK_BUTTON(color: Colors.white),
+      title: _TITLE(title: "KAYIT OL", color: Colors.white),
+      //backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).primaryColor,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      actions: [
+        IconButton(
+            onPressed: () {
+              PeoplerDialogs().showContanctInfo(context);
+            },
+            icon: const Icon(
+              Icons.help,
+              color: Colors.white,
+            ))
+      ],
     );
   }
 

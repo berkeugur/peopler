@@ -16,11 +16,9 @@ class GenderSelectScreen extends StatefulWidget {
 }
 
 class _GenderSelectScreenState extends State<GenderSelectScreen> {
-  late final UserBloc _userBloc;
 
   @override
   void initState() {
-    _userBloc = BlocProvider.of<UserBloc>(context);
     super.initState();
   }
 

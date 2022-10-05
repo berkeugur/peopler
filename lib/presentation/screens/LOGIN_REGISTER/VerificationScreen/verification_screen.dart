@@ -28,10 +28,6 @@ class VerificationScreen extends StatelessWidget {
             listener: (context, UserState state) {
               if (state is SignedInState) {
                 timer.cancel();
-
-                /// Request Permission
-                final LocationRepository _locationRepository = locator<LocationRepository>();
-                _locationRepository.requestPermission();
                 Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
               }
             },

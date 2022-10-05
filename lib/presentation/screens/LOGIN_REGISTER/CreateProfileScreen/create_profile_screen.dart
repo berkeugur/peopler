@@ -205,8 +205,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
               _userBloc.add(updateUserInfoForLinkedInEvent());
-              final LocationRepository _locationRepository = locator<LocationRepository>();
-              _locationRepository.requestPermission();
               Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
             } else if (_userBloc.state == SignedOutState()) {
               Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);

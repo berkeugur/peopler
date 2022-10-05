@@ -239,6 +239,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                             obscureText: isVisiblePassword,
                                             keyboardType: TextInputType.visiblePassword,
                                             cursorColor: const Color(0xFF000000),
+                                            autofocus: true,
                                             onEditingComplete: () {
                                               setState(() {});
                                             },
@@ -247,15 +248,16 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                             textInputAction: TextInputAction.next,
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      isVisiblePassword = !isVisiblePassword;
-                                                    });
-                                                  },
-                                                  icon: Icon(
-                                                    isVisiblePassword == true ? Icons.visibility : Icons.visibility_off,
-                                                    color: const Color(0xFF9ABAF9),
-                                                  )),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isVisiblePassword = !isVisiblePassword;
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  isVisiblePassword == true ? Icons.visibility : Icons.visibility_off,
+                                                  color: const Color(0xFF9ABAF9),
+                                                ),
+                                              ),
                                               counterText: "",
                                               contentPadding: const EdgeInsets.fromLTRB(0, 13, 0, 10),
                                               hintMaxLines: 1,
@@ -357,11 +359,9 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                   bloc: _userBloc,
                                   listener: (context, UserState state) {
                                     if (state is SignedInNotVerifiedState) {
-                                      /// Request Permission and navigate to BEG_FOR_PERMISSION_SCREEN
-                                      final LocationRepository _locationRepository = locator<LocationRepository>();
-                                      _locationRepository.requestPermission();
                                       _userBloc.add(waitFor15minutes());
-                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                                     } else if (state is InvalidEmailState) {
                                       SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                                     } else if (state is SigningInState) {

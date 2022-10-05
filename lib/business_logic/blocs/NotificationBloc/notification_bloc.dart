@@ -16,12 +16,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final List<Notifications> _allNotificationList = [];
   List<Notifications> get allNotificationList => _allNotificationList;
 
-  Notifications? _lastSelectedNotification;
+  static Notifications? _lastSelectedNotification;
 
   static const int _numberOfElements = 10;
-  StreamSubscription? _streamSubscription;
-  bool _newNotificationListenListener = false;
-  bool _hasMore = true;
+  static StreamSubscription? _streamSubscription;
+  static bool _newNotificationListenListener = false;
+  static bool _hasMore = true;
 
   NotificationBloc() : super(InitialNotificationState()) {
 
@@ -158,9 +158,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   @override
   Future<void> close() async {
+    await closeStreams();
+    await super.close();
+  }
+
+  static Future<void> closeStreams() async {
     if (_streamSubscription != null) {
-      _streamSubscription?.cancel();
+      await _streamSubscription?.cancel();
     }
-    super.close();
   }
 }
