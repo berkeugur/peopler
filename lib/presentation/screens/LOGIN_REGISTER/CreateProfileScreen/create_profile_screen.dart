@@ -238,7 +238,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     return Center(
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         height: 40,
         width: 220,
@@ -301,27 +301,27 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                         ),
                                       ),
                                       SizedBox(
-                                          height: 260,
-                                          child: ListView.builder(
-                                              itemCount: items.length,
-                                              itemBuilder: (BuildContext context, int index) {
-                                                return Container(
-                                                  margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                                                  decoration: BoxDecoration(
-                                                    color: UserBloc.user?.city == items[index] ? const Color(0xFF0353EF) : Colors.white,
-                                                    borderRadius: BorderRadius.circular(15),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(10),
-                                                    child: Center(
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            UserBloc.user?.city = items[index];
-                                                            editingController.clear();
-                                                            filterSearchResults("", setStateBottomSheet);
-                                                            // DİKKAT - Yorum satırına alındı. 08/07/2022 MERT
-                                                            /*
+                                        height: 260,
+                                        child: ListView.builder(
+                                          itemCount: items.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return Container(
+                                              margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+                                              decoration: BoxDecoration(
+                                                color: UserBloc.user?.city == items[index] ? const Color(0xFF0353EF) : Colors.white,
+                                                borderRadius: BorderRadius.circular(15),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(10),
+                                                child: Center(
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        UserBloc.user?.city = items[index];
+                                                        editingController.clear();
+                                                        filterSearchResults("", setStateBottomSheet);
+                                                        // DİKKAT - Yorum satırına alındı. 08/07/2022 MERT
+                                                        /*
                                                             Strings.cityData.forEach((x) {
                                                               if (x[0][0] == UserBloc.user!.city) {
                                                                 items2 = x[1];
@@ -329,21 +329,23 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                               }
                                                             });
                                                              */
-                                                          });
-                                                          Navigator.pop(context);
-                                                        },
-                                                        child: Text(
-                                                          items[index],
-                                                          textScaleFactor: 1,
-                                                          style: UserBloc.user!.city == items[index]
-                                                              ? const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF000B21))
-                                                              : const TextStyle(fontSize: 18),
-                                                        ),
-                                                      ),
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text(
+                                                      items[index],
+                                                      textScaleFactor: 1,
+                                                      style: UserBloc.user!.city == items[index]
+                                                          ? const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF000B21))
+                                                          : const TextStyle(fontSize: 18),
                                                     ),
                                                   ),
-                                                );
-                                              })),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -355,7 +357,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   child: TextButton(
-                                    child: Text(
+                                    child: const Text(
                                       "Vazgeç",
                                       textScaleFactor: 1,
                                     ),

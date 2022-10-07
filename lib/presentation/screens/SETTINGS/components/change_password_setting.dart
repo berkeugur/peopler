@@ -87,6 +87,7 @@ changePasswordField(context) {
                         ),
                         child: Text(
                           "Sıfırlama Bağlantısı Gönder",
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.rubik(
                             color: Colors.white,
                             fontWeight: FontWeight.w400,

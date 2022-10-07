@@ -6,6 +6,7 @@ import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_linkedin.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_screens.dart';
 
 const String wpPeoplerTitle = "peopler";
@@ -196,7 +197,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => RegisterScreens(),
+                            builder: (context) => LinkedinRegisterScreens(),
                           ));
                         },
                         child: Text("yeni kayıt ekranları")),

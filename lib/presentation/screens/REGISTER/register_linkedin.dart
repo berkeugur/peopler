@@ -7,6 +7,8 @@ import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 import 'package:peopler/presentation/screens/REGISTER/FAB_functions/completion_fab.dart';
+import 'package:peopler/presentation/screens/REGISTER/Linkedin_FAB_functions/linkedin_completion_fab.dart';
+import 'package:peopler/presentation/screens/REGISTER/Linkedin_FAB_functions/linkedin_next_page_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/city_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/email_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/gender_screen.dart';
@@ -19,54 +21,40 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../../../core/constants/navigation/navigation_constants.dart';
 
-class RegisterScreens extends StatefulWidget {
-  const RegisterScreens({Key? key}) : super(key: key);
+class LinkedinRegisterScreens extends StatefulWidget {
+  const LinkedinRegisterScreens({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreens> createState() => _RegisterScreensState();
+  State<LinkedinRegisterScreens> createState() => _LinkedinRegisterScreensState();
 }
 
-class _RegisterScreensState extends State<RegisterScreens> {
+class _LinkedinRegisterScreensState extends State<LinkedinRegisterScreens> {
   late final UserBloc _userBloc;
 
   PageController _pageController = PageController();
   ValueNotifier<int> currentPageValue = ValueNotifier(0);
 
-  TextEditingController displayNameController = TextEditingController();
   ValueNotifier<GenderTypes?> selectedGender = ValueNotifier(null);
   TextEditingController biographyController = TextEditingController();
   ValueNotifier<String?> selecetCity = ValueNotifier(null);
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   @override
   void initState() {
     _userBloc = BlocProvider.of<UserBloc>(context);
     super.initState();
-    displayNameController = TextEditingController();
     _pageController = PageController();
     biographyController = TextEditingController();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    displayNameController.dispose();
     _pageController.dispose();
     biographyController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      registerDisplayName(
-        context: context,
-        pageController: _pageController,
-        textEditingController: displayNameController,
-      ),
       registerGenderSelect(
         context: context,
         selectedType: selectedGender,
@@ -78,16 +66,6 @@ class _RegisterScreensState extends State<RegisterScreens> {
       ),
       registerCitySelect(
         selecetCity: selecetCity,
-      ),
-      registerEmail(
-        context: context,
-        pageController: _pageController,
-        textEditingController: emailController,
-      ),
-      registerPassword(
-        context: context,
-        pageController: _pageController,
-        textEditingController: passwordController,
       ),
       registerProfilePhoto(
         context: context,
@@ -111,21 +89,18 @@ class _RegisterScreensState extends State<RegisterScreens> {
                   SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
                 } else if (state is EmailAlreadyInUseState) {
                   SnackBars(context: context).simple(
-                      "${emailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
+                      "${UserBloc.user?.email ?? "email"} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
                 }
               },
               child: FloatingActionButton.extended(
                 onPressed: () async {
-                  await completionFABFuncion(
+                  await linkedinCompletionFABFuncion(
                     context,
                     _pageController,
                     currentPageValue,
                     selectedGender,
                     biographyController,
                     selecetCity,
-                    emailController,
-                    passwordController,
-                    displayNameController,
                     _userBloc,
                   );
                 },
@@ -134,15 +109,13 @@ class _RegisterScreensState extends State<RegisterScreens> {
               ))
           : FloatingActionButton(
               onPressed: () async {
-                await nextPageFABFunction(
+                await linkedinNextPageFABFunction(
                   context,
                   _pageController,
                   currentPageValue,
                   selectedGender,
                   biographyController,
                   selecetCity,
-                  emailController,
-                  passwordController,
                 );
               },
               child: const Icon(Icons.arrow_forward_ios),

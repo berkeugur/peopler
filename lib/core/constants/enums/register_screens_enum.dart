@@ -7,3 +7,10 @@ enum RegisterScreenNames {
   password,
   profilephoto,
 }
+
+enum LinkedinRegisterScreenNames {
+  gender,
+  biography,
+  city,
+  profilephoto,
+}

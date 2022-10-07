@@ -40,6 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("work1");
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
@@ -69,6 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildBody() {
+    print("this work");
     final MyUser profileData = UserBloc.user!;
     ProfileScreenComponentsMyProfile _profileScreenComponents = ProfileScreenComponentsMyProfile();
     return SingleChildScrollView(
