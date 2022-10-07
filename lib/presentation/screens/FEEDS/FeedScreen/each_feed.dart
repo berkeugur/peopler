@@ -191,13 +191,13 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
     );
   }
 
-  Row _buildLike() {
-    return Row(
-      children: [
-        BlocBuilder<LikedBloc, LikedState>(
-          bloc: _likedBloc,
-          builder: (context, state) {
-            return GestureDetector(
+  Widget _buildLike() {
+    return BlocBuilder<LikedBloc, LikedState>(
+        bloc: _likedBloc,
+        builder: (context, state) {
+          return Container(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(99),
               onTap: () {
                 if (UserBloc.user != null) {
                   if (state is LikeState) {
@@ -215,43 +215,45 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                   GuestAlert.dialog(context);
                 }
               },
-              child: SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                    "assets/images/svg_icons/up_arrow.svg",
-                    color: (state is LikeState) ? Colors.green : Mode().blackAndWhiteConversion(),
-                    fit: BoxFit.contain,
-                  )),
-            );
-          },
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        BlocBuilder<LikedBloc, LikedState>(
-          bloc: _likedBloc,
-          builder: (context, state) {
-            return Text(
-              widget.myFeed.liked.toString(),
-              textScaleFactor: 1,
-              style: GoogleFonts.rubik(
-                color: _mode.blackAndWhiteConversion(),
+              child: Container(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    Container(
+                      child: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: SvgPicture.asset(
+                            "assets/images/svg_icons/up_arrow.svg",
+                            color: (state is LikeState) ? Colors.green : Mode().blackAndWhiteConversion(),
+                            fit: BoxFit.contain,
+                          )),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      widget.myFeed.liked.toString(),
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(
+                        color: _mode.blackAndWhiteConversion(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-          },
-        ),
-      ],
-    );
+            ),
+          );
+        });
   }
 
-  Row _buildDislike() {
-    return Row(
-      children: [
-        BlocBuilder<LikedBloc, LikedState>(
-          bloc: _likedBloc,
-          builder: (context, state) {
-            return GestureDetector(
+  Widget _buildDislike() {
+    return BlocBuilder<LikedBloc, LikedState>(
+        bloc: _likedBloc,
+        builder: (context, state) {
+          return Container(
+            child: InkWell(
+              borderRadius: BorderRadius.circular(99),
               onTap: () {
                 if (UserBloc.user != null) {
                   if (state is DislikeState) {
@@ -270,34 +272,34 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                   GuestAlert.dialog(context);
                 }
               },
-              child: SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                    "assets/images/svg_icons/down_arrow.svg",
-                    color: (state is DislikeState) ? Colors.pink : Mode().blackAndWhiteConversion(),
-                    fit: BoxFit.contain,
-                  )),
-            );
-          },
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        BlocBuilder(
-          bloc: _likedBloc,
-          builder: (context, state) {
-            return Text(
-              widget.myFeed.disliked.toString(),
-              textScaleFactor: 1,
-              style: GoogleFonts.rubik(
-                color: _mode.blackAndWhiteConversion(),
+              child: Container(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: SvgPicture.asset(
+                          "assets/images/svg_icons/down_arrow.svg",
+                          color: (state is DislikeState) ? Colors.pink : Mode().blackAndWhiteConversion(),
+                          fit: BoxFit.contain,
+                        )),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      widget.myFeed.disliked.toString(),
+                      textScaleFactor: 1,
+                      style: GoogleFonts.rubik(
+                        color: _mode.blackAndWhiteConversion(),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            );
-          },
-        ),
-      ],
-    );
+            ),
+          );
+        });
   }
 
   Container _buildFeedScreenFeedUserPhoto(context) {
