@@ -26,8 +26,8 @@ _imgFromGallery({required StateSetter stateSetter}) async {
   });
 }
 
-void showPicker(context, {required StateSetter stateSetter}) {
-  showModalBottomSheet(
+Future<void> showPicker(context, {required StateSetter stateSetter}) async {
+  await showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
         return SafeArea(

@@ -6,6 +6,7 @@ import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
@@ -100,9 +101,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   height: 20,
                                 ),
                                 Center(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showPicker(context, stateSetter: setState);
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(99),
+                                    onTap: () async {
+                                      printf("deneme çalıştı");
+                                      debugPrint("asdasd");
+
+                                      await showPicker(context, stateSetter: setState).then((value) => FocusScope.of(context).unfocus());
                                     },
                                     child: CircleAvatar(
                                       radius: 55,
@@ -386,12 +391,9 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
       child: TextField(
         autofocus: false,
-        focusNode: FocusNode(),
         keyboardType: TextInputType.name,
         cursorColor: const Color(0xFFB3CBFA),
-        onEditingComplete: () {
-          FocusScope.of(context).unfocus();
-        },
+        onEditingComplete: () {},
         onSubmitted: (_) => FocusScope.of(context).unfocus(),
         maxLength: MaxLengthConstants.BIOGRAPHY,
         controller: bioController,
