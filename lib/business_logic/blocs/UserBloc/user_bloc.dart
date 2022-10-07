@@ -107,12 +107,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<uploadProfilePhoto>((event, emit) async {
       if (event.imageFile != null) {
         String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile!);
-        await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
+        await _userRepository.updateProfilePhoto(user?.userID, downloadLink);
         user?.profileURL = downloadLink;
       } else {
         user!.profileURL =
             "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fdefault_profile_photo.png?alt=media&token=4e206459-e4cb-4bad-944b-7f5aaf074d9b";
-        await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
+        await _userRepository.updateProfilePhoto(user?.userID, user?.profileURL);
       }
     });
 
