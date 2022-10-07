@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +67,9 @@ class CityTabState extends State<CityTab> {
   void initState() {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
+    CityBloc.allUserList.forEach((element) {
+      print(element.profileURL.toString());
+    });
     super.initState();
   }
 
@@ -326,12 +330,19 @@ class CityTabState extends State<CityTab> {
                           height: 100,
                           width: 100,
                           child: //_userBloc != null ?
-                              CircleAvatar(
-                            backgroundImage: NetworkImage(CityBloc.allUserList[index].profileURL
-                                // _userBloc.user!.profileURL
-                                ),
-                            backgroundColor: Colors.transparent,
-                          ), //: const CircleAvatar(backgroundColor: Colors.transparent,),
+
+                              CachedNetworkImage(
+                            imageUrl: CityBloc.allUserList[index].profileURL,
+                            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
