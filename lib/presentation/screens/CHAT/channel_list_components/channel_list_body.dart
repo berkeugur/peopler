@@ -52,53 +52,48 @@ class ChannelListBodyState extends State<ChannelListBody> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          return Expanded(
-            child: SizedBox(
-              width: _size!.width >= 600 ? 600 : _size!.width,
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  physics: const ScrollPhysics(),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BlocBuilder<ChatBloc, ChatState>(
+          return SizedBox(
+            width: _size!.width >= 600 ? 600 : _size!.width,
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const ScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BlocBuilder<ChatBloc, ChatState>(
+                      bloc: _chatBloc,
+                      builder: (context, state) {
+                        if (state is InitialChatState) {
+                          return _initialChatsStateWidget();
+                        } else if (state is ChatNotExistState) {
+                          return _noChatExistsWidget();
+                        } else if (state is ChatsLoadedState1) {
+                          return _showChatsWidget();
+                        } else if (state is ChatsLoadedState2) {
+                          return _showChatsWidget();
+                        } else if (state is NoMoreChatsState) {
+                          return _showChatsWidget();
+                        } else if (state is ChatsLoadingState) {
+                          return _showChatsWidget();
+                        } else {
+                          return const Text("Impossible");
+                        }
+                      },
+                    ),
+                    BlocBuilder<ChatBloc, ChatState>(
                         bloc: _chatBloc,
                         builder: (context, state) {
-                          if (state is InitialChatState) {
-                            return _initialChatsStateWidget();
-                          } else if (state is ChatNotExistState) {
-                            return Container(
-                                height: MediaQuery.of(context).size.height - 202,
-                                color: Mode().homeScreenScaffoldBackgroundColor(),
-                                child: _noChatExistsWidget());
-                          } else if (state is ChatsLoadedState1) {
-                            return _showChatsWidget();
-                          } else if (state is ChatsLoadedState2) {
-                            return _showChatsWidget();
-                          } else if (state is NoMoreChatsState) {
-                            return _showChatsWidget();
-                          } else if (state is ChatsLoadingState) {
-                            return _showChatsWidget();
+                          if (state is ChatsLoadingState) {
+                            return _chatsLoadingCircularButton();
                           } else {
-                            return const Text("Impossible");
+                            return const SizedBox.shrink();
                           }
-                        },
-                      ),
-                      BlocBuilder<ChatBloc, ChatState>(
-                          bloc: _chatBloc,
-                          builder: (context, state) {
-                            if (state is ChatsLoadingState) {
-                              return _chatsLoadingCircularButton();
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          }),
-                    ],
-                  ),
+                        }),
+                  ],
                 ),
               ),
             ),

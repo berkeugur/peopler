@@ -32,10 +32,9 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Scaffold(
               appBar: PeoplerAppBars(context: context).CHANNEL_LIST(),
               backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-              body: Column(
-                children: const [
+              body: const SafeArea(
+                child:
                   ChannelListBody(),
-                ],
               ),
             ),
           );
