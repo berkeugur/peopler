@@ -354,70 +354,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                               ),
 
                               /*--------------------CONTINUE BUTTON----------------------*/
-                              Center(
-                                child: BlocListener<UserBloc, UserState>(
-                                  bloc: _userBloc,
-                                  listener: (context, UserState state) {
-                                    if (state is SignedInNotVerifiedState) {
-                                      _userBloc.add(waitFor15minutes());
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
-                                    } else if (state is InvalidEmailState) {
-                                      SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
-                                    } else if (state is SigningInState) {
-                                      debugPrint("SIGNING IN");
-                                    } else if (state is UserNotFoundState) {
-                                      SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
-                                    } else if (state is EmailAlreadyInUseState) {
-                                      SnackBars(context: context).simple(
-                                          "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
-                                    }
-                                  },
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
-                                      bool _connection = await _connectivityRepository.checkConnection(context);
-
-                                      if (_connection == false) return;
-
-                                      bool _isEduDotTr =
-                                          registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7) ==
-                                                  ".edu.tr"
-                                              ? true
-                                              : false;
-
-                                      /// DİKKAT
-                                      /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
-                                      _isEduDotTr = true;
-
-                                      /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
-
-                                      if (registerPasswordController.text == registerPasswordCheckController.text && _isEduDotTr == true) {
-                                        _userBloc.add(createUserWithEmailAndPasswordEvent(
-                                          email: registerEmailController.text.replaceAll(" ", ""),
-                                          password: registerPasswordController.text,
-                                        ));
-                                      } else if (registerPasswordController.text != registerPasswordCheckController.text) {
-                                        SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
-                                      } else if (_isEduDotTr == false) {
-                                        SnackBars(context: context).simple(
-                                            "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
-                                            "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
-                                      } else {
-                                        SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
-                                      }
-                                    },
-                                    child: Text(
-                                      "Devam",
-                                      textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(
-                                          color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
-                                          fontSize: 22,
-                                          fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              _buildContinueButton(context),
                               /*--------------------CONTINUE BUTTON----------------------*/
                             ],
                           ),
@@ -432,5 +369,72 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
         ),
       ),
     );
+  }
+
+  Center _buildContinueButton(BuildContext context) {
+    return Center(
+                              child: BlocListener<UserBloc, UserState>(
+                                bloc: _userBloc,
+                                listener: (context, UserState state) {
+                                  if (state is SignedInNotVerifiedState) {
+                                    _userBloc.add(waitFor15minutes());
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                                  } else if (state is InvalidEmailState) {
+                                    SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
+                                  } else if (state is SigningInState) {
+                                    debugPrint("SIGNING IN");
+                                  } else if (state is UserNotFoundState) {
+                                    SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
+                                  } else if (state is EmailAlreadyInUseState) {
+                                    SnackBars(context: context).simple(
+                                        "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
+                                  }
+                                },
+                                child: TextButton(
+                                  onPressed: () async {
+                                    final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
+                                    bool _connection = await _connectivityRepository.checkConnection(context);
+
+                                    if (_connection == false) return;
+
+                                    bool _isEduDotTr =
+                                        registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7) ==
+                                                ".edu.tr"
+                                            ? true
+                                            : false;
+
+                                    /// DİKKAT
+                                    /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
+                                    _isEduDotTr = true;
+
+                                    /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
+
+                                    if (registerPasswordController.text == registerPasswordCheckController.text && _isEduDotTr == true) {
+                                      _userBloc.add(createUserWithEmailAndPasswordEvent(
+                                        email: registerEmailController.text.replaceAll(" ", ""),
+                                        password: registerPasswordController.text,
+                                      ));
+                                    } else if (registerPasswordController.text != registerPasswordCheckController.text) {
+                                      SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
+                                    } else if (_isEduDotTr == false) {
+                                      SnackBars(context: context).simple(
+                                          "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
+                                          "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
+                                    } else {
+                                      SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
+                                    }
+                                  },
+                                  child: Text(
+                                    "Devam",
+                                    textScaleFactor: 1,
+                                    style: GoogleFonts.rubik(
+                                        color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
+                                        fontSize: 22,
+                                        fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            );
   }
 }

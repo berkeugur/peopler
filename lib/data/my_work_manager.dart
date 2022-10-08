@@ -83,8 +83,7 @@ Future<bool> fetchBackgroundFunction() async {
       _permission == LocationPermission.always)) {
     /// For debug purposes
     debugPrint("WorkManager: not while in use nor always");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-        "WorkManager: not while in use nor always");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: not while in use nor always");
     return Future.value(false);
   }
 
@@ -94,8 +93,7 @@ Future<bool> fetchBackgroundFunction() async {
   if (locationStatus == false) {
     /// For debug purposes
     debugPrint("WorkManager: location setting is closed");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-        "WorkManager: location setting is closed");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: location setting is closed");
     return Future.value(false);
   }
 
@@ -145,14 +143,12 @@ Future<bool> fetchBackgroundFunction() async {
       /// For debug purposes
       debugPrint(
           "WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
-      await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-          "WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
+      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
     }
   } catch (e) {
     /// For debug purposes
     debugPrint("WorkManager: ERROR in deleteUserFromRegion function: $e");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-        "WorkManager: ERROR in deleteUserFromRegion function: $e");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in deleteUserFromRegion function: $e");
     return Future.value(false);
   }
 
@@ -186,8 +182,7 @@ Future<bool> fetchBackgroundFunction() async {
   } else {
     /// For debug purposes
     debugPrint("WorkManager: ERROR: update user location");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-        "WorkManager: ERROR: update user location");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: update user location");
   }
 
   /// UPDATE regions COLLECTIONS IF EXISTS, SET IF NOT EXISTS
@@ -208,14 +203,12 @@ Future<bool> fetchBackgroundFunction() async {
 
       /// For debug purposes
       debugPrint("WorkManager: Document does not exist, so regionID created");
-      await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-          "WorkManager: Document does not exist, so regionID created");
+      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: Document does not exist, so regionID created");
     }
   } catch (e) {
     /// For debug purposes
     debugPrint("WorkManager: ERROR in setUserInRegion function: $e");
-    await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-        "WorkManager: ERROR in setUserInRegion function: $e");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in setUserInRegion function: $e");
     return Future.value(false);
   }
 
@@ -223,7 +216,6 @@ Future<bool> fetchBackgroundFunction() async {
 
   /// For debug purposes
   debugPrint("Basarili ${_position.toString()}");
-  await FCMAndLocalNotifications.showNotificationForDebugPurposes(
-      "Basarili ${_position.toString()}");
+  // await FCMAndLocalNotifications.showNotificationForDebugPurposes("Basarili ${_position.toString()}");
   return Future.value(true);
 }

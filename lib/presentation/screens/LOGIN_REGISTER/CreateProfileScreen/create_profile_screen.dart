@@ -203,9 +203,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             UserBloc.user?.biography = bioController.text;
 
             /// Upload Profile Photo
-            if (image != null) {
-              _userBloc.add(uploadProfilePhoto(imageFile: image!));
-            }
+            _userBloc.add(uploadProfilePhoto(imageFile: image));
 
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
