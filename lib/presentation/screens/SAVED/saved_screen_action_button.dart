@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_event.dart';
 import '../../../data/send_notification_service.dart';
@@ -40,7 +41,7 @@ Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, s
     child: Center(
         child: InkWell(
       onTap: () async {
-        if (UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+        if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
           showNumOfConnectionRequestsConsumed(context);
           return;
         }
@@ -50,7 +51,7 @@ Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, s
         _savedBloc.allRequestList.removeWhere((element) => element.userID == _requestUserID);
         showWidgetsKeySaved.currentState?.setState(() {});
 
-        if (UserBloc.entitlement == "free") {
+        if (UserBloc.entitlement == SubscriptionTypes.free) {
           showRestNumOfConnectionRequests(context);
         }
 

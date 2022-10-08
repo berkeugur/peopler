@@ -5,6 +5,7 @@ import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.da
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/empty_list.dart';
@@ -224,7 +225,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
               children: [
                 InkWell(
                   onTap: () {
-                    if(UserBloc.entitlement == "free") {
+                    if(UserBloc.entitlement == SubscriptionTypes.free) {
                       showGeriAlWarning(context);
                       return;
                     }

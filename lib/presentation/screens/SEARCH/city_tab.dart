@@ -8,6 +8,7 @@ import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
+import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/presentation/screens/GUEST_LOGIN/body.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
@@ -463,7 +464,7 @@ class CityTabState extends State<CityTab> {
                               onTap: () async {
                                 LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
 
-                                if (UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                   return;
                                 }
@@ -482,7 +483,7 @@ class CityTabState extends State<CityTab> {
 
                                 _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
-                                if (UserBloc.entitlement == "free") {
+                                if (UserBloc.entitlement == SubscriptionTypes.free) {
                                   showRestNumOfConnectionRequests(context);
                                 }
 
