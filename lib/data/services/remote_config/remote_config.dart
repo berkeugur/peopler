@@ -19,11 +19,11 @@ class FirebaseRemoteConfigService  {
     await _remoteConfig.fetchAndActivate();
   }
 
-  bool isMaintenance() {
+  bool isMaintenance()  {
     return _remoteConfig.getBool("maintenance");
   }
 
   bool isUpdate() {
-    return _remoteConfig.getBool(Strings.version);
+    return _remoteConfig.getBool(Strings.peopler_version);
   }
 }

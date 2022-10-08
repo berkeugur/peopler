@@ -69,53 +69,45 @@ class _SearchScreenState extends State<SearchScreen> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          return BlocListener<LocationPermissionBloc, LocationPermissionState>(
-            bloc: _locationPermissionBloc,
-            listener: (BuildContext context, state) {
-              if (state is ReadyState) {
-                _locationBloc.add(GetInitialSearchUsersEvent());
+          return ChangeNotifierProvider.value(
+            value: CityNearbyButtons(),
+            child: Builder(builder: (context) {
+              bool _isNearby = Provider.of<CityNearbyButtons>(context).isNearby;
+
+              if (_isNearby == true) {
+                _homeScreen.currentScreen = {TabItem.search: ScreenItem.searchNearByScreen};
+              } else {
+                _homeScreen.currentScreen = {TabItem.search: ScreenItem.searchCityScreen};
               }
-            },
-            child: ChangeNotifierProvider.value(
-              value: CityNearbyButtons(),
-              child: Builder(builder: (context) {
-                bool _isNearby = Provider.of<CityNearbyButtons>(context).isNearby;
+              _homeScreen.changeFloatingActionButtonEvent();
 
-                if (_isNearby == true) {
-                  _homeScreen.currentScreen = {TabItem.search: ScreenItem.searchNearByScreen};
-                } else {
-                  _homeScreen.currentScreen = {TabItem.search: ScreenItem.searchCityScreen};
-                }
-                _homeScreen.changeFloatingActionButtonEvent();
+              double _maxWidth = _size.width > 400 ? 400 : _size.width;
 
-                double _maxWidth = _size.width > 400 ? 400 : _size.width;
-
-                return BlocBuilder<ThemeCubit, bool>(
-                    bloc: _themeCubit,
-                    builder: (_, state) {
-                      return Stack(children: [
-                        _isNearby == true
-                            ? NearbyTab(
-                                screenHeight: screenHeight,
-                                paddingTopSafeArea: paddingTopSafeArea,
-                                maxWidth: _maxWidth,
-                                context: context,
-                                size: _size,
-                                showWidgetsKeyNearby: showWidgetsKeyNearby,
-                                showWidgetsKeyCity: showWidgetsKeyCity)
-                            : CityTab(
-                                screenHeight: screenHeight,
-                                paddingTopSafeArea: paddingTopSafeArea,
-                                maxWidth: _maxWidth,
-                                context: context,
-                                size: _size,
-                                showWidgetsKeyNearby: showWidgetsKeyNearby,
-                                showWidgetsKeyCity: showWidgetsKeyCity),
-                        search_peoples_header(),
-                      ]);
-                    });
-              }),
-            ),
+              return BlocBuilder<ThemeCubit, bool>(
+                  bloc: _themeCubit,
+                  builder: (_, state) {
+                    return Stack(children: [
+                      _isNearby == true
+                          ? NearbyTab(
+                              screenHeight: screenHeight,
+                              paddingTopSafeArea: paddingTopSafeArea,
+                              maxWidth: _maxWidth,
+                              context: context,
+                              size: _size,
+                              showWidgetsKeyNearby: showWidgetsKeyNearby,
+                              showWidgetsKeyCity: showWidgetsKeyCity)
+                          : CityTab(
+                              screenHeight: screenHeight,
+                              paddingTopSafeArea: paddingTopSafeArea,
+                              maxWidth: _maxWidth,
+                              context: context,
+                              size: _size,
+                              showWidgetsKeyNearby: showWidgetsKeyNearby,
+                              showWidgetsKeyCity: showWidgetsKeyCity),
+                      search_peoples_header(),
+                    ]);
+                  });
+            }),
           );
         });
   }
