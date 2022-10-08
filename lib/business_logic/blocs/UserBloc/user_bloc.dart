@@ -10,6 +10,10 @@ import '../../../data/model/user.dart';
 import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
+import '../ChatBloc/chat_bloc.dart';
+import '../CityBloc/city_bloc.dart';
+import '../LocationBloc/location_bloc.dart';
+import '../NotificationBloc/notification_bloc.dart';
 import 'bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
@@ -58,6 +62,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
+  Future<void> closeStreams() async {
+    await close();
+    await CityBloc.closeStreams();
+    await LocationBloc.closeStreams();
+    await NotificationBloc.closeStreams();
+    await ChatBloc.closeStreams();
+  }
+
   Future initPurchaserInfoStream() async {
     updatePurchaseStatus();
     Purchases.addPurchaserInfoUpdateListener((purchaserInfo) async {
@@ -83,6 +95,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc(this.mainKey) : super(InitialUserState()) {
     on<signOutEvent>((event, emit) async {
       try {
+        await closeStreams();
         await _userRepository.deleteToken(user!.userID);
         await _userRepository.signOut();
         await Purchases.logOut();
@@ -266,13 +279,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(SignedInState());
 
       _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
-        /// Check for isEmailVerifid
+        /// Check for isEmailVerified
         add(waitForVerificationEvent());
 
         /// Check for 15 minutes timed out
         DateTime _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
         if (user?.isTheAccountConfirmed == false && _countDownFinishTime.isBefore(DateTime.now())) {
           Restart.restartApp();
+        }
+
+        /// If account is confirmed, then cancel timer
+        if(user?.isTheAccountConfirmed == true) {
+          _timer?.cancel();
         }
       });
     });
@@ -290,6 +308,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
 
     on<deleteUser>((event, emit) async {
+      await closeStreams();
       await _userRepository.deleteUser(user!.userID, user!.region);
       Restart.restartApp();
     });
