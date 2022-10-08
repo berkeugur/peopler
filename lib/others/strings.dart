@@ -12,7 +12,9 @@ class Strings {
       'AAAAolOeL4k:APA91bHz6zy5WVSLFoAbYZAMv1vPN92IECllzNxgpjP7sN3Tx1eCKG6HlzHxjdPmpsA1fMQWY96XuhLh9JBnn2KLTIfLNG8fSBv0GJaQKN43hsN3bpc2u9toPpnvPo3kh6yQmgMkI_kh';
 
   /// Default Firebase Storage File Paths
-  static const String defaultProfilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fdefault_profile_photo.png?alt=media&token=4e206459-e4cb-4bad-944b-7f5aaf074d9b";
+  static const String defaultMaleProfilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fmale.jfif?alt=media&token=a5aebfa1-483f-48bb-aa46-fe7b6c08125c";
+  static const String defaultFemaleProfilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Ffemale.jfif?alt=media&token=86f92d7a-9f3e-4add-a52f-f2b0e40a17d7";
+  static const String defaultNonBinaryProfilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fother.jfif?alt=media&token=db3e4f44-0147-4d05-8ef7-f33809ba211b";
 
   /// Push Notification Payload Types
   static const String sendRequest = "send_request";

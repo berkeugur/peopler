@@ -128,7 +128,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
         user?.profileURL = downloadLink;
       } else {
-        user!.profileURL = Strings.defaultProfilePhotoUrl;
+        if(user?.gender == 'Kadın') {
+          user?.profileURL = Strings.defaultFemaleProfilePhotoUrl;
+        } else if(user?.gender == 'Erkek'){
+          user?.profileURL = Strings.defaultMaleProfilePhotoUrl;
+        } else {
+          user?.profileURL = Strings.defaultNonBinaryProfilePhotoUrl;
+        }
         await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
       }
     });
