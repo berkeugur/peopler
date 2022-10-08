@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/business_logic/blocs/UserBloc/user_event.dart';
+import 'package:peopler/business_logic/blocs/UserBloc/user_state.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 import 'package:peopler/presentation/screens/REGISTER/FAB_functions/completion_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/city_screen.dart';
@@ -12,6 +17,8 @@ import 'package:peopler/presentation/screens/REGISTER/Screens/password_screen.da
 import 'package:peopler/presentation/screens/REGISTER/Screens/profile_photo.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
+import '../../../core/constants/navigation/navigation_constants.dart';
+
 class RegisterScreens extends StatefulWidget {
   const RegisterScreens({Key? key}) : super(key: key);
 
@@ -20,6 +27,8 @@ class RegisterScreens extends StatefulWidget {
 }
 
 class _RegisterScreensState extends State<RegisterScreens> {
+  late final UserBloc _userBloc;
+
   PageController _pageController = PageController();
   ValueNotifier<int> currentPageValue = ValueNotifier(0);
 
@@ -31,6 +40,7 @@ class _RegisterScreensState extends State<RegisterScreens> {
   TextEditingController passwordController = TextEditingController();
   @override
   void initState() {
+    _userBloc = BlocProvider.of<UserBloc>(context);
     super.initState();
     displayNameController = TextEditingController();
     _pageController = PageController();
@@ -87,23 +97,41 @@ class _RegisterScreensState extends State<RegisterScreens> {
 
     return Scaffold(
       floatingActionButton: currentPageValue.value == pages.length - 1
-          ? FloatingActionButton.extended(
-              onPressed: () async {
-                await completionFABFuncion(
-                  context,
-                  _pageController,
-                  currentPageValue,
-                  selectedGender,
-                  biographyController,
-                  selecetCity,
-                  emailController,
-                  passwordController,
-                  displayNameController,
-                );
+          ? BlocListener<UserBloc, UserState>(
+              bloc: _userBloc,
+              listener: (context, UserState state) {
+                if (state is SignedInNotVerifiedState) {
+                  _userBloc.add(waitFor15minutes());
+                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                } else if (state is InvalidEmailState) {
+                  SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
+                } else if (state is SigningInState) {
+                  debugPrint("SIGNING IN");
+                } else if (state is UserNotFoundState) {
+                  SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
+                } else if (state is EmailAlreadyInUseState) {
+                  SnackBars(context: context).simple(
+                      "${emailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
+                }
               },
-              label: const Text("Tamamla"),
-              icon: const Icon(Icons.done),
-            )
+              child: FloatingActionButton.extended(
+                onPressed: () async {
+                  await completionFABFuncion(
+                    context,
+                    _pageController,
+                    currentPageValue,
+                    selectedGender,
+                    biographyController,
+                    selecetCity,
+                    emailController,
+                    passwordController,
+                    displayNameController,
+                    _userBloc,
+                  );
+                },
+                label: const Text("Tamamla"),
+                icon: const Icon(Icons.done),
+              ))
           : FloatingActionButton(
               onPressed: () async {
                 await nextPageFABFunction(

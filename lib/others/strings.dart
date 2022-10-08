@@ -7,12 +7,12 @@ class Strings {
   static const String clientId = '86y9muk6ijz659';
 
   /// Firebase Parameters
-  // Firebase Server Key for Cloud Messaging (Firebase Console -> Project Settings -> Cloud Messaging)
+  /// Firebase Server Key for Cloud Messaging (Firebase Console -> Project Settings -> Cloud Messaging)
   static const String firebaseServerKey =
       'AAAAolOeL4k:APA91bHz6zy5WVSLFoAbYZAMv1vPN92IECllzNxgpjP7sN3Tx1eCKG6HlzHxjdPmpsA1fMQWY96XuhLh9JBnn2KLTIfLNG8fSBv0GJaQKN43hsN3bpc2u9toPpnvPo3kh6yQmgMkI_kh';
 
   /// Default Firebase Storage File Paths
-  static const String defaultProfilePhotoUrl = "";
+  static const String defaultProfilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fdefault_profile_photo.png?alt=media&token=4e206459-e4cb-4bad-944b-7f5aaf074d9b";
 
   /// Push Notification Payload Types
   static const String sendRequest = "send_request";

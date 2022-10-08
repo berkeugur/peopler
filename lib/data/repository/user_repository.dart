@@ -20,8 +20,8 @@ class UserRepository {
   final FirestoreDBServiceFeeds _firestoreDBServiceFeeds = locator<FirestoreDBServiceFeeds>();
   final FirebaseStorageService _firebaseStorageService = locator<FirebaseStorageService>();
   final FirestoreDBServiceCommon _firestoreDBServiceCommon = locator<FirestoreDBServiceCommon>();
-  final FirestoreDBServiceLocation _firestoreDBServiceLocation= locator<FirestoreDBServiceLocation>();
-  final FirestoreDBServiceChat _firestoreDBServiceChat= locator<FirestoreDBServiceChat>();
+  final FirestoreDBServiceLocation _firestoreDBServiceLocation = locator<FirestoreDBServiceLocation>();
+  final FirestoreDBServiceChat _firestoreDBServiceChat = locator<FirestoreDBServiceChat>();
 
   Future<MyUser?> getCurrentUser() async {
     MyUser? currentUser = await _firebaseAuthService.getCurrentUser();
@@ -85,8 +85,7 @@ class UserRepository {
     return _firebaseAuthService.listenForEmailVerification();
   }
 
-  Future<MyUser?> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<MyUser?> signInWithEmailAndPassword(String email, String password) async {
     try {
       MyUser? currentUser = await _firebaseAuthService.signInWithEmailandPassword(email, password);
 
@@ -137,7 +136,7 @@ class UserRepository {
     return profilePhotoURL;
   }
 
-  Future<void> updateProfilePhoto(String userID, String profilePhotoURL) async {
+  Future<void> updateProfilePhoto(String? userID, String? profilePhotoURL) async {
     await _firestoreDBServiceUsers.updateProfilePhoto(userID, profilePhotoURL);
   }
 
@@ -243,6 +242,7 @@ class UserRepository {
     /// Remove from saved users for me
     _firestoreDBServiceUsers.deleteUserFromSavedUsers(myUserID, otherUserID);
     _firestoreDBServiceUsers.deleteSaveUserIDsField(myUserID, otherUserID);
+
     /// Remove from saved users for otherUser
     _firestoreDBServiceUsers.deleteUserFromSavedUsers(otherUserID, myUserID);
     _firestoreDBServiceUsers.deleteSaveUserIDsField(otherUserID, myUserID);

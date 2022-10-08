@@ -2,10 +2,6 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:peopler/business_logic/blocs/ChatBloc/bloc.dart';
-import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
-import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
-import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../../data/in_app_purchases.dart';
@@ -13,6 +9,11 @@ import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
 import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
+import '../../../others/strings.dart';
+import '../ChatBloc/chat_bloc.dart';
+import '../CityBloc/city_bloc.dart';
+import '../LocationBloc/location_bloc.dart';
+import '../NotificationBloc/notification_bloc.dart';
 import 'bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
@@ -24,8 +25,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   final GlobalKey<NavigatorState> mainKey;
 
-  static StreamSubscription? _streamSubscription;
-  static bool _userListener = false;
+  StreamSubscription? _streamSubscription;
+  bool _userListener = false;
 
   static LogInResult? revenueCatResult;
   static String entitlement = "free";
@@ -39,6 +40,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
      */
   };
 
+  Timer? _timer;
+
   Future<void> signedInUserPreparations() async {
     /// Get activities related to user
     myActivities = await _userRepository.getActivities(user!.userID);
@@ -51,7 +54,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     if (_userListener == false) {
       _userListener = true;
-      _streamSubscription = _userRepository.getMyUserWithStream(UserBloc.user!.userID).listen((updatedUser) async {
+      _streamSubscription = _userRepository
+          .getMyUserWithStream(UserBloc.user!.userID)
+          .listen((updatedUser) async {
         UserBloc.user!.fromPublicMap(updatedUser.toPublicMap());
       });
     }
@@ -78,11 +83,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
     entitlement = entitlements.isEmpty ? "free" : entitlements[0].toString();
 
-    if (user == null) {
+    if(user == null) {
       return;
     }
 
-    if (adminUsers.contains(user!.email)) {
+    if(adminUsers.contains(user!.email)) {
       entitlement = "admin";
     }
   }
@@ -106,12 +111,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<uploadProfilePhoto>((event, emit) async {
       if (event.imageFile != null) {
-        String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile!);
+        String downloadLink =
+        await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile!);
         await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
         user?.profileURL = downloadLink;
       } else {
-        user!.profileURL =
-            "https://firebasestorage.googleapis.com/v0/b/peopler-2376c.appspot.com/o/default_images%2Fdefault_profile_photo.png?alt=media&token=4e206459-e4cb-4bad-944b-7f5aaf074d9b";
+        user!.profileURL = Strings.defaultProfilePhotoUrl;
         await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
       }
     });
@@ -120,12 +125,21 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         /// Three seconds timeout is set to getCurrentUser
         user = await _userRepository.getCurrentUser().timeout(const Duration(seconds: 5));
+
+        DateTime? _countDownFinishTime;
+        if(user != null) {
+          _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
+        }
+
         if (user == null) {
           emit(SignedOutState());
         } else if (user?.missingInfo == true) {
           emit(SignedInMissingInfoState());
-        } else if (user?.isTheAccountConfirmed == false) {
+        } else if (user?.isTheAccountConfirmed == false && _countDownFinishTime!.isBefore(DateTime.now())) {
           emit(SignedInNotVerifiedState());
+        } else if (user?.isTheAccountConfirmed == false && _countDownFinishTime!.isAfter(DateTime.now())) {
+          add(waitFor15minutes());
+          emit(SignedInState());
         } else {
           await signedInUserPreparations();
           emit(SignedInState());
@@ -259,6 +273,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
+    on<waitFor15minutes>((event, emit) async {
+      user = await _userRepository.getCurrentUser();
+      await signedInUserPreparations();
+      emit(SignedInState());
+
+      _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+        /// Check for isEmailVerified
+        add(waitForVerificationEvent());
+
+        /// Check for 15 minutes timed out
+        DateTime _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
+        if (user?.isTheAccountConfirmed == false && _countDownFinishTime.isBefore(DateTime.now())) {
+          Restart.restartApp();
+        }
+
+        /// If account is confirmed, then cancel timer
+        if(user?.isTheAccountConfirmed == true) {
+          _timer?.cancel();
+        }
+      });
+    });
+
     on<resendVerificationLink>((event, emit) async {
       await _userRepository.sendEmailVerification();
     });
@@ -282,6 +318,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> close() async {
     if (_streamSubscription != null) {
       _streamSubscription?.cancel();
+    }
+
+    if(_timer != null) {
+      _timer?.cancel();
     }
     super.close();
   }

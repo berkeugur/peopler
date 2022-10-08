@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import '../../../../others/locator.dart';
@@ -98,8 +99,8 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(99),
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                    onTap: () async {
+                      await PeoplerDialogs().showAYSBgLocationDecline(context);
                     },
                     child: Container(
                       //color: Colors.purple,

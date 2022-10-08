@@ -90,7 +90,6 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
-        /// await Future.delayed(const Duration(seconds: 2));
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           emit(UsersLoadedCityState());
@@ -124,7 +123,6 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
-        /// await Future.delayed(const Duration(seconds: 2));
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           emit(UsersLoadedCityState());

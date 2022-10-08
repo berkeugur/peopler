@@ -54,7 +54,7 @@ class FirestoreDBServiceLocation {
         List<String> _userList = _readUserMap['users'].map<String>((s) => s as String).toList();
         return _userList;
       } else {
-        debugPrint('getAllUserIDsFromRegion Document does not exist on the database');
+        debugPrint('getAllUserIDsFromRegion Document does not exist on the database ${region}');
         return [];
       }
     } catch (e) {
