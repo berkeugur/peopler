@@ -1,3 +1,4 @@
 class WidgetVisibility {
-  static const bool isCommentsVisiable = true;
+  static const bool isCommentsVisiable = false;
+  static const bool isNewRegisterScreensVisiable = true;
 }

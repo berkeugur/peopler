@@ -112,7 +112,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           Row(
                                             children: [
                                               Text(
-                                                "deneyiminie\nçok az kaldı",
+                                                "deneyimine\nçok az kaldı",
                                                 textScaleFactor: 1,
                                                 style: GoogleFonts.rubik(
                                                     color: const Color(0xFF000000),

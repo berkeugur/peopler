@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
+import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_linkedin.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_screens.dart';
 
 const String wpPeoplerTitle = "peopler";
@@ -190,13 +192,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ),
                   ),
-                  OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => RegisterScreens(),
-                        ));
-                      },
-                      child: Text("yeni kayıt ekranları")),
+                  Visibility(
+                    visible: WidgetVisibility.isNewRegisterScreensVisiable,
+                    child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LinkedinRegisterScreens(),
+                          ));
+                        },
+                        child: Text("yeni kayıt ekranları")),
+                  ),
                   areYouAlreadyMemberText(
                     onPressed: () {
                       areYouAlreadyMemberOnPressed(context);

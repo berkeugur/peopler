@@ -28,7 +28,7 @@ class FirestoreDBServiceUsers {
     /// PUBLIC FIELD
     DocumentSnapshot documentSnapshot = await _firebaseDB.collection('users').doc(userID).get();
 
-    if(!documentSnapshot.exists) {
+    if (!documentSnapshot.exists) {
       debugPrint('readUser Document does not exist on the database');
       return null;
     }
@@ -39,7 +39,7 @@ class FirestoreDBServiceUsers {
     /// PRIVATE FIELD
     documentSnapshot = await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').get();
 
-    if(!documentSnapshot.exists) {
+    if (!documentSnapshot.exists) {
       debugPrint('readUser private Document does not exist on the database');
       return null;
     }
@@ -51,28 +51,21 @@ class FirestoreDBServiceUsers {
   }
 
   Stream<MyUser> readMyUserWithStream(String currentUserID) {
-    var snapShot = _firebaseDB
-        .collection('users')
-        .doc(currentUserID)
-        .snapshots();
+    var snapShot = _firebaseDB.collection('users').doc(currentUserID).snapshots();
 
-    return snapShot.map(
-            (myUser) {
-              MyUser _user = MyUser();
-              _user.fromPublicMap(myUser.data() as Map<String, dynamic>);
-              return _user;
-            }
-    );
+    return snapShot.map((myUser) {
+      MyUser _user = MyUser();
+      _user.fromPublicMap(myUser.data() as Map<String, dynamic>);
+      return _user;
+    });
   }
-
-
 
   // Read only public fields
   Future<MyUser?> readUserRestricted(String userID) async {
     // PUBLIC FIELD
     DocumentSnapshot documentSnapshot = await _firebaseDB.collection('users').doc(userID).get();
 
-    if(!documentSnapshot.exists) {
+    if (!documentSnapshot.exists) {
       debugPrint('readUser Document does not exist on the database');
       return null;
     }
@@ -87,17 +80,9 @@ class FirestoreDBServiceUsers {
     DocumentSnapshot _readUser = await _firebaseDB.collection('users').doc(user.userID).get();
 
     if (_readUser.data() != null) {
-      await _firebaseDB
-          .collection('users')
-          .doc(user.userID)
-          .update(user.toPublicMap());
+      await _firebaseDB.collection('users').doc(user.userID).update(user.toPublicMap());
 
-      await _firebaseDB
-          .collection('users')
-          .doc(user.userID)
-          .collection("private")
-          .doc("private")
-          .update(user.toPrivateMap());
+      await _firebaseDB.collection('users').doc(user.userID).collection("private").doc("private").update(user.toPrivateMap());
       return true;
     } else {
       debugPrint("updateUser ERROR: Document does not exist, a user with this user id does not exist");
@@ -123,12 +108,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateAccountConfirmed(String userID, bool newAccountConfirmed) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection("private")
-          .doc("private")
-          .update({'isTheAccountConfirmed': newAccountConfirmed});
+      await _firebaseDB.collection('users').doc(userID).collection("private").doc("private").update({'isTheAccountConfirmed': newAccountConfirmed});
       return true;
     } catch (e) {
       debugPrint('Update isTheAccountConfirmed fail');
@@ -136,12 +116,13 @@ class FirestoreDBServiceUsers {
     }
   }
 
-  Future<bool> updateProfilePhoto(String userID, String profilePhotoURL) async {
+  Future<bool> updateProfilePhoto(String? userID, String? profilePhotoURL) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .update({'profileURL': profilePhotoURL});
+      if (userID != null && profilePhotoURL != null) {
+        await _firebaseDB.collection('users').doc(userID).update({'profileURL': profilePhotoURL});
+      } else {
+        debugPrint('Update profilePhotoURL fail userID:$userID profileURL:$profilePhotoURL');
+      }
       return true;
     } catch (e) {
       debugPrint('Update profilePhotoURL fail');
@@ -157,10 +138,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteToken(String userID) async {
     try {
-      await _firebaseDB
-          .collection('tokens')
-          .doc(userID)
-          .delete();
+      await _firebaseDB.collection('tokens').doc(userID).delete();
       return true;
     } catch (e) {
       debugPrint('removeLikedDislikedFeed fail');
@@ -170,10 +148,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteUser(String userID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .delete();
+      await _firebaseDB.collection('users').doc(userID).delete();
       return true;
     } catch (e) {
       debugPrint('removeLikedDislikedFeed fail');
@@ -185,12 +160,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> addLikedDislikedFeed(String userID, String feedID, String type) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection(type)
-          .doc(feedID)
-          .set({});
+      await _firebaseDB.collection('users').doc(userID).collection(type).doc(feedID).set({});
       return true;
     } catch (e) {
       debugPrint('addLikedDislikedFeed fail');
@@ -200,12 +170,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> removeLikedDislikedFeed(String userID, String feedID, String type) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection(type)
-          .doc(feedID)
-          .delete();
+      await _firebaseDB.collection('users').doc(userID).collection(type).doc(feedID).delete();
       return true;
     } catch (e) {
       debugPrint('removeLikedDislikedFeed fail');
@@ -217,19 +182,9 @@ class FirestoreDBServiceUsers {
     // true: liked
     // false: disliked
     // null: nothing
-    DocumentSnapshot liked = await _firebaseDB
-        .collection('users')
-        .doc(userID)
-        .collection('liked')
-        .doc(feedID)
-        .get();
+    DocumentSnapshot liked = await _firebaseDB.collection('users').doc(userID).collection('liked').doc(feedID).get();
 
-    DocumentSnapshot disliked = await _firebaseDB
-        .collection('users')
-        .doc(userID)
-        .collection('disliked')
-        .doc(feedID)
-        .get();
+    DocumentSnapshot disliked = await _firebaseDB.collection('users').doc(userID).collection('disliked').doc(feedID).get();
 
     if (liked.data() != null) {
       // If feedID exists on liked collection
@@ -244,12 +199,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> removeActivity(String userID, String feedID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection('activities')
-          .doc(feedID)
-          .delete();
+      await _firebaseDB.collection('users').doc(userID).collection('activities').doc(feedID).delete();
       return true;
     } catch (e) {
       debugPrint('removeActivity fail');
@@ -259,12 +209,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> addActivity(String userID, MyActivity myActivity) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection('activities')
-          .doc(myActivity.feedID)
-          .set(myActivity.toMap());
+      await _firebaseDB.collection('users').doc(userID).collection('activities').doc(myActivity.feedID).set(myActivity.toMap());
       return true;
     } catch (e) {
       debugPrint('addActivity fail');
@@ -275,12 +220,7 @@ class FirestoreDBServiceUsers {
   Future<List<MyActivity>> getActivities(String userID) async {
     QuerySnapshot _querySnapshot;
 
-      _querySnapshot = await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection('activities')
-          .orderBy('createdAt', descending: true)
-          .get();
+    _querySnapshot = await _firebaseDB.collection('users').doc(userID).collection('activities').orderBy('createdAt', descending: true).get();
 
     List<MyActivity> _allActivities = [];
     for (DocumentSnapshot snap in _querySnapshot.docs) {
@@ -295,10 +235,7 @@ class FirestoreDBServiceUsers {
   Future<List<MyUser>> getUsersWithUserIDs(List<String> userIDList) async {
     List<MyUser> _allUsers = [];
     for (String userID in userIDList) {
-      DocumentSnapshot _userDocument = await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .get();
+      DocumentSnapshot _userDocument = await _firebaseDB.collection('users').doc(userID).get();
 
       MyUser _currentUser = MyUser();
       _currentUser.fromPublicMap(_userDocument.data() as Map<String, dynamic>);
@@ -340,10 +277,7 @@ class FirestoreDBServiceUsers {
 
   /// *************** Saved Screen Functions **********************/
 
-  Future<List<SavedUser>> getSavedUsersWithPagination(
-      String myUserID,
-      SavedUser? lastSelectedRequest,
-      int numberOfElementsWillBeSelected) async {
+  Future<List<SavedUser>> getSavedUsersWithPagination(String myUserID, SavedUser? lastSelectedRequest, int numberOfElementsWillBeSelected) async {
     QuerySnapshot _querySnapshot;
 
     if (lastSelectedRequest == null) {
@@ -375,20 +309,10 @@ class FirestoreDBServiceUsers {
   }
 
   Future<bool> saveUserToSavedUsers(String myUserID, SavedUser savedUser) async {
-    DocumentSnapshot _readUser = await _firebaseDB
-        .collection('users')
-        .doc(myUserID)
-        .collection('savedUsers')
-        .doc(savedUser.userID)
-        .get();
+    DocumentSnapshot _readUser = await _firebaseDB.collection('users').doc(myUserID).collection('savedUsers').doc(savedUser.userID).get();
 
     if (_readUser.data() == null) {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('savedUsers')
-          .doc(savedUser.userID)
-          .set(savedUser.toMap());
+      await _firebaseDB.collection('users').doc(myUserID).collection('savedUsers').doc(savedUser.userID).set(savedUser.toMap());
       return true;
     } else {
       debugPrint("ERROR: Document exists, a user with same user id cannot be created at database.");
@@ -398,10 +322,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateSaveUserIDsField(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"savedUserIDs": FieldValue.arrayUnion([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "savedUserIDs": FieldValue.arrayUnion([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
@@ -411,10 +334,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateTransmittedUserIDsField(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"transmittedRequestUserIDs": FieldValue.arrayUnion([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "transmittedRequestUserIDs": FieldValue.arrayUnion([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update transmittedRequestUserIDs fail');
@@ -424,10 +346,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateReceivedUserIDsField(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"receivedRequestUserIDs": FieldValue.arrayUnion([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "receivedRequestUserIDs": FieldValue.arrayUnion([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update receivedRequestUserIDs fail');
@@ -435,15 +356,9 @@ class FirestoreDBServiceUsers {
     }
   }
 
-  Future<bool> deleteUserFromSavedUsers(
-      String myUserID, String deletedUserID) async {
+  Future<bool> deleteUserFromSavedUsers(String myUserID, String deletedUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('savedUsers')
-          .doc(deletedUserID)
-          .delete();
+      await _firebaseDB.collection('users').doc(myUserID).collection('savedUsers').doc(deletedUserID).delete();
       return true;
     } catch (e) {
       return false;
@@ -452,10 +367,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteSaveUserIDsField(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"savedUserIDs": FieldValue.arrayRemove([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "savedUserIDs": FieldValue.arrayRemove([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
@@ -465,10 +379,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteTransmittedUserIDsField(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"transmittedRequestUserIDs": FieldValue.arrayRemove([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "transmittedRequestUserIDs": FieldValue.arrayRemove([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
@@ -478,10 +391,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteReceivedUserIDsField(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"receivedRequestUserIDs": FieldValue.arrayRemove([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "receivedRequestUserIDs": FieldValue.arrayRemove([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
@@ -489,15 +401,9 @@ class FirestoreDBServiceUsers {
     }
   }
 
-  Future<bool> updateCountdownFinished(
-      String myUserID, String requestUserID, bool isCountdownFinished) async {
+  Future<bool> updateCountdownFinished(String myUserID, String requestUserID, bool isCountdownFinished) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('savedUsers')
-          .doc(requestUserID)
-          .update({'isCountdownFinished': isCountdownFinished});
+      await _firebaseDB.collection('users').doc(myUserID).collection('savedUsers').doc(requestUserID).update({'isCountdownFinished': isCountdownFinished});
       return true;
     } catch (e) {
       debugPrint('Update isCountdownFinished fail');
@@ -509,12 +415,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> saveNotification(String myUserID, Notifications myNotification) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('notifications')
-          .doc(myNotification.notificationID)
-          .set(myNotification.toMap());
+      await _firebaseDB.collection('users').doc(myUserID).collection('notifications').doc(myNotification.notificationID).set(myNotification.toMap());
       return true;
     } catch (e) {
       return false;
@@ -523,12 +424,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateAcceptedField(String myUserID, String notificationID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('notifications')
-          .doc(notificationID)
-          .update({'didAccepted': true});
+      await _firebaseDB.collection('users').doc(myUserID).collection('notifications').doc(notificationID).update({'didAccepted': true});
 
       return true;
     } catch (e) {
@@ -539,10 +435,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> saveUserToConnections(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"connectionUserIDs": FieldValue.arrayUnion([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "connectionUserIDs": FieldValue.arrayUnion([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
@@ -552,10 +447,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteUserFromConnections(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"connectionUserIDs": FieldValue.arrayRemove([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "connectionUserIDs": FieldValue.arrayRemove([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update SaveUserIDsField fail');
@@ -565,12 +459,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteNotificationFromUser(String myUserID, String deletedNotificationID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('notifications')
-          .doc(deletedNotificationID)
-          .delete();
+      await _firebaseDB.collection('users').doc(myUserID).collection('notifications').doc(deletedNotificationID).delete();
       return true;
     } catch (e) {
       return false;
@@ -579,12 +468,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> makeNotificationInvisible(String myUserID, String notificationID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .collection('notifications')
-          .doc(notificationID)
-          .update({'notificationVisible': false});
+      await _firebaseDB.collection('users').doc(myUserID).collection('notifications').doc(notificationID).update({'notificationVisible': false});
       return true;
     } catch (e) {
       return false;
@@ -593,12 +477,7 @@ class FirestoreDBServiceUsers {
 
   Future<bool> decrementNumOfSendRequest(String userID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(userID)
-          .collection('private')
-          .doc('private')
-          .update({'numOfSendRequest': FieldValue.increment(-1)});
+      await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').update({'numOfSendRequest': FieldValue.increment(-1)});
       return true;
     } catch (e) {
       return false;
@@ -606,10 +485,7 @@ class FirestoreDBServiceUsers {
   }
 
   Future<List<Notifications>> getRequestsWithPagination(
-      String myUserID,
-      Notifications? lastSelectedRequest,
-      int numberOfElementsWillBeSelected,
-      String requestType) async {
+      String myUserID, Notifications? lastSelectedRequest, int numberOfElementsWillBeSelected, String requestType) async {
     QuerySnapshot _querySnapshot;
 
     if (lastSelectedRequest == null) {
@@ -617,7 +493,7 @@ class FirestoreDBServiceUsers {
           .collection('users')
           .doc(myUserID)
           .collection('notifications')
-          .where('notificationType' , isEqualTo: requestType)
+          .where('notificationType', isEqualTo: requestType)
           .orderBy('createdAt', descending: true)
           .limit(numberOfElementsWillBeSelected)
           .get();
@@ -626,7 +502,7 @@ class FirestoreDBServiceUsers {
           .collection('users')
           .doc(myUserID)
           .collection('notifications')
-          .where('notificationType' , isEqualTo: requestType)
+          .where('notificationType', isEqualTo: requestType)
           .orderBy('createdAt', descending: true)
           .startAfter([lastSelectedRequest.createdAt])
           .limit(numberOfElementsWillBeSelected)
@@ -642,10 +518,7 @@ class FirestoreDBServiceUsers {
     return _allRequests;
   }
 
-  Future<List<Notifications>> getNotificationsWithPagination(
-      String myUserID,
-      Notifications? lastSelectedRequest,
-      int numberOfElementsWillBeSelected) async {
+  Future<List<Notifications>> getNotificationsWithPagination(String myUserID, Notifications? lastSelectedRequest, int numberOfElementsWillBeSelected) async {
     QuerySnapshot _querySnapshot;
 
     if (lastSelectedRequest == null) {
@@ -675,36 +548,24 @@ class FirestoreDBServiceUsers {
 
     return _allRequests;
   }
-
-
 
   Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
-    var snapShot = _firebaseDB
-        .collection('users')
-        .doc(currentUserID)
-        .collection("notifications")
-        .orderBy("createdAt", descending: true)
-        .limit(1)
-        .snapshots();
+    var snapShot = _firebaseDB.collection('users').doc(currentUserID).collection("notifications").orderBy("createdAt", descending: true).limit(1).snapshots();
 
     return snapShot.map(
-      // Convert Stream<docs> to Stream<List<Object>>
-            (notificationList) => notificationList.docs.map(
-          // Convert Stream<List<Object>> to Stream<List<Notifications>>
-                (notification) => Notifications.fromMap(notification.data())
-        )
-            .toList()
-    );
+        // Convert Stream<docs> to Stream<List<Object>>
+        (notificationList) => notificationList.docs.map(
+            // Convert Stream<List<Object>> to Stream<List<Notifications>>
+            (notification) => Notifications.fromMap(notification.data())).toList());
   }
 
   /// ********************************************************************/
 
   Future<bool> updateWhoBlockedYou(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"whoBlockedYou": FieldValue.arrayUnion([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "whoBlockedYou": FieldValue.arrayUnion([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update whoBlockedYou fail');
@@ -714,10 +575,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateBlockedUsers(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"blockedUsers": FieldValue.arrayUnion([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "blockedUsers": FieldValue.arrayUnion([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update blockedUsers fail');
@@ -727,10 +587,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteFromWhoBlockedYou(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"whoBlockedYou": FieldValue.arrayRemove([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "whoBlockedYou": FieldValue.arrayRemove([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update whoBlockedYou fail');
@@ -740,10 +599,9 @@ class FirestoreDBServiceUsers {
 
   Future<bool> deleteFromBlockedUsers(String myUserID, String requestUserID) async {
     try {
-      await _firebaseDB
-          .collection('users')
-          .doc(myUserID)
-          .update({"blockedUsers": FieldValue.arrayRemove([requestUserID])});
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "blockedUsers": FieldValue.arrayRemove([requestUserID])
+      });
       return true;
     } catch (e) {
       debugPrint('Update blockedUsers fail');

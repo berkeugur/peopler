@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
@@ -252,6 +253,16 @@ class PeoplerAppBars {
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,
       centerTitle: true,
+      actions: [
+        IconButton(
+            onPressed: () {
+              PeoplerDialogs().showContanctInfo(context);
+            },
+            icon: const Icon(
+              Icons.help,
+              color: Colors.white,
+            ))
+      ],
     );
   }
 
