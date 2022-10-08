@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../../data/in_app_purchases.dart';
@@ -29,7 +30,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   bool _userListener = false;
 
   static LogInResult? revenueCatResult;
-  static String entitlement = "free";
+  static SubscriptionTypes entitlement = SubscriptionTypes.free;
 
   static final Set<String> adminUsers = {
     /*
@@ -81,14 +82,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     PurchaseApi.purchaserInfo = await Purchases.getPurchaserInfo();
 
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
-    entitlement = entitlements.isEmpty ? "free" : entitlements[0].toString();
+    if(entitlements.isEmpty ) {
+      entitlement = SubscriptionTypes.free;
+    } else {
+      String entitlementIdentifier = entitlements[0].identifier.toString();
+      if(entitlementIdentifier == "plus") {
+        entitlement =  SubscriptionTypes.plus;
+      } else if(entitlementIdentifier == "premium") {
+        entitlement =  SubscriptionTypes.premium;
+      } else {
+        entitlement =  SubscriptionTypes.free;
+      }
+    }
 
     if(user == null) {
       return;
     }
 
     if(adminUsers.contains(user!.email)) {
-      entitlement = "admin";
+      entitlement = SubscriptionTypes.admin;
     }
   }
 

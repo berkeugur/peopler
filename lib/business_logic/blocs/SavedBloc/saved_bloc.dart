@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/model/saved_user.dart';
 import 'package:peopler/data/repository/saved_repository.dart';
 
@@ -103,7 +104,7 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         UserBloc.user!.savedUserIDs.remove(event.savedUser.userID);
         UserBloc.user!.transmittedRequestUserIDs.add(event.savedUser.userID);
 
-        if(UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest > 0) {
+        if(UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest > 0) {
           UserBloc.user!.numOfSendRequest -= 1;
           await _savedRepository.decrementNumOfSendRequest(myUser.userID);
         }

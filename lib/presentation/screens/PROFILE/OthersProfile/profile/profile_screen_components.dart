@@ -24,6 +24,7 @@ import '../../../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../../../business_logic/blocs/OtherUserBloc/other_user_bloc.dart';
 import '../../../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../../data/model/chat.dart';
 import '../../../../../data/model/notifications.dart';
 import '../../../../../data/model/saved_user.dart';
@@ -397,7 +398,7 @@ class ProfileScreenComponentsOthersProfile {
   InkWell _buildConnectStatus(BuildContext context, String otherUserID) {
     return InkWell(
       onTap: () async {
-        if (UserBloc.entitlement == "free" && UserBloc.user!.numOfSendRequest < 1) {
+        if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
           showNumOfConnectionRequestsConsumed(context);
           return;
         }
@@ -422,7 +423,7 @@ class ProfileScreenComponentsOthersProfile {
         _savedUser.biography = otherUser.biography;
         _savedUser.hobbies = otherUser.hobbies;
 
-        if (UserBloc.entitlement == "free") {
+        if (UserBloc.entitlement == SubscriptionTypes.free) {
           showRestNumOfConnectionRequests(context);
         }
 
@@ -510,7 +511,7 @@ class ProfileScreenComponentsOthersProfile {
   Widget _buildRequestSentStatus(BuildContext context, String otherUserID) {
     return InkWell(
       onTap: () {
-        if (UserBloc.entitlement == "free") {
+        if (UserBloc.entitlement == SubscriptionTypes.free) {
           showGeriAlWarning(context);
           return;
         }

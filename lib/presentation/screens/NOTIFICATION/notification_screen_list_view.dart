@@ -7,6 +7,7 @@ import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import '../../../business_logic/blocs/ChatBloc/bloc.dart';
 import '../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../data/model/chat.dart';
 import '../../../data/model/notifications.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
@@ -387,7 +388,7 @@ Widget acceptYourRequestWidget(
 }
 
 void _clickGeriAl(BuildContext context, Notifications notification) {
-  if(UserBloc.entitlement == "free") {
+  if(UserBloc.entitlement == SubscriptionTypes.free) {
     showGeriAlWarning(context);
     return;
   }

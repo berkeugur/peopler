@@ -6,6 +6,7 @@ import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/city_change_service.dart';
 
+import '../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../others/functions/search_functions.dart';
 import '../../../../others/widgets/snack_bars.dart';
 
@@ -89,7 +90,7 @@ class _EditFieldState extends State<EditField> {
       child: InkWell(
         onTap: () {
 
-          if(UserBloc.entitlement != "premium") {
+          if(UserBloc.entitlement != SubscriptionTypes.premium) {
             showCityChangeWarning(context);
             return;
           }
