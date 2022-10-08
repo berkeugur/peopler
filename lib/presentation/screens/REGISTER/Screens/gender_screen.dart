@@ -4,9 +4,9 @@ import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 
 String getGenderText(GenderTypes type) {
   switch (type) {
-    case GenderTypes.woman:
+    case GenderTypes.female:
       return "KADIN";
-    case GenderTypes.man:
+    case GenderTypes.male:
       return "ERKEK";
     case GenderTypes.other:
       return "DİĞER";
@@ -45,27 +45,27 @@ Widget registerGenderSelect({
             builder: (context, _, __) {
               return InkWell(
                 onTap: () {
-                  selectedType.value = GenderTypes.woman;
+                  selectedType.value = GenderTypes.female;
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(
-                    horizontal: selectedType.value == GenderTypes.woman ? 10 : 15,
+                    horizontal: selectedType.value == GenderTypes.female ? 10 : 15,
                     vertical: 7.5,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      width: selectedType.value == GenderTypes.woman ? 2.5 : 1.5,
-                      color: selectedType.value == GenderTypes.woman ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
+                      width: selectedType.value == GenderTypes.female ? 2.5 : 1.5,
+                      color: selectedType.value == GenderTypes.female ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                     ),
                   ),
                   child: ListTile(
                     title: Text(
-                      getGenderText(GenderTypes.woman),
+                      getGenderText(GenderTypes.female),
                       textAlign: TextAlign.center,
                       style: GoogleFonts.rubik(
-                        fontWeight: selectedType.value == GenderTypes.woman ? FontWeight.w500 : FontWeight.w400,
-                        color: selectedType.value == GenderTypes.woman ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
+                        fontWeight: selectedType.value == GenderTypes.female ? FontWeight.w500 : FontWeight.w400,
+                        color: selectedType.value == GenderTypes.female ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                       ),
                     ),
                   ),
@@ -77,27 +77,27 @@ Widget registerGenderSelect({
             builder: (context, _, __) {
               return InkWell(
                 onTap: () {
-                  selectedType.value = GenderTypes.man;
+                  selectedType.value = GenderTypes.male;
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(
-                    horizontal: selectedType.value == GenderTypes.man ? 10 : 15,
+                    horizontal: selectedType.value == GenderTypes.male ? 10 : 15,
                     vertical: 7.5,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      width: selectedType.value == GenderTypes.man ? 2.5 : 1.5,
-                      color: selectedType.value == GenderTypes.man ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
+                      width: selectedType.value == GenderTypes.male ? 2.5 : 1.5,
+                      color: selectedType.value == GenderTypes.male ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                     ),
                   ),
                   child: ListTile(
                     title: Text(
-                      getGenderText(GenderTypes.man),
+                      getGenderText(GenderTypes.male),
                       textAlign: TextAlign.center,
                       style: GoogleFonts.rubik(
-                        fontWeight: selectedType.value == GenderTypes.man ? FontWeight.w500 : FontWeight.w400,
-                        color: selectedType.value == GenderTypes.man ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
+                        fontWeight: selectedType.value == GenderTypes.male ? FontWeight.w500 : FontWeight.w400,
+                        color: selectedType.value == GenderTypes.male ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                       ),
                     ),
                   ),
