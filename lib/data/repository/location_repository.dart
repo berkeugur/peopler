@@ -48,29 +48,6 @@ class LocationRepository {
 
   Future<void> openPermissionSettings() async {
     await _locationServices.openAppSettings();
-    /*
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: const Text(''), // App Permission Settings
-              content: const Text(
-                  'Sizinle aynı bölgede bulunan kullanıcıların uygulama arka planda dahi çalışırken sizi bulabilmesi için ayarlardan "Her zaman izin ver" seçiniz.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Geri'),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    await _locationServices.openAppSettings();
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Open Settings'),
-                )
-              ],
-            ));
-
-     */
   }
 
   Future<void> openLocationSettings() async {
