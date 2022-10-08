@@ -6,8 +6,8 @@ import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
-import 'package:peopler/presentation/screens/REGISTER/register_linkedin.dart';
-import 'package:peopler/presentation/screens/REGISTER/register_screens.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_normal_screens.dart';
 
 const String wpPeoplerTitle = "peopler";
 const String wpAreYouAlreadyMember = "Zaten üye misin?";
