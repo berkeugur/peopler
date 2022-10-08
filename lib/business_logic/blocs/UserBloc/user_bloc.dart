@@ -19,7 +19,7 @@ import 'bloc.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository _userRepository = locator<UserRepository>();
 
-  static late List<MyActivity> myActivities;
+  static List<MyActivity> myActivities = [];
   static MyUser? user;
   static MyUser? guestUser;
 

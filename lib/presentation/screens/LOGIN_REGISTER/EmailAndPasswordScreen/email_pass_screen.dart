@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
@@ -9,9 +10,7 @@ import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
-import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
-import '../../../../others/widgets/snack_bars.dart';
 
 class EmailAndPasswordScreen extends StatefulWidget {
   const EmailAndPasswordScreen({Key? key}) : super(key: key);
@@ -375,11 +374,16 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
     return Center(
                               child: BlocListener<UserBloc, UserState>(
                                 bloc: _userBloc,
-                                listener: (context, UserState state) {
+                                listener: (context, UserState state) async {
                                   if (state is SignedInNotVerifiedState) {
                                     _userBloc.add(waitFor15minutes());
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                                    final LocationRepository _locationRepository = locator<LocationRepository>();
+                                    LocationPermission _permission = await _locationRepository.checkPermissions();
+                                    if (_permission == LocationPermission.always) {
+                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                                    } else {
+                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                                    }
                                   } else if (state is InvalidEmailState) {
                                     SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                                   } else if (state is SigningInState) {

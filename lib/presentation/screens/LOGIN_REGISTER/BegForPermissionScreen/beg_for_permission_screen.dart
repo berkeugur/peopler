@@ -158,7 +158,7 @@ class _AnimatedIcon1State extends State<AnimatedIcon1> with TickerProviderStateM
           margin: EdgeInsets.all(8 - (8 * animationController.value)),
           decoration: ShapeDecoration(
             color: Colors.white.withOpacity(0.5),
-            shape: CircleBorder(),
+            shape: const CircleBorder(),
           ),
           child: Padding(
             padding: EdgeInsets.all(

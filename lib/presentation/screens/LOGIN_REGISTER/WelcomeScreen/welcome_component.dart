@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome.dart';
@@ -63,13 +63,16 @@ Column buildButtons(BuildContext context) {
           fit: BoxFit.contain,
         ),
         text: "MİSAFİR",
-        onPressed: () {
-          final LocationRepository _locationRepository = locator<LocationRepository>();
-          _locationRepository.requestPermission();
-
+        onPressed: () async {
           UserBloc.guestUser = MyUser();
 
-          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+          final LocationRepository _locationRepository = locator<LocationRepository>();
+          LocationPermission _permission = await _locationRepository.checkPermissions();
+          if (_permission == LocationPermission.always) {
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+          }
         },
       ),
     ],

@@ -57,7 +57,7 @@ Center signInButton(context) {
           );
         },
         child: Container(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           height: 40,
           width: 140,
           decoration: BoxDecoration(

@@ -47,6 +47,11 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                     children: [
                       IconButton(
                         onPressed: () {
+                          if(UserBloc.user?.isTheAccountConfirmed == true) {
+                            showLinkedInPopWarning(context);
+                            return;
+                          }
+
                           Navigator.pop(context);
                         },
                         icon: const Icon(

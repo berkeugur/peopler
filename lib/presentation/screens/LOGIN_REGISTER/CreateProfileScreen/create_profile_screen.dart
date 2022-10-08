@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
@@ -11,7 +12,6 @@ import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/functions/image_picker_functions.dart';
-import '../../../../others/widgets/snack_bars.dart';
 import '../../../../others/functions/search_functions.dart';
 
 class CreateProfileScreen extends StatefulWidget {
@@ -198,7 +198,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   Center continueButton(BuildContext context) {
     return Center(
       child: TextButton(
-        onPressed: () {
+        onPressed: () async {
           if (UserBloc.user?.city != "" && bioController.text.isNotEmpty) {
             UserBloc.user?.biography = bioController.text;
 
@@ -208,7 +208,14 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
               _userBloc.add(updateUserInfoForLinkedInEvent());
-              Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+
+              final LocationRepository _locationRepository = locator<LocationRepository>();
+              LocationPermission _permission = await _locationRepository.checkPermissions();
+              if (_permission == LocationPermission.always) {
+                Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+              } else {
+                Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+              }
             } else if (_userBloc.state == SignedOutState()) {
               Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);
             }

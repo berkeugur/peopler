@@ -64,3 +64,7 @@ showCityChangeWarning(BuildContext context) {
 showGeriAlWarning(BuildContext context) {
   showFreeUser(context, "İsteğinizi geri çekebilmek için premium veya plus hesaba geçmelisiniz.");
 }
+
+showLinkedInPopWarning(BuildContext context) {
+  SnackBars(context: context).simple("LinkedIn ile giriş yapabildiğiniz için öncelikle kayıt olmanız gerekmektedir.");
+}

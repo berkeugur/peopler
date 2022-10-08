@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
@@ -25,10 +26,16 @@ class VerificationScreen extends StatelessWidget {
         builder: (context, x, y) {
           return BlocListener<UserBloc, UserState>(
             bloc: _userBloc,
-            listener: (context, UserState state) {
+            listener: (context, UserState state) async {
               if (state is SignedInState) {
                 timer.cancel();
-                Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                final LocationRepository _locationRepository = locator<LocationRepository>();
+                LocationPermission _permission = await _locationRepository.checkPermissions();
+                if (_permission == LocationPermission.always) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                }
               }
             },
             child: SafeArea(
