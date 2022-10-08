@@ -10,6 +10,7 @@ import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 
 class EmailAndPasswordScreen extends StatefulWidget {
@@ -377,13 +378,13 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                 listener: (context, UserState state) async {
                                   if (state is SignedInNotVerifiedState) {
                                     _userBloc.add(waitFor15minutes());
-                                    final LocationRepository _locationRepository = locator<LocationRepository>();
-                                    LocationPermission _permission = await _locationRepository.checkPermissions();
-                                    if (_permission == LocationPermission.always) {
-                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
-                                    } else {
-                                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+
+                                    /// Upload Profile Photo
+                                    if(UserBloc.user?.profileURL == "") {
+                                      _userBloc.add(uploadProfilePhoto(imageFile: image));
                                     }
+
+                                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                                   } else if (state is InvalidEmailState) {
                                     SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                                   } else if (state is SigningInState) {

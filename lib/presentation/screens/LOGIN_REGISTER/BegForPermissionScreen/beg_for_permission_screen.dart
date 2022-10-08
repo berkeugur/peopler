@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
+import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 
 class BegForPermissionScreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
   @override
   void initState() {
     super.initState();
+
     Timer(const Duration(seconds: 1), () async {
       final LocationRepository _locationRepository = locator<LocationRepository>();
       LocationPermission _permission = await _locationRepository.checkPermissions();

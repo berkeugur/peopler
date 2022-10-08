@@ -202,9 +202,6 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           if (UserBloc.user?.city != "" && bioController.text.isNotEmpty) {
             UserBloc.user?.biography = bioController.text;
 
-            /// Upload Profile Photo
-            _userBloc.add(uploadProfilePhoto(imageFile: image));
-
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
               _userBloc.add(updateUserInfoForLinkedInEvent());
