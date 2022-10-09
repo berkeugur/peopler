@@ -80,8 +80,6 @@ class CityTabState extends State<CityTab> {
       return const GuestLoginScreenBody();
     }
 
-    _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
-
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
@@ -130,7 +128,9 @@ class CityTabState extends State<CityTab> {
                                   return _initialUsersStateWidget();
                                 } else if (state is UsersNotExistCityState) {
                                   return _noUserExistsWidget();
-                                } else if (state is UsersLoadedCityState) {
+                                } else if (state is UsersLoadedCityState1) {
+                                  return _showUsers(widget.size);
+                                } else if (state is UsersLoadedCityState2) {
                                   return _showUsers(widget.size);
                                 } else if (state is NoMoreUsersCityState) {
                                   return _showUsers(widget.size);

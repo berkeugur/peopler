@@ -148,8 +148,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
         }
 
-        // await Future.delayed(const Duration(seconds: 2));
-
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           emit(UsersLoadedSearchState());

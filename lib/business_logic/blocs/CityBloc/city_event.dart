@@ -29,11 +29,6 @@ class GetMoreSearchUsersCityEvent extends CityEvent {
   List<Object> get props => [city];
 }
 
-class TrigUsersLoadedCityStateEvent extends CityEvent {
-  @override
-  List<Object> get props => [];
-}
-
 class TrigUsersNotExistCityStateEvent extends CityEvent {
   @override
   List<Object> get props => [];

@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/data/my_work_manager.dart';
 import 'package:peopler/data/repository/chat_repository.dart';
+import 'package:peopler/data/repository/city_repository.dart';
 import 'package:peopler/data/repository/message_repository.dart';
 import 'package:peopler/data/repository/notification_repository.dart';
 import 'package:peopler/data/repository/saved_repository.dart';
@@ -49,6 +50,7 @@ Future<void> setupLocator() async {
   locator.registerLazySingleton(() => UserRepository());
   locator.registerLazySingleton(() => FeedRepository());
   locator.registerLazySingleton(() => LocationRepository());
+  locator.registerLazySingleton(() => CityRepository());
   locator.registerLazySingleton(() => ConnectivityRepository());
   locator.registerLazySingleton(() => ChatRepository());
   locator.registerLazySingleton(() => MessageRepository());

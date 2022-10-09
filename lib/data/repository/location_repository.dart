@@ -150,7 +150,7 @@ class LocationRepository {
     }
   }
 
-  Future<List<String>> determineQueryList(int latitude, int longitude) async {
+  List<String> determineQueryList(int latitude, int longitude) {
     int _latitude = latitude;
     int _longitude = longitude;
 
@@ -230,30 +230,6 @@ class LocationRepository {
     return userList;
   }
 
-  Future<List<MyUser>> queryUsersCityWithPagination(String city, List<MyUser> allUserList) async {
-    if (_hasMoreCity == true) {
-      MyUser? _lastSelectedUser;
-      int _numberOfElementsWillBeSelected = 10;
-
-      if (allUserList.isNotEmpty) {
-        _lastSelectedUser = allUserList.last;
-      }
-
-      List<MyUser> newList = await _firestoreDBServiceUsers.getUserCityWithPagination(city, _lastSelectedUser, 10);
-
-      if (newList.length < _numberOfElementsWillBeSelected) {
-        _hasMoreCity = false;
-      }
-
-      if (newList.isNotEmpty) {
-        return newList;
-      } else {
-        return [];
-      }
-    } else {
-      return [];
-    }
-  }
 
   void restartRepositoryCache() {
     for(int i=0; i<9; i++)
