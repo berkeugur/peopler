@@ -66,14 +66,14 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
             if(updatedNotification.isEmpty) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(updatedNotification: updatedNotification));
+              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
               debugPrint("There is no new notification");
               return;
             }
 
             if(updatedNotification[0].requestUserID == null) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(updatedNotification: updatedNotification));
+              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
               debugPrint("Notification Type is not receive or transmit");
               return;
             }
@@ -84,7 +84,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             updatedNotification[0].requestBiography = _user.biography;
 
             /// Call another NotificationBloc event named NewNotificationListenerEvent
-            add(NewNotificationListenerEvent(updatedNotification: updatedNotification));
+            add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
           });
         }
       }
@@ -111,6 +111,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       } else {
         emit(NotificationLoadedState1());
       }
+
+      event.newNotificationCubit.newNotificationEvent();
     });
 
     on<ClickAcceptEvent>((event, emit) async {

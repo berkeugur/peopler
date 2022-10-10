@@ -1,29 +1,35 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-
+import 'package:flutter/cupertino.dart';
 import '../../../data/model/chat.dart';
+import '../../cubits/NewMessageCubit.dart';
 
 @immutable
 abstract class ChatEvent extends Equatable {}
 
 class GetChatWithPaginationEvent extends ChatEvent {
   final String userID;
+  final NewMessageCubit newMessageCubit;
+
   GetChatWithPaginationEvent({
     required this.userID,
+    required this.newMessageCubit
   });
 
   @override
-  List<Object> get props => [userID];
+  List<Object> get props => [userID, newMessageCubit];
 }
 
 class NewChatListenerEvent extends ChatEvent {
   final List<Chat> updatedChat;
+  final NewMessageCubit newMessageCubit;
+
   NewChatListenerEvent({
     required this.updatedChat,
+    required this.newMessageCubit
   });
 
   @override
-  List<Object> get props => [updatedChat];
+  List<Object> get props => [updatedChat, newMessageCubit];
 }
 
 class UpdateLastMessageSeenEvent extends ChatEvent {

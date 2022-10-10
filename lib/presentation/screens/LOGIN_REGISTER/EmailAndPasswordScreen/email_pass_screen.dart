@@ -534,6 +534,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                           ? FontWeight.w300
                           : FontWeight.w500),
                 ),
+                /*************** BERKE *******************/
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Row(children: const [
@@ -547,6 +548,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                     Expanded(flex: 5, child: SizedBox()),
                   ]),
                 )
+                /*************** BERKE *******************/
               ]);
             } else {
               return TextButton(

@@ -8,6 +8,8 @@ import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.da
 import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
+import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
+import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/presentation/router/router.dart';
 import 'business_logic/blocs/ChatBloc/chat_bloc.dart';
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
               BlocProvider<LocationUpdateBloc>(create: (context) => LocationUpdateBloc()),
               BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
               BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
+              BlocProvider<NewNotificationCubit>(create: (context) => NewNotificationCubit()),
+              BlocProvider<NewMessageCubit>(create: (context) => NewMessageCubit()),
               BlocProvider<NotificationTransmittedBloc>(create: (context) => NotificationTransmittedBloc()),
               BlocProvider<NotificationReceivedBloc>(create: (context) => NotificationReceivedBloc()),
               BlocProvider<NotificationBloc>(create: (context) => NotificationBloc()),

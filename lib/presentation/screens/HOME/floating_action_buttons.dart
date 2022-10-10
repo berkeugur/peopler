@@ -10,27 +10,25 @@ import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screens/FEEDS/FeedShare/feed_share_screen.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen.dart';
 import 'package:restart_app/restart_app.dart';
-import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
+import '../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
-import '../../../core/constants/navigation/navigation_constants.dart';
 
 class MyFloatingActionButtons extends StatefulWidget {
   const MyFloatingActionButtons({Key? key}) : super(key: key);
 
   @override
-  State<MyFloatingActionButtons> createState() => _MyFloatingActionButtonsState();
+  State<MyFloatingActionButtons> createState() =>
+      _MyFloatingActionButtonsState();
 }
 
 class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
   late final FeedBloc _feedBloc;
-  late final SavedBloc _savedBloc;
   late final FloatingActionButtonCubit _homeScreen;
 
   @override
   void initState() {
     _feedBloc = BlocProvider.of<FeedBloc>(context);
-    _savedBloc = BlocProvider.of<SavedBloc>(context);
     _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
     super.initState();
   }
@@ -43,13 +41,18 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           return BlocBuilder<FloatingActionButtonCubit, bool>(
               bloc: _homeScreen,
               builder: (_, trig) {
-                if ((_homeScreen.currentTab == TabItem.feed) && (_homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen)) {
+                if ((_homeScreen.currentTab == TabItem.feed) &&
+                    (_homeScreen.currentScreen[TabItem.feed] ==
+                        ScreenItem.feedScreen)) {
                   return _buildAddFeedFAB(context);
                 } else if (_homeScreen.currentTab == TabItem.notifications &&
-                    _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
+                    _homeScreen.currentScreen[TabItem.notifications] ==
+                        ScreenItem.notificationScreen) {
                   // return _buildNotificationDeleteFAB();
                   return const SizedBox.shrink();
-                } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
+                } else if (_homeScreen.currentTab == TabItem.search &&
+                    _homeScreen.currentScreen[TabItem.search] ==
+                        ScreenItem.searchNearByScreen) {
                   return _buildSavedFAB(context);
                 } else {
                   return const SizedBox.shrink();
@@ -70,7 +73,9 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
           if (UserBloc.user != null) {
             _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
+              MaterialPageRoute(
+                  builder: (context) => BlocProvider<FeedBloc>.value(
+                      value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
             showDialog(
@@ -135,71 +140,93 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
   }
 
   Padding _buildSavedFAB(BuildContext context) {
+    SavedBloc _savedBloc = BlocProvider.of<SavedBloc>(context);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 0.0),
-      child: FloatingActionButton.small(
-        child: SvgPicture.asset(
-          "assets/images/svg_icons/saved.svg",
-          width: 25,
-          height: 25,
-          color: Colors.white,
-          fit: BoxFit.contain,
-        ),
-        heroTag: "btn3",
-        tooltip: "Kaydedilenler",
-        backgroundColor: const Color(0xFF0353EF),
-        onPressed: () {
-          UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-          if (UserBloc.user != null) {
-            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-            _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
-            );
-          } else {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text(
-                      "Giriş Yapmalısınız.",
-                      style: GoogleFonts.rubik(
-                        color: const Color(0xFF0353EF),
+      child: Stack(children: [
+        FloatingActionButton.small(
+          child: SvgPicture.asset(
+            "assets/images/svg_icons/saved.svg",
+            width: 25,
+            height: 25,
+            color: Colors.white,
+            fit: BoxFit.contain,
+          ),
+          heroTag: "btn3",
+          tooltip: "Kaydedilenler",
+          backgroundColor: const Color(0xFF0353EF),
+          onPressed: () {
+            if (UserBloc.user != null) {
+              UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+              _userBloc.mainKey.currentState?.push(
+                MaterialPageRoute(
+                    builder: (context) => BlocProvider<SavedBloc>.value(
+                        value: _savedBloc, child: const SavedScreen())),
+              );
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(
+                        "Giriş Yapmalısınız.",
+                        style: GoogleFonts.rubik(
+                          color: const Color(0xFF0353EF),
+                        ),
                       ),
-                    ),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "Kapat",
-                            style: GoogleFonts.rubik(
-                              color: const Color(0xFF0353EF),
-                            ),
-                          )),
-                      TextButton(
-                          onPressed: () {
-                            Restart.restartApp();
-                          },
-                          child: Text(
-                            "Giriş Yap",
-                            style: GoogleFonts.rubik(
-                              color: const Color(0xFF0353EF),
-                            ),
-                          )),
-                    ],
-                  );
-                });
-            GuestAlert.dialog(context);
-            /*
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              "Kapat",
+                              style: GoogleFonts.rubik(
+                                color: const Color(0xFF0353EF),
+                              ),
+                            )),
+                        TextButton(
+                            onPressed: () {
+                              Restart.restartApp();
+                            },
+                            child: Text(
+                              "Giriş Yap",
+                              style: GoogleFonts.rubik(
+                                color: const Color(0xFF0353EF),
+                              ),
+                            )),
+                      ],
+                    );
+                  });
+              GuestAlert.dialog(context);
+              /*
     _userBloc.mainKey.currentState?.push(
-      MaterialPageRoute(
-        builder: (context) => const GuestLoginScreen(),
-      ),
+        MaterialPageRoute(
+          builder: (context) => const GuestLoginScreen(),
+        ),
     );*/
-          }
-        },
-      ),
+            }
+          },
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration:
+                const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            alignment: Alignment.center,
+            child:
+            BlocBuilder<SavedBloc, SavedState>(
+              bloc: _savedBloc,
+              builder: (context, state) {
+                  return Text('${_savedBloc.allRequestList.length}', style: const TextStyle(color: Colors.white));
+              },
+            ),
+          ),
+        )
+      ]),
     );
   }
 }
