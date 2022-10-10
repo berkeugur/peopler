@@ -520,19 +520,34 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
           bloc: _userBloc,
           builder: (context, state) {
             if (state is SigningInState) {
-              return Text(
-                "Devam",
-                textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                    color: UserBloc.user?.gender == ""
-                        ? const Color(0xFF0353EF)
-                        : const Color(0xFF0353EF),
-                    fontSize: 22,
-                    fontWeight:
-                        nameController.text.isEmpty || UserBloc.user?.city == ""
-                            ? FontWeight.w300
-                            : FontWeight.w500),
-              );
+              return Column(children: [
+                Text(
+                  "Devam",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(
+                      color: UserBloc.user?.gender == ""
+                          ? const Color(0xFF0353EF)
+                          : const Color(0xFF0353EF),
+                      fontSize: 22,
+                      fontWeight: nameController.text.isEmpty ||
+                              UserBloc.user?.city == ""
+                          ? FontWeight.w300
+                          : FontWeight.w500),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(children: const [
+                    Expanded(flex: 5, child: SizedBox()),
+                    Flexible(
+                        flex: 1,
+                        child: SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator())),
+                    Expanded(flex: 5, child: SizedBox()),
+                  ]),
+                )
+              ]);
             } else {
               return TextButton(
                 onPressed: () async {
