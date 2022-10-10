@@ -123,7 +123,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
     return Column(
       children: [
         ProfileScreenComponentsMyProfile().photos(context, otherUser.photosURL, otherUser.profileURL),
-        _profileScreenComponents.nameField(),
+        _profileScreenComponents.nameField(status),
         const SizedBox(
           height: 5,
         ),
