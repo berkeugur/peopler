@@ -35,7 +35,7 @@ Widget titles4OtherProfiles(MyUser otherUser) {
   } else if (otherUser.company != "" && otherUser.currentJobName == "") {
     return Text(otherUser.company + " şirketinde çalışıyor.", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
   } else {
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }
 

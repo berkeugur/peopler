@@ -5,7 +5,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchaseApi {
   static const _apiKeyIOS = 'appl_ywiwctMGVJhMAvcwXcWpUHkUJOo';
-  static const _apiKeyAndroid = 'goog_wckqWIasEAQgEuTWcHcmXFYgenh';
+  static const _apiKeyAndroid = 'goog_lIWnTrUUfIIBwbuJSPAlbcbIvjb';
   static late PurchaserInfo purchaserInfo;
   static late Offering? currentOffering;
 
