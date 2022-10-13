@@ -57,9 +57,9 @@ String _imagePath({required EmptyListType emptyListType}) {
 List<String> _actionButtonText({required EmptyListType emptyListType}) {
   switch (emptyListType) {
     case EmptyListType.environment:
-      return ["Çevrenizi Keşfedin", "Arkdaşlarımla Paylaş"];
+      return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
     case EmptyListType.citySearch:
-      return ["Çevrenizi Keşfedin", "Arkdaşlarımla Paylaş"];
+      return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
     case EmptyListType.emptyChannelList:
       return ["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
     case EmptyListType.emptyFeed:

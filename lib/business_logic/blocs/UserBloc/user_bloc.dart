@@ -73,13 +73,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future initPurchaserInfoStream() async {
     updatePurchaseStatus();
-    Purchases.addPurchaserInfoUpdateListener((purchaserInfo) async {
+    Purchases.addCustomerInfoUpdateListener((purchaserInfo) async {
       updatePurchaseStatus();
     });
   }
 
   Future updatePurchaseStatus() async {
-    PurchaseApi.purchaserInfo = await Purchases.getPurchaserInfo();
+    PurchaseApi.purchaserInfo = await Purchases.getCustomerInfo();
 
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
     if(entitlements.isEmpty ) {

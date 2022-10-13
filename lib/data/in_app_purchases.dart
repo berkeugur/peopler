@@ -6,36 +6,29 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 class PurchaseApi {
   static const _apiKeyIOS = 'appl_ywiwctMGVJhMAvcwXcWpUHkUJOo';
   static const _apiKeyAndroid = 'goog_lIWnTrUUfIIBwbuJSPAlbcbIvjb';
-  static late PurchaserInfo purchaserInfo;
+  static late CustomerInfo purchaserInfo;
   static late Offering? currentOffering;
 
   Future<void> init() async {
     await Purchases.setDebugLogsEnabled(true);
+
+    PurchasesConfiguration? configuration;
+
     if(Platform.isAndroid) {
-      await Purchases.setup(_apiKeyAndroid);
+      configuration = PurchasesConfiguration(_apiKeyAndroid);
     } else if(Platform.isIOS) {
-      await Purchases.setup(_apiKeyIOS);
+      configuration = PurchasesConfiguration(_apiKeyIOS);
     }
-    purchaserInfo = await Purchases.getPurchaserInfo();
+    await Purchases.configure(configuration!);
+
+    purchaserInfo = await Purchases.getCustomerInfo();
     debugPrint(purchaserInfo.toJson().toString());
   }
-
-  /*
-  static Future<Map<String, Offering>> fetchOffers() async {
-    try {
-      final Offerings offerings = await Purchases.getOfferings();
-      final Map<String, Offering> offeringsMap = offerings.all;
-
-      return offeringsMap;
-    } on PlatformException catch(e) {
-      return {};
-    }
-  }
-   */
 
   Future<Offering?> fetchCurrentOffer() async {
     try {
       final Offerings offerings = await Purchases.getOfferings();
+      debugPrint(offerings.toString());
       return offerings.current;
     } on PlatformException catch(e) {
       debugPrint("Current offer cannot be retrieved");
@@ -55,22 +48,4 @@ class PurchaseApi {
       }
     }
   }
-
-  /*
-  bool isUserPremium() {
-    if(purchaserInfo.entitlements.all["premium"] == null) {
-      debugPrint("There is no entitlement called premium");
-      return false;
-    }
-    return purchaserInfo.entitlements.all["premium"]!.isActive;
-  }
-
-  bool isUserPlus() {
-    if(purchaserInfo.entitlements.all["plus"] == null) {
-      debugPrint("There is no entitlement called plus");
-      return false;
-    }
-    return purchaserInfo.entitlements.all["plus"]!.isActive;
-  }
-   */
 }
