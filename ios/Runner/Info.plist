@@ -32,8 +32,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>peopler uygulamasındaki profilinize fotoğraf eklemek için kameraya erişim izni vermeniz gerekiyor.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Uygulamanız arka plandayken diğer kullanıcıların sizi bulabilmesi için izniniz gerekiyor.</string>
+	<string>Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!</string>
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>PreciseLocationPurposeKey</key>
