@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../../../business_logic/blocs/ChatBloc/bloc.dart';
@@ -33,8 +34,10 @@ class ChannelListBodyState extends State<ChannelListBody> {
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of<ChatBloc>(context);
+
     if (UserBloc.user != null) {
-      _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
+      NewMessageCubit _newMessageCubit = BlocProvider.of<NewMessageCubit>(context);
+      _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageCubit: _newMessageCubit));
     }
     _scrollController = ScrollController();
   }
@@ -197,12 +200,14 @@ class ChannelListBodyState extends State<ChannelListBody> {
   }
 
   bool _listScrollListener() {
+    NewMessageCubit _newMessageCubit = BlocProvider.of<NewMessageCubit>(context);
+
     // When scroll position distance to bottom is less than load more offset,
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
         _scrollController.position.userScrollDirection == ScrollDirection.forward) {
       // If state is FeedsLoadedState
       if (_chatBloc.state is ChatsLoadedState1 || _chatBloc.state is ChatsLoadedState1) {
-        _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
+        _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageCubit: _newMessageCubit));
       }
     }
 
@@ -210,7 +215,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
     if (_scrollController.offset >= _scrollController.position.maxScrollExtent && !_scrollController.position.outOfRange) {
       // If state is NoMoreEventsState
       if (_chatBloc.state is NoMoreChatsState) {
-        _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID));
+        _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageCubit: _newMessageCubit));
       }
     }
     return true;

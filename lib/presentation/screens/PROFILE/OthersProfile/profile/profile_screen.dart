@@ -35,7 +35,7 @@ Widget titles4OtherProfiles(MyUser otherUser) {
   } else if (otherUser.company != "" && otherUser.currentJobName == "") {
     return Text(otherUser.company + " şirketinde çalışıyor.", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
   } else {
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 }
 
@@ -123,7 +123,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
     return Column(
       children: [
         ProfileScreenComponentsMyProfile().photos(context, otherUser.photosURL, otherUser.profileURL),
-        _profileScreenComponents.nameField(),
+        _profileScreenComponents.nameField(status),
         const SizedBox(
           height: 5,
         ),

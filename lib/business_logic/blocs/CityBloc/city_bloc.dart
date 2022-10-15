@@ -1,16 +1,15 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/model/user.dart';
-import 'package:peopler/data/repository/location_repository.dart';
+import '../../../data/repository/city_repository.dart';
 import '../../../data/repository/user_repository.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
-  final LocationRepository _locationRepository = locator<LocationRepository>();
+  final CityRepository _cityRepository = locator<CityRepository>();
   final UserRepository _userRepository = locator<UserRepository>();
 
   static List<MyUser> allUserList = [];
@@ -56,19 +55,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   Future<void> getRefreshIndicatorData(String city) async {
     try {
       allUserList = [];
-      _locationRepository.restartRepositoryCache();
+      _cityRepository.restartRepositoryCache();
 
-      List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(city, allUserList);
+      List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(city, allUserList);
 
       removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
-      /// await Future.delayed(const Duration(seconds: 2));
-      if (userList.isNotEmpty) {
-        allUserList.addAll(userList);
-        add(TrigUsersLoadedCityStateEvent());
-      } else {
-        add(TrigUsersNotExistCityStateEvent());
-      }
+      allUserList.addAll(userList);
+      add(TrigUsersNotExistCityStateEvent());
     } catch (e) {
       debugPrint("Blocta initial city hata:" + e.toString());
     }
@@ -84,15 +78,15 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         emit(InitialCityState());
 
         allUserList = [];
-        _locationRepository.restartRepositoryCache();
+        _cityRepository.restartRepositoryCache();
 
-        List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
+        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, allUserList);
 
         removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-          emit(UsersLoadedCityState());
+          emit(UsersLoadedCityState1());
         } else {
           emit(UsersNotExistCityState());
         }
@@ -119,13 +113,14 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       try {
         emit(NewUsersLoadingCityState());
 
-        List<MyUser> userList = await _locationRepository.queryUsersCityWithPagination(event.city, allUserList);
+        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, allUserList);
 
         removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
+        allUserList.addAll(userList);
+
         if (userList.isNotEmpty) {
-          allUserList.addAll(userList);
-          emit(UsersLoadedCityState());
+          emit(UsersLoadedCityState1());
         } else {
           if (allUserList.isNotEmpty) {
             emit(NoMoreUsersCityState());
@@ -140,16 +135,16 @@ class CityBloc extends Bloc<CityEvent, CityState> {
     ///******************************************************************************************
     ///******************************************************************************************
     ///******************************************************************************************
-    on<TrigUsersLoadedCityStateEvent>((event, emit) async {
-      emit(UsersLoadedCityState());
-    });
 
     on<TrigUsersNotExistCityStateEvent>((event, emit) async {
       if(allUserList.isEmpty) {
         emit(UsersNotExistCityState());
       } else {
-        emit(NewUsersLoadingCityState());
-        emit(UsersLoadedCityState());
+        if(state is UsersLoadedCityState1) {
+          emit(UsersLoadedCityState2());
+        } else {
+          emit(UsersLoadedCityState1());
+        }
       }
     });
     on<NewUserListenerEvent>((event, emit) async {

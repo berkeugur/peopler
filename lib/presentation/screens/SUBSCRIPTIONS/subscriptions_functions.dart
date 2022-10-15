@@ -56,22 +56,22 @@ class SubscriptionService {
     if (type == SubscriptionType.plus) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("plus_one_month")?.product.priceString} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.priceString} $symbol";
         case SubscriptionPlan.threeMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("plus_three_month")?.product.priceString} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("plus_three_month")?.storeProduct.priceString} $symbol";
         case SubscriptionPlan.sixMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("plus_six_month")?.product.priceString} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("plus_six_month")?.storeProduct.priceString} $symbol";
         default:
           return "error $symbol";
       }
     } else if (type == SubscriptionType.premium) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("premium_one_month")?.product.priceString} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("premium_one_month")?.storeProduct.priceString} $symbol";
         case SubscriptionPlan.threeMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("premium_three_month")?.product.priceString} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("premium_three_month")?.storeProduct.priceString} $symbol";
         case SubscriptionPlan.sixMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("premium_six_month")?.product.priceString} $symbol";
+          return "${PurchaseApi.currentOffering?.getPackage("premium_six_month")?.storeProduct.priceString} $symbol";
         default:
           return "error $symbol";
       }
@@ -84,22 +84,22 @@ class SubscriptionService {
     if (type == SubscriptionType.plus) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return PurchaseApi.currentOffering?.getPackage("plus_one_month")?.product.price ?? 9999;
+          return PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.price ?? 9999;
         case SubscriptionPlan.threeMonth:
-          return PurchaseApi.currentOffering?.getPackage("plus_three_month")?.product.price ?? 9999;
+          return PurchaseApi.currentOffering?.getPackage("plus_three_month")?.storeProduct.price ?? 9999;
         case SubscriptionPlan.sixMonth:
-          return PurchaseApi.currentOffering?.getPackage("plus_six_month")?.product.price ?? 9999;
+          return PurchaseApi.currentOffering?.getPackage("plus_six_month")?.storeProduct.price ?? 9999;
         default:
           return 9999;
       }
     } else if (type == SubscriptionType.premium) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return PurchaseApi.currentOffering?.getPackage("premium_one_month")?.product.price ?? 9999;
+          return PurchaseApi.currentOffering?.getPackage("premium_one_month")?.storeProduct.price ?? 9999;
         case SubscriptionPlan.threeMonth:
-          return PurchaseApi.currentOffering?.getPackage("premium_three_month")?.product.price ?? 9999;
+          return PurchaseApi.currentOffering?.getPackage("premium_three_month")?.storeProduct.price ?? 9999;
         case SubscriptionPlan.sixMonth:
-          return PurchaseApi.currentOffering?.getPackage("premium_six_month")?.product.price ?? 9999;
+          return PurchaseApi.currentOffering?.getPackage("premium_six_month")?.storeProduct.price ?? 9999;
         default:
           return 999;
       }

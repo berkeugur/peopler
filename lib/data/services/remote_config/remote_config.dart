@@ -11,11 +11,8 @@ class FirebaseRemoteConfigService  {
       minimumFetchInterval: const Duration(seconds: 10), // fetch parameters will be cached for a maximum of 1 hour
     ));
 
-    _fetchConfig();
-  }
-
-  // Fetching, caching, and activating remote config
-  void _fetchConfig() async {
+    await _remoteConfig.activate();
+    await Future.delayed(const Duration(seconds: 1));
     await _remoteConfig.fetchAndActivate();
   }
 

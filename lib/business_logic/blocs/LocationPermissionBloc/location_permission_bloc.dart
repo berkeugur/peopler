@@ -53,8 +53,12 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
           add(LocationSettingListener());
 
         } else if (_permission == LocationPermission.whileInUse) {
-          /// When notification button clicked, open Permission Settings
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!', Strings.permissionSettings);
+          if(Platform.isAndroid) {
+            /// When notification button clicked, open Permission Settings
+            await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!', Strings.permissionSettings);
+          } else if(Platform.isIOS) {
+            await _locationRepository.requestPermission();
+          }
 
           /// Since permission already given, no problem, then check for location
           add(LocationSettingListener());

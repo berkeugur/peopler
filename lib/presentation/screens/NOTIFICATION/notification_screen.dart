@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import '../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../others/classes/variables.dart';
@@ -26,8 +27,11 @@ class NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     super.initState();
+
+    NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _notificationBloc.add(GetNotificationWithPaginationEvent());
+    _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
     notificationsScreenScrollController = ScrollController();
   }
 

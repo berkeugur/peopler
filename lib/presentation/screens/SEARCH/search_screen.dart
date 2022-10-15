@@ -29,10 +29,6 @@ class _SearchScreenState extends State<SearchScreen> {
   late final ThemeCubit _themeCubit;
   late final FloatingActionButtonCubit _homeScreen;
 
-  late final LocationBloc _locationBloc;
-  late final LocationPermissionBloc _locationPermissionBloc;
-  late final CityBloc _cityBloc;
-
   final GlobalKey showWidgetsKeyNearby = GlobalKey();
   final GlobalKey showWidgetsKeyCity = GlobalKey();
 
@@ -42,12 +38,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
     _themeCubit = BlocProvider.of<ThemeCubit>(context);
     _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-    _locationBloc = BlocProvider.of<LocationBloc>(context);
-    _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
-    _cityBloc = BlocProvider.of<CityBloc>(context);
-    if (UserBloc.user != null) {
-      _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
-    }
   }
 
   // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,

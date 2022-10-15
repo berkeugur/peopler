@@ -365,7 +365,7 @@ class _SavedScreenState extends State<SavedScreen> {
                         maxWidth: 140,
                         maxHeight: 20,
                         child: Text(
-                          _savedBloc.allRequestList[index].displayName,
+                          (_savedBloc.allRequestList[index].isCountdownFinished == false) ? _savedBloc.allRequestList[index].pplName : _savedBloc.allRequestList[index].displayName,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,

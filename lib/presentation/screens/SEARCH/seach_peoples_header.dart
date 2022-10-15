@@ -8,12 +8,13 @@ import 'package:provider/provider.dart';
 import '../../../../business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/classes/variables.dart';
+import '../../../business_logic/blocs/CityBloc/bloc.dart';
 import '../../../business_logic/blocs/LocationBloc/bloc.dart';
+import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../data/repository/location_repository.dart';
 import '../../../others/locator.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
-
 import 'city_nearby_buttons.dart';
 
 class search_peoples_header extends StatelessWidget {
@@ -66,6 +67,7 @@ class search_peoples_header extends StatelessWidget {
   Widget searchHeaderItem(bool index, double itemWidth, String text, context) {
     LocationPermissionBloc _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+    CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
     CityNearbyButtons _cityNearbyButtons = Provider.of<CityNearbyButtons>(context);
 
     return InkWell(
@@ -84,6 +86,10 @@ class search_peoples_header extends StatelessWidget {
           }
         } else {
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.searchCityScreen};
+
+          if(UserBloc.user != null) {
+            _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
+          }
         }
       },
       child: Container(

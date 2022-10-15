@@ -43,8 +43,8 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       }
 
       if(UserBloc.user != null) {
-        bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(
-            _position!);
+        /// Update user location at database and secure storage (phone cache)
+        bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
         if (isUpdated == false) {
           /// For debug purposes
           /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");

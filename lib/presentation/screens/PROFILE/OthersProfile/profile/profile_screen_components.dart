@@ -43,9 +43,10 @@ class ProfileScreenComponentsOthersProfile {
 
   final Mode _mode = locator<Mode>();
 
-  nameField() {
+  nameField(SendRequestButtonStatus status) {
     return Text(
-      profileData.isProfileVisible == true ? profileData.displayName : profileData.pplName!,
+      ((status == SendRequestButtonStatus.save) || (status == SendRequestButtonStatus.saved)) ? profileData.pplName! : profileData.displayName,
+      // profileData.isProfileVisible == true ? profileData.displayName : profileData.pplName!,
       textScaleFactor: 1,
       style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 18, fontWeight: FontWeight.w500),
     );

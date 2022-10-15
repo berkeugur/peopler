@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
 import 'package:peopler/data/repository/chat_repository.dart';
 import 'package:peopler/data/services/db/firestore_db_service_users.dart';
 import '../../../data/model/chat.dart';
@@ -62,7 +63,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                   updatedChat[0].hostUserProfileUrl = _user.profileURL;
 
                   /// Call another ChatBloc event named NewChatListenerEvent
-                  add(NewChatListenerEvent(updatedChat: updatedChat));
+                  add(NewChatListenerEvent(updatedChat: updatedChat, newMessageCubit: event.newMessageCubit));
                 } else {
                   add(TrigChatNotExistStateEvent());
                 }
@@ -91,6 +92,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         } else {
           emit(ChatsLoadedState1());
         }
+
+        event.newMessageCubit.newMessageEvent();
     });
 
     on<UpdateLastMessageSeenEvent>((event, emit) async {
