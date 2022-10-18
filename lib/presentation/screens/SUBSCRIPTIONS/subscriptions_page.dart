@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
@@ -25,15 +26,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         case SubscriptionPlan.threeMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
                   .toStringAsFixed(0) +
               " indirim";
         case SubscriptionPlan.sixMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
                   .toStringAsFixed(0) +
               " indirim";
         default:
@@ -46,15 +47,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         case SubscriptionPlan.threeMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
                   .toStringAsFixed(0) +
               " indirim";
         case SubscriptionPlan.sixMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
                   .toStringAsFixed(0) +
               " indirim";
         default:
@@ -81,12 +82,14 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
     SubscriptionFeatures().init(_tabController);
 
     super.initState();
+    SystemUIService().setSystemUIForWhite();
   }
 
   @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
+    SystemUIService().setSystemUIforThemeMode();
   }
 
   //1 aylık plan index 0, 3 aylık 1, 6 aylık 2,
@@ -97,7 +100,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
   @override
   Widget build(BuildContext context) {
     scaffoldColor = scaffoldColor = _tabController.index == 0 ? Colors.white : const Color(0xFF0353EF);
-
+    _tabController.index == 0 ? SystemUIService().setSystemUIForWhite() : SystemUIService().setSystemUIForBlue();
     debugPrint(_tabController.index.toString());
     return SafeArea(
       child: Scaffold(
@@ -253,8 +256,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPremiumPlanIndex == 0 ? 2 : 1,
             color: selectedPremiumPlanIndex == 0
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -268,15 +271,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPremiumPlanIndex == 0 ? 4 : 1,
                     color: selectedPremiumPlanIndex == 0
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPremiumPlanIndex != 0
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -289,8 +292,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPremiumPlanIndex == 0
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -386,8 +389,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPremiumPlanIndex == 1 ? 2 : 1,
             color: selectedPremiumPlanIndex == 1
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -401,15 +404,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPremiumPlanIndex == 1 ? 4 : 1,
                     color: selectedPremiumPlanIndex == 1
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPremiumPlanIndex != 1
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -422,8 +425,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPremiumPlanIndex == 1
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -520,8 +523,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPremiumPlanIndex == 2 ? 2 : 1,
             color: selectedPremiumPlanIndex == 2
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -723,8 +726,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPlusPlanIndex == 0 ? 2 : 1,
             color: selectedPlusPlanIndex == 0
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -738,15 +741,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPlusPlanIndex == 0 ? 4 : 1,
                     color: selectedPlusPlanIndex == 0
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPlusPlanIndex != 0
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -759,8 +762,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPlusPlanIndex == 0
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -856,8 +859,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPlusPlanIndex == 1 ? 2 : 1,
             color: selectedPlusPlanIndex == 1
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -871,15 +874,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPlusPlanIndex == 1 ? 4 : 1,
                     color: selectedPlusPlanIndex == 1
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPlusPlanIndex != 1
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -892,8 +895,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       color: selectedPlusPlanIndex == 1
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -989,8 +992,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPlusPlanIndex == 2 ? 2 : 1,
             color: selectedPlusPlanIndex == 2
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),

@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -181,6 +182,54 @@ class PeoplerDialogs {
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w400,
                   ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts}) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: DefaultTextStyle(
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'Rubik',
+                ),
+                child: AnimatedTextKit(
+                  pause: const Duration(milliseconds: 1700),
+                  repeatForever: true,
+                  animatedTexts: List.generate(
+                    loadingTexts?.length ?? 0,
+                    (index) => TyperAnimatedText(
+                      loadingTexts?[index] ?? "",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  onTap: () {
+                    print("Tap Event");
+                  },
                 ),
               ),
             ),

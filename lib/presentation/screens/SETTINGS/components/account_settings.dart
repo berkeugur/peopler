@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/others/locator.dart';
 import 'package:peopler/presentation/screens/BLOCKED/blocked_users.dart';
+import 'package:peopler/presentation/screens/REMAINING_USAGE_RIGHTS/rur.dart';
 import 'package:peopler/presentation/screens/SETTINGS/settings.dart';
 import 'package:peopler/presentation/screens/SETTINGS/settings_page_functions.dart';
 
@@ -57,6 +58,45 @@ accountSettings(context) {
                 ),
                 Text(
                   "Engellenen Kullanıcılar",
+                  textScaleFactor: 1,
+                  style: GoogleFonts.rubik(
+                    fontSize: 16,
+                    color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        const SizedBox(
+          height: 10,
+        ),
+        InkWell(
+          borderRadius: BorderRadius.circular(999),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => RemainingUsageRights(),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  "assets/images/svg_icons/continue_arrow.svg",
+                  width: 20,
+                  height: 20,
+                  color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  "Kalan Kullanım Haklarım",
                   textScaleFactor: 1,
                   style: GoogleFonts.rubik(
                     fontSize: 16,

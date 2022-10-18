@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,10 +68,34 @@ class PeoplerAppBars {
 
   // ignore: non_constant_identifier_names
   Widget _PEOPLER_TITLE(void Function()? titleFunction) {
-    return Text(
-      ApplicationConstants.COMPANY_NAME.toLowerCase(),
-      textScaleFactor: 1,
-      style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (false)
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+                child: Text(
+                  ApplicationConstants.COMPANY_NAME.toLowerCase(),
+                  style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+                ),
+              ),
+              Text(
+                "remium",
+                style: GoogleFonts.rubik(color: Mode().homeScreenTitleColor()),
+              ),
+            ],
+          ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+          child: Text(
+            ApplicationConstants.COMPANY_NAME.toLowerCase(),
+            style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+          ),
+        ),
+      ],
     );
   }
 
@@ -237,6 +262,18 @@ class PeoplerAppBars {
     return AppBar(
       leading: _BACK_BUTTON(),
       title: _TITLE(title: "Yorumlar"),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  /// remaining usage rights app bar
+  // ignore: non_constant_identifier_names
+  AppBar get RUR {
+    return AppBar(
+      leading: _BACK_BUTTON(),
+      title: _TITLE(title: "Kalan Kullanım Hakları"),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,

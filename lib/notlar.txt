@@ -1,13 +1,9 @@
-firebase de kayıtlı kullanıcı sayısını çekme gibi bir özellik yok sanırım
-bunu çözmek için firestore databasede uygulama istatistiklerinin yer aldığı bir collection oluşturup
-bir integer bir değer verip her yeni bir kullanıcı kayıt olduğunda +1 yapabiliriz. bir nevi counter
-yani yine pplName değerini de oradan alırız
+
 
 
 pplName ayarlanması gerekiyor
 
-pplName de Name yerine 5 haneli bir sayı olacak ilk kullanıcı ppl00001 mi olsun yoksa ppl10001 mi
-ppl00001 olurması daha mantıklı geldi
+
 
 okul e postası ile kayıt olurken profil resmini kaydetmedi
 linkedin ile kayıtta profil resmini kayıt ediyordu

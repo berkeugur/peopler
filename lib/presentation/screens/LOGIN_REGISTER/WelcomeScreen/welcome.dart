@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
@@ -27,7 +28,6 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

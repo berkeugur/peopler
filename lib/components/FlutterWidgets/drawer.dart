@@ -9,6 +9,7 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -416,9 +417,7 @@ class _MenuPageState extends State<MenuPage> {
           child: //_userBloc != null ?
               CircleAvatar(
             radius: 999,
-            backgroundImage: NetworkImage(
-              profileData!.profileURL
-            ),
+            backgroundImage: NetworkImage(profileData!.profileURL),
             backgroundColor: Colors.transparent,
           ),
         ),
@@ -567,11 +566,7 @@ class DrawerHomePage extends StatefulWidget {
 }
 
 class _DrawerHomePageState extends State<DrawerHomePage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  ZoomDrawerController controller = ZoomDrawerController();
 
   @override
   Widget build(BuildContext context) {
@@ -579,6 +574,7 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
         valueListenable: setTheme,
         builder: (context, _, __) {
           return ZoomDrawer(
+            controller: controller,
             shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
             shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
             showShadow: true,
