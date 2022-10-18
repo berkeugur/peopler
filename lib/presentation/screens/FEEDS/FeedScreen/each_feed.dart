@@ -22,6 +22,7 @@ import '../../../../others/widgets/snack_bars.dart';
 import '../../PROFILE/OthersProfile/functions.dart';
 import '../../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 import 'feed_functions.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class eachFeedWidget extends StatefulWidget {
   final MyFeed myFeed;
@@ -235,7 +236,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                     Text(
                       widget.myFeed.liked.toString(),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: _mode.blackAndWhiteConversion(),
                       ),
                     ),
@@ -290,7 +291,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                     Text(
                       widget.myFeed.disliked.toString(),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: _mode.blackAndWhiteConversion(),
                       ),
                     )
@@ -354,7 +355,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
       child: Text(
         widget.myFeed.feedExplanation,
         textScaleFactor: 1,
-        style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+        style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
       ),
     );
   }
@@ -377,7 +378,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
     return Text(
       numberOfConnectionString,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
     );
   }
 
@@ -385,7 +386,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
     return Text(
       widget.myFeed.userDisplayName,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 18),
+      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 18),
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
@@ -179,7 +180,7 @@ class _ProfileEditPhotosScreenState extends State<ProfileEditPhotosScreen> with 
         },
         label: Text(
           "Yeni Ekle",
-          style: GoogleFonts.rubik(),
+          style: PeoplerTextStyle.normal.copyWith(),
         ),
         icon: const Icon(Icons.camera_outlined),
       ),
@@ -367,11 +368,11 @@ class Explanation extends StatelessWidget {
         children: [
           Text(
             "Fotoğraf paylaşarak profilinizi tamamlayın.\n\n",
-            style: GoogleFonts.rubik(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
           ),
           Text(
             "#beXXXX\n#beYYYY\n#beZZZZ",
-            style: GoogleFonts.rubik(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
           ),
         ],
       ),

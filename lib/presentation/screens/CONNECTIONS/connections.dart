@@ -11,6 +11,7 @@ import 'package:peopler/presentation/screens/MESSAGE/message_screen.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class Connection {
   final String profilePhotoUrl;
@@ -196,14 +197,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                         textScaleFactor: 1,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize()),
+                        style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize()),
                       ),
                     ),
                   ),
                   SizedBox(
                     child: Text(
                       _data.city + "/" + _data.city,
-                      style: GoogleFonts.rubik(fontSize: _customTextSize() - 1, color: Colors.grey),
+                      style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize() - 1, color: Colors.grey),
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -212,7 +213,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                   SizedBox(
                     child: Text(
                       _data.bio,
-                      style: GoogleFonts.rubik(fontSize: _customTextSize() - 1, color: Colors.grey),
+                      style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize() - 1, color: Colors.grey),
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -231,7 +232,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                               Text(
                                 "${_data.mutualConnectionsProfilePhotos.length} ortak bağlantı",
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(fontSize: _customSmallTextSize(), color: Color(0xFF0353EF)),
+                                style: PeoplerTextStyle.normal.copyWith(fontSize: _customSmallTextSize(), color: Color(0xFF0353EF)),
                               ),
                             ],
                           ),
@@ -290,7 +291,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           child: Text(
             "$numberOfTotalConnections bağlantı",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion()),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion()),
           ),
         ));
   }
@@ -324,14 +325,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           Text(
             "Bağlantılar",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFF0353EF)),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFF0353EF)),
           ),
           /* Search Bar
           Expanded(
             child: TextField(
               onTap: () async {},
               //placeholder: "Arama yapabilirsiniz...",
-              style: GoogleFonts.rubik(),
+              style: PeoplerTextStyle.normal.copyWith(),
               autocorrect: true,
 
               decoration: InputDecoration(
@@ -342,7 +343,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                     borderSide: BorderSide(color: Colors.transparent),
                   ),
                   hintText: "Arama Yap",
-                  hintStyle: GoogleFonts.rubik(fontSize: 16, color: _mode.blackAndWhiteConversion())),
+                  hintStyle: PeoplerTextStyle.normal.copyWith(fontSize: 16, color: _mode.blackAndWhiteConversion())),
               //backgroundColor: CupertinoColors.extraLightBackgroundGray,
               onChanged: (String value) {},
               onSubmitted: (String value) {

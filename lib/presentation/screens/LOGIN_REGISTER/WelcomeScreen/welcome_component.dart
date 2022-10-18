@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
@@ -118,7 +119,7 @@ Center continueWithButton(BuildContext context, {Color? backgroundColor, require
                 Text(
                   text,
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 15),
+                  style: PeoplerTextStyle.normal.copyWith(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 15),
                 ),
               ],
             ),

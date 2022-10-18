@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/SAVED/how_it_work.dart';
 
 import '../../../others/classes/dark_light_mode_controller.dart';
@@ -58,7 +59,7 @@ Widget saved_screen_header({required BuildContext context}) {
                   child: Text(
                     "Listem",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: _mode.homeScreenTitleColor(),
                       fontWeight: FontWeight.w500,
                       fontSize: 24,

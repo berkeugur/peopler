@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/core/system_ui_service.dart';
@@ -91,11 +92,11 @@ class EditField extends StatelessWidget {
           border: InputBorder.none,
           hintText: UserBloc.user!.displayName == "" ? "Adınız Soyadınız" : UserBloc.user!.displayName,
           hintStyle: UserBloc.user!.displayName == ""
-              ? GoogleFonts.rubik(
+              ? PeoplerTextStyle.normal.copyWith(
                   color: Colors.white.withOpacity(0.6),
                   fontSize: 16,
                 )
-              : GoogleFonts.rubik(
+              : PeoplerTextStyle.normal.copyWith(
                   color: Colors.white,
                   fontSize: 16,
                 ),
@@ -120,11 +121,11 @@ class Explanation extends StatelessWidget {
         children: [
           Text(
             "Eğer profiliniz gizli ise diğer kullanıcılar sizi #${UserBloc.user?.pplName ?? "ppl1923"} şeklinde görecektir.\n\n",
-            style: GoogleFonts.rubik(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
           ),
           Text(
             "Peopler gizliliğinizi önemser.",
-            style: GoogleFonts.rubik(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -144,7 +145,7 @@ class NameSurnameTitle extends StatelessWidget {
       child: Text(
         "İsim Soyisim",
         textScaleFactor: 1,
-        style: GoogleFonts.rubik(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
+        style: PeoplerTextStyle.normal.copyWith(fontSize: 15, fontWeight: FontWeight.w600, color: Mode().blackAndWhiteConversion()),
       ),
     );
   }

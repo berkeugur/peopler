@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/data/model/HobbyModels/hobbymodel.dart';
@@ -189,7 +190,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                                                                                   : null,
                                                                               label: Text(
                                                                                 Hobby().subHobby(Hobby().stringToHobbyTypesModel(selectedValue!))![index],
-                                                                                style: GoogleFonts.rubik(
+                                                                                style: PeoplerTextStyle.normal.copyWith(
                                                                                   color: Colors.white,
                                                                                 ),
                                                                               ),
@@ -314,7 +315,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                       Text(
                         _subtitles.subtitle.toString() + (_subtitles.level == null ? "" : (" (" + _subtitles.level.toString() + ")")),
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 14,
                           color: Mode().blackAndWhiteConversion(),
                         ),
@@ -432,7 +433,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
           children: [
             Text(
               "DENEYİM EKLE",
-              style: GoogleFonts.rubik(fontSize: 18, fontWeight: FontWeight.w500, color: const Color(0xFF0353EF)),
+              style: PeoplerTextStyle.normal.copyWith(fontSize: 18, fontWeight: FontWeight.w500, color: const Color(0xFF0353EF)),
             ),
             InkWell(
               borderRadius: BorderRadius.circular(99),
@@ -449,7 +450,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
                 child: Center(
                     child: Text(
                   "kapat",
-                  style: GoogleFonts.rubik(color: Colors.white),
+                  style: PeoplerTextStyle.normal.copyWith(color: Colors.white),
                 )),
               ),
             )
@@ -463,7 +464,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
     return Text(
       "Deneyimler",
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(
+      style: PeoplerTextStyle.normal.copyWith(
         color: Mode().blackAndWhiteConversion(),
         fontSize: 20,
         fontWeight: FontWeight.w600,
@@ -484,7 +485,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
             Text(
               _currentPage == 0 ? "DEVAM" : "KAYDET",
               textAlign: TextAlign.center,
-              style: GoogleFonts.rubik(fontWeight: FontWeight.w500, color: const Color(0xFF0353EF), fontSize: 18),
+              style: PeoplerTextStyle.normal.copyWith(fontWeight: FontWeight.w500, color: const Color(0xFF0353EF), fontSize: 18),
             ),
           ],
         ));
@@ -543,7 +544,7 @@ class _ProfileHobbyFieldState extends State<ProfileHobbyField> with TickerProvid
     return Text(
       hobby.title ?? "null",
       textAlign: TextAlign.center,
-      style: GoogleFonts.rubik(
+      style: PeoplerTextStyle.normal.copyWith(
         fontSize: 16,
         fontWeight: FontWeight.w500,
         color: Mode().blackAndWhiteConversion(),

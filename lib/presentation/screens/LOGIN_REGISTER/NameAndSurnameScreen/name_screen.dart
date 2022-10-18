@@ -4,6 +4,7 @@ import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../../../components/FlutterWidgets/text_style.dart';
 import '../../../../core/constants/navigation/navigation_constants.dart';
 import '../../../../others/classes/variables.dart';
 
@@ -62,14 +63,14 @@ class _NameScreenState extends State<NameScreen> {
                     Text(
                       "Etrafındaki İnsanları",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
-                          color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
+                      style: PeoplerTextStyle.normal
+                          .copyWith(color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
                     ),
                     Text(
                       "Keşfet",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
-                          color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
+                      style: PeoplerTextStyle.normal
+                          .copyWith(color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
                     ),
                     SizedBox(
                       height: screenHeight < 630 ? 30 : 60,
@@ -83,7 +84,7 @@ class _NameScreenState extends State<NameScreen> {
                       child: Text(
                         "İsmin Nedir ?",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                        style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                       ),
                     ),
                     _buildTextButton(screenWidth, context),
@@ -112,7 +113,7 @@ class _NameScreenState extends State<NameScreen> {
           child: Text(
             "Devam",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
                 color: nameController.text.isEmpty ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                 fontSize: 22,
                 fontWeight: nameController.text.isEmpty ? FontWeight.w300 : FontWeight.w400),

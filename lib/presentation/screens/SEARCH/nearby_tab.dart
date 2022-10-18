@@ -8,6 +8,7 @@ import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
@@ -220,7 +221,7 @@ class _NearbyTabState extends State<NearbyTab> {
                 "Konum İzni",
                 textAlign: TextAlign.center,
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: _mode.blackAndWhiteConversion(),
@@ -233,7 +234,7 @@ class _NearbyTabState extends State<NearbyTab> {
                 "Yakınınızdaki kişilerin sizi bulabilmesi için konum izni vermeniz gerekiyor",
                 textAlign: TextAlign.center,
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   fontSize: 16,
                   color: _mode.blackAndWhiteConversion(),
                 ),
@@ -259,7 +260,7 @@ class _NearbyTabState extends State<NearbyTab> {
                           child: Text(
                             "Ayarlara Git",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(color: const Color(0xFF0353EF), fontSize: 14),
+                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                           ),
                         ),
                       ),
@@ -521,7 +522,7 @@ class _NearbyTabState extends State<NearbyTab> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color: _mode.blackAndWhiteConversion(),
@@ -621,7 +622,7 @@ class _NearbyTabState extends State<NearbyTab> {
                                               Text(
                                                 "Kaydet",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   color: _mode.disabledBottomMenuItemAssetColor(),
                                                   fontSize: _maxWidth * 0.0391 > 16 ? 16 : _maxWidth * 0.0391,
                                                 ),

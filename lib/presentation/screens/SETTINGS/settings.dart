@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/SETTINGS/components/account_settings.dart';
 import 'package:peopler/presentation/screens/SETTINGS/settings_page_functions.dart';
 
@@ -98,7 +99,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               "version: ${_packageInfo.version}",
                               textScaleFactor: 1,
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.rubik(
+                              style: PeoplerTextStyle.normal.copyWith(
                                 color: Color(0xFF0353EF),
                                 fontWeight: FontWeight.w400,
                               ),
@@ -118,12 +119,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           title: Text(
                                             "Bu İşlem Geri Alınamaz!",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(),
+                                            style: PeoplerTextStyle.normal.copyWith(),
                                           ),
                                           content: Text(
                                             "Hesabınızı kalıcı olarak silmek istediğinize emin misiniz?",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(),
+                                            style: PeoplerTextStyle.normal.copyWith(),
                                           ),
                                           actions: [
                                             PlatformDialogAction(
@@ -133,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               child: Text(
                                                 "Hesabı Sil",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   color: Color(0xFF0353EF),
                                                 ),
                                               ),
@@ -145,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               child: Text(
                                                 "Vazgeç",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   color: const Color(0xFF0353EF),
                                                 ),
                                               ),
@@ -171,7 +172,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       Text(
                                         "Hesabı Sil",
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(color: Colors.grey[600], fontSize: 15),
+                                        style: PeoplerTextStyle.normal.copyWith(color: Colors.grey[600], fontSize: 15),
                                       ),
                                     ],
                                   ),

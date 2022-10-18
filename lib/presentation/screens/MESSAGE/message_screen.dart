@@ -19,8 +19,7 @@ import 'message_screen_functions.dart';
 TextEditingController messageController = TextEditingController();
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({Key? key, this.requestUserID, this.requestProfileURL, this.requestDisplayName, this.currentChat})
-      : super(key: key);
+  const MessageScreen({Key? key, this.requestUserID, this.requestProfileURL, this.requestDisplayName, this.currentChat}) : super(key: key);
 
   final String? requestUserID;
   final String? requestProfileURL;
@@ -174,13 +173,7 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
       duration: const Duration(milliseconds: 500),
       width: _size.width,
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: const Color(0xFF939393).withOpacity(0.6),
-              blurRadius: 2.0,
-              spreadRadius: 0,
-              offset: const Offset(0.0, 0.75))
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(0.0, 0.75))],
         color: _mode.enabledMenuItemBackground(),
       ),
       height: 50,

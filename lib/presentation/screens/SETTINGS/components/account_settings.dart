@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/others/locator.dart';
 import 'package:peopler/presentation/screens/BLOCKED/blocked_users.dart';
 import 'package:peopler/presentation/screens/REMAINING_USAGE_RIGHTS/rur.dart';
@@ -23,7 +24,7 @@ accountSettings(context) {
         Text(
           "Hesabım",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 23,
             color: _mode.settings_setting_title(),
@@ -59,7 +60,7 @@ accountSettings(context) {
                 Text(
                   "Engellenen Kullanıcılar",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 16,
                     color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
                   ),
@@ -98,7 +99,7 @@ accountSettings(context) {
                 Text(
                   "Kalan Kullanım Haklarım",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 16,
                     color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 
 String getGenderText(GenderTypes type) {
@@ -29,7 +30,7 @@ Widget registerGenderSelect({
               Text(
                 "Cinsiyetin Nedir?",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   color: const Color(0xFF000000),
                   fontSize: 16,
                   fontWeight: FontWeight.w300,
@@ -63,7 +64,7 @@ Widget registerGenderSelect({
                     title: Text(
                       getGenderText(GenderTypes.female),
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontWeight: selectedType.value == GenderTypes.female ? FontWeight.w500 : FontWeight.w400,
                         color: selectedType.value == GenderTypes.female ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                       ),
@@ -95,7 +96,7 @@ Widget registerGenderSelect({
                     title: Text(
                       getGenderText(GenderTypes.male),
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontWeight: selectedType.value == GenderTypes.male ? FontWeight.w500 : FontWeight.w400,
                         color: selectedType.value == GenderTypes.male ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                       ),
@@ -127,7 +128,7 @@ Widget registerGenderSelect({
                     title: Text(
                       getGenderText(GenderTypes.other),
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontWeight: selectedType.value == GenderTypes.other ? FontWeight.w500 : FontWeight.w400,
                         color: selectedType.value == GenderTypes.other ? Theme.of(context).primaryColor : const Color(0xFF000000).withOpacity(0.7),
                       ),

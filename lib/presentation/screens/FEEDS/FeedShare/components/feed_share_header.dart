@@ -4,6 +4,7 @@ import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/classes/responsive_size.dart';
 import '../../../../../others/locator.dart';
 import '../feed_share_functions.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 Padding header(BuildContext context) {
   final Mode _mode = locator<Mode>();
@@ -36,7 +37,7 @@ Padding header(BuildContext context) {
               child: Text(
                 "Gönderi Paylaş",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   color: _mode.blackAndWhiteConversion(),
                   fontSize: ResponsiveSize().fs1(context),
                 ),
@@ -51,7 +52,7 @@ Padding header(BuildContext context) {
                 child: Text(
                   "Paylaş",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
+                  style: PeoplerTextStyle.normal.copyWith(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
                 )))
       ],
     ),

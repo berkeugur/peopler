@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
@@ -75,13 +76,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 Text(
                                   "Profilini",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                       color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                                 ),
                                 Text(
                                   "Oluşturalım",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                       color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(
@@ -91,7 +92,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: Text(
                                     "Profil fotoğrafını seç",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
                                         fontWeight: FontWeight.w300),
@@ -154,7 +155,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: Text(
                                     "Kendini anlat",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
                                         fontWeight: FontWeight.w300),
@@ -168,7 +169,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: Text(
                                     "Şehir",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
                                         fontWeight: FontWeight.w300),
@@ -227,7 +228,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         child: Text(
           "Devam",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
               color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
               fontSize: 22,
               fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
@@ -290,7 +291,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                             setStateBottomSheet(() {});
                                           },
                                           placeholder: "Arama yapabilirsiniz...",
-                                          style: GoogleFonts.rubik(),
+                                          style: PeoplerTextStyle.normal.copyWith(),
                                           autocorrect: true,
                                           backgroundColor: CupertinoColors.extraLightBackgroundGray,
                                           controller: editingController,
@@ -379,8 +380,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             child: Text(
               UserBloc.user?.city != "" ? UserBloc.user?.city ?? "null" : "Şehir Seçin",
               textScaleFactor: 1,
-              style:
-                  GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
+              style: PeoplerTextStyle.normal
+                  .copyWith(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
             )),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
@@ -115,7 +116,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                               Text(
                                                 "deneyimine\nçok az kaldı",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                     color: const Color(0xFF000000),
                                                     fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 36,
                                                     fontWeight: FontWeight.w300),
@@ -144,7 +145,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "E-Mail Adresin",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
 
@@ -196,7 +197,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Sadece üniversite mailin ile kayıt olabilirsin.",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -213,7 +214,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Şifreni belirle",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -289,7 +290,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Şifre tekrar",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -415,7 +416,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                         Text(
                           "Devam",
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(
+                          style: PeoplerTextStyle.normal.copyWith(
                               color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                               fontSize: 22,
                               fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
@@ -460,7 +461,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                 child: Text(
                   "Devam",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                       color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                       fontSize: 22,
                       fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),

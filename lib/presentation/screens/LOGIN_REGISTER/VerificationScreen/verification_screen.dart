@@ -9,6 +9,7 @@ import '../../../../core/constants/navigation/navigation_constants.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class VerificationScreen extends StatelessWidget {
   const VerificationScreen({Key? key}) : super(key: key);
@@ -62,13 +63,13 @@ class VerificationScreen extends StatelessWidget {
                           Text(
                             "Mail kutunu",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                                 color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48, fontWeight: FontWeight.w300),
                           ),
                           Text(
                             "kontrol et!",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                                 color: const Color(0xFF000000), fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48, fontWeight: FontWeight.w300),
                           ),
                         ],
@@ -83,7 +84,7 @@ class VerificationScreen extends StatelessWidget {
                           child: Text(
                         "Mail adresine bir doğrulama bağlantısı gönderdik. Mail kutunu kontrol et ve bağlantıya tıklayarak profilini doğrula.\n\nProfilini doğruladıktan sonra uygulamaya doğrudan yönlendirileceksin.",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                        style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                       )),
                     ),
                     const SizedBox(
@@ -93,7 +94,7 @@ class VerificationScreen extends StatelessWidget {
                       child: Text(
                         "Doğrulama kodu gelmediyse;",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                           color: const Color(0xFF000000),
@@ -124,7 +125,7 @@ class VerificationScreen extends StatelessWidget {
                         child: Text(
                           "Kayıt Ekranına Dön",
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(
+                          style: PeoplerTextStyle.normal.copyWith(
                             color: const Color(0xFF0353EF),
                             fontSize: 20,
                             fontWeight: FontWeight.w300,
@@ -162,7 +163,7 @@ class VerificationScreen extends StatelessWidget {
                   child: Text(
                     'vazgeç',
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(color: Color(0xFF0353EF)),
+                    style: PeoplerTextStyle.normal.copyWith(color: Color(0xFF0353EF)),
                   ),
                 ),
                 TextButton(
@@ -173,7 +174,7 @@ class VerificationScreen extends StatelessWidget {
                   child: Text(
                     'Evet',
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(color: Color(0xFF0353EF)),
+                    style: PeoplerTextStyle.normal.copyWith(color: Color(0xFF0353EF)),
                   ),
                 )
               ],

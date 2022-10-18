@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
@@ -75,7 +76,7 @@ Center signInButton(context) {
                       : Text(
                           "Giriş Yap",
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
+                          style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w400),
                         );
                 }),
           ),

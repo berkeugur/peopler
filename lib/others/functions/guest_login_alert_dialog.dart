@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:restart_app/restart_app.dart';
 
@@ -13,7 +14,7 @@ class GuestAlert {
           return AlertDialog(
             title: Text(
               "Giriş Yapmalısınız.",
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 color: const Color(0xFF0353EF),
               ),
             ),
@@ -24,7 +25,7 @@ class GuestAlert {
                   },
                   child: Text(
                     "Kapat",
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: const Color(0xFF0353EF),
                     ),
                   )),
@@ -36,7 +37,7 @@ class GuestAlert {
                   },
                   child: Text(
                     "Giriş Yap",
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: const Color(0xFF0353EF),
                     ),
                   )),

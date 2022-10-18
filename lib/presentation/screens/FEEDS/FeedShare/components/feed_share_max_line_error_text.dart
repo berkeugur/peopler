@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../others/classes/variables.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 Visibility maxLineError() {
   return Visibility(
@@ -9,7 +10,7 @@ Visibility maxLineError() {
     child: Text(
       "Uyarı: Daha fazla satır atlayamazsınız!",
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(
+      style: PeoplerTextStyle.normal.copyWith(
         color: Colors.redAccent,
       ),
     ),

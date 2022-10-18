@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import '../../../business_logic/blocs/ChatBloc/bloc.dart';
 import '../../../business_logic/blocs/NotificationBloc/bloc.dart';
@@ -176,7 +177,7 @@ Container newFeedWidget(
                   child: Text(
                     "Gör",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: _customTextSize - 1,
                       color: Colors.white,
                     ),
@@ -261,7 +262,7 @@ Container youAreOnTheOtherPeoplesList(
                   child: Text(
                     "Kim olduklarını gör",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: _customTextSize - 1,
                       color: Colors.white,
                     ),
@@ -331,7 +332,7 @@ Widget acceptYourRequestWidget(
                 SizedBox(
                   child: Text(
                     _data.requestBiography,
-                    style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
+                    style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize - 1, color: Colors.grey),
                     textScaleFactor: 1,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -365,7 +366,7 @@ Widget acceptYourRequestWidget(
                     child: Text(
                       _data.didAccepted! ? "Mesajlaş" : "Geri Al",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: _customTextSize - 1,
                         color: Colors.white,
                       ),
@@ -388,7 +389,7 @@ Widget acceptYourRequestWidget(
 }
 
 void _clickGeriAl(BuildContext context, Notifications notification) {
-  if(UserBloc.entitlement == SubscriptionTypes.free) {
+  if (UserBloc.entitlement == SubscriptionTypes.free) {
     showGeriAlWarning(context);
     return;
   }
@@ -446,7 +447,7 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
                 SizedBox(
                   child: Text(
                     _data.requestBiography,
-                    style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
+                    style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize - 1, color: Colors.grey),
                     textScaleFactor: 1,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -483,7 +484,7 @@ Widget inComingRequestNotificationWidget(double _maxWidth, double _leftColumnSiz
                     child: Text(
                       _data.didAccepted! ? "Mesajlaş" : "Kabul Et",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: _customTextSize - 1,
                         color: Colors.white,
                       ),
@@ -529,7 +530,7 @@ Column _rightColumn(context, Notifications _data, double _customTextSize) {
       AutoSizeText(
         elapsedTime(_data.createdAt.toString()),
         textScaleFactor: 1,
-        style: GoogleFonts.rubik(
+        style: PeoplerTextStyle.normal.copyWith(
           fontSize: _customTextSize,
           color: _mode.blackAndWhiteConversion(),
         ),
@@ -557,7 +558,7 @@ Column _rightColumn(context, Notifications _data, double _customTextSize) {
                       ),
                       title: Text(
                         'Bildirimi Sil',
-                        style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
                       ),
                     ),
                   ],

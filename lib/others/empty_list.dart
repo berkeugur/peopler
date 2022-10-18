@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/SAVED/how_it_work.dart';
 
 import 'classes/dark_light_mode_controller.dart';
@@ -234,7 +235,7 @@ class EmptyList extends StatelessWidget {
                     _title(emptyListType: emptyListType),
                     textAlign: TextAlign.center,
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: _mode.blackAndWhiteConversion(),
@@ -247,7 +248,7 @@ class EmptyList extends StatelessWidget {
                     _explanation(emptyListType: emptyListType),
                     textAlign: TextAlign.center,
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _mode.blackAndWhiteConversion(),
                     ),
@@ -279,7 +280,7 @@ class EmptyList extends StatelessWidget {
                                   child: Text(
                                     _actionButtonText(emptyListType: emptyListType)[index],
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(color: const Color(0xFF0353EF), fontSize: 14),
+                                    style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                                   ),
                                 ),
                               ),

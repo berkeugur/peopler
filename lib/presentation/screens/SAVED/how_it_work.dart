@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 howItWork(context) {
   return showModalBottomSheet(
@@ -41,7 +42,7 @@ howItWork(context) {
                   child: Text(
                     "Nasıl Çalışır?",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -56,20 +57,17 @@ howItWork(context) {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Aynı ortamı paylaştığınız insanları gördüğünüzde ve onları kaydettiğinizde, kaydettiğiniz insanları burada göreceksiniz. \n\nKaydettikten 1 gün sonra artık istek gönderebileceksiniz. \n\nUnutmayın kaydettiğiniz kullanıcılar kaydettikten 3 gün sonra silinir ve onlara istek göndermek için yalnızca 2 gününüz var! ",
-                      textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                  ]),
+              child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  "Aynı ortamı paylaştığınız insanları gördüğünüzde ve onları kaydettiğinizde, kaydettiğiniz insanları burada göreceksiniz. \n\nKaydettikten 1 gün sonra artık istek gönderebileceksiniz. \n\nUnutmayın kaydettiğiniz kullanıcılar kaydettikten 3 gün sonra silinir ve onlara istek göndermek için yalnızca 2 gününüz var! ",
+                  textScaleFactor: 1,
+                  style: PeoplerTextStyle.normal.copyWith(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ]),
             )
           ],
         );

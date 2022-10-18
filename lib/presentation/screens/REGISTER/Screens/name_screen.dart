@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/notifiers/register_notifiers.dart';
 
@@ -20,7 +21,7 @@ Widget registerDisplayName({
           child: Text(
             "İsmin Nedir ?",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000000),
               fontSize: 16,
               fontWeight: FontWeight.w300,
@@ -70,7 +71,7 @@ Widget registerDisplayName({
           child: Text(
             "Profilini gizleyerek diğer insanların ismini görmesini engelleyebilirsin.",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000B21),
               fontSize: 14,
               fontWeight: FontWeight.w300,

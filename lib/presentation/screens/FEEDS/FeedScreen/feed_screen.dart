@@ -22,6 +22,7 @@ import '../../../../others/locator.dart';
 import '../../../../others/empty_list.dart';
 import 'each_feed.dart';
 import 'feed_functions.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -193,7 +194,7 @@ class FeedScreenState extends State<FeedScreen> {
                             Text(
                               " Başlangıç rehberi",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: Colors.white, fontSize: 12),
+                              style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 12),
                             ),
                           ],
                         ),
@@ -230,7 +231,7 @@ class FeedScreenState extends State<FeedScreen> {
                             Text(
                               " Ayrıcalıkları Keşfet",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: Colors.white, fontSize: 12),
+                              style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 12),
                             ),
                           ],
                         ),

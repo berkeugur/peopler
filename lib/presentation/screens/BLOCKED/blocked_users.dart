@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/queries/queries.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
@@ -75,7 +76,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                 "Engellenmiş kullanıcı bulunmamaktadır.",
                                 textAlign: TextAlign.center,
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
+                                style: PeoplerTextStyle.normal.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -116,7 +117,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                               Text(
                                                 "${data["displayName"]} kullanıcısının engelini kalırmak üzeresiniz.",
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -148,7 +149,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                                   ),
                                                   child: Text(
                                                     "Engeli Kaldır",
-                                                    style: GoogleFonts.rubik(
+                                                    style: PeoplerTextStyle.normal.copyWith(
                                                       color: Colors.white,
                                                       fontWeight: FontWeight.w400,
                                                     ),
@@ -159,7 +160,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                                 onPressed: () => Navigator.of(context).pop(),
                                                 child: Text(
                                                   "İPTAL",
-                                                  style: GoogleFonts.rubik(
+                                                  style: PeoplerTextStyle.normal.copyWith(
                                                     color: Theme.of(context).primaryColor,
                                                     fontWeight: FontWeight.w400,
                                                   ),
@@ -177,13 +178,13 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                   ),
                                   subtitle: Text(
                                     data["biography"] ?? "error biography",
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                       color: Mode().blackAndWhiteConversion(),
                                     ),
                                   ),
                                   title: Text(
                                     data["displayName"] ?? "error display name",
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                       color: Mode().blackAndWhiteConversion(),
                                     ),
                                   ),

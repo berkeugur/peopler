@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../core/constants/enums/subscriptions_enum.dart';
@@ -188,13 +189,13 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize()),
+                      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize()),
                     ),
                   ),
                   SizedBox(
                     child: Text(
                       _notificationTransmittedBloc.allTransmittedList[index].requestBiography,
-                      style: GoogleFonts.rubik(fontSize: _customTextSize() - 1, color: Colors.grey),
+                      style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize() - 1, color: Colors.grey),
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -206,7 +207,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
                   SizedBox(
                     child: Text(
                       elapsedTimeLongText(_notificationTransmittedBloc.allTransmittedList[index].createdAt!.toString()) + " önce gönderildi",
-                      style: GoogleFonts.rubik(fontSize: _customTextSize() - 2, color: Colors.grey),
+                      style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize() - 2, color: Colors.grey),
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -225,7 +226,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
               children: [
                 InkWell(
                   onTap: () {
-                    if(UserBloc.entitlement == SubscriptionTypes.free) {
+                    if (UserBloc.entitlement == SubscriptionTypes.free) {
                       showGeriAlWarning(context);
                       return;
                     }
@@ -239,7 +240,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
                       child: Center(
                         child: Text(
                           "Geri Al",
-                          style: GoogleFonts.rubik(fontSize: _customTextSize(), color: Colors.grey),
+                          style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize(), color: Colors.grey),
                           textScaleFactor: 1,
                         ),
                       )),

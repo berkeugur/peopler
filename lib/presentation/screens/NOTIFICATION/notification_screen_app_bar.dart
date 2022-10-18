@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
@@ -88,7 +89,7 @@ Widget notificationScreenBottomAppBar(BuildContext context) {
                 Text(
                   "Davetiyeler", //(${NotificationScreenFunctions().numberOfConnectionRequest()})
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: _mode.disabledBottomMenuItemAssetColor(),

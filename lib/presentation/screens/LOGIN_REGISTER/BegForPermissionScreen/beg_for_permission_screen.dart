@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
@@ -52,7 +53,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 Text(
                   "Arka planda konum servisini kullan",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -64,7 +65,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 Text(
                   "Bu uygulama kapalı olsa bile aynı ortamınızdaki insanları görüntüleyebilmeniz için ve onların da sizi görüntüleyebilmesi için konum bilginizi kullanır. \nTam konumun kimse ile paylaşılmaz.\n\nİzin veriyor musunuz? ",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
+                  style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
               ],
             ),
@@ -94,7 +95,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                         "İzin Ver",
                         // "Bu adımı atla",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF0353EF)),
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF0353EF)),
                       ),
                     ),
                   ),
@@ -112,7 +113,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                       child: Text(
                         "Şimdi Değil",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
                       ),
                     ),
                   ),

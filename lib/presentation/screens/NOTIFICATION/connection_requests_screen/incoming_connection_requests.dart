@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/ChatBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 import '../../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../../business_logic/blocs/NotificationReceivedBloc/bloc.dart';
@@ -225,7 +226,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
               maxLines: 2,
               text: TextSpan(
                   text: _currentItem.requestDisplayName + " artık bağlantınız. ",
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: _mode.blackAndWhiteConversion(),
                     fontSize: _customTextSize,
                   ),
@@ -244,7 +245,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
                           );
                         },
                       text: _currentItem.requestDisplayName + " ile konuşma başlat.",
-                      style: GoogleFonts.rubik(color: Color(0xFF0353EF), fontSize: _customTextSize),
+                      style: PeoplerTextStyle.normal.copyWith(color: Color(0xFF0353EF), fontSize: _customTextSize),
                     ),
                   ]),
             ),
@@ -303,7 +304,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
             width: _centerColumnSize,
             child: Text(
               "Davetiye yok sayıldı",
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: _customTextSize() - 1,
                 color: _mode.blackAndWhiteConversion(),
               ),
@@ -379,13 +380,13 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
+                      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: _customTextSize),
                     ),
                   ),
                   SizedBox(
                     child: Text(
                       _currentItem.requestBiography,
-                      style: GoogleFonts.rubik(fontSize: _customTextSize - 1, color: Colors.grey),
+                      style: PeoplerTextStyle.normal.copyWith(fontSize: _customTextSize - 1, color: Colors.grey),
                       textScaleFactor: 1,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -419,7 +420,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
                               ? "  +${_data.mutualConnectionsProfilePhotos.length-3} ortak bağlantı"
                               : "  ${_data.mutualConnectionsProfilePhotos.length} ortak bağlantı",
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(fontSize: _customSmallTextSize(), color:  Color(0xFF0353EF)),
+                          style: PeoplerTextStyle.normal.copyWith(fontSize: _customSmallTextSize(), color:  Color(0xFF0353EF)),
                         ),
                       ],
                     ),

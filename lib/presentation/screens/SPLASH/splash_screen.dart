@@ -1,17 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
-import 'package:peopler/components/FlutterWidgets/app_bars.dart';
-import 'package:peopler/core/constants/app/animations_constants.dart';
-import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../data/fcm_and_local_notifications.dart';
-import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   static const splashScreenDuration = 1;

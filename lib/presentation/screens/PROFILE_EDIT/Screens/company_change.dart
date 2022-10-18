@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/biography_change_service.dart';
@@ -95,11 +96,11 @@ class EditField extends StatelessWidget {
           border: InputBorder.none,
           hintText: UserBloc.user!.company == "" ? "Çalıştığınız Şirket" : UserBloc.user!.company,
           hintStyle: UserBloc.user!.company == ""
-              ? GoogleFonts.rubik(
+              ? PeoplerTextStyle.normal.copyWith(
                   color: Colors.white.withOpacity(0.6),
                   fontSize: 16,
                 )
-              : GoogleFonts.rubik(
+              : PeoplerTextStyle.normal.copyWith(
                   color: Colors.white,
                   fontSize: 16,
                 ),
@@ -124,11 +125,11 @@ class Explanation extends StatelessWidget {
         children: [
           Text(
             "Mesleğinizi paylaşabilirsiniz..\n\n",
-            style: GoogleFonts.rubik(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
           ),
           Text(
             "#beXXXX\n#beYYYY\n#beZZZZ",
-            style: GoogleFonts.rubik(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
           ),
         ],
       ),

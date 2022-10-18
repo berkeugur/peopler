@@ -10,6 +10,7 @@ import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../../data/model/chat.dart';
 import '../../MESSAGE/message_screen.dart';
 import '../../../../others/empty_list.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class ChannelListBody extends StatefulWidget {
   const ChannelListBody({Key? key}) : super(key: key);
@@ -247,7 +248,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Mode().blackAndWhiteConversion(),
@@ -258,7 +259,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               fontSize: 14,
               color: _isNewMessage != true ? const Color.fromARGB(255, 204, 203, 203) : Mode().blackAndWhiteConversion(),
             ),
@@ -279,7 +280,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
           SizedBox(
             child: Text(
               _channelListItemDate(),
-              style: GoogleFonts.rubik(fontSize: 12, color: Mode().blackAndWhiteConversion()),
+              style: PeoplerTextStyle.normal.copyWith(fontSize: 12, color: Mode().blackAndWhiteConversion()),
             ),
           ),
           _numberOfNewMessage != 0
@@ -295,7 +296,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
                   child: Center(
                     child: Text(
                       _numberOfNewMessage < 100 ? _numberOfNewMessage.toString() : "99+",
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: Colors.white,
                         fontSize: 10,
                       ),

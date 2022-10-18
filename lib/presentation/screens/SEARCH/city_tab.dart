@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
@@ -408,7 +409,7 @@ class CityTabState extends State<CityTab> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color: _mode.blackAndWhiteConversion(),
@@ -516,7 +517,7 @@ class CityTabState extends State<CityTab> {
                                               Text(
                                                 "Bağlantı Kur",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   color: _mode.disabledBottomMenuItemAssetColor(),
                                                   fontSize: _maxWidth * 0.0391 > 16 ? 16 : _maxWidth * 0.0391,
                                                 ),

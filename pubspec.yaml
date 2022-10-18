@@ -76,10 +76,10 @@ dependencies:
   provider: ^6.0.2
   pull_to_refresh_flutter3: ^2.0.1
   purchases_flutter: ^4.3.0
+  responsive_sizer: ^3.1.1
   restart_app: ^1.1.0
   rxdart: ^0.27.5
   share_plus: ^4.0.4
-
   step_progress_indicator: ^1.0.2
   webview_flutter: ^3.0.4
   workmanager: ^0.5.0

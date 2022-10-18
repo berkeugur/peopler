@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 
 class SubscriptionFeatures {
@@ -106,7 +107,7 @@ class SubscriptionFeatures {
         Text(
           title,
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             fontSize: 16,
             color: tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
             fontWeight: FontWeight.w500,
@@ -119,7 +120,7 @@ class SubscriptionFeatures {
           subtitle,
           textScaleFactor: 1,
           textAlign: TextAlign.center,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             fontSize: 14,
             color: tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
             fontWeight: FontWeight.w400,

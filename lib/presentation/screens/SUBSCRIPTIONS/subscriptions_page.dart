@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
@@ -154,7 +155,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       "Plus",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(),
+                      style: PeoplerTextStyle.normal.copyWith(),
                     ),
                   ),
 
@@ -163,7 +164,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       "Premium",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(),
+                      style: PeoplerTextStyle.normal.copyWith(),
                     ),
                   ),
                 ],
@@ -287,7 +288,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN UYGUN",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
                       color: selectedPremiumPlanIndex == 0
                           ? scaffoldColor
@@ -311,7 +312,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "6",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -320,7 +321,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -331,7 +332,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -347,7 +348,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -358,7 +359,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -420,7 +421,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN POPÜLER",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPremiumPlanIndex != 1 ? 12 : 13,
                       color: selectedPremiumPlanIndex == 1
                           ? scaffoldColor
@@ -444,7 +445,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "3",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -453,7 +454,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -464,7 +465,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -480,7 +481,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -491,7 +492,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -542,7 +543,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
                       fontWeight: FontWeight.w500,
                     ),
@@ -561,7 +562,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "1",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -570,7 +571,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -581,7 +582,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -595,7 +596,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       " ",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -605,7 +606,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: scaffoldColor,
                       fontWeight: FontWeight.w500,
@@ -648,7 +649,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               Text(
                 "HEMEN SATIN AL",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   color: scaffoldColor,
                   fontWeight: FontWeight.w500,
                 ),
@@ -757,7 +758,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN UYGUN",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
                       color: selectedPlusPlanIndex == 0
                           ? scaffoldColor
@@ -781,7 +782,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "6",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -790,7 +791,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -801,7 +802,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -817,7 +818,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -828,7 +829,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -890,7 +891,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN POPÜLER",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPlusPlanIndex != 1 ? 12 : 13,
                       color: selectedPlusPlanIndex == 1
                           ? scaffoldColor
@@ -914,7 +915,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "3",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -923,7 +924,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -934,7 +935,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -950,7 +951,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -961,7 +962,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -1011,7 +1012,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
                       fontWeight: FontWeight.w500,
                     ),
@@ -1030,7 +1031,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "1",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -1039,7 +1040,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -1050,7 +1051,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -1064,7 +1065,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       " ",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -1074,7 +1075,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: scaffoldColor,
                       fontWeight: FontWeight.w500,
@@ -1118,7 +1119,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               Text(
                 "HEMEN SATIN AL",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   color: scaffoldColor,
                   fontWeight: FontWeight.w500,
                 ),

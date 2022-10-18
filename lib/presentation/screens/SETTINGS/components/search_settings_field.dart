@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../settings.dart';
@@ -14,7 +15,7 @@ search_settings_field(context) {
       Text(
         "Arama",
         textScaleFactor: 1,
-        style: GoogleFonts.rubik(
+        style: PeoplerTextStyle.normal.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 23,
           color: _mode.settings_setting_title(),
@@ -38,7 +39,7 @@ search_settings_field(context) {
                       child: Text(
                         "Aynı Ortamımdaki",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           color: is_selected_in_the_same_environment ? Colors.white : _mode.settings_custom_1(),
                         ),
                       ),
@@ -60,7 +61,7 @@ search_settings_field(context) {
                       child: Text(
                         "Aynı Şehrimdeki",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           color: is_selected_in_the_same_city ? Colors.white : _mode.settings_custom_1(),
                         ),
                       ),
@@ -88,7 +89,7 @@ search_settings_field(context) {
                           Text(
                             "Aynı Ortamımdaki",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_in_the_same_environment ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -115,7 +116,7 @@ search_settings_field(context) {
                           Text(
                             "Aynı Şehrimdeki",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_in_the_same_city ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),

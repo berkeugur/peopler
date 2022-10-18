@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
@@ -62,7 +63,7 @@ class PeoplerAppBars {
     return Text(
       title,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: color ?? Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
+      style: PeoplerTextStyle.normal.copyWith(color: color ?? Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
     );
   }
 
@@ -84,7 +85,7 @@ class PeoplerAppBars {
               ),
               Text(
                 "remium",
-                style: GoogleFonts.rubik(color: Mode().homeScreenTitleColor()),
+                style: PeoplerTextStyle.normal.copyWith(color: Mode().homeScreenTitleColor()),
               ),
             ],
           ),
@@ -141,7 +142,7 @@ class PeoplerAppBars {
                         ),
                         Text(
                           "kaydet",
-                          style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w400),
+                          style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),

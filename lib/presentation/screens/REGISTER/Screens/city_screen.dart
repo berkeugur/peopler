@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/others/strings.dart';
 
+import '../../../../components/FlutterWidgets/text_style.dart';
+
 Widget registerCitySelect({
   required ValueNotifier<String?> selecetCity,
 }) {
@@ -21,7 +23,7 @@ Widget registerCitySelect({
           child: Text(
             "Hangi Sehirde Yaşıyorsunuz?",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000000),
               fontSize: 16,
               fontWeight: FontWeight.w400,
@@ -45,7 +47,7 @@ Widget registerCitySelect({
                   return RadioListTile<String>(
                     title: Text(
                       Strings.cityData[index],
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 15,
                       ),
                     ),

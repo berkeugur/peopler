@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/user.dart';
@@ -90,7 +91,7 @@ class _MenuPageState extends State<MenuPage> {
                 Text(
                   UserBloc.user?.displayName ?? "null display name",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
+                  style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 15,
@@ -134,7 +135,7 @@ class _MenuPageState extends State<MenuPage> {
                               Text(
                                 "Etkinlikler Bölümü Deneme Aşamasındadır.",
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.rubik(
+                                style: PeoplerTextStyle.normal.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -171,7 +172,7 @@ class _MenuPageState extends State<MenuPage> {
                                   ),
                                   child: Text(
                                     "E-Posta İle Haber Ver",
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -182,7 +183,7 @@ class _MenuPageState extends State<MenuPage> {
                                 onPressed: () => Navigator.of(context).pop(),
                                 child: Text(
                                   "KAPAT",
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -209,7 +210,7 @@ class _MenuPageState extends State<MenuPage> {
                           Text(
                             "Etkinlikler",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: Colors.white,
@@ -330,7 +331,7 @@ class _MenuPageState extends State<MenuPage> {
                                               Text(
                                                 "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -357,7 +358,7 @@ class _MenuPageState extends State<MenuPage> {
                                                   ),
                                                   child: Text(
                                                     "TAMAM",
-                                                    style: GoogleFonts.rubik(
+                                                    style: PeoplerTextStyle.normal.copyWith(
                                                       color: Colors.white,
                                                       fontWeight: FontWeight.w400,
                                                     ),
@@ -460,7 +461,7 @@ class _MenuPageState extends State<MenuPage> {
                   Text(
                     "Aydınlık",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
                     ),
                   ),
@@ -496,7 +497,7 @@ class _MenuPageState extends State<MenuPage> {
                   Text(
                     "Karanlık",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
                     ),
                   ),
@@ -545,7 +546,7 @@ class _MenuPageState extends State<MenuPage> {
                 itemtext,
                 textScaleFactor: 1,
                 textAlign: TextAlign.left,
-                style: GoogleFonts.rubik(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
               )
             ],
           ),

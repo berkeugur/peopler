@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/city_change_service.dart';
@@ -89,8 +90,7 @@ class _EditFieldState extends State<EditField> {
       ),
       child: InkWell(
         onTap: () {
-
-          if(UserBloc.entitlement != SubscriptionTypes.premium) {
+          if (UserBloc.entitlement != SubscriptionTypes.premium) {
             showCityChangeWarning(context);
             return;
           }
@@ -138,7 +138,7 @@ class _EditFieldState extends State<EditField> {
                                         setStateBottomSheet(() {});
                                       },
                                       placeholder: "Arama yapabilirsiniz...",
-                                      style: GoogleFonts.rubik(),
+                                      style: PeoplerTextStyle.normal.copyWith(),
                                       autocorrect: true,
                                       backgroundColor: CupertinoColors.extraLightBackgroundGray,
                                       controller: editingController,
@@ -239,11 +239,11 @@ class _EditFieldState extends State<EditField> {
             border: InputBorder.none,
             hintText: UserBloc.user!.city == "" ? "Hangi Şehirde Yaşıyorsunuz?" : UserBloc.user!.city,
             hintStyle: UserBloc.user!.city == ""
-                ? GoogleFonts.rubik(
+                ? PeoplerTextStyle.normal.copyWith(
                     color: Colors.white.withOpacity(0.6),
                     fontSize: 16,
                   )
-                : GoogleFonts.rubik(
+                : PeoplerTextStyle.normal.copyWith(
                     color: Colors.white,
                     fontSize: 16,
                   ),
@@ -274,11 +274,11 @@ class _ExplanationState extends State<Explanation> {
         children: [
           Text(
             "Şehrimdekiler bölümünde şehrinizdeki diğer insanlarla bağlantı kurabilirsinzi.\n\n",
-            style: GoogleFonts.rubik(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
           ),
           Text(
             "#beXXXX\n#beYYYY\n#beZZZZ",
-            style: GoogleFonts.rubik(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
           ),
         ],
       ),

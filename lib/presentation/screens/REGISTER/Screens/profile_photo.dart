@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/others/functions/image_picker_functions.dart';
 
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
@@ -19,7 +20,7 @@ Widget registerProfilePhoto({
           child: Text(
             "Profil Fotoğrafını Belirle",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000000),
               fontSize: 16,
               fontWeight: FontWeight.w300,
@@ -103,7 +104,7 @@ Widget registerProfilePhoto({
                     )
                   : Text(
                       "Profil Fotoğrafı Seç",
-                      style: GoogleFonts.rubik(color: Colors.white),
+                      style: PeoplerTextStyle.normal.copyWith(color: Colors.white),
                     ),
             ),
           ),
@@ -113,7 +114,7 @@ Widget registerProfilePhoto({
           child: Text(
             "İstediğin zaman profilini gizleyerek profil fotoğrafının görünürlüğünü değiştirebilirsin.",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000B21),
               fontSize: 14,
               fontWeight: FontWeight.w300,

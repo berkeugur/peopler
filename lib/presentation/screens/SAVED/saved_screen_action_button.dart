@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_event.dart';
@@ -29,7 +30,8 @@ Widget actionButton(context, index, showWidgetsKeySaved) {
   }
 }
 
-Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, showWidgetsKeySaved, FirestoreDBServiceUsers _firestoreDBServiceUsers, SendNotificationService _sendNotificationService, Size _size) {
+Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, showWidgetsKeySaved, FirestoreDBServiceUsers _firestoreDBServiceUsers,
+    SendNotificationService _sendNotificationService, Size _size) {
   return Container(
     width: 104,
     height: 28,
@@ -79,7 +81,7 @@ Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, s
           Text(
             "Bağlantı Kur",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: _mode.disabledBottomMenuItemAssetColor(),
               fontSize: _size.width * 0.0391 > 12 ? 12 : _size.width * 0.0391,
             ),
@@ -118,7 +120,7 @@ Container _baglantiKurNotActive(Mode _mode, Size _size) {
         Text(
           "Bağlantı Kur",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.inActiveColor(),
             fontSize: _size.width * 0.0391 > 12 ? 12 : _size.width * 0.0391,
           ),

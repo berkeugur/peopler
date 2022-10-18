@@ -6,6 +6,7 @@ import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:restart_app/restart_app.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class GuestLoginScreenBody extends StatefulWidget {
   const GuestLoginScreenBody({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _GuestLoginScreenBodyState extends State<GuestLoginScreenBody> {
         Text(
           "Giriş Yapmanız Gerekiyor",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w500),
+          style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(
           height: 20,

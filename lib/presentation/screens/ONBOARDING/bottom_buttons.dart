@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 import '../../../core/constants/navigation/navigation_constants.dart';
 
@@ -32,7 +33,7 @@ class BottomButtons extends StatelessWidget {
                               "BAŞLAYALIM",
                               textAlign: TextAlign.center,
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600),
+                              style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                             onPressed: () {
                               Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
@@ -62,7 +63,7 @@ class BottomButtons extends StatelessWidget {
                         child: Text(
                           "ATLA",
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
+                          style: PeoplerTextStyle.normal.copyWith(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
                         ),
                       ),
                     ),
