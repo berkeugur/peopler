@@ -1,4 +1,5 @@
 import 'package:peopler/data/model/saved_user.dart';
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../others/locator.dart';
 import '../model/notifications.dart';
 import '../model/user.dart';
@@ -86,6 +87,15 @@ class SavedRepository {
 
   Future<void> decrementNumOfSendRequest(String userID) async {
     await _firestoreDBServiceUsers.decrementNumOfSendRequest(userID);
+  }
+
+  Future<void> refreshNumOfSendRequest() async {
+    DateTime? updatedAtNumOfSendRequest = UserBloc.user!.updatedAtNumOfSendRequest;
+    DateTime updatedAtFinishTime = updatedAtNumOfSendRequest!.add(const Duration(hours: 24));
+
+    if(updatedAtFinishTime.isBefore(DateTime.now())){
+      await _firestoreDBServiceUsers.refreshNumOfSendRequest(UserBloc.user!.userID);
+    }
   }
 
 

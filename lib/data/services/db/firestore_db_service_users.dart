@@ -484,6 +484,16 @@ class FirestoreDBServiceUsers {
     }
   }
 
+  Future<bool> refreshNumOfSendRequest(String userID) async {
+    try {
+      await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').update({'numOfSendRequest': 15});
+      await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').update({'updatedAtNumOfSendRequest': DateTime.now()});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<List<Notifications>> getRequestsWithPagination(
       String myUserID, Notifications? lastSelectedRequest, int numberOfElementsWillBeSelected, String requestType) async {
     QuerySnapshot _querySnapshot;

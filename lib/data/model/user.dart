@@ -32,6 +32,7 @@ class MyUser {
   int latitude = 0;
   int longitude = 0;
   int numOfSendRequest = 15;
+  DateTime? updatedAtNumOfSendRequest;
 
   MyUser();
 
@@ -95,6 +96,7 @@ class MyUser {
       'latitude': latitude,
       'longitude': longitude,
       'numOfSendRequest': numOfSendRequest,
+      'updatedAtNumOfSendRequest': updatedAtNumOfSendRequest ?? DateTime.now(),
     };
   }
 
@@ -106,6 +108,7 @@ class MyUser {
     latitude = map['latitude'] as int;
     longitude = map['longitude'] as int;
     numOfSendRequest = map['numOfSendRequest'] as int;
+    updatedAtNumOfSendRequest = map['updatedAtNumOfSendRequest'].runtimeType == DateTime ? map['updatedAtNumOfSendRequest'] : map['updatedAtNumOfSendRequest'].toDate();
   }
 
   String randomNumberGenerator() {
