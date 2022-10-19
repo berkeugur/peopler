@@ -827,7 +827,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
+                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,

@@ -25,6 +25,9 @@ class NotificationRepository {
 
     for (int index=0; index < requestList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(requestList[index].requestUserID!);
+
+      if(_user == null) continue; // DİKKAT
+
       requestList[index].requestDisplayName = _user!.displayName;
       requestList[index].requestProfileURL = _user.profileURL;
       requestList[index].requestBiography = _user.biography;
@@ -46,6 +49,9 @@ class NotificationRepository {
 
     for (int index=0; index < requestList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(requestList[index].requestUserID!);
+
+      if(_user == null) continue; // DİKKAT
+
       requestList[index].requestDisplayName = _user!.displayName;
       requestList[index].requestProfileURL = _user.profileURL;
       requestList[index].requestBiography = _user.biography;
@@ -67,7 +73,10 @@ class NotificationRepository {
       if(_allNotifications[index].requestUserID == null) continue;
 
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(_allNotifications[index].requestUserID!);
-      _allNotifications[index].requestDisplayName = _user!.displayName;
+
+      if(_user == null) continue; // DİKKAT
+
+      _allNotifications[index].requestDisplayName = _user.displayName;
       _allNotifications[index].requestProfileURL = _user.profileURL;
       _allNotifications[index].requestBiography = _user.biography;
     }

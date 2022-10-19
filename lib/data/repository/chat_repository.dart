@@ -17,7 +17,10 @@ class ChatRepository {
 
     for (int index=0; index < _allChats.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(_allChats[index].hostID);
-      _allChats[index].hostUserName = _user!.displayName;
+
+      if(_user == null) continue; // DİKKAT
+
+      _allChats[index].hostUserName = _user.displayName;
       _allChats[index].hostUserProfileUrl = _user.profileURL;
     }
 

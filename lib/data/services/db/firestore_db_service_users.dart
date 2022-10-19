@@ -237,6 +237,8 @@ class FirestoreDBServiceUsers {
     for (String userID in userIDList) {
       DocumentSnapshot _userDocument = await _firebaseDB.collection('users').doc(userID).get();
 
+      if (_userDocument.data() == null) continue;
+
       MyUser _currentUser = MyUser();
       _currentUser.fromPublicMap(_userDocument.data() as Map<String, dynamic>);
       _allUsers.add(_currentUser);
