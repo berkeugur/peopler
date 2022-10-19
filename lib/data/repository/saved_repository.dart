@@ -28,7 +28,7 @@ class SavedRepository {
       DateTime countDownFinishTime = req.createdAt!.add(Duration(minutes: req.countDownDurationMinutes));
       DateTime deleteTime = countDownFinishTime.add(const Duration(minutes: 2880)); // 2880 minutes = 48 hours
 
-      // If duration between 24 and 48 hours, then isCountdownFinished must be true
+      // If duration between 6 and 48 hours, then isCountdownFinished must be true
       if(req.isCountdownFinished == false && countDownFinishTime.isBefore(DateTime.now()) && deleteTime.isAfter(DateTime.now())){
         await _firestoreDBServiceUsers.updateCountdownFinished(myUserID, req.userID, true);
         // Since ConnectionRequest object extends Equatable, if element and req fields are same, then it will return true.

@@ -34,6 +34,9 @@ class Strings {
   static const String activityLiked = "liked";
   static const String activityDisliked = "disliked";
 
+  /// Kaydet duration
+  static const int kaydetDurationHour = 6;
+
   static const List<String> cityData = [
     "İstanbul",
     "Ankara",

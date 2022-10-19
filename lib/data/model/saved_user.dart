@@ -1,7 +1,9 @@
+import '../../others/strings.dart';
+
 class SavedUser {
   String userID = "";
   DateTime? createdAt;
-  int countDownDurationMinutes = 1440; // 24 hour
+  int countDownDurationMinutes = Strings.kaydetDurationHour * 60;
   bool isCountdownFinished = false;
 
   /// Below fields does not exists in Firestore, get them through /users collection

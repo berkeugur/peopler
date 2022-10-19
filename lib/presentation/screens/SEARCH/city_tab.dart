@@ -463,8 +463,6 @@ class CityTabState extends State<CityTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
-
                                 if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                   return;
