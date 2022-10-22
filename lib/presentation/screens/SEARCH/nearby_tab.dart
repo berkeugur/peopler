@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,10 +8,12 @@ import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
@@ -116,10 +119,11 @@ class _NearbyTabState extends State<NearbyTab> {
                                 builder: (context, state) {
                                   if (state is InitialSearchState) {
                                     // return _initialUsersStateWidget();
+                                    SystemUIService().setSystemUIforThemeMode();
                                     return SearchingCase();
                                   } else if (state is UsersNotExistSearchState) {
                                     return const EmptyList(
-                                      emptyListType: EmptyListType.environment,
+                                      emptyListType: EmptyListType.nearby,
                                     );
                                   } else if (state is UsersLoadedSearchState) {
                                     return _showUsers(widget.size);
@@ -581,7 +585,7 @@ class _NearbyTabState extends State<NearbyTab> {
                             return InkWell(
                               onTap: () async {
                                 if (UserBloc.user != null) {
-                                  if(UserBloc.entitlement != SubscriptionTypes.premium) {
+                                  if (UserBloc.entitlement != SubscriptionTypes.premium) {
                                     _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
 
                                     Provider.of<SaveButton>(context, listen: false).saveUser();
@@ -634,14 +638,16 @@ class _NearbyTabState extends State<NearbyTab> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              UserBloc.entitlement == SubscriptionTypes.premium ? const SizedBox.shrink() : SvgPicture.asset(
-                                                "assets/images/svg_icons/saved.svg",
-                                                color: _mode.disabledBottomMenuItemAssetColor(),
-                                                width: 12,
-                                                height: 12,
-                                                matchTextDirection: true,
-                                                fit: BoxFit.contain,
-                                              ),
+                                              UserBloc.entitlement == SubscriptionTypes.premium
+                                                  ? const SizedBox.shrink()
+                                                  : SvgPicture.asset(
+                                                      "assets/images/svg_icons/saved.svg",
+                                                      color: _mode.disabledBottomMenuItemAssetColor(),
+                                                      width: 12,
+                                                      height: 12,
+                                                      matchTextDirection: true,
+                                                      fit: BoxFit.contain,
+                                                    ),
                                               const SizedBox(
                                                 width: 3,
                                               ),

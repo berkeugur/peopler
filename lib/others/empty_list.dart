@@ -20,7 +20,7 @@ class EmptyListScreen extends StatelessWidget {
 }
 
 enum EmptyListType {
-  environment,
+  nearby,
   citySearch,
   emptyChannelList,
   emptyFeed,
@@ -32,7 +32,7 @@ enum EmptyListType {
 
 String _imagePath({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return "citySearch";
     case EmptyListType.citySearch:
       return "citySearch";
@@ -57,7 +57,7 @@ String _imagePath({required EmptyListType emptyListType}) {
 
 List<String> _actionButtonText({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
     case EmptyListType.citySearch:
       return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
@@ -82,7 +82,7 @@ List<String> _actionButtonText({required EmptyListType emptyListType}) {
 
 List<Function()?> _actionButtonFunction({required EmptyListType emptyListType, required BuildContext context}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return [
         () {
           print("go: Çevrenizi Keşfedin");
@@ -154,7 +154,7 @@ List<Function()?> _actionButtonFunction({required EmptyListType emptyListType, r
 
 String _title({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return "Etrafında kimse yok";
     case EmptyListType.citySearch:
       return "Şehrinizde gösterebileceğimiz birisi bulunmuyor.";
@@ -179,7 +179,7 @@ String _title({required EmptyListType emptyListType}) {
 
 String _explanation({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return """Aynı ortamı paylaştığınız peopler kullanıcısı yok. Topluluğumuzu büyütmek için çalışmaya devam ediyoruz.""";
     case EmptyListType.citySearch:
       return "En kısa sürede şehrinizde yeni peopler kullanıcıları olacağına eminiz. Lütfen daha sonra tekrar kontrol edin.";

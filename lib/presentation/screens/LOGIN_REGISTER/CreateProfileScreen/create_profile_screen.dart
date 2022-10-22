@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/others/strings.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/classes/variables.dart';
@@ -114,13 +116,16 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                       radius: 55,
                                       backgroundColor: const Color(0xFF8E9BB4),
                                       child: (UserBloc.user?.profileURL != null) && (UserBloc.user?.profileURL != '')
-                                          ? ClipRRect(
-                                              borderRadius: BorderRadius.circular(60),
-                                              child: Image.network(
-                                                UserBloc.user!.profileURL,
-                                                width: 120,
-                                                height: 120,
-                                                fit: BoxFit.fitHeight,
+                                          ? CachedNetworkImage(
+                                              imageUrl: UserBloc.user?.profileURL ?? Strings.defaultNonBinaryProfilePhotoUrl,
+                                              progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                                  borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                              errorWidget: (context, url, error) => const Icon(Icons.camera_alt),
+                                              imageBuilder: (context, imageProvider) => Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                                ),
                                               ),
                                             )
                                           : (image != null
@@ -144,7 +149,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                     Icons.photo_camera_outlined,
                                                     color: Color(0xFF0353EF),
                                                     size: 60,
-                                                  ))),
+                                                  ),
+                                                )),
                                     ),
                                   ),
                                 ),

@@ -93,7 +93,7 @@ class PeoplerAppBars {
           padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
           child: Text(
             ApplicationConstants.COMPANY_NAME.toLowerCase(),
-            style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+            style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 32),
           ),
         ),
       ],

@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 
 class SearchingCase extends StatefulWidget {
   double? height;
@@ -24,7 +25,7 @@ class _SearchingCaseState extends State<SearchingCase> with SingleTickerProvider
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 10),
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
@@ -106,23 +107,28 @@ class _CustomAnimatedSearchIconState extends State<CustomAnimatedSearchIcon> {
   @override
   Widget build(BuildContext context) {
     widget.svgIconPath == null ? widget.svgIconPath = "assets/images/svg_icons/search.svg" : null;
-    return SizedBox(
-      height: 75,
-      width: 75,
-      child: Animator<double>(
-        duration: const Duration(milliseconds: 1200),
-        cycles: 0,
-        curve: Curves.easeInOut,
-        tween: Tween<double>(begin: 0.0, end: 15.0),
-        builder: (context, animatorState, child) => Container(
-          margin: EdgeInsets.all(animatorState.value),
-          child: SvgPicture.asset(
-            widget.svgIconPath!,
-            color: Colors.white,
-            fit: BoxFit.contain,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 60,
+          width: 60,
+          child: Animator<double>(
+            duration: const Duration(milliseconds: 1200),
+            cycles: 0,
+            curve: Curves.easeInOut,
+            tween: Tween<double>(begin: 0.0, end: 15.0),
+            builder: (context, animatorState, child) => Container(
+              margin: EdgeInsets.all(animatorState.value),
+              child: SvgPicture.asset(
+                widget.svgIconPath!,
+                color: Colors.white,
+                fit: BoxFit.contain,
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
