@@ -214,9 +214,8 @@ class PeoplerDialogs {
               width: MediaQuery.of(context).size.width * 0.7,
               child: DefaultTextStyle(
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: PeoplerTextStyle.normal.copyWith(
                   fontSize: 18.0,
-                  fontFamily: 'Rubik',
                 ),
                 child: AnimatedTextKit(
                   pause: const Duration(milliseconds: 1700),

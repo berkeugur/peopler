@@ -1,20 +1,26 @@
 import 'package:flutter/services.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
+import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
 class SystemUIService {
   setSystemUIforThemeMode() async {
     if (Mode.isEnableDarkMode) {
+      printf("setSystemUIforThemeMode Dark");
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.light.copyWith(
+          //Navigation Bar
           systemNavigationBarIconBrightness: Brightness.light,
-          statusBarColor: const Color(0xFF000B21),
           systemNavigationBarColor: const Color(0xFF000B21),
-          statusBarIconBrightness: Brightness.light,
+          //Status Bar
+          statusBarColor: const Color(0xFF000B21),
+          //statusBarBrightness: Brightness.dark,
+          //statusBarIconBrightness: Brightness.light,
         ),
       );
     } else {
+      printf("setSystemUIforThemeMode Light");
       SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.light.copyWith(
+        SystemUiOverlayStyle.dark.copyWith(
           systemNavigationBarIconBrightness: Brightness.dark,
           statusBarColor: const Color(0xFFFFFFFF),
           systemNavigationBarColor: const Color(0xFFFFFFFF),
@@ -25,6 +31,7 @@ class SystemUIService {
   }
 
   setSystemUIForBlue() async {
+    printf("setSystemUIForBlue");
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
         systemNavigationBarIconBrightness: Brightness.light,
@@ -36,6 +43,7 @@ class SystemUIService {
   }
 
   setSystemUIForWhite() async {
+    printf("setSystemUIForWhite");
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(
         systemNavigationBarIconBrightness: Brightness.dark,

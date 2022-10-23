@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/core/constants/visibility/widget_visibility.dart';
+import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
 import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
@@ -46,7 +48,10 @@ showNumOfConnectionRequestsConsumed(BuildContext context) {
 }
 
 showRestNumOfConnectionRequests(BuildContext context) {
-  SnackBars(context: context).simple("Kalan istek gönderme hakkınız ${UserBloc.user!.numOfSendRequest - 1}");
+  if (WidgetVisibility.isshowRestNumOfConnectionRequestsVisiable) {
+    SnackBars(context: context).simple("Kalan istek gönderme hakkınız ${UserBloc.user!.numOfSendRequest - 1}");
+    printf("Kalan istek gönderme hakkınız ${UserBloc.user!.numOfSendRequest - 1}");
+  }
 }
 
 showYouNeedToLogin(BuildContext context) {
