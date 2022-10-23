@@ -192,8 +192,8 @@ class PeoplerDialogs {
     );
   }
 
-  Future loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts}) async {
-    await showDialog(
+   loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts})  {
+     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => Center(

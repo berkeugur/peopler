@@ -252,6 +252,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           case "email-already-in-use":
             emit(EmailAlreadyInUseState());
             break;
+          case "weak-password":
+            emit(WeakPasswordState());
+            break;
         }
         debugPrint(e.code);
         debugPrint(e.message);

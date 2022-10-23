@@ -76,4 +76,9 @@ class EmailAlreadyInUseState extends UserState {
   List<Object> get props => [];
 }
 
+class WeakPasswordState extends UserState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
 

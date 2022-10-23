@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
@@ -9,9 +8,8 @@ import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
-import '../../../../data/repository/location_repository.dart';
-import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../others/classes/variables.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 
@@ -396,6 +394,9 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
           } else if (state is EmailAlreadyInUseState) {
             SnackBars(context: context).simple(
                 "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
+          } else if (state is WeakPasswordState) {
+            SnackBars(context: context).simple(
+                "${registerEmailController.text} Şifre en az 6 karakterden oluşmalı.");
           }
         },
         child: BlocBuilder(
@@ -411,17 +412,13 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                     ],
                   ),
                   builder: (context, sn) {
-                    return Column(
-                      children: [
-                        Text(
-                          "Devam",
-                          textScaleFactor: 1,
-                          style: PeoplerTextStyle.normal.copyWith(
-                              color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
-                              fontSize: 22,
-                              fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
-                        ),
-                      ],
+                    return Text(
+                      "Devam",
+                      textScaleFactor: 1,
+                      style: PeoplerTextStyle.normal.copyWith(
+                          color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
+                          fontSize: 22,
+                          fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
                     );
                   });
             } else {

@@ -33,8 +33,8 @@ void resetPasswordSentFunction(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text("Başarılı"),
-      content: const Text("Şifrenizi sıfırlama bağlantısı e postanıza gönderildi. Lütfen E posta adresinizi kontrol ediniz."),
+      title: const Text("Başarılı", style: TextStyle(color: Colors.white),),
+      content: const Text("Şifrenizi sıfırlama bağlantısı e postanıza gönderildi. Lütfen E posta adresinizi kontrol ediniz.", style: TextStyle(color: Colors.white),),
       backgroundColor: const Color(0xFF000B21),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       actions: <Widget>[
