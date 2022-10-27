@@ -90,8 +90,7 @@ class _FeedCommentsState extends State<FeedComments> {
                   ),
                 ],
               ),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
+              Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   boxShadow: <BoxShadow>[
