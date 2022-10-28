@@ -21,6 +21,8 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
 
   static bool _isTimerActive = false;
 
+  static bool firstUpdate = false;
+
   static Future<String> updateLocationMethod() async {
     try {
       LocationPermission _permission = await _locationRepository.checkPermissions();
@@ -101,6 +103,8 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       } else if (methodState == 'PositionNotGetState') {
         emit(PositionNotGetState());
       }
+
+      firstUpdate = true;
       debugPrint(methodState);
     });
 

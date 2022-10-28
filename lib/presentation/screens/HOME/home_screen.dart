@@ -5,7 +5,6 @@ import 'package:move_to_background/move_to_background.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
-import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'dart:io' show Platform;
@@ -15,6 +14,7 @@ import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/presentation/router/chat_tab.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import '../../../business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import '../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../core/constants/enums/screen_item_enum.dart';
 import '../../../data/repository/location_repository.dart';
@@ -42,10 +42,9 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final Mode _mode = locator<Mode>();
   late final ThemeCubit _themeCubit;
   late final LocationPermissionBloc _locationPermissionBloc;
-  late final LocationBloc _locationBloc;
   late final CityBloc _cityBloc;
-  late final NotificationBloc _notificationBloc;
   late final PurchaseGetOfferBloc _purchaseGetOfferBloc;
+  late final SavedBloc _savedBloc;
   late PreloadPageController _pageController;
 
   @override
@@ -54,12 +53,12 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
     _themeCubit = BlocProvider.of<ThemeCubit>(context);
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
-    _locationBloc = BlocProvider.of<LocationBloc>(context);
     _cityBloc = BlocProvider.of<CityBloc>(context);
-    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _pageController = PreloadPageController(initialPage: _homeScreen.currentTab.index);
+    _savedBloc = BlocProvider.of<SavedBloc>(context);
 
-    if (UserBloc.user != null) {
+    if(UserBloc.user != null) {
+      _savedBloc.add(GetInitialSavedUsersEvent(myUserID: UserBloc.user!.userID));
       FCMAndLocalNotifications().initializeFCMNotifications(context);
     }
 

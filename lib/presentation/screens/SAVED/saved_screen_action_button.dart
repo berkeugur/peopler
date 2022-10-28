@@ -23,6 +23,10 @@ Widget actionButton(context, index, showWidgetsKeySaved) {
 
   Size _size = MediaQuery.of(context).size;
 
+  if(UserBloc.entitlement == SubscriptionTypes.premium) {
+    return _baglantiKurActive(_mode, context, _savedBloc, index, showWidgetsKeySaved, _firestoreDBServiceUsers, _sendNotificationService, _size);
+  }
+
   if (_savedBloc.allRequestList[index].isCountdownFinished == false) {
     return _baglantiKurNotActive(_mode, _size);
   } else {

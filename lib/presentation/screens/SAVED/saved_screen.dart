@@ -10,7 +10,9 @@ import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_action_button.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_time_text.dart';
+import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
+import '../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
@@ -39,7 +41,6 @@ class _SavedScreenState extends State<SavedScreen> {
   void initState() {
     _themeCubit = BlocProvider.of<ThemeCubit>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
-    _savedBloc.add(GetInitialSavedUsersEvent(myUserID: UserBloc.user!.userID));
     super.initState();
   }
 
@@ -433,7 +434,7 @@ class _SavedScreenState extends State<SavedScreen> {
                         child: actionButton(context, index, showWidgetsKeySaved),
                       ),
                     ),
-                    timeText(context, index),
+                    UserBloc.entitlement != SubscriptionTypes.premium ? timeText(context, index) : const SizedBox.shrink(),
                   ],
                 ),
               ),
