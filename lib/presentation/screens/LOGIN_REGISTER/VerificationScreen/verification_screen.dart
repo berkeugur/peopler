@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../core/constants/navigation/navigation_constants.dart';
+import '../../../../core/system_ui_service.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
@@ -33,6 +34,9 @@ class VerificationScreen extends StatelessWidget {
                 final LocationRepository _locationRepository = locator<LocationRepository>();
                 LocationPermission _permission = await _locationRepository.checkPermissions();
                 if (_permission == LocationPermission.always) {
+                  /// Set theme mode before Home Screen
+                  SystemUIService().setSystemUIforThemeMode();
+
                   Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                 } else {
                   Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);

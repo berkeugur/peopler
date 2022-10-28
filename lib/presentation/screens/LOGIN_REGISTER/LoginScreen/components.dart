@@ -9,6 +9,7 @@ import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
 
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../core/system_ui_service.dart';
 import '../../../../data/repository/connectivity_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
@@ -39,6 +40,9 @@ Center signInButton(context) {
       bloc: _userBloc,
       listener: (context, UserState state) {
         if (state is SignedInState) {
+          /// Set theme mode before Home Screen
+          SystemUIService().setSystemUIforThemeMode();
+
           Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
         } else if (state is SignedInNotVerifiedState) {
           Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);

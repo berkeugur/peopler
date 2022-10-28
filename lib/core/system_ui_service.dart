@@ -4,6 +4,7 @@ import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functio
 
 class SystemUIService {
   setSystemUIforThemeMode() async {
+    /// Dark Mode
     if (Mode.isEnableDarkMode) {
       printf("setSystemUIforThemeMode Dark");
       SystemChrome.setSystemUIOverlayStyle(
@@ -17,17 +18,19 @@ class SystemUIService {
           //statusBarIconBrightness: Brightness.light,
         ),
       );
-    } else {
-      printf("setSystemUIforThemeMode Light");
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.dark.copyWith(
-          systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarColor: const Color(0xFFFFFFFF),
-          systemNavigationBarColor: const Color(0xFFFFFFFF),
-          statusBarIconBrightness: Brightness.dark,
-        ),
-      );
+      return;
     }
+
+    /// Light Mode
+    printf("setSystemUIforThemeMode Light");
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: const Color(0xFFFFFFFF),
+        systemNavigationBarColor: const Color(0xFFFFFFFF),
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
   }
 
   setSystemUIForBlue() async {

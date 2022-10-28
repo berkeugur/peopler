@@ -62,95 +62,115 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
       return ValueListenableBuilder(
           valueListenable: setTheme,
           builder: (context, x, y) {
-            return Container(
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
-              padding: widget.index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
-              decoration: BoxDecoration(
-                boxShadow: <BoxShadow>[
-                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
-                ],
-                color: _mode.homeScreenFeedBackgroundColor(),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildFeedScreenFeedUserPhoto(context),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width > 600 ? 600 - 90 : MediaQuery.of(context).size.width - 90,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 0,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildFeedScreenDisplayName(),
-                                    _buildFeedScreenNumberOfConnections(widget.myFeed.numberOfConnections),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID) || (UserBloc.user == null)
-                                        ? const SizedBox.shrink()
-                                        : IconButton(
-                                            onPressed: () {
-                                              tripleDotOnPressed(
-                                                context,
-                                                widget.myFeed.feedID,
-                                                widget.myFeed.feedExplanation,
-                                                widget.myFeed.userID,
-                                                widget.myFeed.userDisplayName,
-                                                widget.myFeed.userGender,
-                                                widget.myFeed.createdAt,
-                                                widget.myFeed.userPhotoUrl,
-                                                _controller,
-                                              );
-                                            },
-                                            icon: Icon(
-                                              Icons.more_vert_outlined,
-                                              color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
-                                              size: 25,
-                                            ),
-                                          )
-                                  ],
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            _buildFeedScreenExplanation(),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.15 : 600 * 0.15),
-                          child: BlocProvider<LikedBloc>(
-                              create: (context) => _likedBloc,
-                              child: _buildLikeDislikeIcons(
-                                context,
-                                widget.myFeed.feedID,
-                              )),
-                        )
-                      ],
+            return InkWell(
+                onTap: () {
+                  if (UserBloc.user == null) {
+                    showYouNeedToLogin(context);
+                    return;
+                  }
+
+                  if (UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
+                    return;
+                  }
+
+                  if (widget.myFeed.userID != UserBloc.user!.userID) {
+                    openOthersProfile(context, widget.myFeed.userID, SendRequestButtonStatus.connect);
+                  } else {
+                    FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+                    _homeScreen.currentTab = TabItem.profile;
+                    _homeScreen.changeFloatingActionButtonEvent();
+                  }
+                },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
+                padding: widget.index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                decoration: BoxDecoration(
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                  ],
+                  color: _mode.homeScreenFeedBackgroundColor(),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildFeedScreenFeedUserPhoto(context),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width > 600 ? 600 - 90 : MediaQuery.of(context).size.width - 90,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 0,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      _buildFeedScreenDisplayName(),
+                                      _buildFeedScreenNumberOfConnections(widget.myFeed.numberOfConnections),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID) || (UserBloc.user == null)
+                                          ? const SizedBox.shrink()
+                                          : IconButton(
+                                              onPressed: () {
+                                                tripleDotOnPressed(
+                                                  context,
+                                                  widget.myFeed.feedID,
+                                                  widget.myFeed.feedExplanation,
+                                                  widget.myFeed.userID,
+                                                  widget.myFeed.userDisplayName,
+                                                  widget.myFeed.userGender,
+                                                  widget.myFeed.createdAt,
+                                                  widget.myFeed.userPhotoUrl,
+                                                  _controller,
+                                                );
+                                              },
+                                              icon: Icon(
+                                                Icons.more_vert_outlined,
+                                                color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
+                                                size: 25,
+                                              ),
+                                            )
+                                    ],
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              _buildFeedScreenExplanation(),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.15 : 600 * 0.15),
+                            child: BlocProvider<LikedBloc>(
+                                create: (context) => _likedBloc,
+                                child: _buildLikeDislikeIcons(
+                                  context,
+                                  widget.myFeed.feedID,
+                                )),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           });
@@ -308,35 +328,15 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
         height: 60,
         width: 60,
         margin: const EdgeInsets.only(right: 10),
-        child: InkWell(
-          onTap: () {
-            if (UserBloc.user == null) {
-              showYouNeedToLogin(context);
-              return;
-            }
-
-            if (UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
-              return;
-            }
-
-            if (widget.myFeed.userID != UserBloc.user!.userID) {
-              openOthersProfile(context, widget.myFeed.userID, SendRequestButtonStatus.connect);
-            } else {
-              FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-              _homeScreen.currentTab = TabItem.profile;
-              _homeScreen.changeFloatingActionButtonEvent();
-            }
-          },
-          child: CachedNetworkImage(
-            imageUrl: widget.myFeed.userPhotoUrl,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-              ),
+        child: CachedNetworkImage(
+          imageUrl: widget.myFeed.userPhotoUrl,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
             ),
           ),
         )

@@ -9,6 +9,7 @@ import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../core/system_ui_service.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 
@@ -82,6 +83,9 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                     onTap: () async {
                       final LocationRepository _locationRepository = locator<LocationRepository>();
                       _locationRepository.openPermissionSettings();
+
+                      /// Set theme mode before Home Screen
+                      SystemUIService().setSystemUIforThemeMode();
 
                       /// We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
                       await Future.delayed(const Duration(seconds: 3));

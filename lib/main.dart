@@ -11,7 +11,6 @@ import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
 import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/router/router.dart';
 import 'business_logic/blocs/ChatBloc/chat_bloc.dart';
 import 'business_logic/blocs/CityBloc/city_bloc.dart';
@@ -35,13 +34,9 @@ void main() async {
   await FirebaseMessaging.instance.requestPermission();
 
   await setupLocator();
-  await initializationSplash(null);
   runApp(MyApp());
 }
 
-Future<void> initializationSplash(BuildContext? context) async {
-  Future.delayed(Duration.zero);
-}
 
 class MyApp extends StatelessWidget {
   final LoginRouter _loginRouter = LoginRouter();
@@ -51,7 +46,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemUIService().setSystemUIforThemeMode();
     return ValueListenableBuilder(
       valueListenable: setTheme,
       builder: (context, x, y) {
