@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
@@ -10,16 +9,13 @@ import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_action_button.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_time_text.dart';
-import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_header.dart';
-
 import '../PROFILE/OthersProfile/functions.dart';
-import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({Key? key}) : super(key: key);
@@ -41,6 +37,7 @@ class _SavedScreenState extends State<SavedScreen> {
   void initState() {
     _themeCubit = BlocProvider.of<ThemeCubit>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
+    _savedBloc.add(GetInitialSavedUsersEvent(myUserID: UserBloc.user!.userID));
     super.initState();
   }
 
