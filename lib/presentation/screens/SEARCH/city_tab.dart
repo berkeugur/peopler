@@ -468,6 +468,10 @@ class CityTabState extends State<CityTab> {
                                   return;
                                 }
 
+                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest == 1) {
+                                  showNumOfConnectionRequestsConsumed(context);
+                                }
+
                                 final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
                                 final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 

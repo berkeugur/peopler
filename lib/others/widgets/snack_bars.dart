@@ -48,7 +48,7 @@ showNumOfConnectionRequestsConsumed(BuildContext context) {
 }
 
 showRestNumOfConnectionRequests(BuildContext context) {
-  if (WidgetVisibility.isshowRestNumOfConnectionRequestsVisiable) {
+  if (WidgetVisibility.isshowRestNumOfConnectionRequestsVisible) {
     SnackBars(context: context).simple("Kalan istek gönderme hakkınız ${UserBloc.user!.numOfSendRequest - 1}");
     printf("Kalan istek gönderme hakkınız ${UserBloc.user!.numOfSendRequest - 1}");
   }

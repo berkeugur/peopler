@@ -49,6 +49,8 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                   return _buildSavedFAB(context);
                 } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
                   return _buildSavedFAB(context);
+                } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
+                  return _buildSavedFAB(context);
                 } else if (_homeScreen.currentTab == TabItem.chat && _homeScreen.currentScreen[TabItem.chat] == ScreenItem.chatScreen) {
                   return _buildSavedFAB(context);
                 } else if (_homeScreen.currentTab == TabItem.profile && _homeScreen.currentScreen[TabItem.profile] == ScreenItem.profileScreen) {

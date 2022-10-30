@@ -405,6 +405,10 @@ class ProfileScreenComponentsOthersProfile {
           return;
         }
 
+        if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest == 1) {
+          showNumOfConnectionRequestsConsumed(context);
+        }
+
         OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
         _otherUserBloc.add(TrigStatusEvent(status: SendRequestButtonStatus.requestSent));
 

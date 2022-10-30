@@ -52,6 +52,10 @@ Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, s
           return;
         }
 
+        if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest == 1) {
+          showNumOfConnectionRequestsConsumed(context);
+        }
+
         String _requestUserID = _savedBloc.allRequestList[index].userID;
         _savedBloc.add(ClickSendRequestButtonEvent(savedUser: _savedBloc.allRequestList[index], myUser: UserBloc.user!));
         _savedBloc.allRequestList.removeWhere((element) => element.userID == _requestUserID);
