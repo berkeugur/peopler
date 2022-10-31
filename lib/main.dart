@@ -40,6 +40,7 @@ void main() async {
   await setupLocator();
 
   // await fakeUserCreator();
+  // await updateFakeUserPhoto();
 
   runApp(MyApp());
 }
@@ -103,48 +104,48 @@ class MyApp extends StatelessWidget {
 }
 
 
-Future<void> fakeUserCreator() async {
-  /// Create fake users
-  List<String> displayName = [
-    'Sevgi',
-    'Ceyda',
-    'Tuba',
-    'Ada',
-    'Aleida',
-    'Aleyna',
-    'Joanna',
-    'Emine',
-    'Ayça',
-    'Sıla',
-    'Şeyma',
-    'Güneş',
-    'Selin',
-    'Melis',
-    'Zeynep',
-    'Pınar',
-    'Esra',
-    'Ülkü',
-    'Çağla',
-    'Nil',
-    'Beyza',
-    'Melek',
-    'Betül',
-    'Didem',
-    'Elif',
-    'Başak',
-    'Ilgın',
-    'Dennis',
-    'Damla',
-    'Nisa',
-    'Gece',
-    'Yasemin',
-    'Birgün',
-    'Buse',
-    'Semiha',
-    'Buket',
-  ];
 
-  List<String> biography = [
+
+List<String> displayName = [
+  'Sevgi',
+  'Ceyda',
+  'Tuba',
+  'Ada',
+  'Aleida',
+  'Aleyna',
+  'Joanna',
+  'Emine',
+  'Ayça',
+  'Sıla',
+  'Şeyma',
+  'Güneş',
+  'Selin',
+  'Melis',
+  'Zeynep',
+  'Pınar',
+  'Esra',
+  'Ülkü',
+  'Çağla',
+  'Nil',
+  'Beyza',
+  'Melek',
+  'Betül',
+  'Didem',
+  'Elif',
+  'Başak',
+  'Ilgın',
+  'Dennis',
+  'Damla',
+  'Nisa',
+  'Gece',
+  'Yasemin',
+  'Birgün',
+  'Buse',
+  'Semiha',
+  'Buket',
+];
+
+List<String> biography = [
   'nothing special',
   '3 kedim var sürekli konsere gidiyorum',
   'Passiforalı çaya bayılırım',
@@ -181,48 +182,60 @@ Future<void> fakeUserCreator() async {
   'sociology',
   'o kız',
   'boğaziçi zort',
-  ];
-
-  List<String> profilePhoto = [
-'1gL3Pb8shAcFCn3QyDW58jV5U3_vucgFA',
-'1GcPGUjS_9gyilgcLiZup8LOlLWZsvNt9',
-'1nO4EqAcAEx8OSjh1vkZL2LTyu7FKgVEq',
-'1KiofiYhrwJ7Sd-EZD2NI-8K27f80YfEO',
-'1KVo_G6vTGR5n5Qpw396SR_Hv6AVo16oK',
-'1__mdE3DAVfU2XBfIM4kJXP3Gz_vdPRw9',
-'1naoHFb8-Q7nfGASc_1D60K8p6F00nMtp',
-'14YxQwoBFM7Ss-whl4qDVFWCQk5gnMLyL',
-'1THCWPKkIjmiETIuLVJvCOONoHTe37tHt',
-'1kYcIVg6x3-OezLYhQrzZejjuqutkUsmM',
-'1rCnilAboUX0HZDCdh_HZijftGWctNYKy',
-'1l3-FQ8UgFSyBJxt2F1vWNLChUfczi3wI',
-'18gViMkEHicD2T0HxKsbjhCb7s3qNUqy4',
-'1CRuL49Qr3Y99yR4-tlqxI5XOwoL5IQQu',
-'1YWmjb9O5dluPWQyOndml83EsBBZdX-T1',
-'1Js-JIHUzWFEQPnKG7UGRxD4vrRYY6S8R',
-'1FpMCyjN1qXzlzRbdCf79aRCebHz3WQdd',
-'1chwrGKBoSMWuIAJqWfKBLZh1QqB0eMue',
-'1CFnziKbJnnzDMuksGadTG4ePsPStM-27',
-'1VeapAXM-OdIq-DfWKj4_22spAFIVTBW9',
-'1jzXEp30G5Fmutqj1kItb6nVsxpBd8-md',
-'1R23niZ9Ly4n2A5NJkz1gkQAeExLC4uv2',
-'1O_OE4yrEVXItROd1ExJVVNSM3c9JpAtC',
-'1SQw3LUXmILtRsgXUS1b9K6Ln2yn-G6qO',
-'19WZlqE02xEbmio6_gtXaeb4dHcENa1gy',
-'1Ean3M_Ifly_TgcL3rEQbQXvFxAh8HPe1',
-'1MfgbKBjFrGGktAbOl9ik3Fo7T8EwELRc',
-'1FKm0OqCe1jDzlwXtAFwq6MqH-9Aj4gXo',
-'1ZKwaXyrQyBiDHtvrlXk-En_gtZgerFzL',
-'1sKmtjPbr_8AtnXlUOnjoVKfouaK29O0q',
-'1uzp0rErtyNgL650rw2gSGNr2hMvZAJ0w',
-'1UbiqMKUcd63BGO4BWzlpDq9zzGRexdK3',
-'1Hh1p6W9OnrY4Q3tjVl-71TBbFr7_6Nqk',
-'1t-2DOkluVkwDU0ZjQ3_dPfKTCaxU9NWM',
-'15JLNezREptTwbYRPG8EsJDLOSiNo3Ui6',
-'18sDb8tg16LTvFBtjb4hyHuueqvjP4mEw',
-
 ];
 
+List<String> profilePhoto = [
+  '1gL3Pb8shAcFCn3QyDW58jV5U3_vucgFA',
+  '1GcPGUjS_9gyilgcLiZup8LOlLWZsvNt9',
+  '1nO4EqAcAEx8OSjh1vkZL2LTyu7FKgVEq',
+  '1KiofiYhrwJ7Sd-EZD2NI-8K27f80YfEO',
+  '1KVo_G6vTGR5n5Qpw396SR_Hv6AVo16oK',
+  '1__mdE3DAVfU2XBfIM4kJXP3Gz_vdPRw9',
+  '1naoHFb8-Q7nfGASc_1D60K8p6F00nMtp',
+  '14YxQwoBFM7Ss-whl4qDVFWCQk5gnMLyL',
+  '1THCWPKkIjmiETIuLVJvCOONoHTe37tHt',
+  '1kYcIVg6x3-OezLYhQrzZejjuqutkUsmM',
+  '1rCnilAboUX0HZDCdh_HZijftGWctNYKy',
+  '1l3-FQ8UgFSyBJxt2F1vWNLChUfczi3wI',
+  '18gViMkEHicD2T0HxKsbjhCb7s3qNUqy4',
+  '1CRuL49Qr3Y99yR4-tlqxI5XOwoL5IQQu',
+  '1YWmjb9O5dluPWQyOndml83EsBBZdX-T1',
+  '1Js-JIHUzWFEQPnKG7UGRxD4vrRYY6S8R',
+  '1FpMCyjN1qXzlzRbdCf79aRCebHz3WQdd',
+  '1chwrGKBoSMWuIAJqWfKBLZh1QqB0eMue',
+  '1CFnziKbJnnzDMuksGadTG4ePsPStM-27',
+  '1VeapAXM-OdIq-DfWKj4_22spAFIVTBW9',
+  '1jzXEp30G5Fmutqj1kItb6nVsxpBd8-md',
+  '1R23niZ9Ly4n2A5NJkz1gkQAeExLC4uv2',
+  '1O_OE4yrEVXItROd1ExJVVNSM3c9JpAtC',
+  '1SQw3LUXmILtRsgXUS1b9K6Ln2yn-G6qO',
+  '19WZlqE02xEbmio6_gtXaeb4dHcENa1gy',
+  '1Ean3M_Ifly_TgcL3rEQbQXvFxAh8HPe1',
+  '1MfgbKBjFrGGktAbOl9ik3Fo7T8EwELRc',
+  '1FKm0OqCe1jDzlwXtAFwq6MqH-9Aj4gXo',
+  '1ZKwaXyrQyBiDHtvrlXk-En_gtZgerFzL',
+  '1sKmtjPbr_8AtnXlUOnjoVKfouaK29O0q',
+  '1uzp0rErtyNgL650rw2gSGNr2hMvZAJ0w',
+  '1UbiqMKUcd63BGO4BWzlpDq9zzGRexdK3',
+  '1Hh1p6W9OnrY4Q3tjVl-71TBbFr7_6Nqk',
+  '1t-2DOkluVkwDU0ZjQ3_dPfKTCaxU9NWM',
+  '15JLNezREptTwbYRPG8EsJDLOSiNo3Ui6',
+  '18sDb8tg16LTvFBtjb4hyHuueqvjP4mEw',
+];
+
+
+Future<void> updateFakeUserPhoto() async {
+  FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
+
+  for(int i=0; i<36; i++) {
+    String userID = 'fake' + i.toString();
+    String profileURL = 'https://lh3.google.com/u/0/d/' + profilePhoto[i];
+
+    await _fu.updateProfilePhoto(userID, profileURL);
+  }
+}
+
+Future<void> fakeUserCreator() async {
   FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
   FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
 
@@ -233,12 +246,9 @@ Future<void> fakeUserCreator() async {
     theUser.gender = 'Kadın';
     theUser.displayName = displayName[i];
     theUser.biography = biography[i];
-    theUser.profileURL = 'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
+    theUser.profileURL = 'https://lh3.google.com/u/0/d/' + profilePhoto[i];
 
     await _fu.saveUser(theUser);
     await _fl.setUserInRegion(theUser.userID, '3984700,3281500');
   }
-
-
-  //
 }
