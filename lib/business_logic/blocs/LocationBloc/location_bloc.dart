@@ -95,7 +95,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     /******************************************************************************************/
     on<GetInitialSearchUsersEvent>((event, emit) async {
       try {
-        while(LocationUpdateBloc.firstUpdate == false) {}
+        while(LocationUpdateBloc.firstUpdate == false) {
+          await Future.delayed(Duration(seconds: 1));
+        }
 
         int _latitude;
         int _longitude;
