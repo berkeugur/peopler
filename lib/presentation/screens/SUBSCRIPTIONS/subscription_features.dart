@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
+import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 
 class SubscriptionFeatures {
   static List<Widget> plusFeatures = [];
@@ -11,21 +12,21 @@ class SubscriptionFeatures {
   void init(tabController) {
     premiumFeatures = [
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon5.svg",
+        imgPath: "assets/premiumfeatures_icons/premium1.png",
         title: "Bağlantı İsteğini Hızlandır",
         subtitle: "Kaydettiğin kullanıcılara bağlantı isteği göndermek için bekleme!",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.premium,
       ),
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon6.svg",
+        imgPath: "assets/premiumfeatures_icons/premium2.png",
         title: "Şehir Değiştir",
         subtitle: "Farklı şehirdeki insanlarla da bağlantıya geç",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.premium,
       ),
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon7.svg",
+        imgPath: "assets/premiumfeatures_icons/premium3.png",
         title: "Peopler Premiuma Geç",
         subtitle: "Sınırsız Bağlantı, Geri Alma, Intro Mesaj, Profiline Bakanları Gör ve çok daha fazlası*",
         tabController: tabController,
@@ -35,28 +36,28 @@ class SubscriptionFeatures {
 
     plusFeatures = [
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon1.svg",
+        imgPath: "assets/premiumfeatures_icons/plus1.png",
         title: "Sınırsız Bağlantı İsteği Gönder",
         subtitle: "Etrafında veya şehrindeki insanları kaçırma!",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.plus,
       ),
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon2.svg",
+        imgPath: "assets/premiumfeatures_icons/plus2.png",
         title: "Sildiğin Kullanıcıları Geri Getir",
         subtitle: "Yanlışlıkla sildiğin kullanıcıları geri getir",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.plus,
       ),
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon3.svg",
+        imgPath: "assets/premiumfeatures_icons/plus3.png",
         title: "Intro Mesaj Gönder",
         subtitle: "Bağlantıya geçmediğin kullanıcılara kendini tanıt",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.plus,
       ),
       subscriptionFeatures(
-        imgPath: "assets/premiumfeatures_icons/icon4.svg",
+        imgPath: "assets/premiumfeatures_icons/plus4.png",
         title: "Profiline Bakan Kullanıcıları Gör",
         subtitle: "Profiline tıklayan kullancıları gör",
         tabController: tabController,
@@ -76,30 +77,11 @@ class SubscriptionFeatures {
         const SizedBox(
           height: 10,
         ),
-        SizedBox.square(
-          child: Container(
-            width: 100,
-            height: 100,
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: subscriptionType != SubscriptionFeatures.plusFeatures ? Colors.white : const Color(0xFF0353EF),
-              borderRadius: BorderRadius.circular(999),
-              boxShadow: [
-                BoxShadow(
-                  color: tabController.index == 0 ? const Color(0xFF0353EF).withOpacity(0.5) : Colors.white.withOpacity(0.5),
-                  spreadRadius: 3.5,
-                  blurRadius: 5,
-                  offset: const Offset(0, 0), // changes position of shadow
-                ),
-              ],
-            ),
-            child: SvgPicture.asset(
-              imgPath,
-              width: 100,
-              height: 100,
-              color: subscriptionType == SubscriptionFeatures.plusFeatures ? Colors.white : const Color(0xFF0353EF),
-            ),
-          ),
+        Image.asset(
+          imgPath,
+          height: 100,
+          width: double.infinity,
+          // color: subscriptionType == SubscriptionFeatures.plusFeatures ? Colors.white : const Color(0xFF0353EF),
         ),
         const SizedBox(
           height: 20,
@@ -109,7 +91,7 @@ class SubscriptionFeatures {
           textScaleFactor: 1,
           style: PeoplerTextStyle.normal.copyWith(
             fontSize: 16,
-            color: tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+            color: tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -124,7 +106,7 @@ class SubscriptionFeatures {
             textAlign: TextAlign.center,
             style: PeoplerTextStyle.normal.copyWith(
               fontSize: 14,
-              color: tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+              color: tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
               fontWeight: FontWeight.w400,
             ),
           ),
