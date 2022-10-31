@@ -285,7 +285,7 @@ class Hobby {
           "Müzikaller",
           "Romantizm",
           "Yerli Filmler",
-          "Biyogrofi",
+          "Biyografi",
         ];
 
       case HobbyTypes.collections:

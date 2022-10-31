@@ -699,7 +699,7 @@ class CityTabState extends State<CityTab> {
     }
 
     /// When scroll position distance to bottom is less than load more offset,
-    if (_searchPeopleListControllerCity.position.pixels < _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
+    if (_searchPeopleListControllerCity.position.pixels >= _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
         _searchPeopleListControllerCity.position.userScrollDirection ==  ScrollDirection.reverse) {
       /// If state is UsersLoadedCityState
       if (_cityBloc.state is UsersLoadedCityState) {

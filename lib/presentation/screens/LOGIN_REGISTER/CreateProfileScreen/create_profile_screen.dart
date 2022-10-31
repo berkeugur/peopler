@@ -222,6 +222,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                 UserBloc.user?.profileURL = downloadLink;
               }
 
+              _userBloc.add(updateUserInfoForLinkedInEvent());
+
               final LocationRepository _locationRepository = locator<LocationRepository>();
               LocationPermission _permission = await _locationRepository.checkPermissions();
               if (_permission == LocationPermission.always) {
@@ -240,7 +242,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           } else if (UserBloc.user?.city == "" && bioController.text.isNotEmpty) {
             SnackBars(context: context).simple("Şehir seçmeniz gerekiyor.");
           } else if (UserBloc.user?.city != "" && bioController.text.isEmpty) {
-            SnackBars(context: context).simple("Biyogrofi alanını doldurunuz!");
+            SnackBars(context: context).simple("Biyografi alanını doldurunuz!");
           }
         },
         child: Text(
