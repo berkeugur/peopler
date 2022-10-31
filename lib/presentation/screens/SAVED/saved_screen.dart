@@ -126,6 +126,7 @@ class _SavedScreenState extends State<SavedScreen> {
       height: 521,
       child: EmptyList(
         emptyListType: EmptyListType.saved,
+        isSVG: true,
       ),
     );
   }

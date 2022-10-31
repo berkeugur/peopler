@@ -110,6 +110,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
   EmptyList _noNotificationsTransmittedExistsWidget() {
     return EmptyList(
       emptyListType: EmptyListType.outgoingRequest,
+      isSVG: true,
     );
   }
 

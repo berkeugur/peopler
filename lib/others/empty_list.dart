@@ -15,6 +15,7 @@ class EmptyListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const EmptyList(
       emptyListType: EmptyListType.outgoingRequest,
+      isSVG: true,
     );
   }
 }
@@ -204,7 +205,8 @@ String _explanation({required EmptyListType emptyListType}) {
 
 class EmptyList extends StatelessWidget {
   final EmptyListType emptyListType;
-  const EmptyList({Key? key, required this.emptyListType}) : super(key: key);
+  final bool isSVG;
+  const EmptyList({Key? key, required this.emptyListType, required this.isSVG}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -224,12 +226,19 @@ class EmptyList extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.all(20),
-                    child: SvgPicture.asset(
-                      "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".svg",
-                      fit: BoxFit.contain,
-                      width: 220,
-                      height: 220,
-                    ),
+                    child: isSVG
+                        ? SvgPicture.asset(
+                            "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".svg",
+                            fit: BoxFit.contain,
+                            width: 220,
+                            height: 220,
+                          )
+                        : Image.asset(
+                            "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".png",
+                            fit: BoxFit.contain,
+                            width: 220,
+                            height: 220,
+                          ),
                   ),
                   Text(
                     _title(emptyListType: emptyListType),

@@ -158,6 +158,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
   EmptyList _noNotificationsReceivedExistsWidget() {
     return const EmptyList(
       emptyListType: EmptyListType.incomingRequest,
+      isSVG: true,
     );
   }
 

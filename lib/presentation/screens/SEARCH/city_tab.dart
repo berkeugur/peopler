@@ -174,6 +174,7 @@ class CityTabState extends State<CityTab> {
   EmptyList _noUserExistsWidget() {
     return const EmptyList(
       emptyListType: EmptyListType.citySearch,
+      isSVG: false,
     );
   }
 

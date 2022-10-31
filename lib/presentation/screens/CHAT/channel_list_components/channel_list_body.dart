@@ -186,6 +186,7 @@ class ChannelListBodyState extends State<ChannelListBody> {
   EmptyList _noChatExistsWidget() {
     return const EmptyList(
       emptyListType: EmptyListType.emptyChannelList,
+      isSVG: false,
     );
   }
 

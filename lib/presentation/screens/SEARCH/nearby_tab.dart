@@ -124,6 +124,7 @@ class _NearbyTabState extends State<NearbyTab> {
                                   } else if (state is UsersNotExistSearchState) {
                                     return const EmptyList(
                                       emptyListType: EmptyListType.nearby,
+                                      isSVG: false,
                                     );
                                   } else if (state is UsersLoadedSearchState) {
                                     return _showUsers(widget.size);

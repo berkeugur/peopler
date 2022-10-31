@@ -355,6 +355,7 @@ class FeedScreenState extends State<FeedScreen> {
   EmptyList _noFeedExistsWidget() {
     return const EmptyList(
       emptyListType: EmptyListType.emptyFeed,
+      isSVG: true,
     );
   }
 }
