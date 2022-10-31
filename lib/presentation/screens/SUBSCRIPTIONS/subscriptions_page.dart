@@ -337,7 +337,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -362,9 +363,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    style: TextStyle(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -470,7 +471,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -495,9 +497,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    style: TextStyle(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -587,7 +589,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -807,7 +810,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -832,7 +836,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
@@ -940,7 +944,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -965,7 +970,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
                     style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
@@ -1056,7 +1061,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
