@@ -15,60 +15,54 @@ class BottomButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-        valueListenable: setTheme,
-        builder: (context, x, y) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: currentIndex == dataLength - 1
-                ? [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 32,
-                      child: Center(
-                        child: Container(
-                          padding: const EdgeInsets.fromLTRB(40, 3, 40, 3),
-                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
-                          child: TextButton(
-                            child: Text(
-                              "BAŞLAYALIM",
-                              textAlign: TextAlign.center,
-                              textScaleFactor: 1,
-                              style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
-                            },
-                            style: TextButton.styleFrom(
-                              primary: const Color(0xFFFFFFFF),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
-                              textStyle: const TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.normal),
-                            ),
-                          ),
-                        ),
+      valueListenable: setTheme,
+      builder: (context, x, y) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            currentIndex == dataLength - 1
+                ? Container(
+                    padding: const EdgeInsets.fromLTRB(40, 3, 40, 3),
+                    decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
+                    child: TextButton(
+                      child: Text(
+                        "BAŞLAYALIM",
+                        textAlign: TextAlign.center,
+                        textScaleFactor: 1,
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                    )
-                  ]
-                : [
-                    TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
                       },
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          "ATLA",
-                          textScaleFactor: 1,
-                          style: PeoplerTextStyle.normal.copyWith(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
-                        ),
+                        primary: const Color(0xFFFFFFFF),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
+                        textStyle: const TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.normal),
                       ),
                     ),
-                  ],
-          );
-        });
+                  )
+                : TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(NavigationConstants.WELCOME);
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text(
+                        "ATLA",
+                        textScaleFactor: 1,
+                        style: PeoplerTextStyle.normal.copyWith(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
+                      ),
+                    ),
+                  ),
+          ],
+        );
+      },
+    );
   }
 }

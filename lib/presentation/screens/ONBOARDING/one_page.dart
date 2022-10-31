@@ -18,8 +18,13 @@ class ExplanationPage extends StatelessWidget {
       child: Column(
         children: [
           Container(
-              margin: EdgeInsets.only(top: ResponsiveSize().ob2(context), bottom: 16),
-              child: SvgPicture.asset(screen.localImageSrc, height: MediaQuery.of(context).size.height * 0.33, alignment: Alignment.center)),
+            margin: EdgeInsets.only(top: ResponsiveSize().ob2(context), bottom: 16),
+            child: Image.asset(
+              screen.localImageSrc,
+              height: MediaQuery.of(context).size.height * 0.33,
+              alignment: Alignment.center,
+            ),
+          ),
           Expanded(
             flex: 2,
             child: Column(
