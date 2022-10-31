@@ -56,7 +56,7 @@ class CityTab extends StatefulWidget {
 }
 
 class CityTabState extends State<CityTab> {
-  final ScrollController _searchPeopleListControllerCity = ScrollController();
+  late ScrollController _searchPeopleListControllerCity;
 
   late final CityBloc _cityBloc;
   late final SavedBloc _savedBloc;
@@ -65,14 +65,27 @@ class CityTabState extends State<CityTab> {
 
   final Mode _mode = locator<Mode>();
 
+  double? loadMoreOffset;
+  double? cardHeight;
+
   @override
   void initState() {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
-    CityBloc.allUserList.forEach((element) {
-      print(element.profileURL.toString());
-    });
+
+    _searchPeopleListControllerCity = ScrollController();
+
     super.initState();
+  }
+
+  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
+  // variables are initialized in didChangeDependencies method running after initState but before build method.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    cardHeight = MediaQuery.of(context).size.height / 2;
+    loadMoreOffset = cardHeight! * 5;
   }
 
   @override
@@ -92,21 +105,7 @@ class CityTabState extends State<CityTab> {
               padding: const EdgeInsets.only(top: 0.0),
               child: SizedBox(
                 child: NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification scrollNotification) {
-                    if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
-                      if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-                        Variables.animatedSearchPeopleHeaderHeight.value = 80;
-                        // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-                        // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-                      }
-                    } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
-                      if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-                        Variables.animatedSearchPeopleHeaderHeight.value = 0;
-                        // print("reverse $ach");
-                      }
-                    }
-                    return true;
-                  },
+                  onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                   child: Container(
                     color: Mode().homeScreenScaffoldBackgroundColor(),
                     child: RefreshIndicator(
@@ -591,4 +590,43 @@ class CityTabState extends State<CityTab> {
       ),
     );
   }
+
+
+  bool _listScrollListener() {
+    if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
+      if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
+        Variables.animatedSearchPeopleHeaderHeight.value = 80;
+        // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
+        // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
+      }
+    } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
+      if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
+        Variables.animatedSearchPeopleHeaderHeight.value = 0;
+        // print("reverse $ach");
+      }
+    }
+
+    /// When scroll position distance to bottom is less than load more offset,
+    if (_searchPeopleListControllerCity.position.pixels >= _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
+        _searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
+      /// If state is FeedsLoadedState
+      if (_cityBloc.state is UsersLoadedCityState1 || _cityBloc.state is UsersLoadedCityState2) {
+        _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
+      }
+    }
+
+    /// If scroll position exceed max scroll extent (bottom),
+    if (_searchPeopleListControllerCity.offset > _searchPeopleListControllerCity.position.maxScrollExtent && !_searchPeopleListControllerCity.position.outOfRange) {
+      /// If state is NoMoreEventsState
+      if (_cityBloc.state is NoMoreUsersCityState) {
+        _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
+      }
+    }
+
+    return true;
+  }
+
+
+
+
 }

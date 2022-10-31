@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
@@ -58,13 +56,33 @@ class NearbyTab extends StatefulWidget {
 }
 
 class _NearbyTabState extends State<NearbyTab> {
-  final ScrollController _searchPeopleListControllerNearby = ScrollController();
+  late ScrollController _searchPeopleListControllerNearby;
 
   late LocationBloc _locationBloc;
   late LocationPermissionBloc _locationPermissionBloc;
   late SavedBloc _savedBloc;
 
   final Mode _mode = locator<Mode>();
+
+  double? loadMoreOffset;
+  double? cardHeight;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchPeopleListControllerNearby = ScrollController();
+  }
+
+  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
+  // variables are initialized in didChangeDependencies method running after initState but before build method.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    cardHeight = MediaQuery.of(context).size.height / 2;
+    loadMoreOffset = cardHeight! * 5;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,21 +99,7 @@ class _NearbyTabState extends State<NearbyTab> {
             padding: const EdgeInsets.only(top: 10.0),
             child: SizedBox(
               child: NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollNotification) {
-                  if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
-                    if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-                      Variables.animatedSearchPeopleHeaderHeight.value = 80;
-                      // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-                      // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-                    }
-                  } else if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
-                    if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-                      Variables.animatedSearchPeopleHeaderHeight.value = 0;
-                      // print("reverse $ach");
-                    }
-                  }
-                  return true;
-                },
+                onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                 child: RefreshIndicator(
                   color: const Color(0xFF0353EF),
                   displacement: 80.0,
@@ -725,5 +729,40 @@ class _NearbyTabState extends State<NearbyTab> {
         height: _size,
       ),
     );
+  }
+
+  bool _listScrollListener() {
+
+      if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
+          Variables.animatedSearchPeopleHeaderHeight.value = 80;
+          // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
+          // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
+        }
+      } else if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
+          Variables.animatedSearchPeopleHeaderHeight.value = 0;
+          // print("reverse $ach");
+        }
+      }
+
+    /// When scroll position distance to bottom is less than load more offset,
+    if (_searchPeopleListControllerNearby.position.pixels >= _searchPeopleListControllerNearby.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
+        _searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
+      /// If state is FeedsLoadedState
+      if (_locationBloc.state is UsersLoadedSearchState) {
+        _locationBloc.add(GetMoreSearchUsersEvent());
+      }
+    }
+
+    /// If scroll position exceed max scroll extent (bottom),
+    if (_searchPeopleListControllerNearby.offset > _searchPeopleListControllerNearby.position.maxScrollExtent && !_searchPeopleListControllerNearby.position.outOfRange) {
+      /// If state is NoMoreEventsState
+      if (_locationBloc.state is NoMoreUsersSearchState) {
+        _locationBloc.add(GetMoreSearchUsersEvent());
+      }
+    }
+
+    return true;
   }
 }
