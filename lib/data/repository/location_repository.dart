@@ -20,8 +20,6 @@ class LocationRepository {
   final List<bool> _hasMore = List.filled(9, true);
   final List<String?> _lastUserElement = List.filled(9, null);
 
-  bool _hasMoreCity = true;
-
   /// To reference the different list instances, List of List generated like this.
   /// https://stackoverflow.com/questions/25118921/how-do-i-handle-a-list-of-lists
   final List<List<String>> _userIDsInRegion = List.generate(9, (i) => []);
@@ -238,7 +236,7 @@ class LocationRepository {
         _lastUserElement[i] = null;
         _userIDsInRegion[i].clear();
       }
-    _hasMoreCity = true;
+
     _isAllUsersGotFromRegion = false;
   }
 }

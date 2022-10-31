@@ -9,12 +9,7 @@ class InitialCityState extends CityState {
   List<Object> get props => [];
 }
 
-class UsersLoadedCityState1 extends CityState {
-  @override
-  List<Object> get props => [];
-}
-
-class UsersLoadedCityState2 extends CityState {
+class UsersLoadedCityState extends CityState {
   @override
   List<Object> get props => [];
 }

@@ -65,8 +65,8 @@ class CityTabState extends State<CityTab> {
 
   final Mode _mode = locator<Mode>();
 
-  double? loadMoreOffset;
-  double? cardHeight;
+  late double loadMoreOffset;
+  late double cardHeight;
 
   @override
   void initState() {
@@ -85,7 +85,7 @@ class CityTabState extends State<CityTab> {
     super.didChangeDependencies();
 
     cardHeight = MediaQuery.of(context).size.height / 2;
-    loadMoreOffset = cardHeight! * 5;
+    loadMoreOffset = cardHeight * 2;
   }
 
   @override
@@ -128,9 +128,7 @@ class CityTabState extends State<CityTab> {
                                   return _initialUsersStateWidget();
                                 } else if (state is UsersNotExistCityState) {
                                   return _noUserExistsWidget();
-                                } else if (state is UsersLoadedCityState1) {
-                                  return _showUsers(widget.size);
-                                } else if (state is UsersLoadedCityState2) {
+                                } else if (state is UsersLoadedCityState) {
                                   return _showUsers(widget.size);
                                 } else if (state is NoMoreUsersCityState) {
                                   return _showUsers(widget.size);
@@ -145,7 +143,8 @@ class CityTabState extends State<CityTab> {
                                 bloc: _cityBloc,
                                 builder: (context, state) {
                                   if (state is NewUsersLoadingCityState) {
-                                    return _usersLoadingCircularButton();
+                                    return const SizedBox.shrink();
+                                    // return _usersLoadingCircularButton();
                                   } else {
                                     return const SizedBox.shrink();
                                   }
@@ -610,18 +609,10 @@ class CityTabState extends State<CityTab> {
     }
 
     /// When scroll position distance to bottom is less than load more offset,
-    if (_searchPeopleListControllerCity.position.pixels >= _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
-        _searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
-      /// If state is FeedsLoadedState
-      if (_cityBloc.state is UsersLoadedCityState1 || _cityBloc.state is UsersLoadedCityState2) {
-        _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
-      }
-    }
-
-    /// If scroll position exceed max scroll extent (bottom),
-    if (_searchPeopleListControllerCity.offset > _searchPeopleListControllerCity.position.maxScrollExtent && !_searchPeopleListControllerCity.position.outOfRange) {
-      /// If state is NoMoreEventsState
-      if (_cityBloc.state is NoMoreUsersCityState) {
+    if (_searchPeopleListControllerCity.position.pixels < _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset) &&
+        _searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
+      /// If state is UsersLoadedCityState
+      if (_cityBloc.state is UsersLoadedCityState) {
         _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
       }
     }

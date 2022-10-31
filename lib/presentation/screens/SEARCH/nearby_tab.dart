@@ -751,17 +751,9 @@ class _NearbyTabState extends State<NearbyTab> {
 
     /// When scroll position distance to bottom is less than load more offset,
     if (_searchPeopleListControllerNearby.position.pixels >= _searchPeopleListControllerNearby.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
-        _searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
-      /// If state is FeedsLoadedState
+        _searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
+      /// If state is UsersLoadedSearchState
       if (_locationBloc.state is UsersLoadedSearchState) {
-        _locationBloc.add(GetMoreSearchUsersEvent());
-      }
-    }
-
-    /// If scroll position exceed max scroll extent (bottom),
-    if (_searchPeopleListControllerNearby.offset > _searchPeopleListControllerNearby.position.maxScrollExtent && !_searchPeopleListControllerNearby.position.outOfRange) {
-      /// If state is NoMoreEventsState
-      if (_locationBloc.state is NoMoreUsersSearchState) {
         _locationBloc.add(GetMoreSearchUsersEvent());
       }
     }

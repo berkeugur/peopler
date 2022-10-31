@@ -96,7 +96,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<GetInitialSearchUsersEvent>((event, emit) async {
       try {
         while(LocationUpdateBloc.firstUpdate == false) {
-          await Future.delayed(Duration(seconds: 1));
+          await Future.delayed(const Duration(seconds: 1));
         }
 
         int _latitude;
@@ -176,7 +176,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       if(allUserList.isEmpty) {
         emit(UsersNotExistSearchState());
       } else {
-        emit(NewUsersLoadingSearchState());
         emit(UsersLoadedSearchState());
       }
     });
