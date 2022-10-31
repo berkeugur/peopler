@@ -209,7 +209,7 @@ class LocationRepository {
           _tempUserIDList.addAll(_userIDsInRegion[i].take(PAGINATION_NUM_USERS).toList());
         }
       } else {
-        int startingUserIDIndex = _userIDsInRegion[i].indexOf(_lastUserElement[i]!);
+        int startingUserIDIndex = _userIDsInRegion[i].indexOf(_lastUserElement[i]!) + 1;
         if(_userIDsInRegion[i].length < startingUserIDIndex + PAGINATION_NUM_USERS) {
           _tempUserIDList.addAll(_userIDsInRegion[i].getRange(startingUserIDIndex, _userIDsInRegion[i].length-1));
         } else {

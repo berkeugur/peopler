@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
@@ -24,6 +27,7 @@ import 'business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import 'business_logic/blocs/NotificationReceivedBloc/notification_received_bloc.dart';
 import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
 import 'business_logic/blocs/UserBloc/user_bloc.dart';
+import 'data/repository/user_repository.dart';
 import 'data/services/db/firestore_db_service_users.dart';
 import 'others/locator.dart';
 
@@ -40,7 +44,7 @@ void main() async {
   await setupLocator();
 
   // await fakeUserCreator();
-  // await updateFakeUserPhoto();
+  // await updateAllFakeUserPhotos();
 
   runApp(MyApp());
 }
@@ -224,15 +228,22 @@ List<String> profilePhoto = [
 ];
 
 
-Future<void> updateFakeUserPhoto() async {
-  FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
-
+Future<void> updateAllFakeUserPhotos() async {
   for(int i=0; i<36; i++) {
     String userID = 'fake' + i.toString();
-    String profileURL = 'https://lh3.google.com/u/0/d/' + profilePhoto[i];
+    String profileURL = 'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
 
-    await _fu.updateProfilePhoto(userID, profileURL);
+    await updateFakeUserPhoto(userID, profileURL);
   }
+}
+
+Future<void> updateFakeUserPhoto(String userID, String profileURL) async {
+  final UserRepository _userRepository = locator<UserRepository>();
+
+  File imageFile = await _downloadFile(profileURL);
+
+  String downloadLink = await _userRepository.uploadFile(userID, 'profile_photo', 'profile_photo.png', imageFile);
+  await _userRepository.updateProfilePhoto(userID, downloadLink);
 }
 
 Future<void> fakeUserCreator() async {
@@ -246,9 +257,25 @@ Future<void> fakeUserCreator() async {
     theUser.gender = 'Kadın';
     theUser.displayName = displayName[i];
     theUser.biography = biography[i];
-    theUser.profileURL = 'https://lh3.google.com/u/0/d/' + profilePhoto[i];
+
+    String profileURL = 'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
+    await updateFakeUserPhoto(theUser.userID, profileURL);
 
     await _fu.saveUser(theUser);
     await _fl.setUserInRegion(theUser.userID, '3984700,3281500');
   }
+}
+
+
+Future<File> _downloadFile(String url) async {
+  String filename = "temp";
+
+  var httpClient = HttpClient();
+  var request = await httpClient.getUrl(Uri.parse(url));
+  var response = await request.close();
+  var bytes = await consolidateHttpClientResponseBytes(response);
+  String dir = (await getApplicationDocumentsDirectory()).path;
+  File file = File('$dir/$filename');
+  await file.writeAsBytes(bytes);
+  return file;
 }

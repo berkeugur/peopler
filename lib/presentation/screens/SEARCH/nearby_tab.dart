@@ -616,9 +616,12 @@ class _NearbyTabState extends State<NearbyTab> {
                                     Provider.of<SaveButton>(context, listen: false).saveUser();
                                     await Future.delayed(const Duration(milliseconds: 1500));
 
-                                    String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-                                    _sendNotificationService.sendNotification(
-                                        Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                    String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
+
+                                    if(_token != null) {
+                                      _sendNotificationService.sendNotification(
+                                          Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                    }
 
                                     widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                     widget.showWidgetsKeyCity.currentState?.setState(() {});

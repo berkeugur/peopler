@@ -435,19 +435,21 @@ class ProfileScreenComponentsOthersProfile {
 
         _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
-        String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-        await _sendNotificationService
-            .sendNotification(
-          Strings.sendRequest,
-          _token,
-          "",
-          UserBloc.user!.displayName,
-          UserBloc.user!.profileURL,
-          UserBloc.user!.userID,
-        )
-            .then((value) {
-          setTheme.value = !setTheme.value;
-        });
+        String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
+        if(_token != null) {
+          await _sendNotificationService
+              .sendNotification(
+            Strings.sendRequest,
+            _token,
+            "",
+            UserBloc.user!.displayName,
+            UserBloc.user!.profileURL,
+            UserBloc.user!.userID,
+          )
+              .then((value) {
+            setTheme.value = !setTheme.value;
+          });
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

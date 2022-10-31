@@ -130,10 +130,14 @@ class FirestoreDBServiceUsers {
     }
   }
 
-  Future<String> getToken(String userID) async {
-    DocumentSnapshot _token = await _firebaseDB.doc("tokens/" + userID).get();
-    Map<String, dynamic> _tokenMap = _token.data() as Map<String, dynamic>;
-    return _tokenMap["token"];
+  Future<String?> getToken(String userID) async {
+    try {
+      DocumentSnapshot _token = await _firebaseDB.doc("tokens/" + userID).get();
+      Map<String, dynamic> _tokenMap = _token.data() as Map<String, dynamic>;
+      return _tokenMap["token"];
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<bool> deleteToken(String userID) async {

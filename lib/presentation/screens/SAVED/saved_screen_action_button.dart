@@ -65,9 +65,12 @@ Container _baglantiKurActive(Mode _mode, context, SavedBloc _savedBloc, index, s
           showRestNumOfConnectionRequests(context);
         }
 
-        String _token = await _firestoreDBServiceUsers.getToken(_requestUserID);
-        _sendNotificationService.sendNotification(
-            Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+        String? _token = await _firestoreDBServiceUsers.getToken(_requestUserID);
+
+        if(_token != null) {
+          _sendNotificationService.sendNotification(
+              Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+        }
 
         _savedBloc.add(TrigUserNotExistSavedStateEvent());
       },
