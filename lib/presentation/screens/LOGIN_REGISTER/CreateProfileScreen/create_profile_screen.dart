@@ -13,6 +13,7 @@ import 'package:peopler/others/strings.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import '../../../../core/system_ui_service.dart';
 import '../../../../data/repository/location_repository.dart';
+import '../../../../data/repository/user_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/functions/image_picker_functions.dart';
@@ -212,7 +213,14 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
-              _userBloc.add(updateUserInfoForLinkedInEvent());
+
+              if(image != null) {
+                final UserRepository _userRepository = locator<UserRepository>();
+                String downloadLink =
+                await _userRepository.uploadFile(UserBloc.user!.userID, 'profile_photo', 'profile_photo.png', image!);
+                await _userRepository.updateProfilePhoto(UserBloc.user!.userID, downloadLink);
+                UserBloc.user?.profileURL = downloadLink;
+              }
 
               final LocationRepository _locationRepository = locator<LocationRepository>();
               LocationPermission _permission = await _locationRepository.checkPermissions();
