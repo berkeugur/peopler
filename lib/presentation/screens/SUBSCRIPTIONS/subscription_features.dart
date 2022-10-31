@@ -116,14 +116,17 @@ class SubscriptionFeatures {
         const SizedBox(
           height: 15,
         ),
-        Text(
-          subtitle,
-          textScaleFactor: 1,
-          textAlign: TextAlign.center,
-          style: PeoplerTextStyle.normal.copyWith(
-            fontSize: 14,
-            color: tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-            fontWeight: FontWeight.w400,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Text(
+            subtitle,
+            textScaleFactor: 1,
+            textAlign: TextAlign.center,
+            style: PeoplerTextStyle.normal.copyWith(
+              fontSize: 14,
+              color: tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ],

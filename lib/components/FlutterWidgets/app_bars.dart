@@ -136,13 +136,13 @@ class PeoplerAppBars {
                     onPressed: function,
                     child: Row(
                       children: [
-                        const Icon(Icons.save),
-                        const SizedBox(
-                          width: 4,
-                        ),
                         Text(
                           "kaydet",
-                          style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+                          style: PeoplerTextStyle.normal.copyWith(
+                            color: Mode().homeScreenTitleColor(),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     ),

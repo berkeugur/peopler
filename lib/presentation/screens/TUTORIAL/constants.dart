@@ -13,10 +13,15 @@ class TutorialScreenStrings {
     "Yakınında birileri yoksa düşüncelerini paylaşarak yeni insanların senle bağlantıya geçmesini sağlamak da fena fikir sayılmaz. :) \n\nFeed ekranı üzerinden düşüncelerini paylaşan diğer Peopler kullanıcılarını görüntüleyip direkt bağlantı isteği yollaman mümkün!"
   ];
 
-  static const List<String> localImageSrc = [
+  static const List<String> localImagesSVG = [
     "assets/images/onboardingscreen/1.svg",
     "assets/images/onboardingscreen/2.svg",
     "assets/images/onboardingscreen/3.svg",
+  ];
+  static const List<String> localImagesPNG = [
+    "assets/images/onboardingscreen/ob1.png",
+    "assets/images/onboardingscreen/ob2.png",
+    "assets/images/onboardingscreen/ob3.png",
   ];
 
   static List<Color> backgroundColor = [
@@ -47,11 +52,8 @@ class TutorialDataList {
   static final List<TutorialScreenData> screen_list = [];
   static void prepareDataList() {
     for (int i = 0; i < 3; i++) {
-      TutorialScreenData screen = TutorialScreenData(
-          TutorialScreenStrings.title[i],
-          TutorialScreenStrings.description[i],
-          TutorialScreenStrings.localImageSrc[i],
-          TutorialScreenStrings.backgroundColor[i]);
+      TutorialScreenData screen = TutorialScreenData(TutorialScreenStrings.title[i], TutorialScreenStrings.description[i],
+          TutorialScreenStrings.localImagesPNG[i], TutorialScreenStrings.backgroundColor[i]);
       screen_list.add(screen);
     }
   }
