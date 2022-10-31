@@ -35,6 +35,7 @@ class _ProfileEditBiographyChangeScreenState extends State<ProfileEditBiographyC
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
       appBar: PeoplerAppBars(context: context).PROFILE_EDIT_ITEMS(
           title: "Hakkında",
           function: () async {
@@ -120,11 +121,18 @@ class Explanation extends StatelessWidget {
         children: [
           Text(
             "Kendiniz ile ilgili birkaç kelime ekleyerek kendinizi tanıtın.\n\n",
-            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(
+              fontSize: 14,
+              color: Mode().homeScreenTitleColor(),
+            ),
           ),
           Text(
-            "#besocial\n#behappy\n#befriendly",
-            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            "", //"#besocial\n#behappy\n#befriendly",
+            style: PeoplerTextStyle.normal.copyWith(
+              fontSize: 15,
+              color: Mode().homeScreenTitleColor(),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),

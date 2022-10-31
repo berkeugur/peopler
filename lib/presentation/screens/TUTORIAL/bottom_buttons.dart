@@ -14,9 +14,9 @@ class TutorialBottomButtons extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: currentIndex == dataLength - 1
-          ? [
-              SizedBox(
+      children: [
+        currentIndex == dataLength - 1
+            ? SizedBox(
                 height: 50,
                 width: MediaQuery.of(context).size.width - 32,
                 child: Center(
@@ -33,17 +33,14 @@ class TutorialBottomButtons extends StatelessWidget {
                         Navigator.of(context).pop();
                       },
                       style: TextButton.styleFrom(
-                        primary: const Color(0xFFFFFFFF),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
+                        foregroundColor: const Color(0xFFFFFFFF), tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
                         textStyle: const TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.normal),
                       ),
                     ),
                   ),
                 ),
               )
-            ]
-          : [
-              TextButton(
+            : TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -61,7 +58,7 @@ class TutorialBottomButtons extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
+      ],
     );
   }
 }

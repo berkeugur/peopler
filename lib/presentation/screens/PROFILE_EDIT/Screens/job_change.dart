@@ -4,6 +4,7 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/biography_change_service.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/education_change_service.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Service/job_change_service.dart';
@@ -35,6 +36,7 @@ class _ProfileEditJobChangeScreenState extends State<ProfileEditJobChangeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
       appBar: PeoplerAppBars(context: context).PROFILE_EDIT_ITEMS(
           title: "Meslek",
           function: () async {
@@ -125,11 +127,18 @@ class Explanation extends StatelessWidget {
         children: [
           Text(
             "Mesleğinizi paylaşabilirsiniz..\n\n",
-            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(
+              fontSize: 14,
+              color: Mode().homeScreenTitleColor(),
+            ),
           ),
           Text(
-            "#beXXXX\n#beYYYY\n#beZZZZ",
-            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            "", //"#beXXXX\n#beYYYY\n#beZZZZ",
+            style: PeoplerTextStyle.normal.copyWith(
+              fontSize: 15,
+              color: Mode().homeScreenTitleColor(),
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),

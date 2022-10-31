@@ -37,6 +37,7 @@ class _ProfileEditNameChangeScreenState extends State<ProfileEditNameChangeScree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
       appBar: PeoplerAppBars(context: context).PROFILE_EDIT_ITEMS(
           title: "İsim Soyisim",
           function: () async {
@@ -121,11 +122,14 @@ class Explanation extends StatelessWidget {
         children: [
           Text(
             "Eğer profiliniz gizli ise diğer kullanıcılar sizi #${UserBloc.user?.pplName ?? "ppl1923"} şeklinde görecektir.\n\n",
-            style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.grey[850]),
+            style: PeoplerTextStyle.normal.copyWith(
+              fontSize: 14,
+              color: Mode().homeScreenTitleColor(),
+            ),
           ),
           Text(
             "Peopler gizliliğinizi önemser.",
-            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Colors.grey[850], fontWeight: FontWeight.w600),
+            style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w600),
           ),
         ],
       ),
