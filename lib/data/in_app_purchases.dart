@@ -37,15 +37,19 @@ class PurchaseApi {
   }
 
   Future<void> makePurchases(Package package) async {
+    UpgradeInfo? upgradeInfo;
+    if(purchaserInfo.activeSubscriptions.isNotEmpty) {
+      upgradeInfo = UpgradeInfo(purchaserInfo.activeSubscriptions[0], prorationMode: ProrationMode.immediateWithTimeProration);
+    }
+
     try {
-      purchaserInfo = await Purchases.purchasePackage(package);
-    } on PlatformException catch (e) {
-      var errorCode = PurchasesErrorHelper.getErrorCode(e);
-      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-        debugPrint("User cancelled purchase");
-      } else {
-        debugPrint(e.message);
+      if(Platform.isIOS) {
+        purchaserInfo = await Purchases.purchasePackage(package);
+      } else if(Platform.isAndroid) {
+        purchaserInfo = await Purchases.purchasePackage(package, upgradeInfo: upgradeInfo);
       }
+    } on PlatformException catch (e) {
+      rethrow;
     }
   }
 }

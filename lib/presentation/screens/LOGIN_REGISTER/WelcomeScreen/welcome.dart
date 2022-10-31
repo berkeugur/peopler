@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
@@ -27,7 +29,6 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -127,7 +128,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                               Text(
                                                 "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -154,7 +155,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                                   ),
                                                   child: Text(
                                                     "TAMAM",
-                                                    style: GoogleFonts.rubik(
+                                                    style: PeoplerTextStyle.normal.copyWith(
                                                       color: Colors.white,
                                                       fontWeight: FontWeight.w400,
                                                     ),

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/gallery.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/HobbyModels/hobbymodel.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
@@ -27,7 +28,7 @@ class ProfileScreenComponentsMyProfile {
     return Text(
       profileData.isProfileVisible == true ? profileData.displayName : profileData.pplName!,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 18, fontWeight: FontWeight.w500),
+      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 18, fontWeight: FontWeight.w500),
     );
   }
 
@@ -45,7 +46,7 @@ class ProfileScreenComponentsMyProfile {
                 child: Text(
                   "Hakkında",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: _mode.blackAndWhiteConversion(),
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -65,7 +66,7 @@ class ProfileScreenComponentsMyProfile {
             child: Text(
               biography,
               textScaleFactor: 1,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 15,
                 color: Mode().blackAndWhiteConversion(),
                 fontWeight: FontWeight.w300,
@@ -323,7 +324,7 @@ class ProfileScreenComponentsMyProfile {
                                       Text(
                                         "see more",
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                           color: _mode.blackAndWhiteConversion(),
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -354,7 +355,7 @@ class ProfileScreenComponentsMyProfile {
                                           Text(
                                             "less more",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(
+                                            style: PeoplerTextStyle.normal.copyWith(
                                               color: _mode.blackAndWhiteConversion(),
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -422,7 +423,7 @@ class ProfileScreenComponentsMyProfile {
         Text(
           "${profileData.city}",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -458,7 +459,7 @@ class ProfileScreenComponentsMyProfile {
               Text(
                 "Profili Düzenle",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion(), fontSize: 14),
+                style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion(), fontSize: 14),
               ),
               const SizedBox.square(
                 dimension: 5,
@@ -501,7 +502,7 @@ class ProfileScreenComponentsMyProfile {
                       ? Text(
                           "${UserBloc.user!.connectionUserIDs.length} bağlantı",
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(
+                          style: PeoplerTextStyle.normal.copyWith(
                             color: Colors.grey[500],
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
@@ -536,7 +537,7 @@ class ProfileScreenComponentsMyProfile {
               Text(
                 profileData.mutualConnectionsProfilePhotos.length > 3 ? "  +${profileData.mutualConnectionsProfilePhotos.length-3}" : "", //+0 bağlantı hatasını önlemek için.
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: _customSmallTextSize(), color:  Color(0xFF0353EF)),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: _customSmallTextSize(), color:  Color(0xFF0353EF)),
               ),
             ],
           ),
@@ -563,7 +564,7 @@ class ProfileScreenComponentsMyProfile {
         Text(
           activities[index].liked.toString(),
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
           ),
         )
@@ -588,7 +589,7 @@ class ProfileScreenComponentsMyProfile {
         Text(
           activities[index].disliked.toString(),
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
           ),
         ),
@@ -615,7 +616,7 @@ class ProfileScreenComponentsMyProfile {
                     child: Text(
                       "Hareketler",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: _mode.blackAndWhiteConversion(),
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -647,7 +648,7 @@ class ProfileScreenComponentsMyProfile {
                                       Text(
                                         "Yakında...",
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -674,7 +675,7 @@ class ProfileScreenComponentsMyProfile {
                                           ),
                                           child: Text(
                                             "TAMAM",
-                                            style: GoogleFonts.rubik(
+                                            style: PeoplerTextStyle.normal.copyWith(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                             ),
@@ -713,7 +714,7 @@ class ProfileScreenComponentsMyProfile {
                                   child: Text(
                                 "Daha Fazla Göster",
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
+                                style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
                             ),
                           );
@@ -735,12 +736,14 @@ class ProfileScreenComponentsMyProfile {
                                     Text(
                                       profileData.pplName!,
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                                      style:
+                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       " " + activityText(index, UserBloc.myActivities),
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
+                                      style:
+                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                     ),
                                   ],
                                 ),
@@ -789,7 +792,7 @@ class ProfileScreenComponentsMyProfile {
                     Text(
                       "Deneyimler",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: _mode.blackAndWhiteConversion(),
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -812,7 +815,7 @@ class ProfileScreenComponentsMyProfile {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
                           child: Text("Hiç hobiniz bulunmuyor.\nHobilerinizi ekleyerek profilinizi tamamlayabilirsiniz.",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(fontSize: 16, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w300))),
+                              style: PeoplerTextStyle.normal.copyWith(fontSize: 16, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w300))),
                     )
                   : ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -850,7 +853,7 @@ class ProfileScreenComponentsMyProfile {
                                                               )),
                                                           child: CircleAvatar(
                                                             backgroundColor: const Color(0xFF0353EF),
-                                                            child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                                            child: Text("ppl$index", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
                                                           ),
                                                         ),
                                                         Container(
@@ -865,11 +868,12 @@ class ProfileScreenComponentsMyProfile {
                                                             child: hobbyItem(0, "da2332")),
                                                       ],
                                                     ),
-                                              title: Text("123ş", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                              title: Text("123ş",
+                                                  textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                               subtitle: Text(
                                                 "123222",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                                                style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                               ),
                                             );
                                           });
@@ -905,7 +909,7 @@ class ProfileScreenComponentsMyProfile {
                                   child: Text(
                                 numberOfExperience.value == minNumberOfExperience + 1 ? "Daha Fazla Göster" : "Daha Az Göster",
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
+                                style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
                             ),
                           );
@@ -936,7 +940,7 @@ class ProfileScreenComponentsMyProfile {
                                                 )),
                                             child: CircleAvatar(
                                               backgroundColor: const Color(0xFF0353EF),
-                                              child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                              child: Text("ppl$index", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
                                             ),
                                           ),
                                           Container(
@@ -961,14 +965,15 @@ class ProfileScreenComponentsMyProfile {
                                     Text(
                                       HobbyModel.fromJson(profileData.hobbies[index]).subtitles?.first.subtitle ?? "null",
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
+                                      style:
+                                          PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
                                         Text(
                                           "denem#1111",
                                           textScaleFactor: 1,
-                                          style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                                          style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                         ),
                                       ],
                                     ),
@@ -1005,7 +1010,7 @@ class ProfileScreenComponentsMyProfile {
                       return AlertDialog(
                         contentPadding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                         backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-                        title: Text("Yeni Hobi Ekle", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                        title: Text("Yeni Hobi Ekle", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                         content: AnimatedContainer(
                           margin: EdgeInsets.zero,
                           duration: _duration,
@@ -1018,11 +1023,11 @@ class ProfileScreenComponentsMyProfile {
                                   alignment: AlignmentDirectional.centerStart,
                                   dropdownColor: Mode().homeScreenScaffoldBackgroundColor(),
                                   hint: Text(selectedHobbyName == null ? "Hobi Seçiniz" : selectedHobbyName!,
-                                      textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                      textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                   items: Hobby().hobbiesNameList().map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                      child: Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     );
                                   }).toList(),
                                   onChanged: (String? newValue) {
@@ -1034,13 +1039,13 @@ class ProfileScreenComponentsMyProfile {
                                 DropdownButton<String>(
                                   dropdownColor: Mode().homeScreenScaffoldBackgroundColor(),
                                   hint: Text(selectedStartYear == null ? "Başladığınız yılı seçin" : selectedStartYear.toString(),
-                                      textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                      textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                   items: List.generate(60, (index) {
                                     return (1962 + index).toString();
                                   }).map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                      child: Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     );
                                   }).toList(),
                                   onChanged: (String? newStartYearValue) {
@@ -1052,12 +1057,12 @@ class ProfileScreenComponentsMyProfile {
                                 DropdownButton<String>(
                                   dropdownColor: Mode().homeScreenScaffoldBackgroundColor(),
                                   hint: Text(selectedStartMonth == null ? "Başladığınız ayı seçin" : selectedStartMonth.toString(),
-                                      textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                      textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                   items: <String>["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
                                       .map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                      child: Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     );
                                   }).toList(),
                                   onChanged: (String? newStartMonthValue) {
@@ -1071,13 +1076,14 @@ class ProfileScreenComponentsMyProfile {
                                   child: DropdownButton<String>(
                                     dropdownColor: Mode().homeScreenScaffoldBackgroundColor(),
                                     hint: Text(selectedFinishYear == null ? "Bıraktığınız yılı seçin" : selectedFinishYear.toString(),
-                                        textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                        textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     items: List.generate(60, (index) {
                                       return (1962 + index).toString();
                                     }).map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
-                                        child: Text(value, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                        child:
+                                            Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                       );
                                     }).toList(),
                                     onChanged: (String? newFinishYearValue) {
@@ -1092,7 +1098,7 @@ class ProfileScreenComponentsMyProfile {
                                   child: DropdownButton<String>(
                                     dropdownColor: Mode().homeScreenScaffoldBackgroundColor(),
                                     hint: Text(selectedFinishMonth == null ? "Bıraktığınız ayı seçin" : selectedFinishMonth.toString(),
-                                        textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                        textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     items: <String>[
                                       "Ocak",
                                       "Şubat",
@@ -1109,7 +1115,8 @@ class ProfileScreenComponentsMyProfile {
                                     ].map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
-                                        child: Text(value, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                        child:
+                                            Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                       );
                                     }).toList(),
                                     onChanged: (String? newFinishMonthValue) {
@@ -1143,7 +1150,7 @@ class ProfileScreenComponentsMyProfile {
                                     Container(
                                       //color: Colors.red,
                                       child: Text("Hala devam ediyor musunu?",
-                                          textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                          textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     ),
                                   ],
                                 )
@@ -1159,7 +1166,7 @@ class ProfileScreenComponentsMyProfile {
                               child: Text(
                                 'iptal',
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
+                                style: PeoplerTextStyle.normal.copyWith(
                                   color: const Color(0xFF0353EF),
                                 ),
                               )),
@@ -1247,7 +1254,7 @@ class ProfileScreenComponentsMyProfile {
                               child: Text(
                                 'ekle',
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(
+                                style: PeoplerTextStyle.normal.copyWith(
                                   color: const Color(0xFF0353EF),
                                 ),
                               )),
@@ -1288,7 +1295,7 @@ class ProfileScreenComponentsMyProfile {
                                             )),
                                         child: CircleAvatar(
                                           backgroundColor: const Color(0xFF0353EF),
-                                          child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                          child: Text("ppl$index", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
                                         ),
                                       ),
                                       Container(
@@ -1312,11 +1319,11 @@ class ProfileScreenComponentsMyProfile {
                                 color: Mode().blackAndWhiteConversion(),
                               ),
                             ),
-                            title: Text("5s2252", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                            title: Text("5s2252", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                             subtitle: Text(
                               "5588dsd",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                              style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                             ),
                           );
                         });
@@ -1346,7 +1353,7 @@ class ProfileScreenComponentsMyProfile {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: _mode.blackAndWhiteConversion(),
               ),
@@ -1367,7 +1374,7 @@ class ProfileScreenComponentsMyProfile {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: _mode.blackAndWhiteConversion(),
               ),
@@ -1386,7 +1393,7 @@ class ProfileScreenComponentsMyProfile {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: _mode.blackAndWhiteConversion(),
               ),

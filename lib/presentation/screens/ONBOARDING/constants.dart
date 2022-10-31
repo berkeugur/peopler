@@ -13,12 +13,16 @@ class OnBoardingScreenStrings {
     "Yakınında birileri yoksa düşüncelerini paylaşarak yeni insanların senle bağlantıya geçmesini sağlamak da fena fikir sayılmaz. :) \n\nFeed ekranı üzerinden düşüncelerini paylaşan diğer Peopler kullanıcılarını görüntüleyip direkt bağlantı isteği yollaman mümkün!"
   ];
 
-  static const List<String> localImageSrc = [
+  static const List<String> localImagesSVG = [
     "assets/images/onboardingscreen/1.svg",
     "assets/images/onboardingscreen/2.svg",
     "assets/images/onboardingscreen/3.svg",
   ];
-
+  static const List<String> localImagesPNG = [
+    "assets/images/onboardingscreen/ob1.png",
+    "assets/images/onboardingscreen/ob2.png",
+    "assets/images/onboardingscreen/ob3.png",
+  ];
   static List<Color> backgroundColor = [
     Colors.white,
     Colors.white,
@@ -47,11 +51,8 @@ class OnBoardingScreenDataList {
   static final List<OnBoardingScreenData> screen_list = [];
   static void prepareDataList() {
     for (int i = 0; i < 3; i++) {
-      OnBoardingScreenData screen = OnBoardingScreenData(
-          OnBoardingScreenStrings.title[i],
-          OnBoardingScreenStrings.description[i],
-          OnBoardingScreenStrings.localImageSrc[i],
-          OnBoardingScreenStrings.backgroundColor[i]);
+      OnBoardingScreenData screen = OnBoardingScreenData(OnBoardingScreenStrings.title[i], OnBoardingScreenStrings.description[i],
+          OnBoardingScreenStrings.localImagesPNG[i], OnBoardingScreenStrings.backgroundColor[i]);
       screen_list.add(screen);
     }
   }

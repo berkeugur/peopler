@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 import '../../../others/classes/responsive_size.dart';
 import 'constants.dart';
@@ -17,8 +18,13 @@ class ExplanationPage extends StatelessWidget {
       child: Column(
         children: [
           Container(
-              margin: EdgeInsets.only(top: ResponsiveSize().ob2(context), bottom: 16),
-              child: SvgPicture.asset(screen.localImageSrc, height: MediaQuery.of(context).size.height * 0.33, alignment: Alignment.center)),
+            margin: EdgeInsets.only(top: ResponsiveSize().ob2(context), bottom: 16),
+            child: Image.asset(
+              screen.localImageSrc,
+              height: MediaQuery.of(context).size.height * 0.33,
+              alignment: Alignment.center,
+            ),
+          ),
           Expanded(
             flex: 2,
             child: Column(
@@ -52,7 +58,8 @@ class ExplanationPage extends StatelessWidget {
                     child: Text(
                       screen.description,
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(color: const Color(0xFF000B21), fontSize: ResponsiveSize().ob3(context), fontWeight: FontWeight.normal),
+                      style: PeoplerTextStyle.normal
+                          .copyWith(color: const Color(0xFF000B21), fontSize: ResponsiveSize().ob3(context), fontWeight: FontWeight.normal),
                       textAlign: TextAlign.center,
                     ))
               ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,10 +6,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
+import 'package:peopler/others/strings.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
+import '../../../../core/system_ui_service.dart';
 import '../../../../data/repository/location_repository.dart';
+import '../../../../data/repository/user_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/functions/image_picker_functions.dart';
@@ -75,13 +80,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 Text(
                                   "Profilini",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                       color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                                 ),
                                 Text(
                                   "Oluşturalım",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                       color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(
@@ -91,7 +96,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: Text(
                                     "Profil fotoğrafını seç",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
                                         fontWeight: FontWeight.w300),
@@ -113,13 +118,16 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                       radius: 55,
                                       backgroundColor: const Color(0xFF8E9BB4),
                                       child: (UserBloc.user?.profileURL != null) && (UserBloc.user?.profileURL != '')
-                                          ? ClipRRect(
-                                              borderRadius: BorderRadius.circular(60),
-                                              child: Image.network(
-                                                UserBloc.user!.profileURL,
-                                                width: 120,
-                                                height: 120,
-                                                fit: BoxFit.fitHeight,
+                                          ? CachedNetworkImage(
+                                              imageUrl: UserBloc.user?.profileURL ?? Strings.defaultNonBinaryProfilePhotoUrl,
+                                              progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                                  borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                              errorWidget: (context, url, error) => const Icon(Icons.camera_alt),
+                                              imageBuilder: (context, imageProvider) => Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                                ),
                                               ),
                                             )
                                           : (image != null
@@ -143,7 +151,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                     Icons.photo_camera_outlined,
                                                     color: Color(0xFF0353EF),
                                                     size: 60,
-                                                  ))),
+                                                  ),
+                                                )),
                                     ),
                                   ),
                                 ),
@@ -154,7 +163,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: Text(
                                     "Kendini anlat",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
                                         fontWeight: FontWeight.w300),
@@ -168,7 +177,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   child: Text(
                                     "Şehir",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
                                         fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 18,
                                         fontWeight: FontWeight.w300),
@@ -204,11 +213,23 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
+
+              if(image != null) {
+                final UserRepository _userRepository = locator<UserRepository>();
+                String downloadLink =
+                await _userRepository.uploadFile(UserBloc.user!.userID, 'profile_photo', 'profile_photo.png', image!);
+                await _userRepository.updateProfilePhoto(UserBloc.user!.userID, downloadLink);
+                UserBloc.user?.profileURL = downloadLink;
+              }
+
               _userBloc.add(updateUserInfoForLinkedInEvent());
 
               final LocationRepository _locationRepository = locator<LocationRepository>();
               LocationPermission _permission = await _locationRepository.checkPermissions();
               if (_permission == LocationPermission.always) {
+                /// Set theme mode before Home Screen
+                SystemUIService().setSystemUIforThemeMode();
+
                 Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
               } else {
                 Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
@@ -221,13 +242,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           } else if (UserBloc.user?.city == "" && bioController.text.isNotEmpty) {
             SnackBars(context: context).simple("Şehir seçmeniz gerekiyor.");
           } else if (UserBloc.user?.city != "" && bioController.text.isEmpty) {
-            SnackBars(context: context).simple("Biyogrofi alanını doldurunuz!");
+            SnackBars(context: context).simple("Biyografi alanını doldurunuz!");
           }
         },
         child: Text(
           "Devam",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
               color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
               fontSize: 22,
               fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
@@ -290,7 +311,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                             setStateBottomSheet(() {});
                                           },
                                           placeholder: "Arama yapabilirsiniz...",
-                                          style: GoogleFonts.rubik(),
+                                          style: PeoplerTextStyle.normal.copyWith(),
                                           autocorrect: true,
                                           backgroundColor: CupertinoColors.extraLightBackgroundGray,
                                           controller: editingController,
@@ -379,8 +400,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             child: Text(
               UserBloc.user?.city != "" ? UserBloc.user?.city ?? "null" : "Şehir Seçin",
               textScaleFactor: 1,
-              style:
-                  GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
+              style: PeoplerTextStyle.normal
+                  .copyWith(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
             )),
       ),
     );

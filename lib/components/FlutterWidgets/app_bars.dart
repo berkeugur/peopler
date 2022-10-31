@@ -1,9 +1,11 @@
 // ignore_for_file: file_names
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
@@ -61,16 +63,40 @@ class PeoplerAppBars {
     return Text(
       title,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: color ?? Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
+      style: PeoplerTextStyle.normal.copyWith(color: color ?? Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
     );
   }
 
   // ignore: non_constant_identifier_names
   Widget _PEOPLER_TITLE(void Function()? titleFunction) {
-    return Text(
-      ApplicationConstants.COMPANY_NAME.toLowerCase(),
-      textScaleFactor: 1,
-      style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (false)
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+                child: Text(
+                  ApplicationConstants.COMPANY_NAME.toLowerCase(),
+                  style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
+                ),
+              ),
+              Text(
+                "remium",
+                style: PeoplerTextStyle.normal.copyWith(color: Mode().homeScreenTitleColor()),
+              ),
+            ],
+          ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+          child: Text(
+            ApplicationConstants.COMPANY_NAME.toLowerCase(),
+            style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 32),
+          ),
+        ),
+      ],
     );
   }
 
@@ -110,13 +136,13 @@ class PeoplerAppBars {
                     onPressed: function,
                     child: Row(
                       children: [
-                        const Icon(Icons.save),
-                        const SizedBox(
-                          width: 4,
-                        ),
                         Text(
                           "kaydet",
-                          style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w400),
+                          style: PeoplerTextStyle.normal.copyWith(
+                            color: Mode().homeScreenTitleColor(),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     ),
@@ -237,6 +263,18 @@ class PeoplerAppBars {
     return AppBar(
       leading: _BACK_BUTTON(),
       title: _TITLE(title: "Yorumlar"),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  /// remaining usage rights app bar
+  // ignore: non_constant_identifier_names
+  AppBar get RUR {
+    return AppBar(
+      leading: _BACK_BUTTON(),
+      title: _TITLE(title: "Kalan Kullanım Hakları"),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,

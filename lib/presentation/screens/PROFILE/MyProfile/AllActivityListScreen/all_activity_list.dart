@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../../../data/model/activity.dart';
 import '../../../../../data/model/user.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -41,7 +42,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                       child: Text(
                         "Hareketler",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           color: _mode.blackAndWhiteConversion(),
                           fontSize: 22,
                           fontWeight: FontWeight.w600,
@@ -75,11 +76,13 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                                       children: [
                                         Text(
                                           "#" + widget.profileData.pplName!,
-                                          style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                                          style: PeoplerTextStyle.normal
+                                              .copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                         ),
                                         Text(
                                           " " + activityText(index),
-                                          style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
+                                          style: PeoplerTextStyle.normal
+                                              .copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                         ),
                                       ],
                                     ),
@@ -149,7 +152,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  //Text("1 saat önce",style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(),fontSize: 14),),
+                                  //Text("1 saat önce",style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(),fontSize: 14),),
                                   IconButton(
                                     onPressed: () {},
                                     icon: Icon(
@@ -246,7 +249,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
         Text(
           widget.myActivities[index].liked.toString(),
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
           ),
         )
@@ -272,7 +275,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
         Text(
           widget.myActivities[index].disliked.toString(),
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
           ),
         ),
@@ -289,7 +292,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
         child: Text(
           widget.myActivities[index].feedExplanation,
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+          style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
         ),
       ),
     );
@@ -315,7 +318,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
     return Text(
       numberOfConnectionString,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
     );
   }
 
@@ -331,7 +334,7 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         softWrap: false,
-        style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
+        style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16),
       ),
     );
   }

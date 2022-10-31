@@ -16,6 +16,7 @@ import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../data/services/db/firebase_db_report.dart';
 import '../../../../others/locator.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 // ignore: non_constant_identifier_names
 op_settings_icon(context) {
@@ -66,7 +67,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
               title: Text(
                 'Paylaşımı Şikayet Et',
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -81,7 +82,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
               title: Text(
                 'Kullanıcıyı Şikayet Et',
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
                 MyReport report = MyReport(userID: userID, type: "Report User", feedID: feedId, feedExplanation: feedExplanation);
@@ -99,7 +100,7 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
               title: Text(
                 'Kullanıcıyı Engelle',
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
                 BlockAndReportService().blockUser(blockUserID: userID, feedID: feedId).then((value) {
@@ -162,7 +163,7 @@ Future<void> _showReportBottomSheet(
                   child: Text(
                     "Şikayet Et",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -187,7 +188,7 @@ Future<void> _showReportBottomSheet(
                   child: Text(
                     "Bu gönderiyi neden şikayet ediyorsunuz?",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -199,7 +200,7 @@ Future<void> _showReportBottomSheet(
                   child: Text(
                     "Merak etmeyin kimliğiniz gizli tutacak.",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       color: Color.fromARGB(255, 214, 214, 214),
                       fontSize: 13,
                       fontWeight: FontWeight.w400,
@@ -285,7 +286,7 @@ InkWell _reportItem(
           Text(
             text,
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               fontSize: 14,
               color: Colors.white,
             ),

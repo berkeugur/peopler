@@ -52,26 +52,27 @@ class SubscriptionService {
   }
 
   String priceText({required SubscriptionPlan plan, required SubscriptionType type}) {
-    String symbol = "₺";
+    String symbol = "TL";
     if (type == SubscriptionType.plus) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.priceString} $symbol";
+          printf(PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.price);
+          return "${((PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.price ?? 0) / 1).toStringAsFixed(2)}\n${PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.currencyCode == "TRY" ? "₺" : PurchaseApi.currentOffering?.getPackage("plus_one_month")?.storeProduct.currencyCode}/ay";
         case SubscriptionPlan.threeMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("plus_three_month")?.storeProduct.priceString} $symbol";
+          return "${((PurchaseApi.currentOffering?.getPackage("plus_three_month")?.storeProduct.price ?? 0) / 3).toStringAsFixed(2)}\n${PurchaseApi.currentOffering?.getPackage("plus_three_month")?.storeProduct.currencyCode == "TRY" ? "₺" : PurchaseApi.currentOffering?.getPackage("plus_three_month")?.storeProduct.currencyCode}/ay";
         case SubscriptionPlan.sixMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("plus_six_month")?.storeProduct.priceString} $symbol";
+          return "${((PurchaseApi.currentOffering?.getPackage("plus_six_month")?.storeProduct.price ?? 0) / 6).toStringAsFixed(2)}\n${PurchaseApi.currentOffering?.getPackage("plus_six_month")?.storeProduct.currencyCode == "TRY" ? "₺" : PurchaseApi.currentOffering?.getPackage("plus_six_month")?.storeProduct.currencyCode}/ay";
         default:
           return "error $symbol";
       }
     } else if (type == SubscriptionType.premium) {
       switch (plan) {
         case SubscriptionPlan.oneMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("premium_one_month")?.storeProduct.priceString} $symbol";
+          return "${((PurchaseApi.currentOffering?.getPackage("premium_one_month")?.storeProduct.price ?? 0) / 1).toStringAsFixed(2)}\n${PurchaseApi.currentOffering?.getPackage("premium_one_month")?.storeProduct.currencyCode == "TRY" ? "₺" : PurchaseApi.currentOffering?.getPackage("premium_one_month")?.storeProduct.currencyCode}/ay";
         case SubscriptionPlan.threeMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("premium_three_month")?.storeProduct.priceString} $symbol";
+          return "${((PurchaseApi.currentOffering?.getPackage("premium_three_month")?.storeProduct.price ?? 0) / 3).toStringAsFixed(2)}\n${PurchaseApi.currentOffering?.getPackage("premium_three_month")?.storeProduct.currencyCode == "TRY" ? "₺" : PurchaseApi.currentOffering?.getPackage("premium_three_month")?.storeProduct.currencyCode}/ay";
         case SubscriptionPlan.sixMonth:
-          return "${PurchaseApi.currentOffering?.getPackage("premium_six_month")?.storeProduct.priceString} $symbol";
+          return "${((PurchaseApi.currentOffering?.getPackage("premium_six_month")?.storeProduct.price ?? 0) / 6).toStringAsFixed(2)}\n${PurchaseApi.currentOffering?.getPackage("premium_six_month")?.storeProduct.currencyCode == "TRY" ? "₺" : PurchaseApi.currentOffering?.getPackage("premium_six_month")?.storeProduct.currencyCode}/ay";
         default:
           return "error $symbol";
       }

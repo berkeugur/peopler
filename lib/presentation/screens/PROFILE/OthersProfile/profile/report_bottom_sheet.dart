@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/report.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -96,7 +97,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
             Text(
               text,
               textScaleFactor: 1,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: Colors.white,
               ),
@@ -129,13 +130,15 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                 title: Text(
                   'Bağlantıyı Sil',
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                  style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
                 ),
                 onTap: () async {
                   if (UserBloc.user != null) {
                     if (otherUserBloc != null && otherUserBloc.otherUser != null) {
                       //remove connection function
-                      OtherProfileService().removeConnection(context: context, otherUserID: otherUserBloc.otherUser!.userID, otherUserBloc: otherUserBloc).then((value) {
+                      OtherProfileService()
+                          .removeConnection(context: context, otherUserID: otherUserBloc.otherUser!.userID, otherUserBloc: otherUserBloc)
+                          .then((value) {
                         Reloader().reload(reloadItem: Reloader.otherUserProfileReload);
                         Navigator.of(context).pop();
                       });
@@ -156,7 +159,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
               title: Text(
                 'Kullanıcıyı Engelle',
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
               ),
               onTap: () async {
                 if (UserBloc.user == null) {
@@ -190,7 +193,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
               title: Text(
                 'Kullanıcıyı Şikayet Et',
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: 14, color: Colors.white),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
               ),
               onTap: () {
                 Navigator.pop(context);
@@ -233,7 +236,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                                 child: Text(
                                   "Kullanıcıyı Şikayet Et",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white,
@@ -258,7 +261,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                                 child: Text(
                                   "${otherUserBloc?.otherUser?.displayName ?? "peopler"} kullanıcısını neden şikayet ediyorsunuz?",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                     color: Colors.white,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -270,7 +273,7 @@ ReportOrBlockUser({required BuildContext context, OtherUserBloc? otherUserBloc, 
                                 child: Text(
                                   "Merak etmeyin kimliğiniz gizli tutacak.",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                     color: Color.fromARGB(255, 214, 214, 214),
                                     fontSize: 13,
                                     fontWeight: FontWeight.w400,

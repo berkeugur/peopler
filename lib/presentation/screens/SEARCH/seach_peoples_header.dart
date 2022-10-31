@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
 import '../../../../business_logic/blocs/LocationPermissionBloc/bloc.dart';
@@ -87,7 +88,7 @@ class search_peoples_header extends StatelessWidget {
         } else {
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.searchCityScreen};
 
-          if(UserBloc.user != null) {
+          if (UserBloc.user != null) {
             _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
           }
         }
@@ -111,7 +112,7 @@ class search_peoples_header extends StatelessWidget {
             child: AutoSizeText(
           text,
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _cityNearbyButtons.isNearby == index ? Colors.white : _mode.searchHeaderItemText(),
             fontSize: _size.width < 340 ? 12 : 14,
           ),

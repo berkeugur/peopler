@@ -155,6 +155,7 @@ class NotificationScreenState extends State<NotificationScreen> {
   EmptyList _noNotificationsExistsWidget(context) {
     return const EmptyList(
       emptyListType: EmptyListType.emptyNotifications,
+      isSVG: true,
     );
   }
 

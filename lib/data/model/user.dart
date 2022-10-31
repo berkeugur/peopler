@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class MyUser {
   /// Firebase Rules public fields
   String userID = "";
@@ -32,6 +34,7 @@ class MyUser {
   int latitude = 0;
   int longitude = 0;
   int numOfSendRequest = 15;
+  DateTime? updatedAtNumOfSendRequest;
 
   MyUser();
 
@@ -73,8 +76,16 @@ class MyUser {
     company = map['company'] as String;
     isProfileVisible = map['isProfileVisible'];
     profileURL = map['profileURL'];
-    createdAt = map['createdAt'].runtimeType == DateTime ? map['createdAt'] : map['createdAt'].toDate();
-    updatedAt = map['updatedAt'].runtimeType == DateTime ? map['updatedAt'] : map['updatedAt'].toDate();
+    createdAt = map['createdAt'].runtimeType == DateTime
+        ? map['createdAt']
+        : map['createdAt'].runtimeType == Timestamp
+            ? (map['createdAt'] as Timestamp).toDate()
+            : map['createdAt'].toDate();
+    updatedAt = map['updatedAt'].runtimeType == DateTime
+        ? map['updatedAt']
+        : map['updatedAt'].runtimeType == Timestamp
+            ? (map['updatedAt'] as Timestamp).toDate()
+            : map['updatedAt'].toDate();
     hobbies = map['hobbies'];
     photosURL = map['photosURL'].map<String>((data) => data.toString()).toList();
     savedUserIDs = map['savedUserIDs'].map<String>((data) => data.toString()).toList();
@@ -95,10 +106,12 @@ class MyUser {
       'latitude': latitude,
       'longitude': longitude,
       'numOfSendRequest': numOfSendRequest,
+      'updatedAtNumOfSendRequest': updatedAtNumOfSendRequest ?? DateTime.now(),
     };
   }
 
   void fromPrivateMap(Map<String, dynamic> map) {
+    print(map['updatedAtNumOfSendRequest'].runtimeType);
     email = map['email'] as String;
     isTheAccountConfirmed = map['isTheAccountConfirmed'] as bool;
     missingInfo = map['missingInfo'] as bool;
@@ -106,6 +119,11 @@ class MyUser {
     latitude = map['latitude'] as int;
     longitude = map['longitude'] as int;
     numOfSendRequest = map['numOfSendRequest'] as int;
+    updatedAtNumOfSendRequest = map['updatedAtNumOfSendRequest'].runtimeType == DateTime
+        ? map['updatedAtNumOfSendRequest']
+        : map['updatedAtNumOfSendRequest'].runtimeType == Timestamp
+            ? (map['updatedAtNumOfSendRequest'] as Timestamp).toDate()
+            : map['updatedAtNumOfSendRequest'].toDate();
   }
 
   String randomNumberGenerator() {

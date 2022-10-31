@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 SizedBox subtitle(double screenWidth) {
   return SizedBox(
@@ -9,8 +10,7 @@ SizedBox subtitle(double screenWidth) {
       children: [
         Text(
           '''"bulunabilir ol ve bul"''',
-          style: GoogleFonts.rubik(
-              color: const Color(0xFF000B21), fontWeight: FontWeight.w800, fontSize: screenWidth < 360 ? 15 : 24),
+          style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000B21), fontWeight: FontWeight.w800, fontSize: screenWidth < 360 ? 15 : 24),
         ),
       ],
     ),
@@ -34,13 +34,11 @@ SizedBox titleRow2(double screenWidth) {
       children: [
         Text(
           "Hoşgeldin",
-          style: GoogleFonts.rubik(
-              color: const Color(0xFF000B21), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
+          style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000B21), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
         ),
         Text(
           '!',
-          style: GoogleFonts.rubik(
-              color: const Color(0xFF0353EF), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
+          style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
         ),
       ],
     ),
@@ -55,13 +53,11 @@ SizedBox titleRow1(double screenWidth) {
       children: [
         Text(
           'peopler',
-          style: GoogleFonts.spartan(
-              color: const Color(0xFF0353EF), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
+          style: GoogleFonts.spartan(color: const Color(0xFF0353EF), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
         ),
         Text(
           "'a",
-          style: GoogleFonts.rubik(
-              color: const Color(0xFF000B21), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
+          style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000B21), fontWeight: FontWeight.w800, fontSize: screenWidth < 350 ? 32 : 48),
         ),
       ],
     ),

@@ -9,12 +9,11 @@ class OnBoardingScreen extends StatefulWidget {
   @override
   _OnBoardingPageState createState() => _OnBoardingPageState();
 }
+
 int currentOnBoardingScreenIndex = 0;
-class _OnBoardingPageState
-    extends State<OnBoardingScreen> /*with ChangeNotifier*/ {
+
+class _OnBoardingPageState extends State<OnBoardingScreen> /*with ChangeNotifier*/ {
   final _controller = PageController();
-
-
 
   // OpenPainter _painter = OpenPainter(3, 1);
 
@@ -29,41 +28,42 @@ class _OnBoardingPageState
         margin: const EdgeInsets.only(right: 4),
         height: 5,
         width: currentOnBoardingScreenIndex == index ? 15 : 5,
-        decoration: BoxDecoration(
-            color: Colors.black, borderRadius: BorderRadius.circular(3)));
+        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(3)));
   }
 
   Widget onBoardingList() {
     return Container(
-        color: OnBoardingScreenDataList.screen_list[currentOnBoardingScreenIndex].backgroundColor,
-        child: SafeArea(
-            child: Container(
-          padding: const EdgeInsets.all(16),
+      color: OnBoardingScreenDataList.screen_list[currentOnBoardingScreenIndex].backgroundColor,
+      child: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16),
           color: OnBoardingScreenDataList.screen_list[currentOnBoardingScreenIndex].backgroundColor,
           alignment: Alignment.center,
-          child: Column(children: [
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: PageView(
-                        scrollDirection: Axis.horizontal,
-                        controller: _controller,
-                        onPageChanged: (value) {
-                          // _painter.changeIndex(value);
-                          setState(() {
-                            currentOnBoardingScreenIndex = value;
-                          });
-                          // notifyListeners();
-                        },
-                        children: OnBoardingScreenDataList.screen_list.map((e) => ExplanationPage(screen: e)).toList(),
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: PageView(
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          controller: _controller,
+                          onPageChanged: (value) {
+                            // _painter.changeIndex(value);
+                            setState(() {
+                              currentOnBoardingScreenIndex = value;
+                            });
+                            // notifyListeners();
+                          },
+                          children: OnBoardingScreenDataList.screen_list.map((e) => ExplanationPage(screen: e)).toList(),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
+                    Expanded(
                       flex: 1,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,21 +72,30 @@ class _OnBoardingPageState
                               margin: const EdgeInsets.symmetric(vertical: 24),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                    OnBoardingScreenDataList.screen_list.length,
-                                    (index) => createCircle(index: index)),
+                                children: List.generate(OnBoardingScreenDataList.screen_list.length, (index) => createCircle(index: index)),
                               )),
-                          BottomButtons(
-                            currentIndex: currentOnBoardingScreenIndex,
-                            dataLength: OnBoardingScreenDataList.screen_list.length,
-                            controller: _controller,
+                          Row(
+                            mainAxisAlignment: currentOnBoardingScreenIndex != OnBoardingScreenDataList.screen_list.length - 1
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.center,
+                            children: [
+                              BottomButtons(
+                                currentIndex: currentOnBoardingScreenIndex,
+                                dataLength: OnBoardingScreenDataList.screen_list.length,
+                                controller: _controller,
+                              ),
+                            ],
                           )
                         ],
-                      ))
-                ],
-              ),
-            )
-          ]),
-        )));
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

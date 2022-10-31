@@ -8,6 +8,7 @@ import 'package:peopler/business_logic/blocs/CityBloc/city_bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/OtherUserBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/activity.dart';
@@ -48,7 +49,7 @@ class ProfileScreenComponentsOthersProfile {
       ((status == SendRequestButtonStatus.save) || (status == SendRequestButtonStatus.saved)) ? profileData.pplName! : profileData.displayName,
       // profileData.isProfileVisible == true ? profileData.displayName : profileData.pplName!,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 18, fontWeight: FontWeight.w500),
+      style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 18, fontWeight: FontWeight.w500),
     );
   }
 
@@ -64,7 +65,7 @@ class ProfileScreenComponentsOthersProfile {
               child: Text(
                 "Hakkında",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   color: _mode.blackAndWhiteConversion(),
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -84,7 +85,7 @@ class ProfileScreenComponentsOthersProfile {
             child: Text(
               profileData.biography,
               textScaleFactor: 1,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 15,
                 color: _mode.blackAndWhiteConversion(),
               ),
@@ -205,7 +206,7 @@ class ProfileScreenComponentsOthersProfile {
                                       Text(
                                         "see more",
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                           color: _mode.blackAndWhiteConversion(),
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -238,7 +239,7 @@ class ProfileScreenComponentsOthersProfile {
                                           Text(
                                             "less more",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(
+                                            style: PeoplerTextStyle.normal.copyWith(
                                               color: _mode.blackAndWhiteConversion(),
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
@@ -299,7 +300,7 @@ class ProfileScreenComponentsOthersProfile {
         Text(
           profileData.city,
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
             fontSize: 14,
             fontWeight: FontWeight.w400,
@@ -378,7 +379,7 @@ class ProfileScreenComponentsOthersProfile {
           Text(
             "Kaydet",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
           const SizedBox.square(
             dimension: 5,
@@ -392,7 +393,7 @@ class ProfileScreenComponentsOthersProfile {
     return Text(
       "Kaydedildi",
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+      style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
     );
   }
 
@@ -402,6 +403,10 @@ class ProfileScreenComponentsOthersProfile {
         if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
           showNumOfConnectionRequestsConsumed(context);
           return;
+        }
+
+        if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest == 1) {
+          showNumOfConnectionRequestsConsumed(context);
         }
 
         OtherUserBloc _otherUserBloc = BlocProvider.of<OtherUserBloc>(context);
@@ -430,19 +435,21 @@ class ProfileScreenComponentsOthersProfile {
 
         _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
-        String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-        await _sendNotificationService
-            .sendNotification(
-          Strings.sendRequest,
-          _token,
-          "",
-          UserBloc.user!.displayName,
-          UserBloc.user!.profileURL,
-          UserBloc.user!.userID,
-        )
-            .then((value) {
-          setTheme.value = !setTheme.value;
-        });
+        String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
+        if(_token != null) {
+          await _sendNotificationService
+              .sendNotification(
+            Strings.sendRequest,
+            _token,
+            "",
+            UserBloc.user!.displayName,
+            UserBloc.user!.profileURL,
+            UserBloc.user!.userID,
+          )
+              .then((value) {
+            setTheme.value = !setTheme.value;
+          });
+        }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -464,7 +471,7 @@ class ProfileScreenComponentsOthersProfile {
           Text(
             "Bağlantı Kur",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
           const SizedBox.square(dimension: 5)
         ],
@@ -501,7 +508,7 @@ class ProfileScreenComponentsOthersProfile {
           Text(
             "Engeli Kaldır",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
           const SizedBox.square(dimension: 5)
         ],
@@ -543,7 +550,7 @@ class ProfileScreenComponentsOthersProfile {
           Text(
             "Geri Al",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
           const SizedBox.square(dimension: 5)
         ],
@@ -589,7 +596,7 @@ class ProfileScreenComponentsOthersProfile {
           Text(
             "Kabul Et",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
           const SizedBox.square(
             dimension: 5,
@@ -626,7 +633,7 @@ class ProfileScreenComponentsOthersProfile {
           Text(
             "Mesajlaş",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(color: const Color(0xFFFFFFFF), fontSize: 14),
+            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFFFFFFFF), fontSize: 14),
           ),
         ],
       ),
@@ -649,7 +656,7 @@ class ProfileScreenComponentsOthersProfile {
                   ? Text(
                       "${mutualConnectionUserIDs.length} ortak bağlantı",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: Colors.grey[500],
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
@@ -682,7 +689,7 @@ class ProfileScreenComponentsOthersProfile {
               Text(
                 profileData.mutualConnectionsProfilePhotos.length > 3 ? "  +${profileData.mutualConnectionsProfilePhotos.length-3}" : "", //+0 bağlantı hatasını önlemek için.
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(fontSize: _customSmallTextSize(), color:  Color(0xFF0353EF)),
+                style: PeoplerTextStyle.normal.copyWith(fontSize: _customSmallTextSize(), color:  Color(0xFF0353EF)),
               ),
             ],
           ),
@@ -709,7 +716,7 @@ class ProfileScreenComponentsOthersProfile {
         Text(
           myActivities[index].liked.toString(),
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
           ),
         )
@@ -734,7 +741,7 @@ class ProfileScreenComponentsOthersProfile {
         Text(
           myActivities[index].disliked.toString(),
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             color: _mode.blackAndWhiteConversion(),
           ),
         ),
@@ -760,7 +767,7 @@ class ProfileScreenComponentsOthersProfile {
                     child: Text(
                       "Hareketler",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: _mode.blackAndWhiteConversion(),
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -792,7 +799,7 @@ class ProfileScreenComponentsOthersProfile {
                                       Text(
                                         "Yakında...",
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -819,7 +826,7 @@ class ProfileScreenComponentsOthersProfile {
                                           ),
                                           child: Text(
                                             "TAMAM",
-                                            style: GoogleFonts.rubik(
+                                            style: PeoplerTextStyle.normal.copyWith(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                             ),
@@ -860,7 +867,7 @@ class ProfileScreenComponentsOthersProfile {
                                   child: Text(
                                 numberOfActivity.value == minNumberOfActivity + 1 ? "Daha Fazla Göster" : "Daha Az Göster",
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
+                                style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
                             ),
                           );
@@ -882,12 +889,14 @@ class ProfileScreenComponentsOthersProfile {
                                     Text(
                                       profileData.pplName!,
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                                      style:
+                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       " " + activityText(index),
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
+                                      style:
+                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                     ),
                                   ],
                                 ),
@@ -933,7 +942,7 @@ class ProfileScreenComponentsOthersProfile {
                 child: Text(
                   "Deneyimler",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: _mode.blackAndWhiteConversion(),
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -967,7 +976,7 @@ class ProfileScreenComponentsOthersProfile {
                                       Text(
                                         "Yakında...",
                                         textAlign: TextAlign.center,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -994,7 +1003,7 @@ class ProfileScreenComponentsOthersProfile {
                                           ),
                                           child: Text(
                                             "TAMAM",
-                                            style: GoogleFonts.rubik(
+                                            style: PeoplerTextStyle.normal.copyWith(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400,
                                             ),
@@ -1038,7 +1047,7 @@ class ProfileScreenComponentsOthersProfile {
                                   child: Text(
                                 numberOfExperience.value == minNumberOfExperience + 1 ? "Daha Fazla Göster" : "Daha Az Göster",
                                 textScaleFactor: 1,
-                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16),
+                                style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16),
                               )),
                             ),
                           );
@@ -1069,7 +1078,7 @@ class ProfileScreenComponentsOthersProfile {
                                                 )),
                                             child: CircleAvatar(
                                               backgroundColor: const Color(0xFF0353EF),
-                                              child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                              child: Text("ppl$index", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
                                             ),
                                           ),
                                           Container(
@@ -1094,14 +1103,15 @@ class ProfileScreenComponentsOthersProfile {
                                     Text(
                                       "r434rgf",
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
+                                      style:
+                                          PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
                                         Text(
                                           "sd213fdgdf",
                                           textScaleFactor: 1,
-                                          style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                                          style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                         ),
                                       ],
                                     ),
@@ -1129,7 +1139,7 @@ class ProfileScreenComponentsOthersProfile {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: _mode.blackAndWhiteConversion(),
               ),
@@ -1150,7 +1160,7 @@ class ProfileScreenComponentsOthersProfile {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: _mode.blackAndWhiteConversion(),
               ),
@@ -1169,7 +1179,7 @@ class ProfileScreenComponentsOthersProfile {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               softWrap: false,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 14,
                 color: _mode.blackAndWhiteConversion(),
               ),

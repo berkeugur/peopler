@@ -97,8 +97,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       await _messageRepository.saveMessage(event.newMessage);
 
       /// Send host user a message notification
-      String _token = await _firestoreDBServiceUsers.getToken(event.newMessage.to);
-      await _sendNotificationService.sendNotification(Strings.message, _token, event.newMessage.message, UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+      String? _token = await _firestoreDBServiceUsers.getToken(event.newMessage.to);
+
+      if(_token != null) {
+        await _sendNotificationService.sendNotification(Strings.message, _token, event.newMessage.message, UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+      }
 
       if(state is MessageNotExistState) {
         emit(MessagesLoadedState());

@@ -39,9 +39,12 @@ class FeedRepository {
 
     for (int index = 0; index < feedList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(feedList[index].userID);
-      feedList[index].userDisplayName = _user?.displayName ?? "error";
-      feedList[index].userPhotoUrl = _user?.profileURL ?? "error";
-      feedList[index].numberOfConnections = _user?.connectionUserIDs.length ?? 99999;
+
+      if(_user == null) continue; // DİKKAT
+
+      feedList[index].userDisplayName = _user.displayName;
+      feedList[index].userPhotoUrl = _user.profileURL;
+      feedList[index].numberOfConnections = _user.connectionUserIDs.length;
     }
 
     return feedList;

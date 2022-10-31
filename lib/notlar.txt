@@ -1,13 +1,9 @@
-firebase de kayıtlı kullanıcı sayısını çekme gibi bir özellik yok sanırım
-bunu çözmek için firestore databasede uygulama istatistiklerinin yer aldığı bir collection oluşturup
-bir integer bir değer verip her yeni bir kullanıcı kayıt olduğunda +1 yapabiliriz. bir nevi counter
-yani yine pplName değerini de oradan alırız
+
 
 
 pplName ayarlanması gerekiyor
 
-pplName de Name yerine 5 haneli bir sayı olacak ilk kullanıcı ppl00001 mi olsun yoksa ppl10001 mi
-ppl00001 olurması daha mantıklı geldi
+
 
 okul e postası ile kayıt olurken profil resmini kaydetmedi
 linkedin ile kayıtta profil resmini kayıt ediyordu
@@ -72,7 +68,7 @@ showModalBottomSheet(
                                                               )),
                                                           child: CircleAvatar(
                                                             backgroundColor: Color(0xFF0353EF),
-                                                            child: Text("ppl$index", textScaleFactor: 1, style: GoogleFonts.rubik(fontSize: 12)),
+                                                            child: Text("ppl$index", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
                                                           ),
                                                         ),
                                                         Container(
@@ -87,11 +83,11 @@ showModalBottomSheet(
                                                             child: hobbyItem(0, "da2332")),
                                                       ],
                                                     ),
-                                              title: Text("123ş", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion())),
+                                              title: Text("123ş", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                               subtitle: Text(
                                                 "123222",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(color: _mode.blackAndWhiteConversion(), fontSize: 14),
+                                                style: PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 14),
                                               ),
                                             );
                                           });

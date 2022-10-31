@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../settings.dart';
@@ -15,7 +16,7 @@ security_settings_field(context) {
       Text(
         "Gizlilik",
         textScaleFactor: 1,
-        style: GoogleFonts.rubik(
+        style: PeoplerTextStyle.normal.copyWith(
           fontWeight: FontWeight.w400,
           fontSize: 23,
           color: _mode.settings_setting_title(),
@@ -51,7 +52,7 @@ security_settings_field(context) {
                           Text(
                             "Profilimi gizli tut",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -87,7 +88,7 @@ security_settings_field(context) {
                           Text(
                             "Herkese açık",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_open_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -125,7 +126,7 @@ security_settings_field(context) {
                           Text(
                             "Profilimi gizli tut",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -162,7 +163,7 @@ security_settings_field(context) {
                           Text(
                             "Herkese açık",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_open_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -201,7 +202,7 @@ security_settings_field(context) {
                           Text(
                             "Konumumu gizle",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -235,7 +236,7 @@ security_settings_field(context) {
                           Text(
                             "Görünür ol",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_open_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -273,7 +274,7 @@ security_settings_field(context) {
                           Text(
                             "Profilimi gizli tut",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),
@@ -310,7 +311,7 @@ security_settings_field(context) {
                           Text(
                             "Herkese açık",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: is_selected_profile_open_to_everyone ? Colors.white : _mode.settings_custom_1(),
                             ),
                           ),

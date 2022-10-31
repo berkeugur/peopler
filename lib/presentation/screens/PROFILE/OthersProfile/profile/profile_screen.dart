@@ -10,6 +10,7 @@ import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/reloader/reload.dart';
 import 'package:peopler/data/model/activity.dart';
@@ -28,12 +29,13 @@ import '../../../../../others/strings.dart';
 
 Widget titles4OtherProfiles(MyUser otherUser) {
   if (otherUser.company == "" && otherUser.currentJobName != "") {
-    return Text(otherUser.currentJobName, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+    return Text(otherUser.currentJobName, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion()));
   } else if (otherUser.company != "" && otherUser.currentJobName != "") {
     return Text(otherUser.company + " şirketinde " + otherUser.currentJobName,
-        textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+        textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion()));
   } else if (otherUser.company != "" && otherUser.currentJobName == "") {
-    return Text(otherUser.company + " şirketinde çalışıyor.", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+    return Text(otherUser.company + " şirketinde çalışıyor.",
+        textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion()));
   } else {
     return const SizedBox.shrink();
   }
@@ -140,7 +142,7 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 softWrap: false,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   fontSize: 14,
                   color: _mode.blackAndWhiteConversion(),
                 ),

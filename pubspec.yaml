@@ -1,5 +1,5 @@
 name: peopler
-description: A new Flutter project.
+description: kaydet ve keşfet
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ">=2.16.0-134.1.beta <3.0.0"
@@ -56,7 +56,7 @@ dependencies:
   flutter_svg: 1.1.0
   flutter_zoom_drawer: ^3.0.3
   flutterfire_ui: ^0.4.3+9
-  geolocator: ^9.0.0
+  geolocator: ^9.0.2
   get_it: ^7.2.0
   google_fonts: ^2.3.1
   grouped_list: ^4.2.0
@@ -76,6 +76,7 @@ dependencies:
   provider: ^6.0.2
   pull_to_refresh_flutter3: ^2.0.1
   purchases_flutter: ^4.3.0
+  responsive_sizer: ^3.1.1
   restart_app: ^1.1.0
   rxdart: ^0.27.5
   share_plus: ^4.0.4
@@ -106,9 +107,7 @@ flutter:
     - ic_launcher.png
     - vector1.png
     - vector2.png
-    - assets/images/onboardingscreen/1.svg
-    - assets/images/onboardingscreen/2.svg
-    - assets/images/onboardingscreen/3.svg
+    - assets/images/onboardingscreen/
     - assets/images/splashScreen/1.jpg
     - assets/images/svg_icons/
     - assets/images/hobby_badges/

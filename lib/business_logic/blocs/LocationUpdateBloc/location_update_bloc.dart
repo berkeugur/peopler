@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/my_work_manager.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import '../../../data/fcm_and_local_notifications.dart';
+import '../../../data/repository/saved_repository.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
 
@@ -18,6 +20,8 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
   static Position? get position => _position;
 
   static bool _isTimerActive = false;
+
+  static bool firstUpdate = false;
 
   static Future<String> updateLocationMethod() async {
     try {
@@ -99,8 +103,16 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       } else if (methodState == 'PositionNotGetState') {
         emit(PositionNotGetState());
       }
+
+      firstUpdate = true;
       debugPrint(methodState);
     });
+
+    on<UpdateNumOfSendRequest>((event, emit) async {
+      final SavedRepository _savedRepository = locator<SavedRepository>();
+      await _savedRepository.refreshNumOfSendRequest();
+    });
+
 
     ///--------------- TIMER - FOREGROUND ----------------------------//
     on<StartLocationUpdatesForeground>((event, emit) async {
@@ -136,6 +148,11 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
             debugPrint("Foreground update active");
             _isTimerActive = true;
             add(UpdateLocationEvent());
+
+            if(UserBloc.entitlement != SubscriptionTypes.free) return;
+            if(UserBloc.user == null) return;
+
+            add(UpdateNumOfSendRequest());
           },
         );
 

@@ -5,6 +5,7 @@ import 'package:peopler/core/constants/length/max_length_constants.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../others/classes/variables.dart';
 import 'functions.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -67,7 +68,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     child: Text(
                                   "Hesabını bul",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                       color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 480 ? 32 : 48, fontWeight: FontWeight.w400),
                                 )),
                                 const SizedBox(
@@ -78,7 +79,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   child: Text(
                                     "E-Mail Adresin",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                    style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                   ),
                                 ),
                                 Container(
@@ -123,7 +124,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     child: Text(
                                       "Kod Gönder",
                                       textScaleFactor: 1,
-                                      style: GoogleFonts.rubik(color: const Color(0xFF000B21), fontSize: 20, fontWeight: FontWeight.w200),
+                                      style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000B21), fontSize: 20, fontWeight: FontWeight.w200),
                                     ),
                                   ),
                                 ),
@@ -138,7 +139,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           child: Text(
                                         "Kurtarma maili gelmedi mi?",
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                             color: const Color(0xFF0353EF),
                                             fontSize: screenWidth < 360 || screenHeight < 480 ? 16 : 22,
                                             fontWeight: FontWeight.w200),
@@ -150,7 +151,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           child: Text(
                                         "Bilgi ve iletişim için;",
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                             color: const Color(0xFF000B21),
                                             fontSize: screenWidth < 360 || screenHeight < 480 ? 16 : 22,
                                             fontWeight: FontWeight.w200),
@@ -162,7 +163,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           child: Text(
                                         "info@peopler.app",
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                             color: const Color(0xFF000B21),
                                             fontSize: screenWidth < 360 || screenHeight < 480 ? 16 : 22,
                                             fontWeight: FontWeight.w600),

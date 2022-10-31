@@ -36,7 +36,7 @@ class _TutorialScreenState extends State<TutorialScreen> /*with ChangeNotifier*/
         color: TutorialDataList.screen_list[currentOnBoardingScreenIndex].backgroundColor,
         child: SafeArea(
             child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           color: TutorialDataList.screen_list[currentOnBoardingScreenIndex].backgroundColor,
           alignment: Alignment.center,
           child: Column(children: [
@@ -70,13 +70,18 @@ class _TutorialScreenState extends State<TutorialScreen> /*with ChangeNotifier*/
                               margin: const EdgeInsets.symmetric(vertical: 24),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                    TutorialDataList.screen_list.length, (index) => createCircle(index: index)),
+                                children: List.generate(TutorialDataList.screen_list.length, (index) => createCircle(index: index)),
                               )),
-                          TutorialBottomButtons(
-                            currentIndex: currentOnBoardingScreenIndex,
-                            dataLength: TutorialDataList.screen_list.length,
-                            controller: _controller,
+                          Row(
+                            mainAxisAlignment:
+                                currentOnBoardingScreenIndex != TutorialDataList.screen_list.length - 1 ? MainAxisAlignment.start : MainAxisAlignment.center,
+                            children: [
+                              TutorialBottomButtons(
+                                currentIndex: currentOnBoardingScreenIndex,
+                                dataLength: TutorialDataList.screen_list.length,
+                                controller: _controller,
+                              ),
+                            ],
                           )
                         ],
                       ))

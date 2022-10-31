@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -32,12 +35,15 @@ class CircularImage extends StatelessWidget {
     return Container(
       width: _width,
       height: _height,
-      decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: image), boxShadow: const [
-        BoxShadow(
-          blurRadius: 10,
-          color: Colors.black45,
-        )
-      ]),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(image: image),
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 10,
+              color: Colors.black45,
+            )
+          ]),
     );
   }
 }
@@ -74,7 +80,8 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF0353EF),
       body: Padding(
-        padding: EdgeInsets.only(top: _height * 0.1, bottom: _height * 0.1, left: 40),
+        padding: EdgeInsets.only(
+            top: _height * 0.1, bottom: _height * 0.1, left: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,7 +96,10 @@ class _MenuPageState extends State<MenuPage> {
                 Text(
                   UserBloc.user?.displayName ?? "null display name",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
+                  style: PeoplerTextStyle.normal.copyWith(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 15,
@@ -112,7 +122,10 @@ class _MenuPageState extends State<MenuPage> {
                   InkWell(
                     borderRadius: BorderRadius.circular(999),
                     onTap: () async {
-                      await FirebaseFirestore.instance.collection("eventsbutton").doc().set({
+                      await FirebaseFirestore.instance
+                          .collection("eventsbutton")
+                          .doc()
+                          .set({
                         "createdAt": Timestamp.now(),
                         "cretedMonth": Timestamp.now().toDate().month,
                         "cretedYear": Timestamp.now().toDate().year,
@@ -123,8 +136,11 @@ class _MenuPageState extends State<MenuPage> {
                       await showDialog(
                         context: context,
                         builder: (contextSD) => AlertDialog(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                          contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(32.0))),
+                          contentPadding: EdgeInsets.only(
+                              top: 20.0, bottom: 5, left: 25, right: 25),
                           content: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,7 +149,7 @@ class _MenuPageState extends State<MenuPage> {
                               Text(
                                 "Etkinlikler Bölümü Deneme Aşamasındadır.",
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.rubik(
+                                style: PeoplerTextStyle.normal.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -147,14 +163,19 @@ class _MenuPageState extends State<MenuPage> {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  await FirebaseFirestore.instance.collection("eventsbutton").doc().set({
+                                  await FirebaseFirestore.instance
+                                      .collection("eventsbutton")
+                                      .doc()
+                                      .set({
                                     "createdAt": Timestamp.now(),
-                                    "cretedMonth": Timestamp.now().toDate().month,
+                                    "cretedMonth":
+                                        Timestamp.now().toDate().month,
                                     "cretedYear": Timestamp.now().toDate().year,
                                     "cretedDay": Timestamp.now().toDate().day,
                                     "createdFromUserID": UserBloc.user?.userID,
                                     "isNeedEmailNotification": true,
-                                    "createdFromUserEmail": UserBloc.user?.email,
+                                    "createdFromUserEmail":
+                                        UserBloc.user?.email,
                                   }).then((value) {
                                     Navigator.of(context).pop();
                                   });
@@ -170,7 +191,7 @@ class _MenuPageState extends State<MenuPage> {
                                   ),
                                   child: Text(
                                     "E-Posta İle Haber Ver",
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -181,7 +202,7 @@ class _MenuPageState extends State<MenuPage> {
                                 onPressed: () => Navigator.of(context).pop(),
                                 child: Text(
                                   "KAPAT",
-                                  style: GoogleFonts.rubik(
+                                  style: PeoplerTextStyle.normal.copyWith(
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -208,7 +229,7 @@ class _MenuPageState extends State<MenuPage> {
                           Text(
                             "Etkinlikler",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: Colors.white,
@@ -243,7 +264,8 @@ class _MenuPageState extends State<MenuPage> {
                     if (UserBloc.user != null) {
                       ZoomDrawer.of(context)!.toggle();
                       _userBloc.mainKey.currentState?.push(
-                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const SettingsScreen()),
                       );
                     } else {
                       GuestAlert.dialog(context);
@@ -261,7 +283,8 @@ class _MenuPageState extends State<MenuPage> {
                     itemtext: "Destek",
                     icon: Icons.support_agent,
                     function: () {
-                      TextEditingController _controller = TextEditingController();
+                      TextEditingController _controller =
+                          TextEditingController();
                       showDialog(
                         context: context,
                         builder: (_ctx) {
@@ -290,11 +313,13 @@ class _MenuPageState extends State<MenuPage> {
                                 autocorrect: true,
                                 decoration: const InputDecoration(
                                   counterText: "",
-                                  contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(0, 13, 0, 10),
                                   hintMaxLines: 1,
                                   border: InputBorder.none,
                                   hintText: 'Mesajınız',
-                                  hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                                  hintStyle: TextStyle(
+                                      color: Color(0xFF9ABAF9), fontSize: 16),
                                 ),
                                 style: const TextStyle(
                                   color: Color(0xFFFFFFFF),
@@ -309,7 +334,10 @@ class _MenuPageState extends State<MenuPage> {
                               TextButton(
                                 onPressed: () async {
                                   if (_controller.text.isNotEmpty) {
-                                    await FirebaseFirestore.instance.collection("supports").doc().set({
+                                    await FirebaseFirestore.instance
+                                        .collection("supports")
+                                        .doc()
+                                        .set({
                                       "message": _controller.text,
                                       "fromUserID": UserBloc.user?.userID,
                                       "fromUserEmail": UserBloc.user?.email,
@@ -319,17 +347,26 @@ class _MenuPageState extends State<MenuPage> {
                                       showDialog(
                                         context: context,
                                         builder: (contextSD) => AlertDialog(
-                                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                                          contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                          shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(32.0))),
+                                          contentPadding: EdgeInsets.only(
+                                              top: 20.0,
+                                              bottom: 5,
+                                              left: 25,
+                                              right: 25),
                                           content: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                               Text(
                                                 "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal
+                                                    .copyWith(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                 ),
@@ -347,18 +384,25 @@ class _MenuPageState extends State<MenuPage> {
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(999),
-                                                    color: Theme.of(context).primaryColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            999),
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
                                                   ),
-                                                  padding: const EdgeInsets.symmetric(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                     horizontal: 30,
                                                     vertical: 10,
                                                   ),
                                                   child: Text(
                                                     "TAMAM",
-                                                    style: GoogleFonts.rubik(
+                                                    style: PeoplerTextStyle
+                                                        .normal
+                                                        .copyWith(
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                     ),
                                                   ),
                                                 ),
@@ -372,7 +416,8 @@ class _MenuPageState extends State<MenuPage> {
                                       );
                                     });
                                   } else {
-                                    SnackBars(context: context).simple("boş bırakmayınız");
+                                    SnackBars(context: context)
+                                        .simple("boş bırakmayınız");
                                   }
                                 },
                                 child: const Text("Gönder"),
@@ -400,7 +445,9 @@ class _MenuPageState extends State<MenuPage> {
         Container(
           height: _photoSize,
           width: _photoSize,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), border: Border.all(width: 5, color: Colors.white)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(width: 5, color: Colors.white)),
           child: const CircleAvatar(
             backgroundColor: Color(0xFF0353EF),
             child: Text(
@@ -412,14 +459,24 @@ class _MenuPageState extends State<MenuPage> {
         Container(
           height: _photoSize,
           width: _photoSize,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), border: Border.all(width: 3, color: Colors.white)),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(999),
+              border: Border.all(width: 3, color: Colors.white)),
           child: //_userBloc != null ?
-              CircleAvatar(
-            radius: 999,
-            backgroundImage: NetworkImage(
-              profileData!.profileURL
+              CachedNetworkImage(
+            imageUrl: profileData!.profileURL,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: CircularProgressIndicator(
+                        value: downloadProgress.progress)),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
             ),
-            backgroundColor: Colors.transparent,
           ),
         ),
       ],
@@ -441,7 +498,9 @@ class _MenuPageState extends State<MenuPage> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Mode.isEnableDarkMode == false ? Colors.white : Colors.transparent,
+              color: Mode.isEnableDarkMode == false
+                  ? Colors.white
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(999),
             ),
             child: Padding(
@@ -452,7 +511,9 @@ class _MenuPageState extends State<MenuPage> {
                     "assets/images/svg_icons/light_mode.svg",
                     width: 15,
                     height: 15,
-                    color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
+                    color: Mode.isEnableDarkMode == false
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
@@ -461,8 +522,10 @@ class _MenuPageState extends State<MenuPage> {
                   Text(
                     "Aydınlık",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
-                      color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
+                    style: PeoplerTextStyle.normal.copyWith(
+                      color: Mode.isEnableDarkMode == false
+                          ? const Color(0xFF0353EF)
+                          : Colors.white,
                     ),
                   ),
                 ],
@@ -477,7 +540,9 @@ class _MenuPageState extends State<MenuPage> {
           onTap: () => _themeCubit.openDarkMode(),
           child: Container(
             decoration: BoxDecoration(
-              color: Mode.isEnableDarkMode == true ? Colors.white : Colors.transparent,
+              color: Mode.isEnableDarkMode == true
+                  ? Colors.white
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(999),
             ),
             child: Padding(
@@ -488,7 +553,9 @@ class _MenuPageState extends State<MenuPage> {
                     "assets/images/svg_icons/dark_mode.svg",
                     width: 15,
                     height: 15,
-                    color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
+                    color: Mode.isEnableDarkMode == true
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
@@ -497,8 +564,10 @@ class _MenuPageState extends State<MenuPage> {
                   Text(
                     "Karanlık",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
-                      color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
+                    style: PeoplerTextStyle.normal.copyWith(
+                      color: Mode.isEnableDarkMode == true
+                          ? const Color(0xFF0353EF)
+                          : Colors.white,
                     ),
                   ),
                 ],
@@ -510,7 +579,12 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget MenuItems({required BuildContext context, String? svgiconpath, required String itemtext, IconData? icon, void Function()? function}) {
+  Widget MenuItems(
+      {required BuildContext context,
+      String? svgiconpath,
+      required String itemtext,
+      IconData? icon,
+      void Function()? function}) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: InkWell(
@@ -546,7 +620,10 @@ class _MenuPageState extends State<MenuPage> {
                 itemtext,
                 textScaleFactor: 1,
                 textAlign: TextAlign.left,
-                style: GoogleFonts.rubik(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+                style: PeoplerTextStyle.normal.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
               )
             ],
           ),
@@ -567,11 +644,7 @@ class DrawerHomePage extends StatefulWidget {
 }
 
 class _DrawerHomePageState extends State<DrawerHomePage> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  ZoomDrawerController controller = ZoomDrawerController();
 
   @override
   Widget build(BuildContext context) {
@@ -579,8 +652,11 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
         valueListenable: setTheme,
         builder: (context, _, __) {
           return ZoomDrawer(
-            shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
-            shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
+            controller: controller,
+            shadowLayer1Color:
+                Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+            shadowLayer2Color:
+                Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
             showShadow: true,
             mainScreenTapClose: true,
             borderRadius: 24.0,

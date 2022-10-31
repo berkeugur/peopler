@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/repository/location_repository.dart';
@@ -94,6 +95,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     /******************************************************************************************/
     on<GetInitialSearchUsersEvent>((event, emit) async {
       try {
+        while(LocationUpdateBloc.firstUpdate == false) {
+          await Future.delayed(const Duration(seconds: 1));
+        }
+
         int _latitude;
         int _longitude;
 
@@ -171,7 +176,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       if(allUserList.isEmpty) {
         emit(UsersNotExistSearchState());
       } else {
-        emit(NewUsersLoadingSearchState());
         emit(UsersLoadedSearchState());
       }
     });

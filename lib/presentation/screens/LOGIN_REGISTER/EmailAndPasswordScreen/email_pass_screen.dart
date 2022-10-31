@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
-import '../../../../data/repository/location_repository.dart';
-import '../../../../others/classes/variables.dart';
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../others/classes/variables.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 
@@ -94,8 +94,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                     /*----------------------------------------------------------------------------*/
 
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 30.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
                                       child: Column(
                                         children: [
                                           Row(
@@ -104,14 +103,9 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                                 "peopler",
                                                 textScaleFactor: 1,
                                                 style: GoogleFonts.spartan(
-                                                    color:
-                                                        const Color(0xFF0353EF),
+                                                    color: const Color(0xFF0353EF),
                                                     fontWeight: FontWeight.w800,
-                                                    fontSize: screenWidth <
-                                                                360 ||
-                                                            screenHeight < 480
-                                                        ? 36
-                                                        : 36),
+                                                    fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 36),
                                               ),
                                             ],
                                           ),
@@ -120,16 +114,10 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                               Text(
                                                 "deneyimine\nçok az kaldı",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
-                                                    color:
-                                                        const Color(0xFF000000),
-                                                    fontSize: screenWidth <
-                                                                360 ||
-                                                            screenHeight < 480
-                                                        ? 36
-                                                        : 36,
-                                                    fontWeight:
-                                                        FontWeight.w300),
+                                                style: PeoplerTextStyle.normal.copyWith(
+                                                    color: const Color(0xFF000000),
+                                                    fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 36,
+                                                    fontWeight: FontWeight.w300),
                                               ),
                                             ],
                                           ),
@@ -145,23 +133,17 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                                     /*----------------------------------------------------------------------------*/
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         /*----------------------------------------------------------------------------*/
 
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 40.0),
+                                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
                                             "E-Mail Adresin",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
 
@@ -170,61 +152,34 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                         /*--------------------------EMAIL TEXT FIELD--------------------------------------------------*/
                                         Container(
                                           alignment: Alignment.center,
-                                          padding: EdgeInsets.fromLTRB(
-                                              screenWidth < 300 ? 10 : 40,
-                                              0,
-                                              20,
-                                              0),
-                                          margin: const EdgeInsets.only(
-                                              left: 10, right: 10, top: 10),
+                                          padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
+                                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xFF0353EF),
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
+                                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
                                           child: TextField(
                                             onTap: () async {
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 500), () {
-                                                if (jumpToBottomScrollController
-                                                    .hasClients) {
-                                                  _jumpToBottomScrollController
-                                                      .animateTo(
-                                                          _jumpToBottomScrollController
-                                                              .position
-                                                              .maxScrollExtent,
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          curve: Curves.ease);
+                                              await Future.delayed(const Duration(milliseconds: 500), () {
+                                                if (jumpToBottomScrollController.hasClients) {
+                                                  _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }
                                               });
                                             },
-                                            keyboardType:
-                                                TextInputType.emailAddress,
-                                            cursorColor:
-                                                const Color(0xFF000000),
+                                            keyboardType: TextInputType.emailAddress,
+                                            cursorColor: const Color(0xFF000000),
                                             onEditingComplete: () {
                                               setState(() {});
                                             },
                                             maxLength: MaxLengthConstants.EMAIL,
                                             controller: registerEmailController,
-                                            textInputAction:
-                                                TextInputAction.next,
+                                            textInputAction: TextInputAction.next,
                                             decoration: const InputDecoration(
                                               counterText: "",
-                                              contentPadding:
-                                                  EdgeInsets.fromLTRB(
-                                                      0, 13, 0, 10),
+                                              contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
                                               hintMaxLines: 1,
                                               border: InputBorder.none,
-                                              hintText:
-                                                  'isimsoyisim@uni.edu.tr',
-                                              hintStyle: TextStyle(
-                                                  color: Color(0xFF9ABAF9),
-                                                  fontSize: 16),
+                                              hintText: 'isimsoyisim@uni.edu.tr',
+                                              hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
                                             ),
                                             style: const TextStyle(
                                               color: Color(0xFFFFFFFF),
@@ -236,15 +191,11 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                                         /*----------------------------------------------------------------------------*/
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              40, 10, 40, 0),
+                                          padding: const EdgeInsets.fromLTRB(40, 10, 40, 0),
                                           child: Text(
                                             "Sadece üniversite mailin ile kayıt olabilirsin.",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -257,15 +208,11 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                                         /*----------------------------------------------------------------------------*/
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 40.0),
+                                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
                                             "Şifreni belirle",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -273,74 +220,46 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                         /*-----------------------------FIRST PASSWORD TEXT FIELD-----------------------------------------------*/
                                         Container(
                                           alignment: Alignment.center,
-                                          padding: EdgeInsets.fromLTRB(
-                                              screenWidth < 300 ? 10 : 40,
-                                              0,
-                                              20,
-                                              0),
-                                          margin: const EdgeInsets.only(
-                                              left: 10, right: 10, top: 10),
+                                          padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
+                                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
                                           decoration: BoxDecoration(
                                             color: const Color(0xFF0353EF),
-                                            borderRadius:
-                                                BorderRadius.circular(25),
+                                            borderRadius: BorderRadius.circular(25),
                                           ),
                                           child: TextField(
                                             onTap: () async {
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 500), () {
-                                                if (_jumpToBottomScrollController
-                                                    .hasClients) {
-                                                  _jumpToBottomScrollController
-                                                      .animateTo(
-                                                          _jumpToBottomScrollController
-                                                              .position
-                                                              .maxScrollExtent,
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          curve: Curves.ease);
+                                              await Future.delayed(const Duration(milliseconds: 500), () {
+                                                if (_jumpToBottomScrollController.hasClients) {
+                                                  _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }
                                               });
                                             },
                                             obscureText: isVisiblePassword,
-                                            keyboardType:
-                                                TextInputType.visiblePassword,
-                                            cursorColor:
-                                                const Color(0xFF000000),
+                                            keyboardType: TextInputType.visiblePassword,
+                                            cursorColor: const Color(0xFF000000),
                                             autofocus: true,
                                             onEditingComplete: () {
                                               setState(() {});
                                             },
-                                            maxLength:
-                                                MaxLengthConstants.PASSWORD,
-                                            controller:
-                                                registerPasswordController,
-                                            textInputAction:
-                                                TextInputAction.next,
+                                            maxLength: MaxLengthConstants.PASSWORD,
+                                            controller: registerPasswordController,
+                                            textInputAction: TextInputAction.next,
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
                                                 onPressed: () {
                                                   setState(() {
-                                                    isVisiblePassword =
-                                                        !isVisiblePassword;
+                                                    isVisiblePassword = !isVisiblePassword;
                                                   });
                                                 },
                                                 icon: Icon(
-                                                  isVisiblePassword == true
-                                                      ? Icons.visibility
-                                                      : Icons.visibility_off,
-                                                  color:
-                                                      const Color(0xFF9ABAF9),
+                                                  isVisiblePassword == true ? Icons.visibility : Icons.visibility_off,
+                                                  color: const Color(0xFF9ABAF9),
                                                 ),
                                               ),
                                               counterText: "",
-                                              contentPadding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 13, 0, 10),
+                                              contentPadding: const EdgeInsets.fromLTRB(0, 13, 0, 10),
                                               hintMaxLines: 1,
                                               border: InputBorder.none,
                                               hintText: 'Şifre',
@@ -365,15 +284,11 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                                         /*----------------------------------------------------------------------------*/
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 40.0),
+                                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
                                             "Şifre tekrar",
                                             textScaleFactor: 1,
-                                            style: GoogleFonts.rubik(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -381,72 +296,41 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                         /*--------------------------SECOND PASSWORD TEXT FIELD--------------------------------------------------*/
                                         Container(
                                           alignment: Alignment.center,
-                                          padding: EdgeInsets.fromLTRB(
-                                              screenWidth < 300 ? 10 : 40,
-                                              0,
-                                              20,
-                                              0),
-                                          margin: const EdgeInsets.only(
-                                              left: 10, right: 10, top: 10),
+                                          padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
+                                          margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xFF0353EF),
-                                              borderRadius:
-                                                  BorderRadius.circular(25)),
+                                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(25)),
                                           child: TextField(
                                             onTap: () async {
-                                              await Future.delayed(
-                                                  const Duration(
-                                                      milliseconds: 500), () {
-                                                if (_jumpToBottomScrollController
-                                                    .hasClients) {
-                                                  _jumpToBottomScrollController
-                                                      .animateTo(
-                                                          _jumpToBottomScrollController
-                                                              .position
-                                                              .maxScrollExtent,
-                                                          duration:
-                                                              const Duration(
-                                                                  milliseconds:
-                                                                      500),
-                                                          curve: Curves.ease);
+                                              await Future.delayed(const Duration(milliseconds: 500), () {
+                                                if (_jumpToBottomScrollController.hasClients) {
+                                                  _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }
                                               });
                                             },
                                             obscureText: isVisibleCheckPassword,
-                                            keyboardType:
-                                                TextInputType.visiblePassword,
-                                            cursorColor:
-                                                const Color(0xFF000000),
+                                            keyboardType: TextInputType.visiblePassword,
+                                            cursorColor: const Color(0xFF000000),
                                             onEditingComplete: () {
                                               setState(() {});
                                             },
-                                            maxLength:
-                                                MaxLengthConstants.PASSWORD,
-                                            controller:
-                                                registerPasswordCheckController,
-                                            textInputAction:
-                                                TextInputAction.next,
+                                            maxLength: MaxLengthConstants.PASSWORD,
+                                            controller: registerPasswordCheckController,
+                                            textInputAction: TextInputAction.next,
                                             decoration: InputDecoration(
                                               suffixIcon: IconButton(
                                                   onPressed: () {
                                                     setState(() {
-                                                      isVisibleCheckPassword =
-                                                          !isVisibleCheckPassword;
+                                                      isVisibleCheckPassword = !isVisibleCheckPassword;
                                                     });
                                                   },
                                                   icon: Icon(
-                                                    isVisibleCheckPassword ==
-                                                            true
-                                                        ? Icons.visibility
-                                                        : Icons.visibility_off,
-                                                    color:
-                                                        const Color(0xFF9ABAF9),
+                                                    isVisibleCheckPassword == true ? Icons.visibility : Icons.visibility_off,
+                                                    color: const Color(0xFF9ABAF9),
                                                   )),
                                               counterText: "",
-                                              contentPadding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 13, 0, 10),
+                                              contentPadding: const EdgeInsets.fromLTRB(0, 13, 0, 10),
                                               hintMaxLines: 1,
                                               border: InputBorder.none,
                                               hintText: 'Şifre Tekrar',
@@ -500,74 +384,55 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
               _userBloc.add(uploadProfilePhoto(imageFile: image));
             }
 
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                NavigationConstants.BEG_FOR_PERMISSION_SCREEN,
-                (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
           } else if (state is InvalidEmailState) {
-            SnackBars(context: context)
-                .simple("E posta adresiniz istenilen biçimde değil!");
+            SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
           } else if (state is SigningInState) {
             debugPrint("SIGNING IN");
           } else if (state is UserNotFoundState) {
-            SnackBars(context: context).simple(
-                "Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
+            SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
           } else if (state is EmailAlreadyInUseState) {
             SnackBars(context: context).simple(
                 "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
+          } else if (state is WeakPasswordState) {
+            SnackBars(context: context).simple(
+                "${registerEmailController.text} Şifre en az 6 karakterden oluşmalı.");
           }
         },
         child: BlocBuilder(
           bloc: _userBloc,
           builder: (context, state) {
             if (state is SigningInState) {
-              return Column(children: [
-                Text(
-                  "Devam",
-                  textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
-                      color: UserBloc.user?.gender == ""
-                          ? const Color(0xFF0353EF)
-                          : const Color(0xFF0353EF),
-                      fontSize: 22,
-                      fontWeight: nameController.text.isEmpty ||
-                              UserBloc.user?.city == ""
-                          ? FontWeight.w300
-                          : FontWeight.w500),
-                ),
-                /*************** BERKE *******************/
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(children: const [
-                    Expanded(flex: 5, child: SizedBox()),
-                    Flexible(
-                        flex: 1,
-                        child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: CircularProgressIndicator())),
-                    Expanded(flex: 5, child: SizedBox()),
-                  ]),
-                )
-                /*************** BERKE *******************/
-              ]);
+              return FutureBuilder(
+                  future: PeoplerDialogs().loadingDialogFullScreen(
+                    context: context,
+                    loadingTexts: [
+                      "Hesabınız Oluşturuluyor...",
+                      "Peopler'a katılmana çok az kaldı",
+                    ],
+                  ),
+                  builder: (context, sn) {
+                    return Text(
+                      "Devam",
+                      textScaleFactor: 1,
+                      style: PeoplerTextStyle.normal.copyWith(
+                          color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
+                          fontSize: 22,
+                          fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
+                    );
+                  });
             } else {
               return TextButton(
                 onPressed: () async {
-                  final ConnectivityRepository _connectivityRepository =
-                      locator<ConnectivityRepository>();
-                  bool _connection =
-                      await _connectivityRepository.checkConnection(context);
+                  final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
+                  bool _connection = await _connectivityRepository.checkConnection(context);
 
                   if (_connection == false) return;
 
-                  bool _isEduDotTr = registerEmailController.text
-                              .replaceAll(" ", "")
-                              .toLowerCase()
-                              .substring(
-                                  registerEmailController.text.length - 7) ==
-                          ".edu.tr"
-                      ? true
-                      : false;
+                  bool _isEduDotTr =
+                      registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7) == ".edu.tr"
+                          ? true
+                          : false;
 
                   /// DİKKAT
                   /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
@@ -575,38 +440,28 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                   /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
 
-                  if (registerPasswordController.text ==
-                          registerPasswordCheckController.text &&
-                      _isEduDotTr == true) {
+                  if (registerPasswordController.text == registerPasswordCheckController.text && _isEduDotTr == true) {
                     _userBloc.add(createUserWithEmailAndPasswordEvent(
                       email: registerEmailController.text.replaceAll(" ", ""),
                       password: registerPasswordController.text,
                     ));
-                  } else if (registerPasswordController.text !=
-                      registerPasswordCheckController.text) {
-                    SnackBars(context: context)
-                        .simple("Girdiğiniz şifreler aynı değil!");
+                  } else if (registerPasswordController.text != registerPasswordCheckController.text) {
+                    SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
                   } else if (_isEduDotTr == false) {
                     SnackBars(context: context).simple(
                         "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
                         "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
                   } else {
-                    SnackBars(context: context).simple(
-                        "Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
+                    SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
                   }
                 },
                 child: Text(
                   "Devam",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
-                      color: UserBloc.user?.gender == ""
-                          ? const Color(0xFF0353EF)
-                          : const Color(0xFF0353EF),
+                  style: PeoplerTextStyle.normal.copyWith(
+                      color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                       fontSize: 22,
-                      fontWeight: nameController.text.isEmpty ||
-                              UserBloc.user?.city == ""
-                          ? FontWeight.w300
-                          : FontWeight.w500),
+                      fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
                 ),
               );
             }

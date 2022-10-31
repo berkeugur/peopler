@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/components/FlutterWidgets/drawer.dart';
 import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
@@ -97,7 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   softWrap: false,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 14,
                     color: _mode.blackAndWhiteConversion(),
                   ),
@@ -136,12 +137,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _titles() {
     if (UserBloc.user!.company == "" && UserBloc.user!.currentJobName != "") {
-      return Text(UserBloc.user!.currentJobName, textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+      return Text(UserBloc.user!.currentJobName, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion()));
     } else if (UserBloc.user!.company != "" && UserBloc.user!.currentJobName != "") {
       return Text(UserBloc.user!.company + " şirketinde " + UserBloc.user!.currentJobName,
-          textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+          textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion()));
     } else if (UserBloc.user!.company != "" && UserBloc.user!.currentJobName == "") {
-      return Text(UserBloc.user!.company + " şirketinde çalışıyor.", textScaleFactor: 1, style: GoogleFonts.rubik(color: Mode().blackAndWhiteConversion()));
+      return Text(UserBloc.user!.company + " şirketinde çalışıyor.",
+          textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion()));
     } else {
       return const SizedBox.shrink();
     }

@@ -13,7 +13,6 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   final UserRepository _userRepository = locator<UserRepository>();
 
   static List<MyUser> allUserList = [];
-
   static StreamSubscription? _streamSubscription;
   static bool _newUserListenListener = false;
 
@@ -57,7 +56,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       allUserList = [];
       _cityRepository.restartRepositoryCache();
 
-      List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(city, allUserList);
+      List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(city);
 
       removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
@@ -80,13 +79,13 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         allUserList = [];
         _cityRepository.restartRepositoryCache();
 
-        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, allUserList);
+        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city);
 
         removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-          emit(UsersLoadedCityState1());
+          emit(UsersLoadedCityState());
         } else {
           emit(UsersNotExistCityState());
         }
@@ -113,14 +112,24 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       try {
         emit(NewUsersLoadingCityState());
 
-        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, allUserList);
+        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city);
 
         removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
 
-        allUserList.addAll(userList);
-
         if (userList.isNotEmpty) {
-          emit(UsersLoadedCityState1());
+          allUserList.addAll(userList);
+
+          List<MyUser> uniqueItems = [];
+          var uniqueIDs = allUserList
+              .map((e) => e.userID)
+              .toSet(); //list if UniqueID to remove duplicates
+          for (var e in uniqueIDs) {
+            uniqueItems.add(allUserList.firstWhere((i) => i.userID == e));
+          }
+          allUserList = [];
+          allUserList.addAll(uniqueItems);
+
+          emit(UsersLoadedCityState());
         } else {
           if (allUserList.isNotEmpty) {
             emit(NoMoreUsersCityState());
@@ -129,7 +138,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
           }
         }
       } catch (e) {
-        debugPrint("Blocta get more location event hata:" + e.toString());
+        debugPrint("Blocta get more city event hata:" + e.toString());
       }
     });
     ///******************************************************************************************
@@ -140,11 +149,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       if(allUserList.isEmpty) {
         emit(UsersNotExistCityState());
       } else {
-        if(state is UsersLoadedCityState1) {
-          emit(UsersLoadedCityState2());
-        } else {
-          emit(UsersLoadedCityState1());
-        }
+        emit(UsersLoadedCityState());
       }
     });
     on<NewUserListenerEvent>((event, emit) async {

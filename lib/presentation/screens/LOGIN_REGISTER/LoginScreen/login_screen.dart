@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../core/constants/navigation/navigation_constants.dart';
 import '../WelcomeScreen/welcome_component.dart';
 import '../common_widgets.dart';
@@ -76,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   "Mail Adresin",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                  style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                 ),
                               ),
                               emailFormField(setState, screenWidth),
@@ -88,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Text(
                                   "Şifren",
                                   textScaleFactor: 1,
-                                  style: GoogleFonts.rubik(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                  style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                 ),
                               ),
                               passwordInputField(setState, screenWidth),
@@ -107,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Text(
                                     "Şifremi Unuttum",
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
+                                    style: PeoplerTextStyle.normal.copyWith(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w400),
                                   ),
                                 ),
                               ),

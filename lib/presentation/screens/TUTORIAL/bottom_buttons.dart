@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class TutorialBottomButtons extends StatelessWidget {
   final int currentIndex;
@@ -13,9 +14,9 @@ class TutorialBottomButtons extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: currentIndex == dataLength - 1
-          ? [
-              SizedBox(
+      children: [
+        currentIndex == dataLength - 1
+            ? SizedBox(
                 height: 50,
                 width: MediaQuery.of(context).size.width - 32,
                 child: Center(
@@ -26,23 +27,20 @@ class TutorialBottomButtons extends StatelessWidget {
                       child: Text(
                         "BAŞLAYALIM",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w600),
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                       style: TextButton.styleFrom(
-                        primary: const Color(0xFFFFFFFF),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
+                        foregroundColor: const Color(0xFFFFFFFF), tapTargetSize: MaterialTapTargetSize.shrinkWrap, // add this
                         textStyle: const TextStyle(color: Colors.white, fontSize: 18, fontStyle: FontStyle.normal),
                       ),
                     ),
                   ),
                 ),
               )
-            ]
-          : [
-              TextButton(
+            : TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -56,11 +54,11 @@ class TutorialBottomButtons extends StatelessWidget {
                   child: Text(
                     "ATLA",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
+                    style: PeoplerTextStyle.normal.copyWith(fontWeight: FontWeight.w600, color: Color(0xFF000B21)),
                   ),
                 ),
               ),
-            ],
+      ],
     );
   }
 }

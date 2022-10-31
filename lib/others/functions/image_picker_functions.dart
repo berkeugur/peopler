@@ -3,6 +3,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
+
 File? image;
 _imgFromCamera({required StateSetter stateSetter}) async {
   XFile? image = await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20);
@@ -73,6 +75,7 @@ void photoCrop({required File photo, required StateSetter stateSetter}) async {
   );
   if (croppedPhoto != null) {
     stateSetter(() {
+      UserBloc.user?.profileURL = '';
       image = croppedPhoto;
     });
   }

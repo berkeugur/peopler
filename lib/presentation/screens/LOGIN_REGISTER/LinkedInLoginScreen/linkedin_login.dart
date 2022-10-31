@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../core/system_ui_service.dart';
 import '../../../../others/strings.dart';
 
 class LinkedInPage extends StatefulWidget {
@@ -32,6 +33,9 @@ class _LinkedInPageState extends State<LinkedInPage> {
         bloc: _userBloc,
         listener: (context, UserState state) {
           if (state is SignedInState) {
+            /// Set theme mode before Home Screen
+            SystemUIService().setSystemUIforThemeMode();
+
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
           } else if (state is SignedInMissingInfoState) {
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);

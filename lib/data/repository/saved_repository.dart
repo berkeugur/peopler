@@ -1,4 +1,5 @@
 import 'package:peopler/data/model/saved_user.dart';
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../others/locator.dart';
 import '../model/notifications.dart';
 import '../model/user.dart';
@@ -28,7 +29,7 @@ class SavedRepository {
       DateTime countDownFinishTime = req.createdAt!.add(Duration(minutes: req.countDownDurationMinutes));
       DateTime deleteTime = countDownFinishTime.add(const Duration(minutes: 2880)); // 2880 minutes = 48 hours
 
-      // If duration between 24 and 48 hours, then isCountdownFinished must be true
+      // If duration between 6 and 48 hours, then isCountdownFinished must be true
       if(req.isCountdownFinished == false && countDownFinishTime.isBefore(DateTime.now()) && deleteTime.isAfter(DateTime.now())){
         await _firestoreDBServiceUsers.updateCountdownFinished(myUserID, req.userID, true);
         // Since ConnectionRequest object extends Equatable, if element and req fields are same, then it will return true.
@@ -86,6 +87,15 @@ class SavedRepository {
 
   Future<void> decrementNumOfSendRequest(String userID) async {
     await _firestoreDBServiceUsers.decrementNumOfSendRequest(userID);
+  }
+
+  Future<void> refreshNumOfSendRequest() async {
+    DateTime? updatedAtNumOfSendRequest = UserBloc.user!.updatedAtNumOfSendRequest;
+    DateTime updatedAtFinishTime = updatedAtNumOfSendRequest!.add(const Duration(hours: 24));
+
+    if(updatedAtFinishTime.isBefore(DateTime.now())){
+      await _firestoreDBServiceUsers.refreshNumOfSendRequest(UserBloc.user!.userID);
+    }
   }
 
 

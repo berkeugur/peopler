@@ -1,6 +1,8 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/app/animations_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/data/repository/location_repository.dart';
@@ -57,7 +59,7 @@ class PeoplerDialogs {
             Text(
               "support@peopler.app üzerinden iletişime geçebilirsiniz.",
               textAlign: TextAlign.center,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
@@ -84,7 +86,7 @@ class PeoplerDialogs {
                 ),
                 child: Text(
                   "TAMAM",
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
@@ -116,7 +118,7 @@ class PeoplerDialogs {
             Text(
               "Emin misin? Çünkü her zaman izin ver seçeneği uygulamanın kapalıyken bile çalışmasını sağlar. \nBu seçeneği işaretlemezsen insanlar seni uygulama kapalıyken bulamayacaklar!",
               textAlign: TextAlign.center,
-              style: GoogleFonts.rubik(
+              style: PeoplerTextStyle.normal.copyWith(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
@@ -150,7 +152,7 @@ class PeoplerDialogs {
                 ),
                 child: Text(
                   "İzin Ver",
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
@@ -177,10 +179,57 @@ class PeoplerDialogs {
                 ),
                 child: Text(
                   "Şimdi Değil",
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w400,
                   ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+   loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts})  {
+     showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.7,
+              child: DefaultTextStyle(
+                textAlign: TextAlign.center,
+                style: PeoplerTextStyle.normal.copyWith(
+                  fontSize: 18.0,
+                ),
+                child: AnimatedTextKit(
+                  pause: const Duration(milliseconds: 1700),
+                  repeatForever: true,
+                  animatedTexts: List.generate(
+                    loadingTexts?.length ?? 0,
+                    (index) => TyperAnimatedText(
+                      loadingTexts?[index] ?? "",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  onTap: () {
+                    print("Tap Event");
+                  },
                 ),
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/data/services/auth/firebase_auth_service.dart';
 import 'package:peopler/presentation/screens/BLOCKED/blocked_users.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
@@ -25,7 +26,7 @@ changePasswordField(context) {
         Text(
           "Güvenlik",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             fontWeight: FontWeight.w400,
             fontSize: 23,
             color: _mode.settings_setting_title(),
@@ -50,7 +51,7 @@ changePasswordField(context) {
                     Text(
                       """Şifrenizi sıfırlamak için aşağıdaki butona tıkayın ve ${UserBloc.user?.email ?? "email"} adresinize gelen bağlantıya tıklayın.""",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),
@@ -88,7 +89,7 @@ changePasswordField(context) {
                         child: Text(
                           "Sıfırlama Bağlantısı Gönder",
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.rubik(
+                          style: PeoplerTextStyle.normal.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
                           ),
@@ -99,7 +100,7 @@ changePasswordField(context) {
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
                         "KAPAT",
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.w400,
                         ),
@@ -129,7 +130,7 @@ changePasswordField(context) {
                 Text(
                   "Şifre Değiştir",
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 16,
                     color: is_selected_profile_close_to_everyone ? Colors.white : _mode.settings_custom_2(),
                   ),

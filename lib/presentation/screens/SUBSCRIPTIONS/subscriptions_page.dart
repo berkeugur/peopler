@@ -4,6 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import 'package:peopler/core/system_ui_service.dart';
+import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
@@ -25,15 +28,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         case SubscriptionPlan.threeMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
                   .toStringAsFixed(0) +
               " indirim";
         case SubscriptionPlan.sixMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus))
                   .toStringAsFixed(0) +
               " indirim";
         default:
@@ -46,15 +49,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
         case SubscriptionPlan.threeMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
                   .toStringAsFixed(0) +
               " indirim";
         case SubscriptionPlan.sixMonth:
           return "%" +
               (100 -
-                  ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6) * 100) /
-                      SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
+                      ((SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6) * 100) /
+                          SubscriptionService().price(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium))
                   .toStringAsFixed(0) +
               " indirim";
         default:
@@ -81,23 +84,25 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
     SubscriptionFeatures().init(_tabController);
 
     super.initState();
+    SystemUIService().setSystemUIforThemeMode();
   }
 
   @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
+    SystemUIService().setSystemUIforThemeMode();
   }
 
   //1 aylık plan index 0, 3 aylık 1, 6 aylık 2,
   int selectedPlusPlanIndex = 1;
   int selectedPremiumPlanIndex = 1;
-  late Color? scaffoldColor = _tabController.index == 0 ? Colors.white : const Color(0xFF0353EF);
+  late Color? scaffoldColor = _tabController.index == 0 ? Mode().homeScreenScaffoldBackgroundColor() : const Color(0xFF0353EF);
 
   @override
   Widget build(BuildContext context) {
-    scaffoldColor = scaffoldColor = _tabController.index == 0 ? Colors.white : const Color(0xFF0353EF);
-
+    scaffoldColor = scaffoldColor = _tabController.index == 0 ? Mode().homeScreenScaffoldBackgroundColor() : const Color(0xFF0353EF);
+    _tabController.index == 0 ? SystemUIService().setSystemUIforThemeMode() : SystemUIService().setSystemUIForBlue();
     debugPrint(_tabController.index.toString());
     return SafeArea(
       child: Scaffold(
@@ -112,11 +117,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                 "assets/images/svg_icons/back_arrow.svg",
                 width: 25,
                 height: 25,
-                color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor() : Colors.white,
               ),
             ),
           ),
-          backgroundColor: _tabController.index == 0 ? Colors.white : const Color(0xFF0353EF),
+          backgroundColor: _tabController.index == 0 ? Mode().homeScreenScaffoldBackgroundColor() : const Color(0xFF0353EF),
         ),
         backgroundColor: scaffoldColor,
         body: Column(
@@ -151,7 +156,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       "Plus",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(),
+                      style: PeoplerTextStyle.normal.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
 
@@ -160,7 +167,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       "Premium",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(),
+                      style: PeoplerTextStyle.normal.copyWith(
+                        color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Color(0xFF0353EF),
+                      ),
                     ),
                   ),
                 ],
@@ -253,8 +262,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPremiumPlanIndex == 0 ? 2 : 1,
             color: selectedPremiumPlanIndex == 0
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -268,15 +277,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPremiumPlanIndex == 0 ? 4 : 1,
                     color: selectedPremiumPlanIndex == 0
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPremiumPlanIndex != 0
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -284,13 +293,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN UYGUN",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
                       color: selectedPremiumPlanIndex == 0
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -308,7 +317,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "6",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -317,7 +326,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -328,7 +337,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -344,7 +354,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -353,9 +363,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: TextStyle(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -386,8 +396,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPremiumPlanIndex == 1 ? 2 : 1,
             color: selectedPremiumPlanIndex == 1
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -401,15 +411,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPremiumPlanIndex == 1 ? 4 : 1,
                     color: selectedPremiumPlanIndex == 1
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? const Color(0xFF0353EF)
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPremiumPlanIndex != 1
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? const Color(0xFF0353EF)
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -417,13 +427,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN POPÜLER",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPremiumPlanIndex != 1 ? 12 : 13,
                       color: selectedPremiumPlanIndex == 1
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? const Color(0xFF0353EF)
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -441,7 +451,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "3",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -450,7 +460,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -461,7 +471,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -477,7 +488,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -486,9 +497,9 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: TextStyle(
                       fontSize: 12,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -520,8 +531,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPremiumPlanIndex == 2 ? 2 : 1,
             color: selectedPremiumPlanIndex == 2
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? const Color(0xFF0353EF)
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -539,7 +550,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPremiumPlanIndex != 0 ? 12 : 13,
                       fontWeight: FontWeight.w500,
                     ),
@@ -558,7 +569,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "1",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -567,7 +578,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
                           color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                           fontWeight: FontWeight.w500,
@@ -578,7 +589,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
@@ -592,7 +604,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       " ",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -602,7 +614,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: scaffoldColor,
                       fontWeight: FontWeight.w500,
@@ -645,8 +657,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               Text(
                 "HEMEN SATIN AL",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                  color: scaffoldColor,
+                style: PeoplerTextStyle.normal.copyWith(
+                  color: Color(0xFF0353EF),
                   fontWeight: FontWeight.w500,
                 ),
               )
@@ -723,8 +735,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPlusPlanIndex == 0 ? 2 : 1,
             color: selectedPlusPlanIndex == 0
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? Mode().disabledBottomMenuItemAssetColor()!
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -738,15 +750,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPlusPlanIndex == 0 ? 4 : 1,
                     color: selectedPlusPlanIndex == 0
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? Mode().disabledBottomMenuItemAssetColor()!
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPlusPlanIndex != 0
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? Mode().disabledBottomMenuItemAssetColor()!
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -754,13 +766,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN UYGUN",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
                       color: selectedPlusPlanIndex == 0
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? Mode().disabledBottomMenuItemAssetColor()!
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -778,18 +790,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "6",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
-                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
-                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -798,9 +810,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
-                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -814,7 +827,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -823,11 +836,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus) / 6).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
-                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -856,8 +869,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPlusPlanIndex == 1 ? 2 : 1,
             color: selectedPlusPlanIndex == 1
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? Mode().disabledBottomMenuItemAssetColor()!
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -871,15 +884,15 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     width: selectedPlusPlanIndex == 1 ? 4 : 1,
                     color: selectedPlusPlanIndex == 1
                         ? _tabController.index == 0
-                        ? const Color(0xFF0353EF)
-                        : Colors.white
+                            ? Mode().disabledBottomMenuItemAssetColor()!
+                            : Colors.white
                         : Colors.transparent),
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13)),
                 color: selectedPlusPlanIndex != 1
                     ? scaffoldColor
                     : _tabController.index == 0
-                    ? const Color(0xFF0353EF)
-                    : Colors.white,
+                        ? Mode().disabledBottomMenuItemAssetColor()!
+                        : Colors.white,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -887,13 +900,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     "EN POPÜLER",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPlusPlanIndex != 1 ? 12 : 13,
                       color: selectedPlusPlanIndex == 1
                           ? scaffoldColor
                           : _tabController.index == 0
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                              ? Mode().disabledBottomMenuItemAssetColor()!
+                              : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -911,18 +924,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "3",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
-                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
-                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -931,9 +944,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
-                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -947,7 +961,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       discount(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -956,11 +970,11 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   ),
                    */
                   Text(
-                    "${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
+                    "", //"${(SubscriptionService().price(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus) / 3).toStringAsFixed(2)}/ay",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
-                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -989,8 +1003,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
             width: selectedPlusPlanIndex == 2 ? 2 : 1,
             color: selectedPlusPlanIndex == 2
                 ? _tabController.index == 0
-                ? const Color(0xFF0353EF)
-                : Colors.white
+                    ? Mode().disabledBottomMenuItemAssetColor()!
+                    : Colors.white
                 : const Color.fromARGB(255, 194, 194, 194),
           ),
           borderRadius: BorderRadius.circular(15),
@@ -1008,7 +1022,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: selectedPlusPlanIndex != 0 ? 12 : 13,
                       fontWeight: FontWeight.w500,
                     ),
@@ -1027,18 +1041,18 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       Text(
                         "1",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
-                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         "ay",
                         textScaleFactor: 1,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 16,
-                          color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                          color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -1047,9 +1061,10 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 16,
-                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                      color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -1061,7 +1076,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     child: Text(
                       " ",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         fontSize: 14,
                         color: scaffoldColor,
                         fontWeight: FontWeight.w500,
@@ -1071,7 +1086,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                   Text(
                     " ",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 12,
                       color: scaffoldColor,
                       fontWeight: FontWeight.w500,
@@ -1115,8 +1130,8 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
               Text(
                 "HEMEN SATIN AL",
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
-                  color: scaffoldColor,
+                style: PeoplerTextStyle.normal.copyWith(
+                  color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
               )

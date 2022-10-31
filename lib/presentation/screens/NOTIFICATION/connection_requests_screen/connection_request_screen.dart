@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
@@ -107,7 +108,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
         child: Text(
           "Alınan",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             fontSize: 14,
             color: selectedConnectionRequestList == ConnectionRequestList.inComingRequestList ? Colors.white : const Color(0xFF0353EF),
           ),
@@ -131,7 +132,7 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
         child: Text(
           "Gönderilen",
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
             fontSize: 14,
             color: selectedConnectionRequestList == ConnectionRequestList.outGoingRequestList ? Colors.white : const Color(0xFF0353EF),
           ),

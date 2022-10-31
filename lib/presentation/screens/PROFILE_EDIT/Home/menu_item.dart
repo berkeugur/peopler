@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/widgets/snack_bars.dart';
 
@@ -56,7 +57,7 @@ class HomeItem extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
-                        style: GoogleFonts.rubik(fontSize: 15, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 15, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                       ),
                     ),
                     SizedBox(
@@ -67,7 +68,7 @@ class HomeItem extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           fontSize: 12,
                           color: Mode().blackAndWhiteConversion()?.withOpacity(0.65),
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/locator.dart';
 import '../../SETTINGS/settings_page_functions.dart';
@@ -61,7 +62,7 @@ Row _buildOnlineStatus() {
       Text(
         "online/offline",
         textScaleFactor: 1,
-        style: GoogleFonts.rubik(fontSize: 12),
+        style: PeoplerTextStyle.normal.copyWith(fontSize: 12),
       ),
     ],
   );
@@ -74,7 +75,7 @@ InkWell _buildDisplayName(Mode _mode, context) {
     child: Text(
       _messageBloc.currentChat!.hostUserName,
       textScaleFactor: 1,
-      style: GoogleFonts.rubik(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w600, fontSize: 16),
+      style: PeoplerTextStyle.normal.copyWith(color: _mode.homeScreenTitleColor(), fontWeight: FontWeight.w600, fontSize: 16),
     ),
   );
 }

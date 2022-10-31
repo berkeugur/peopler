@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/SAVED/how_it_work.dart';
 
 import 'classes/dark_light_mode_controller.dart';
@@ -14,12 +15,13 @@ class EmptyListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const EmptyList(
       emptyListType: EmptyListType.outgoingRequest,
+      isSVG: true,
     );
   }
 }
 
 enum EmptyListType {
-  environment,
+  nearby,
   citySearch,
   emptyChannelList,
   emptyFeed,
@@ -31,7 +33,7 @@ enum EmptyListType {
 
 String _imagePath({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return "citySearch";
     case EmptyListType.citySearch:
       return "citySearch";
@@ -56,7 +58,7 @@ String _imagePath({required EmptyListType emptyListType}) {
 
 List<String> _actionButtonText({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
     case EmptyListType.citySearch:
       return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
@@ -81,7 +83,7 @@ List<String> _actionButtonText({required EmptyListType emptyListType}) {
 
 List<Function()?> _actionButtonFunction({required EmptyListType emptyListType, required BuildContext context}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return [
         () {
           print("go: Çevrenizi Keşfedin");
@@ -153,7 +155,7 @@ List<Function()?> _actionButtonFunction({required EmptyListType emptyListType, r
 
 String _title({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return "Etrafında kimse yok";
     case EmptyListType.citySearch:
       return "Şehrinizde gösterebileceğimiz birisi bulunmuyor.";
@@ -178,7 +180,7 @@ String _title({required EmptyListType emptyListType}) {
 
 String _explanation({required EmptyListType emptyListType}) {
   switch (emptyListType) {
-    case EmptyListType.environment:
+    case EmptyListType.nearby:
       return """Aynı ortamı paylaştığınız peopler kullanıcısı yok. Topluluğumuzu büyütmek için çalışmaya devam ediyoruz.""";
     case EmptyListType.citySearch:
       return "En kısa sürede şehrinizde yeni peopler kullanıcıları olacağına eminiz. Lütfen daha sonra tekrar kontrol edin.";
@@ -203,7 +205,8 @@ String _explanation({required EmptyListType emptyListType}) {
 
 class EmptyList extends StatelessWidget {
   final EmptyListType emptyListType;
-  const EmptyList({Key? key, required this.emptyListType}) : super(key: key);
+  final bool isSVG;
+  const EmptyList({Key? key, required this.emptyListType, required this.isSVG}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -223,18 +226,25 @@ class EmptyList extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.all(20),
-                    child: SvgPicture.asset(
-                      "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".svg",
-                      fit: BoxFit.contain,
-                      width: 220,
-                      height: 220,
-                    ),
+                    child: isSVG
+                        ? SvgPicture.asset(
+                            "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".svg",
+                            fit: BoxFit.contain,
+                            width: 220,
+                            height: 220,
+                          )
+                        : Image.asset(
+                            "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".png",
+                            fit: BoxFit.contain,
+                            width: 220,
+                            height: 220,
+                          ),
                   ),
                   Text(
                     _title(emptyListType: emptyListType),
                     textAlign: TextAlign.center,
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: _mode.blackAndWhiteConversion(),
@@ -247,7 +257,7 @@ class EmptyList extends StatelessWidget {
                     _explanation(emptyListType: emptyListType),
                     textAlign: TextAlign.center,
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(
+                    style: PeoplerTextStyle.normal.copyWith(
                       fontSize: 16,
                       color: _mode.blackAndWhiteConversion(),
                     ),
@@ -279,7 +289,7 @@ class EmptyList extends StatelessWidget {
                                   child: Text(
                                     _actionButtonText(emptyListType: emptyListType)[index],
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(color: const Color(0xFF0353EF), fontSize: 14),
+                                    style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                                   ),
                                 ),
                               ),

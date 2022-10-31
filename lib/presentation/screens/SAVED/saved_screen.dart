@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_action_button.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_time_text.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
+import '../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_header.dart';
-
 import '../PROFILE/OthersProfile/functions.dart';
-import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({Key? key}) : super(key: key);
@@ -127,6 +126,7 @@ class _SavedScreenState extends State<SavedScreen> {
       height: 521,
       child: EmptyList(
         emptyListType: EmptyListType.saved,
+        isSVG: true,
       ),
     );
   }
@@ -365,12 +365,14 @@ class _SavedScreenState extends State<SavedScreen> {
                         maxWidth: 140,
                         maxHeight: 20,
                         child: Text(
-                          (_savedBloc.allRequestList[index].isCountdownFinished == false) ? _savedBloc.allRequestList[index].pplName : _savedBloc.allRequestList[index].displayName,
+                          (_savedBloc.allRequestList[index].isCountdownFinished == false)
+                              ? _savedBloc.allRequestList[index].pplName
+                              : _savedBloc.allRequestList[index].displayName,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           textScaleFactor: 1,
-                          style: GoogleFonts.rubik(
+                          style: PeoplerTextStyle.normal.copyWith(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             color: _mode.blackAndWhiteConversion(),
@@ -430,7 +432,7 @@ class _SavedScreenState extends State<SavedScreen> {
                         child: actionButton(context, index, showWidgetsKeySaved),
                       ),
                     ),
-                    timeText(context, index),
+                    UserBloc.entitlement != SubscriptionTypes.premium ? timeText(context, index) : const SizedBox.shrink(),
                   ],
                 ),
               ),

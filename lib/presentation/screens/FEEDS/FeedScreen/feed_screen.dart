@@ -8,6 +8,7 @@ import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/TUTORIAL/constants.dart';
 import 'package:peopler/presentation/screens/TUTORIAL/onboardingscreen.dart';
@@ -21,6 +22,7 @@ import '../../../../others/locator.dart';
 import '../../../../others/empty_list.dart';
 import 'each_feed.dart';
 import 'feed_functions.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -192,7 +194,7 @@ class FeedScreenState extends State<FeedScreen> {
                             Text(
                               " Başlangıç rehberi",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: Colors.white, fontSize: 12),
+                              style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 12),
                             ),
                           ],
                         ),
@@ -229,7 +231,7 @@ class FeedScreenState extends State<FeedScreen> {
                             Text(
                               " Ayrıcalıkları Keşfet",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: Colors.white, fontSize: 12),
+                              style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 12),
                             ),
                           ],
                         ),
@@ -353,6 +355,7 @@ class FeedScreenState extends State<FeedScreen> {
   EmptyList _noFeedExistsWidget() {
     return const EmptyList(
       emptyListType: EmptyListType.emptyFeed,
+      isSVG: true,
     );
   }
 }

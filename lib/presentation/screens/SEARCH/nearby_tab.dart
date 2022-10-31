@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
+import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
+import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
 import 'package:peopler/presentation/screens/SEARCH/searching_animation.dart';
 import 'package:provider/provider.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../others/classes/variables.dart';
+import '../../../data/model/saved_user.dart';
+import '../../../data/send_notification_service.dart';
+import '../../../data/services/db/firestore_db_service_users.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
+import '../../../others/classes/variables.dart';
 import '../../../others/locator.dart';
+import '../../../others/strings.dart';
 import '../../../others/widgets/snack_bars.dart';
 import '../PROFILE/OthersProfile/functions.dart';
-import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 class NearbyTab extends StatefulWidget {
   const NearbyTab(
@@ -51,13 +56,33 @@ class NearbyTab extends StatefulWidget {
 }
 
 class _NearbyTabState extends State<NearbyTab> {
-  final ScrollController _searchPeopleListControllerNearby = ScrollController();
+  late ScrollController _searchPeopleListControllerNearby;
 
   late LocationBloc _locationBloc;
   late LocationPermissionBloc _locationPermissionBloc;
   late SavedBloc _savedBloc;
 
   final Mode _mode = locator<Mode>();
+
+  double? loadMoreOffset;
+  double? cardHeight;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchPeopleListControllerNearby = ScrollController();
+  }
+
+  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
+  // variables are initialized in didChangeDependencies method running after initState but before build method.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    cardHeight = MediaQuery.of(context).size.height / 2;
+    loadMoreOffset = cardHeight! * 5;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,23 +99,9 @@ class _NearbyTabState extends State<NearbyTab> {
             padding: const EdgeInsets.only(top: 10.0),
             child: SizedBox(
               child: NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollNotification) {
-                  if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
-                    if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-                      Variables.animatedSearchPeopleHeaderHeight.value = 80;
-                      // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-                      // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-                    }
-                  } else if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
-                    if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-                      Variables.animatedSearchPeopleHeaderHeight.value = 0;
-                      // print("reverse $ach");
-                    }
-                  }
-                  return true;
-                },
+                onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                 child: RefreshIndicator(
-                  color: Color(0xFF0353EF),
+                  color: const Color(0xFF0353EF),
                   displacement: 80.0,
                   onRefresh: () async {
                     /// Refresh users
@@ -112,10 +123,12 @@ class _NearbyTabState extends State<NearbyTab> {
                                 builder: (context, state) {
                                   if (state is InitialSearchState) {
                                     // return _initialUsersStateWidget();
+                                    SystemUIService().setSystemUIforThemeMode();
                                     return SearchingCase();
                                   } else if (state is UsersNotExistSearchState) {
                                     return const EmptyList(
-                                      emptyListType: EmptyListType.environment,
+                                      emptyListType: EmptyListType.nearby,
+                                      isSVG: false,
                                     );
                                   } else if (state is UsersLoadedSearchState) {
                                     return _showUsers(widget.size);
@@ -169,7 +182,7 @@ class _NearbyTabState extends State<NearbyTab> {
             width: MediaQuery.of(context).size.width * 0.6,
             svgIconPath: SVG_PATHS.locationPinPath,
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Center(
@@ -181,7 +194,7 @@ class _NearbyTabState extends State<NearbyTab> {
               //sstyle: TextStyle(color: Colors.black, fontSize: 20),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           OutlinedButton(
@@ -220,7 +233,7 @@ class _NearbyTabState extends State<NearbyTab> {
                 "Konum İzni",
                 textAlign: TextAlign.center,
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                   color: _mode.blackAndWhiteConversion(),
@@ -233,7 +246,7 @@ class _NearbyTabState extends State<NearbyTab> {
                 "Yakınınızdaki kişilerin sizi bulabilmesi için konum izni vermeniz gerekiyor",
                 textAlign: TextAlign.center,
                 textScaleFactor: 1,
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   fontSize: 16,
                   color: _mode.blackAndWhiteConversion(),
                 ),
@@ -259,7 +272,7 @@ class _NearbyTabState extends State<NearbyTab> {
                           child: Text(
                             "Ayarlara Git",
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(color: const Color(0xFF0353EF), fontSize: 14),
+                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                           ),
                         ),
                       ),
@@ -521,7 +534,7 @@ class _NearbyTabState extends State<NearbyTab> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color: _mode.blackAndWhiteConversion(),
@@ -577,16 +590,42 @@ class _NearbyTabState extends State<NearbyTab> {
                             return InkWell(
                               onTap: () async {
                                 if (UserBloc.user != null) {
-                                  LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
-                                  CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
+                                  if (UserBloc.entitlement != SubscriptionTypes.premium) {
+                                    _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
 
-                                  _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
+                                    Provider.of<SaveButton>(context, listen: false).saveUser();
+                                    await Future.delayed(const Duration(milliseconds: 1500));
 
-                                  Provider.of<SaveButton>(context, listen: false).saveUser();
-                                  await Future.delayed(const Duration(milliseconds: 1500));
+                                    widget.showWidgetsKeyNearby.currentState?.setState(() {});
+                                    widget.showWidgetsKeyCity.currentState?.setState(() {});
+                                  } else {
+                                    final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
+                                    final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
-                                  widget.showWidgetsKeyNearby.currentState?.setState(() {});
-                                  widget.showWidgetsKeyCity.currentState?.setState(() {});
+                                    SavedUser _savedUser = SavedUser();
+                                    _savedUser.userID = LocationBloc.allUserList[index].userID;
+                                    _savedUser.pplName = LocationBloc.allUserList[index].pplName!;
+                                    _savedUser.displayName = LocationBloc.allUserList[index].displayName;
+                                    _savedUser.gender = LocationBloc.allUserList[index].gender;
+                                    _savedUser.profileURL = LocationBloc.allUserList[index].profileURL;
+                                    _savedUser.biography = LocationBloc.allUserList[index].biography;
+                                    _savedUser.hobbies = LocationBloc.allUserList[index].hobbies;
+
+                                    _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+
+                                    Provider.of<SaveButton>(context, listen: false).saveUser();
+                                    await Future.delayed(const Duration(milliseconds: 1500));
+
+                                    String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
+
+                                    if(_token != null) {
+                                      _sendNotificationService.sendNotification(
+                                          Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                    }
+
+                                    widget.showWidgetsKeyNearby.currentState?.setState(() {});
+                                    widget.showWidgetsKeyCity.currentState?.setState(() {});
+                                  }
                                 } else {
                                   showYouNeedToLoginSave(context);
                                 }
@@ -607,21 +646,23 @@ class _NearbyTabState extends State<NearbyTab> {
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
-                                              SvgPicture.asset(
-                                                "assets/images/svg_icons/saved.svg",
-                                                color: _mode.disabledBottomMenuItemAssetColor(),
-                                                width: 12,
-                                                height: 12,
-                                                matchTextDirection: true,
-                                                fit: BoxFit.contain,
-                                              ),
+                                              UserBloc.entitlement == SubscriptionTypes.premium
+                                                  ? const SizedBox.shrink()
+                                                  : SvgPicture.asset(
+                                                      "assets/images/svg_icons/saved.svg",
+                                                      color: _mode.disabledBottomMenuItemAssetColor(),
+                                                      width: 12,
+                                                      height: 12,
+                                                      matchTextDirection: true,
+                                                      fit: BoxFit.contain,
+                                                    ),
                                               const SizedBox(
                                                 width: 3,
                                               ),
                                               Text(
-                                                "Kaydet",
+                                                UserBloc.entitlement == SubscriptionTypes.premium ? "Bağlantı Kur" : "Kaydet",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                   color: _mode.disabledBottomMenuItemAssetColor(),
                                                   fontSize: _maxWidth * 0.0391 > 16 ? 16 : _maxWidth * 0.0391,
                                                 ),
@@ -691,5 +732,32 @@ class _NearbyTabState extends State<NearbyTab> {
         height: _size,
       ),
     );
+  }
+
+  bool _listScrollListener() {
+
+      if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
+          Variables.animatedSearchPeopleHeaderHeight.value = 80;
+          // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
+          // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
+        }
+      } else if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
+          Variables.animatedSearchPeopleHeaderHeight.value = 0;
+          // print("reverse $ach");
+        }
+      }
+
+    /// When scroll position distance to bottom is less than load more offset,
+    if (_searchPeopleListControllerNearby.position.pixels >= _searchPeopleListControllerNearby.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
+        _searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
+      /// If state is UsersLoadedSearchState
+      if (_locationBloc.state is UsersLoadedSearchState) {
+        _locationBloc.add(GetMoreSearchUsersEvent());
+      }
+    }
+
+    return true;
   }
 }

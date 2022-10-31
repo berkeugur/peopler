@@ -130,10 +130,14 @@ class FirestoreDBServiceUsers {
     }
   }
 
-  Future<String> getToken(String userID) async {
-    DocumentSnapshot _token = await _firebaseDB.doc("tokens/" + userID).get();
-    Map<String, dynamic> _tokenMap = _token.data() as Map<String, dynamic>;
-    return _tokenMap["token"];
+  Future<String?> getToken(String userID) async {
+    try {
+      DocumentSnapshot _token = await _firebaseDB.doc("tokens/" + userID).get();
+      Map<String, dynamic> _tokenMap = _token.data() as Map<String, dynamic>;
+      return _tokenMap["token"];
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<bool> deleteToken(String userID) async {
@@ -236,6 +240,8 @@ class FirestoreDBServiceUsers {
     List<MyUser> _allUsers = [];
     for (String userID in userIDList) {
       DocumentSnapshot _userDocument = await _firebaseDB.collection('users').doc(userID).get();
+
+      if (_userDocument.data() == null) continue;
 
       MyUser _currentUser = MyUser();
       _currentUser.fromPublicMap(_userDocument.data() as Map<String, dynamic>);
@@ -478,6 +484,16 @@ class FirestoreDBServiceUsers {
   Future<bool> decrementNumOfSendRequest(String userID) async {
     try {
       await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').update({'numOfSendRequest': FieldValue.increment(-1)});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> refreshNumOfSendRequest(String userID) async {
+    try {
+      await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').update({'numOfSendRequest': 15});
+      await _firebaseDB.collection('users').doc(userID).collection('private').doc('private').update({'updatedAtNumOfSendRequest': DateTime.now()});
       return true;
     } catch (e) {
       return false;

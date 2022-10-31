@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/FeedBloc/feed_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
@@ -18,8 +19,7 @@ class MyFloatingActionButtons extends StatefulWidget {
   const MyFloatingActionButtons({Key? key}) : super(key: key);
 
   @override
-  State<MyFloatingActionButtons> createState() =>
-      _MyFloatingActionButtonsState();
+  State<MyFloatingActionButtons> createState() => _MyFloatingActionButtonsState();
 }
 
 class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
@@ -41,18 +41,19 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           return BlocBuilder<FloatingActionButtonCubit, bool>(
               bloc: _homeScreen,
               builder: (_, trig) {
-                if ((_homeScreen.currentTab == TabItem.feed) &&
-                    (_homeScreen.currentScreen[TabItem.feed] ==
-                        ScreenItem.feedScreen)) {
+                if ((_homeScreen.currentTab == TabItem.feed) && (_homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen)) {
                   return _buildAddFeedFAB(context);
                 } else if (_homeScreen.currentTab == TabItem.notifications &&
-                    _homeScreen.currentScreen[TabItem.notifications] ==
-                        ScreenItem.notificationScreen) {
+                    _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
                   // return _buildNotificationDeleteFAB();
-                  return const SizedBox.shrink();
-                } else if (_homeScreen.currentTab == TabItem.search &&
-                    _homeScreen.currentScreen[TabItem.search] ==
-                        ScreenItem.searchNearByScreen) {
+                  return _buildSavedFAB(context);
+                } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
+                  return _buildSavedFAB(context);
+                } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
+                  return _buildSavedFAB(context);
+                } else if (_homeScreen.currentTab == TabItem.chat && _homeScreen.currentScreen[TabItem.chat] == ScreenItem.chatScreen) {
+                  return _buildSavedFAB(context);
+                } else if (_homeScreen.currentTab == TabItem.profile && _homeScreen.currentScreen[TabItem.profile] == ScreenItem.profileScreen) {
                   return _buildSavedFAB(context);
                 } else {
                   return const SizedBox.shrink();
@@ -73,9 +74,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
           if (UserBloc.user != null) {
             _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(
-                  builder: (context) => BlocProvider<FeedBloc>.value(
-                      value: _feedBloc, child: const FeedShareScreen())),
+              MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
             showDialog(
@@ -84,7 +83,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                   return AlertDialog(
                     title: Text(
                       "Giriş Yapmalısınız.",
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: const Color(0xFF0353EF),
                       ),
                     ),
@@ -95,7 +94,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           },
                           child: Text(
                             "Kapat",
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: const Color(0xFF0353EF),
                             ),
                           )),
@@ -107,7 +106,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           },
                           child: Text(
                             "Giriş Yap",
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               color: const Color(0xFF0353EF),
                             ),
                           )),
@@ -132,7 +131,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           extendedIconLabelSpacing: 0,
           label: Text(
             "Tümünü Sil",
-            style: GoogleFonts.rubik(color: Colors.white, fontSize: 18),
+            style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 18),
           ),
         ),
       ),
@@ -160,9 +159,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
             if (UserBloc.user != null) {
               UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
               _userBloc.mainKey.currentState?.push(
-                MaterialPageRoute(
-                    builder: (context) => BlocProvider<SavedBloc>.value(
-                        value: _savedBloc, child: const SavedScreen())),
+                MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
               );
             } else {
               showDialog(
@@ -171,7 +168,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                     return AlertDialog(
                       title: Text(
                         "Giriş Yapmalısınız.",
-                        style: GoogleFonts.rubik(
+                        style: PeoplerTextStyle.normal.copyWith(
                           color: const Color(0xFF0353EF),
                         ),
                       ),
@@ -182,7 +179,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                             },
                             child: Text(
                               "Kapat",
-                              style: GoogleFonts.rubik(
+                              style: PeoplerTextStyle.normal.copyWith(
                                 color: const Color(0xFF0353EF),
                               ),
                             )),
@@ -192,7 +189,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                             },
                             child: Text(
                               "Giriş Yap",
-                              style: GoogleFonts.rubik(
+                              style: PeoplerTextStyle.normal.copyWith(
                                 color: const Color(0xFF0353EF),
                               ),
                             )),
@@ -214,14 +211,12 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           right: 0,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration:
-                const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
             alignment: Alignment.center,
-            child:
-            BlocBuilder<SavedBloc, SavedState>(
+            child: BlocBuilder<SavedBloc, SavedState>(
               bloc: _savedBloc,
               builder: (context, state) {
-                  return Text('${_savedBloc.allRequestList.length}', style: const TextStyle(color: Colors.white));
+                return Text('${_savedBloc.allRequestList.length}', style: const TextStyle(color: Colors.white));
               },
             ),
           ),

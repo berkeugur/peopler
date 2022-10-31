@@ -6,6 +6,7 @@ import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/classes/responsive_size.dart';
 import '../../../../../others/locator.dart';
 import '../feed_share_functions.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 Padding profilePhotoAndName(context) {
   final Mode _mode = locator<Mode>();
@@ -38,7 +39,7 @@ Padding profilePhotoAndName(context) {
           child: Text(
             UserBloc.user!.displayName,
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: _mode.blackAndWhiteConversion(),
               fontSize: ResponsiveSize().fs4(context),
             ),

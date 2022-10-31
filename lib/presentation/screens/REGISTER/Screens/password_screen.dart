@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 
 registerPassword({
@@ -20,7 +21,7 @@ registerPassword({
           child: Text(
             "Şifre Belirleyin",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000000),
               fontSize: 16,
               fontWeight: FontWeight.w300,
@@ -85,7 +86,7 @@ registerPassword({
           child: Text(
             "Şifrenizi istediğiniz zaman e-posta adresinizi kullanarak sıfırlayabilirsiniz.",
             textScaleFactor: 1,
-            style: GoogleFonts.rubik(
+            style: PeoplerTextStyle.normal.copyWith(
               color: const Color(0xFF000B21),
               fontSize: 14,
               fontWeight: FontWeight.w300,

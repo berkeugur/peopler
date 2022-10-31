@@ -75,7 +75,9 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
         await _notificationRepository.acceptConnectionRequest(UserBloc.user!.userID, event.requestUserID);
 
         /// Send request user a notification that I have accepted his/her connection request
-        String _token = await _firestoreDBServiceUsers.getToken(event.requestUserID);
+        String? _token = await _firestoreDBServiceUsers.getToken(event.requestUserID);
+        if(_token == null) return;
+
         await _sendNotificationService.sendNotification(Strings.receiveRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
 
       } catch (e) {

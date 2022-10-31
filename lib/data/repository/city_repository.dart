@@ -11,34 +11,27 @@ import '../services/db/firebase_db_service_location.dart';
 class CityRepository {
   final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
+  static const PAGINATION_NUM_USERS = 10;
+
   bool _hasMoreCity = true;
+  MyUser? _lastSelectedUser;
 
-  Future<List<MyUser>> queryUsersCityWithPagination(String city, List<MyUser> allUserList) async {
-    if (_hasMoreCity == true) {
-      MyUser? _lastSelectedUser;
-      int _numberOfElementsWillBeSelected = 10;
+  Future<List<MyUser>> queryUsersCityWithPagination(String city) async {
+    if (_hasMoreCity == false) return [];
 
-      if (allUserList.isNotEmpty) {
-        _lastSelectedUser = allUserList.last;
-      }
+    List<MyUser> newList = await _firestoreDBServiceUsers.getUserCityWithPagination(city, _lastSelectedUser, 10);
 
-      List<MyUser> newList = await _firestoreDBServiceUsers.getUserCityWithPagination(city, _lastSelectedUser, 10);
+    _lastSelectedUser = newList.last;
 
-      if (newList.length < _numberOfElementsWillBeSelected) {
-        _hasMoreCity = false;
-      }
-
-      if (newList.isNotEmpty) {
-        return newList;
-      } else {
-        return [];
-      }
-    } else {
-      return [];
+    if (newList.length < PAGINATION_NUM_USERS) {
+      _hasMoreCity = false;
     }
+
+    return newList;
   }
 
   void restartRepositoryCache() {
     _hasMoreCity = true;
+    _lastSelectedUser = null;
   }
 }

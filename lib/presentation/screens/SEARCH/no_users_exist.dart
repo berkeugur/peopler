@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -45,14 +46,14 @@ class _NoUsersExistInNearbyState extends State<NoUsersExistInNearby> {
                   Text(
                     "Etrafında Kimse Yok",
                     textScaleFactor: 1,
-                    style: GoogleFonts.rubik(fontSize: 24, fontWeight: FontWeight.w800, color: const Color(0xFF0353EF)),
+                    style: PeoplerTextStyle.normal.copyWith(fontSize: 24, fontWeight: FontWeight.w800, color: const Color(0xFF0353EF)),
                   ),
                   Center(
                     child: Text(
                       """Aynı ortamı paylaştığınız peopler kullanıcısı yok. Topluluğumuzu büyütmek için çalışmaya devam ediyoruz.""",
                       textScaleFactor: 1,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.rubik(fontSize: 18, fontWeight: FontWeight.normal, color: _mode.blackAndWhiteConversion()),
+                      style: PeoplerTextStyle.normal.copyWith(fontSize: 18, fontWeight: FontWeight.normal, color: _mode.blackAndWhiteConversion()),
                     ),
                   ),
                   Row(
@@ -76,7 +77,7 @@ class _NoUsersExistInNearbyState extends State<NoUsersExistInNearby> {
                             child: Text(
                               "Şehrimi Keşfet",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: const Color(0xFF0353EF), fontSize: 14),
+                              style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                             ),
                           ),
                         ),
@@ -105,7 +106,7 @@ class _NoUsersExistInNearbyState extends State<NoUsersExistInNearby> {
                             child: Text(
                               "Çevrenle Paylaş",
                               textScaleFactor: 1,
-                              style: GoogleFonts.rubik(color: const Color(0xFF0353EF), fontSize: 14),
+                              style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                             ),
                           ),
                         ),

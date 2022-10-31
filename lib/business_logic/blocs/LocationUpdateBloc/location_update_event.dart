@@ -12,6 +12,12 @@ class UpdateLocationEvent extends LocationUpdateEvent {
   List<Object> get props => [];
 }
 
+class UpdateNumOfSendRequest extends LocationUpdateEvent {
+
+  @override
+  List<Object> get props => [];
+}
+
 class StartLocationUpdatesBackground extends LocationUpdateEvent {
 
   @override

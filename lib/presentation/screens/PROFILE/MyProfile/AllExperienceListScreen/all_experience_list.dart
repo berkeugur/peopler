@@ -51,7 +51,7 @@ class _AllExperienceListMyProfileState extends State<AllExperienceListMyProfile>
                 Text(
                   txt.peoplerTXT,
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                       color: _mode.homeScreenTitleColor(),
                       fontWeight: FontWeight.w800,
                       fontSize: 24),
@@ -74,7 +74,7 @@ class _AllExperienceListMyProfileState extends State<AllExperienceListMyProfile>
                     child: Text(
                       "Deneyimler",
                       textScaleFactor: 1,
-                      style: GoogleFonts.rubik(
+                      style: PeoplerTextStyle.normal.copyWith(
                         color: _mode.blackAndWhiteConversion(),
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
@@ -126,7 +126,7 @@ class _AllExperienceListMyProfileState extends State<AllExperienceListMyProfile>
                                             backgroundColor: Color(0xFF0353EF),
                                             child: Text("ppl$index",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
+                                                style: PeoplerTextStyle.normal.copyWith(
                                                     fontSize: 12)),
                                           ),
                                         ),
@@ -166,7 +166,7 @@ class _AllExperienceListMyProfileState extends State<AllExperienceListMyProfile>
                                     Hobby().name(profileData.experiences.keys
                                         .elementAt(index)),
                                     textScaleFactor: 1,
-                                    style: GoogleFonts.rubik(
+                                    style: PeoplerTextStyle.normal.copyWith(
                                         color: _mode.blackAndWhiteConversion(),
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
@@ -200,7 +200,7 @@ class _AllExperienceListMyProfileState extends State<AllExperienceListMyProfile>
                                             " ~ " +
                                             hobbyDateRange(index),
                                         textScaleFactor: 1,
-                                        style: GoogleFonts.rubik(
+                                        style: PeoplerTextStyle.normal.copyWith(
                                             color:
                                                 _mode.blackAndWhiteConversion(),
                                             fontSize: 14),

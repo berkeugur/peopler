@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
@@ -55,7 +56,7 @@ class CityTab extends StatefulWidget {
 }
 
 class CityTabState extends State<CityTab> {
-  final ScrollController _searchPeopleListControllerCity = ScrollController();
+  late ScrollController _searchPeopleListControllerCity;
 
   late final CityBloc _cityBloc;
   late final SavedBloc _savedBloc;
@@ -64,14 +65,27 @@ class CityTabState extends State<CityTab> {
 
   final Mode _mode = locator<Mode>();
 
+  double? loadMoreOffset;
+  double? cardHeight;
+
   @override
   void initState() {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
-    CityBloc.allUserList.forEach((element) {
-      print(element.profileURL.toString());
-    });
+
+    _searchPeopleListControllerCity = ScrollController();
+
     super.initState();
+  }
+
+  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
+  // variables are initialized in didChangeDependencies method running after initState but before build method.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    cardHeight = MediaQuery.of(context).size.height / 2;
+    loadMoreOffset = cardHeight! * 2;
   }
 
   @override
@@ -91,21 +105,8 @@ class CityTabState extends State<CityTab> {
               padding: const EdgeInsets.only(top: 0.0),
               child: SizedBox(
                 child: NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification scrollNotification) {
-                    if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
-                      if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-                        Variables.animatedSearchPeopleHeaderHeight.value = 80;
-                        // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-                        // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-                      }
-                    } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
-                      if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-                        Variables.animatedSearchPeopleHeaderHeight.value = 0;
-                        // print("reverse $ach");
-                      }
-                    }
-                    return true;
-                  },
+                  onNotification: (ScrollNotification scrollNotification) =>
+                      _listScrollListener(),
                   child: Container(
                     color: Mode().homeScreenScaffoldBackgroundColor(),
                     child: RefreshIndicator(
@@ -113,7 +114,8 @@ class CityTabState extends State<CityTab> {
                       displacement: 80.0,
                       onRefresh: () async {
                         /// Refresh users
-                        await _cityBloc.getRefreshIndicatorData(UserBloc.user!.city);
+                        await _cityBloc
+                            .getRefreshIndicatorData(UserBloc.user!.city);
                       },
                       child: SingleChildScrollView(
                         controller: _searchPeopleListControllerCity,
@@ -128,9 +130,7 @@ class CityTabState extends State<CityTab> {
                                   return _initialUsersStateWidget();
                                 } else if (state is UsersNotExistCityState) {
                                   return _noUserExistsWidget();
-                                } else if (state is UsersLoadedCityState1) {
-                                  return _showUsers(widget.size);
-                                } else if (state is UsersLoadedCityState2) {
+                                } else if (state is UsersLoadedCityState) {
                                   return _showUsers(widget.size);
                                 } else if (state is NoMoreUsersCityState) {
                                   return _showUsers(widget.size);
@@ -145,7 +145,8 @@ class CityTabState extends State<CityTab> {
                                 bloc: _cityBloc,
                                 builder: (context, state) {
                                   if (state is NewUsersLoadingCityState) {
-                                    return _usersLoadingCircularButton();
+                                    return const SizedBox.shrink();
+                                    // return _usersLoadingCircularButton();
                                   } else {
                                     return const SizedBox.shrink();
                                   }
@@ -173,6 +174,7 @@ class CityTabState extends State<CityTab> {
   EmptyList _noUserExistsWidget() {
     return const EmptyList(
       emptyListType: EmptyListType.citySearch,
+      isSVG: false,
     );
   }
 
@@ -181,7 +183,10 @@ class CityTabState extends State<CityTab> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(children: const [
         Expanded(flex: 5, child: SizedBox()),
-        Flexible(flex: 1, child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator())),
+        Flexible(
+            flex: 1,
+            child: SizedBox(
+                width: 30, height: 30, child: CircularProgressIndicator())),
         Expanded(flex: 5, child: SizedBox()),
       ]),
     );
@@ -205,7 +210,8 @@ class CityTabState extends State<CityTab> {
                     ? 45
                     : 25,
           ),
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           controller: ScrollController(),
           itemCount: _listLength,
           itemBuilder: (BuildContext context, int index) {
@@ -233,9 +239,13 @@ class CityTabState extends State<CityTab> {
       return ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 80),
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           controller: ScrollController(),
-          itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
+          itemCount: (_listLength % 2 == 0
+                  ? _listLength / 2
+                  : ((_listLength - 1) / 2) + 1)
+              .toInt(),
           itemBuilder: (BuildContext context, int index) {
             int _leftSideIndex = index * 2;
             int _rightSideIndex = _leftSideIndex + 1;
@@ -267,7 +277,10 @@ class CityTabState extends State<CityTab> {
                             ),
                           ),
                         )
-                      : (_listLength % 2 == 0 ? _listLength / 2 : (_listLength - 1) / 2) == index
+                      : (_listLength % 2 == 0
+                                  ? _listLength / 2
+                                  : (_listLength - 1) / 2) ==
+                              index
                           ? const Expanded(
                               flex: 1,
                               child: SizedBox(),
@@ -324,7 +337,10 @@ class CityTabState extends State<CityTab> {
                             showYouNeedToLogin(context);
                             return;
                           }
-                          openOthersProfile(context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect);
+                          openOthersProfile(
+                              context,
+                              CityBloc.allUserList[index].userID,
+                              SendRequestButtonStatus.connect);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
@@ -334,13 +350,18 @@ class CityTabState extends State<CityTab> {
 
                               CachedNetworkImage(
                             imageUrl: CityBloc.allUserList[index].profileURL,
-                            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(999),
+                                    child: CircularProgressIndicator(
+                                        value: downloadProgress.progress)),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                image: DecorationImage(
+                                    image: imageProvider, fit: BoxFit.cover),
                               ),
                             ),
                           ),
@@ -354,12 +375,15 @@ class CityTabState extends State<CityTab> {
                 flex: 1,
                 child: InkWell(
                   onTap: () {
-                    LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
+                    LocationBloc _locationBloc =
+                        BlocProvider.of<LocationBloc>(context);
                     CityBloc _cityBloc = BlocProvider.of<CityBloc>(context);
 
                     String _deletedUserID = CityBloc.allUserList[index].userID;
-                    LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
-                    CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
+                    LocationBloc.allUserList.removeWhere(
+                        (element) => element.userID == _deletedUserID);
+                    CityBloc.allUserList.removeWhere(
+                        (element) => element.userID == _deletedUserID);
 
                     _cityBloc.add(TrigUsersNotExistCityStateEvent());
                     _locationBloc.add(TrigUsersNotExistSearchStateEvent());
@@ -374,9 +398,11 @@ class CityTabState extends State<CityTab> {
                       width: 25,
                       height: 25,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: const Color(0xFF0353EF)),
+                        border: Border.all(
+                            width: 1, color: const Color(0xFF0353EF)),
                         color: Colors.white, //Colors.purple,
-                        borderRadius: const BorderRadius.all(Radius.circular(999)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(999)),
                       ),
                       child: const Icon(
                         Icons.close,
@@ -408,7 +434,7 @@ class CityTabState extends State<CityTab> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             textScaleFactor: 1,
-                            style: GoogleFonts.rubik(
+                            style: PeoplerTextStyle.normal.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color: _mode.blackAndWhiteConversion(),
@@ -424,7 +450,11 @@ class CityTabState extends State<CityTab> {
                           textScaleFactor: 1,
                           maxLines: 3,
                           //_size.width * 0.038 < 15 ? 3 : _size.width * 0.038 <20  ? 2:1,
-                          style: const TextStyle(height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
+                          style: const TextStyle(
+                              height: 1.1,
+                              color: Color(0xFF9C9C9C),
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15),
                         ),
                       ),
                       const SizedBox(
@@ -437,13 +467,25 @@ class CityTabState extends State<CityTab> {
                           child: Stack(
                             children: [
                               CityBloc.allUserList[index].hobbies.isNotEmpty
-                                  ? hobbyItem(index, 0, CityBloc.allUserList[index].hobbies[0]["title"])
+                                  ? hobbyItem(
+                                      index,
+                                      0,
+                                      CityBloc.allUserList[index].hobbies[0]
+                                          ["title"])
                                   : const SizedBox(),
                               CityBloc.allUserList[index].hobbies.length >= 2
-                                  ? hobbyItem(index, 25, CityBloc.allUserList[index].hobbies[1]["title"])
+                                  ? hobbyItem(
+                                      index,
+                                      25,
+                                      CityBloc.allUserList[index].hobbies[1]
+                                          ["title"])
                                   : const SizedBox(),
                               CityBloc.allUserList[index].hobbies.length >= 3
-                                  ? hobbyItem(index, 50, CityBloc.allUserList[index].hobbies[2]["title"])
+                                  ? hobbyItem(
+                                      index,
+                                      50,
+                                      CityBloc.allUserList[index].hobbies[2]
+                                          ["title"])
                                   : const SizedBox(),
                             ],
                           ),
@@ -459,66 +501,112 @@ class CityTabState extends State<CityTab> {
                         child: ChangeNotifierProvider.value(
                           value: SaveButton(),
                           child: Builder(builder: (context) {
-                            bool _isSaved = Provider.of<SaveButton>(context).isSaved;
+                            bool _isSaved =
+                                Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
-
-                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
+                                if (UserBloc.entitlement ==
+                                        SubscriptionTypes.free &&
+                                    UserBloc.user!.numOfSendRequest < 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                   return;
                                 }
 
-                                final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
-                                final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
+                                if (UserBloc.entitlement ==
+                                        SubscriptionTypes.free &&
+                                    UserBloc.user!.numOfSendRequest == 1) {
+                                  showNumOfConnectionRequestsConsumed(context);
+                                }
+
+                                final SendNotificationService
+                                    _sendNotificationService =
+                                    locator<SendNotificationService>();
+                                final FirestoreDBServiceUsers
+                                    _firestoreDBServiceUsers =
+                                    locator<FirestoreDBServiceUsers>();
 
                                 SavedUser _savedUser = SavedUser();
-                                _savedUser.userID = CityBloc.allUserList[index].userID;
-                                _savedUser.pplName = CityBloc.allUserList[index].pplName!;
-                                _savedUser.displayName = CityBloc.allUserList[index].displayName;
-                                _savedUser.gender = CityBloc.allUserList[index].gender;
-                                _savedUser.profileURL = CityBloc.allUserList[index].profileURL;
-                                _savedUser.biography = CityBloc.allUserList[index].biography;
-                                _savedUser.hobbies = CityBloc.allUserList[index].hobbies;
+                                _savedUser.userID =
+                                    CityBloc.allUserList[index].userID;
+                                _savedUser.pplName =
+                                    CityBloc.allUserList[index].pplName!;
+                                _savedUser.displayName =
+                                    CityBloc.allUserList[index].displayName;
+                                _savedUser.gender =
+                                    CityBloc.allUserList[index].gender;
+                                _savedUser.profileURL =
+                                    CityBloc.allUserList[index].profileURL;
+                                _savedUser.biography =
+                                    CityBloc.allUserList[index].biography;
+                                _savedUser.hobbies =
+                                    CityBloc.allUserList[index].hobbies;
 
-                                _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+                                _savedBloc.add(ClickSendRequestButtonEvent(
+                                    myUser: UserBloc.user!,
+                                    savedUser: _savedUser));
 
-                                if (UserBloc.entitlement == SubscriptionTypes.free) {
+                                if (UserBloc.entitlement ==
+                                    SubscriptionTypes.free) {
                                   showRestNumOfConnectionRequests(context);
                                 }
 
-                                Provider.of<SaveButton>(context, listen: false).saveUser();
-                                await Future.delayed(const Duration(milliseconds: 1500));
+                                Provider.of<SaveButton>(context, listen: false)
+                                    .saveUser();
+                                await Future.delayed(
+                                    const Duration(milliseconds: 1500));
 
-                                String _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-                                _sendNotificationService.sendNotification(
-                                    Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                String? _token = await _firestoreDBServiceUsers
+                                    .getToken(_savedUser.userID);
 
-                                widget.showWidgetsKeyNearby.currentState?.setState(() {});
-                                widget.showWidgetsKeyCity.currentState?.setState(() {});
+                                if (_token != null) {
+                                  _sendNotificationService.sendNotification(
+                                      Strings.sendRequest,
+                                      _token,
+                                      "",
+                                      UserBloc.user!.displayName,
+                                      UserBloc.user!.profileURL,
+                                      UserBloc.user!.userID);
+                                }
+
+                                widget.showWidgetsKeyNearby.currentState
+                                    ?.setState(() {});
+                                widget.showWidgetsKeyCity.currentState
+                                    ?.setState(() {});
                               },
                               child: Center(
                                 child: Container(
                                   width: 104,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    border: Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: _mode
+                                                .disabledBottomMenuItemAssetColor()
+                                            as Color),
                                     color: Colors.transparent,
                                     //Colors.purple,
-                                    borderRadius: const BorderRadius.all(Radius.circular(999)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(999)),
                                   ),
                                   child: Center(
                                     child: _isSaved == false
                                         ? Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Text(
                                                 "Bağlantı Kur",
                                                 textScaleFactor: 1,
-                                                style: GoogleFonts.rubik(
-                                                  color: _mode.disabledBottomMenuItemAssetColor(),
-                                                  fontSize: _maxWidth * 0.0391 > 16 ? 16 : _maxWidth * 0.0391,
+                                                style: PeoplerTextStyle.normal
+                                                    .copyWith(
+                                                  color: _mode
+                                                      .disabledBottomMenuItemAssetColor(),
+                                                  fontSize:
+                                                      _maxWidth * 0.0391 > 16
+                                                          ? 16
+                                                          : _maxWidth * 0.0391,
                                                 ),
                                               ),
                                             ],
@@ -575,7 +663,13 @@ class CityTabState extends State<CityTab> {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+              color: const Color(0xFF939393).withOpacity(0.6),
+              blurRadius: 2.0,
+              spreadRadius: 0,
+              offset: const Offset(-1.0, 0.75))
+        ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),
@@ -586,5 +680,33 @@ class CityTabState extends State<CityTab> {
         height: _size,
       ),
     );
+  }
+
+  bool _listScrollListener() {
+    if (_searchPeopleListControllerCity.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
+        Variables.animatedSearchPeopleHeaderHeight.value = 80;
+        // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
+        // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
+      }
+    } else if (_searchPeopleListControllerCity.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
+        Variables.animatedSearchPeopleHeaderHeight.value = 0;
+        // print("reverse $ach");
+      }
+    }
+
+    /// When scroll position distance to bottom is less than load more offset,
+    if (_searchPeopleListControllerCity.position.pixels >= _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
+        _searchPeopleListControllerCity.position.userScrollDirection ==  ScrollDirection.reverse) {
+      /// If state is UsersLoadedCityState
+      if (_cityBloc.state is UsersLoadedCityState) {
+        _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
+      }
+    }
+
+    return true;
   }
 }

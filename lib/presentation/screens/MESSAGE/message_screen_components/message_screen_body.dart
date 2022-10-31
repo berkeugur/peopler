@@ -7,6 +7,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/data/model/message.dart';
 import '../../../../business_logic/blocs/MessageBloc/bloc.dart';
 
@@ -206,7 +207,7 @@ class MessageScreenBody extends StatelessWidget {
           "İlk adımı sen at \nHemen mesajlaşmaya Başla",
           textAlign: TextAlign.center,
           textScaleFactor: 1,
-          style: GoogleFonts.rubik(
+          style: PeoplerTextStyle.normal.copyWith(
               color: Mode().blackAndWhiteConversion(), fontSize: 18, fontWeight: FontWeight.w400),
         ),
       ),
@@ -293,7 +294,7 @@ class MessageScreenBody extends StatelessWidget {
                   _messages[index].message,
                   textScaleFactor: 1,
                   textAlign: TextAlign.left,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: Colors.black,
                     fontSize: 14,
                   ),
@@ -308,7 +309,7 @@ class MessageScreenBody extends StatelessWidget {
                   _messages[index].createdAt.toString().substring(10, 16),
                   textScaleFactor: 1,
                   textAlign: TextAlign.end,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 11,
                     color: Colors.grey[400],
                   ),
@@ -353,7 +354,7 @@ class MessageScreenBody extends StatelessWidget {
                   _messages[index].message,
                   textScaleFactor: 1,
                   textAlign: TextAlign.left,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     color: Colors.white,
                     fontSize: 14,
                   ),
@@ -367,7 +368,7 @@ class MessageScreenBody extends StatelessWidget {
                 child: Text(
                   _messages[index].createdAt.toString().substring(10, 16),
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(
+                  style: PeoplerTextStyle.normal.copyWith(
                     fontSize: 11,
                     color: Color(0xFFB3CBFA),
                   ),

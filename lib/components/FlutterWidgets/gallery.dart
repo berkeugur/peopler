@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -83,7 +84,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
               padding: const EdgeInsets.all(20.0),
               child: Text(
                 "Fotoğraf ${this.index + 1}/${widget.images.length}",
-                style: GoogleFonts.rubik(
+                style: PeoplerTextStyle.normal.copyWith(
                   color: Colors.white,
                 ),
               ),

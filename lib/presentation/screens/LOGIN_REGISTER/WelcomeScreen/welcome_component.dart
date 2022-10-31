@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../core/system_ui_service.dart';
 import '../../../../data/model/user.dart';
 import '../../../../data/repository/location_repository.dart';
 import '../../../../others/locator.dart';
@@ -69,6 +71,9 @@ Column buildButtons(BuildContext context) {
           final LocationRepository _locationRepository = locator<LocationRepository>();
           LocationPermission _permission = await _locationRepository.checkPermissions();
           if (_permission == LocationPermission.always) {
+            /// Set theme mode before Home Screen
+            SystemUIService().setSystemUIforThemeMode();
+
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
           } else {
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
@@ -118,7 +123,7 @@ Center continueWithButton(BuildContext context, {Color? backgroundColor, require
                 Text(
                   text,
                   textScaleFactor: 1,
-                  style: GoogleFonts.rubik(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 15),
+                  style: PeoplerTextStyle.normal.copyWith(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 15),
                 ),
               ],
             ),
