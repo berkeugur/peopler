@@ -51,14 +51,14 @@ class SubscriptionFeatures {
       ),
       subscriptionFeatures(
         imgPath: "assets/premiumfeatures_icons/plus3.png",
-        title: "Intro Mesaj Gönder",
+        title: "Intro Mesaj Gönder (Yakında)",
         subtitle: "Bağlantıya geçmediğin kullanıcılara kendini tanıt",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.plus,
       ),
       subscriptionFeatures(
         imgPath: "assets/premiumfeatures_icons/plus4.png",
-        title: "Profiline Bakan Kullanıcıları Gör",
+        title: "Profiline Bakan Kullanıcıları Gör (Yakında)",
         subtitle: "Profiline tıklayan kullancıları gör",
         tabController: tabController,
         subscriptionType: SubscriptionTypes.plus,
