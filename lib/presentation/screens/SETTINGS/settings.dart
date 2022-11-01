@@ -135,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                 "Hesabı Sil",
                                                 textScaleFactor: 1,
                                                 style: PeoplerTextStyle.normal.copyWith(
-                                                  color: Color(0xFF0353EF),
+                                                  color: const Color(0xFF0353EF),
                                                 ),
                                               ),
                                             ),

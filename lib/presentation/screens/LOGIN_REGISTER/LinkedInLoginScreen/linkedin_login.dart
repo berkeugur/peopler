@@ -44,9 +44,9 @@ class _LinkedInPageState extends State<LinkedInPage> {
         child: WebView(
           javascriptMode: JavascriptMode.unrestricted,
           initialUrl: 'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' +
-              Strings.clientId +
+              Strings.clientIDLinkedIn +
               '&redirect_uri=' +
-              Strings.redirectUrl +
+              Strings.redirectUrlLinkedIn +
               '&state=foobar&scope=r_liteprofile%20r_emailaddress',
           onWebViewCreated: (controller) {
             _controller = controller;
@@ -65,7 +65,7 @@ class _LinkedInPageState extends State<LinkedInPage> {
             ),
           },
           onPageFinished: (url) {
-            if (url.contains(Strings.redirectUrl)) {
+            if (url.contains(Strings.redirectUrlLinkedIn)) {
               _controller.runJavascript("(function(){LinkedInSignIn.postMessage(window.document.body.outerHTML)})();");
             }
           },

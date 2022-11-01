@@ -330,7 +330,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<deleteUser>((event, emit) async {
       await closeStreams();
-      await _userRepository.deleteUser(user!.userID, user!.region);
+      await _userRepository.deleteUser(user!.userID, user!.region, user!.email, password: event.password);
       Restart.restartApp();
     });
   }

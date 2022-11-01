@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import '../../../others/strings.dart';
 import '../../model/user.dart';
 
 class FirebaseAuthService {
@@ -54,29 +57,25 @@ class FirebaseAuthService {
     }
   }
 
-  /*
-  
-  Future<MyUser?> signInWithGoogle() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn();
-    GoogleSignInAccount? _googleUser = await _googleSignIn.signIn();
+  Future<String?> recreateCustomToken(String email) async {
+    try {
+      final response = await http.post(Uri.parse(Strings.recreateCustomTokenUrl), headers: {
+        'Content-Type': 'application/json',
+      }, body: jsonEncode({'emailAddress': email}));
 
-    if (_googleUser != null) {
-      GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
-      if (_googleAuth.idToken != null && _googleAuth.accessToken != null) {
-        UserCredential sonuc = await _firebaseAuth.signInWithCredential(
-            GoogleAuthProvider.credential(
-                idToken: _googleAuth.idToken,
-                accessToken: _googleAuth.accessToken));
-        User? _user = sonuc.user;
-        return _userFromFirebase(_user);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonReceived = json.decode(response.body);
+        return jsonReceived["custom_token"];
       } else {
+        debugPrint("recreate status code: " + response.statusCode.toString());
         return null;
       }
-    } else {
+    } catch (e) {
+      debugPrint("recreate custom token hata:" + e.toString());
       return null;
     }
   }
-   */
+
 
   Future<MyUser?> createUserWithEmailAndPassword(String email, String password) async {
     try {
@@ -104,7 +103,7 @@ class FirebaseAuthService {
     return _firebaseAuth.currentUser!.emailVerified;
   }
 
-  Future<MyUser?> signInWithEmailandPassword(String email, String password) async {
+  Future<MyUser?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential sonuc = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return _userFromFirebase(sonuc.user);

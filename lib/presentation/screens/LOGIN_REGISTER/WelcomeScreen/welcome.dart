@@ -16,10 +16,6 @@ const String wpAreYouAlreadyMember = "Zaten üye misin?";
 const String wpContinueWithLinkedin = "LIKNEDIN İLE DEVAM ET";
 const String wpContinueWithUniversityEmail = "ÜNİVERSİTE MAİLİ İLE DEVAM ET";
 
-const String redirectUrl = 'https://www.linkedin.com/developers/tools/oauth/redirect';
-const String clientId = '86y9muk6ijz659';
-const String clientSecret = 'i62L3g64VMlChHqS';
-
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
   @override

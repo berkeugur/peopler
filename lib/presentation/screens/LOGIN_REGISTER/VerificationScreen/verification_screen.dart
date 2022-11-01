@@ -167,7 +167,7 @@ class VerificationScreen extends StatelessWidget {
                   child: Text(
                     'vazgeç',
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(color: Color(0xFF0353EF)),
+                    style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF)),
                   ),
                 ),
                 TextButton(
@@ -178,7 +178,7 @@ class VerificationScreen extends StatelessWidget {
                   child: Text(
                     'Evet',
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(color: Color(0xFF0353EF)),
+                    style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF)),
                   ),
                 )
               ],

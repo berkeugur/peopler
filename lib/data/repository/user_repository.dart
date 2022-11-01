@@ -87,7 +87,7 @@ class UserRepository {
 
   Future<MyUser?> signInWithEmailAndPassword(String email, String password) async {
     try {
-      MyUser? currentUser = await _firebaseAuthService.signInWithEmailandPassword(email, password);
+      MyUser? currentUser = await _firebaseAuthService.signInWithEmailAndPassword(email, password);
 
       if (currentUser == null) return null;
       updateAccountConfirmed(currentUser.userID, currentUser.isTheAccountConfirmed);
@@ -185,7 +185,7 @@ class UserRepository {
     return await _firestoreDBServiceUsers.deleteToken(userID);
   }
 
-  Future<void> deleteUser(String userID, String region) async {
+  Future<void> deleteUser(String userID, String region, String email, {String? password}) async {
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/activities");
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/notifications");
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + userID + "/liked");
@@ -212,6 +212,14 @@ class UserRepository {
     await _firebaseStorageService.deleteFolder(userID);
 
     await _firestoreDBServiceUsers.deleteToken(userID);
+
+    /// Sign-in recently is required to delete user
+    if(password != null) {
+      await _firebaseAuthService.signInWithEmailAndPassword(email, password);
+    } else {
+      String? customToken = await _firebaseAuthService.recreateCustomToken(email);
+      await _firebaseAuthService.signInWithCustomToken(customToken!);
+    }
 
     /// Following command must be the last one because without authentication, Firebase is inaccessible.
     /// Delete user from firebase authentication

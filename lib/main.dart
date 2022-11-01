@@ -28,6 +28,7 @@ import 'business_logic/blocs/NotificationReceivedBloc/notification_received_bloc
 import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
 import 'business_logic/blocs/UserBloc/user_bloc.dart';
 import 'data/repository/user_repository.dart';
+import 'data/services/auth/firebase_auth_service.dart';
 import 'data/services/db/firestore_db_service_users.dart';
 import 'others/locator.dart';
 

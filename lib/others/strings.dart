@@ -3,8 +3,11 @@ class Strings {
   static const String peopler_version = "update_v1_0";
 
   /// LinkedIn Parameters (From LinkedIn Developer Page)
-  static const String redirectUrl = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
-  static const String clientId = '86y9muk6ijz659';
+  static const String redirectUrlLinkedIn = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
+  static const String clientIDLinkedIn = '86y9muk6ijz659';
+
+  /// Firebase Functions URl for recreate LinkedIn custom token
+  static const String recreateCustomTokenUrl = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_recreate_token';
 
   /// Firebase Parameters
   /// Firebase Server Key for Cloud Messaging (Firebase Console -> Project Settings -> Cloud Messaging)
