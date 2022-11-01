@@ -28,7 +28,7 @@ class NotificationRepository {
 
       if(_user == null) continue; // DİKKAT
 
-      requestList[index].requestDisplayName = _user!.displayName;
+      requestList[index].requestDisplayName = _user.displayName;
       requestList[index].requestProfileURL = _user.profileURL;
       requestList[index].requestBiography = _user.biography;
     }
@@ -52,7 +52,7 @@ class NotificationRepository {
 
       if(_user == null) continue; // DİKKAT
 
-      requestList[index].requestDisplayName = _user!.displayName;
+      requestList[index].requestDisplayName = _user.displayName;
       requestList[index].requestProfileURL = _user.profileURL;
       requestList[index].requestBiography = _user.biography;
     }
