@@ -120,17 +120,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
         if (shuffledList.isNotEmpty) {
           _allFeedList.addAll(shuffledList);
-
-          List<MyFeed> uniqueItems = [];
-          var uniqueIDs = _allFeedList
-              .map((e) => e.feedID)
-              .toSet(); //list if UniqueID to remove duplicates
-          for (var e in uniqueIDs) {
-            uniqueItems.add(_allFeedList.firstWhere((i) => i.feedID == e));
-          }
-          _allFeedList = [];
-          _allFeedList.addAll(uniqueItems);
-
           emit(FeedsLoadedState());
         } else {
           if (_allFeedList.isNotEmpty) {

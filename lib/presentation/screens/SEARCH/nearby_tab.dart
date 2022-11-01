@@ -64,24 +64,13 @@ class _NearbyTabState extends State<NearbyTab> {
 
   final Mode _mode = locator<Mode>();
 
-  double? loadMoreOffset;
-  double? cardHeight;
+  bool loading = false;
 
   @override
   void initState() {
     super.initState();
 
     _searchPeopleListControllerNearby = ScrollController();
-  }
-
-  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
-  // variables are initialized in didChangeDependencies method running after initState but before build method.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    cardHeight = MediaQuery.of(context).size.height / 2;
-    loadMoreOffset = cardHeight! * 5;
   }
 
   @override
@@ -131,6 +120,7 @@ class _NearbyTabState extends State<NearbyTab> {
                                       isSVG: false,
                                     );
                                   } else if (state is UsersLoadedSearchState) {
+                                    loading = false;
                                     return _showUsers(widget.size);
                                   } else if (state is NoMoreUsersSearchState) {
                                     return _showUsers(widget.size);
@@ -338,8 +328,6 @@ class _NearbyTabState extends State<NearbyTab> {
                     ? 45
                     : 25,
           ),
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          controller: ScrollController(),
           itemCount: _listLength,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
@@ -749,14 +737,16 @@ class _NearbyTabState extends State<NearbyTab> {
         }
       }
 
-    /// When scroll position distance to bottom is less than load more offset,
-    if (_searchPeopleListControllerNearby.position.pixels >= _searchPeopleListControllerNearby.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
-        _searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
-      /// If state is UsersLoadedSearchState
-      if (_locationBloc.state is UsersLoadedSearchState) {
-        _locationBloc.add(GetMoreSearchUsersEvent());
+      var nextPageTrigger = 0.8 * _searchPeopleListControllerNearby.position.maxScrollExtent;
+
+      if(_searchPeopleListControllerNearby.position.userScrollDirection ==  ScrollDirection.reverse &&
+          _searchPeopleListControllerNearby.position.pixels >= nextPageTrigger) {
+        if (loading == false) {
+          loading = true;
+          debugPrint("hello");
+          _locationBloc.add(GetMoreSearchUsersEvent());
+        }
       }
-    }
 
     return true;
   }

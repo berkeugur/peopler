@@ -118,17 +118,6 @@ class CityBloc extends Bloc<CityEvent, CityState> {
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-
-          List<MyUser> uniqueItems = [];
-          var uniqueIDs = allUserList
-              .map((e) => e.userID)
-              .toSet(); //list if UniqueID to remove duplicates
-          for (var e in uniqueIDs) {
-            uniqueItems.add(allUserList.firstWhere((i) => i.userID == e));
-          }
-          allUserList = [];
-          allUserList.addAll(uniqueItems);
-
           emit(UsersLoadedCityState());
         } else {
           if (allUserList.isNotEmpty) {

@@ -37,10 +37,9 @@ class FeedScreenState extends State<FeedScreen> {
 
   late ScrollController _scrollController;
 
-  double? loadMoreOffset;
-  double? feedHeight;
-
   final Mode _mode = locator<Mode>();
+
+  bool loading = false;
 
   @override
   void initState() {
@@ -57,16 +56,6 @@ class FeedScreenState extends State<FeedScreen> {
     _locationUpdateBloc.add(StartLocationUpdatesBackground());
 
     _scrollController = ScrollController();
-  }
-
-  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
-  // variables are initialized in didChangeDependencies method running after initState but before build method.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    feedHeight = MediaQuery.of(context).size.height / 4;
-    loadMoreOffset = feedHeight! * 5;
   }
 
   @override
@@ -109,6 +98,7 @@ class FeedScreenState extends State<FeedScreen> {
                                 } else if (state is FeedNotExistState) {
                                   return _noFeedExistsWidget();
                                 } else if (state is FeedsLoadedState) {
+                                  loading = false;
                                   return _showFeedsWidget();
                                 } else if (state is NoMoreFeedsState) {
                                   return _showFeedsWidget();
@@ -297,19 +287,13 @@ class FeedScreenState extends State<FeedScreen> {
       }
     }
 
-    /// When scroll position distance to bottom is less than load more offset,
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
-        _scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      /// If state is FeedsLoadedState
-      if (_feedBloc.state is FeedsLoadedState) {
-        _feedBloc.add(GetMoreDataEvent());
-      }
-    }
+    var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
 
-    /// If scroll position exceed max scroll extent (bottom),
-    if (_scrollController.offset > _scrollController.position.maxScrollExtent && !_scrollController.position.outOfRange) {
-      /// If state is NoMoreEventsState
-      if (_feedBloc.state is NoMoreFeedsState) {
+    if(_scrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
+        _scrollController.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        debugPrint("hello");
         _feedBloc.add(GetMoreDataEvent());
       }
     }

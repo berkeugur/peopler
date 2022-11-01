@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
@@ -14,7 +13,6 @@ import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/presentation/screens/GUEST_LOGIN/body.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
 import 'package:provider/provider.dart';
-import '../../../business_logic/blocs/LocationBloc/location_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_event.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
@@ -28,7 +26,6 @@ import '../../../others/strings.dart';
 import '../../../others/widgets/snack_bars.dart';
 import '../../../others/empty_list.dart';
 import '../PROFILE/OthersProfile/functions.dart';
-import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 
 class CityTab extends StatefulWidget {
   const CityTab(
@@ -65,8 +62,7 @@ class CityTabState extends State<CityTab> {
 
   final Mode _mode = locator<Mode>();
 
-  double? loadMoreOffset;
-  double? cardHeight;
+  bool loading = false;
 
   @override
   void initState() {
@@ -76,16 +72,6 @@ class CityTabState extends State<CityTab> {
     _searchPeopleListControllerCity = ScrollController();
 
     super.initState();
-  }
-
-  // didChangeDependencies method runs after initState method. Since MediaQuery should run after initState method,
-  // variables are initialized in didChangeDependencies method running after initState but before build method.
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    cardHeight = MediaQuery.of(context).size.height / 2;
-    loadMoreOffset = cardHeight! * 2;
   }
 
   @override
@@ -131,6 +117,7 @@ class CityTabState extends State<CityTab> {
                                 } else if (state is UsersNotExistCityState) {
                                   return _noUserExistsWidget();
                                 } else if (state is UsersLoadedCityState) {
+                                  loading = false;
                                   return _showUsers(widget.size);
                                 } else if (state is NoMoreUsersCityState) {
                                   return _showUsers(widget.size);
@@ -145,8 +132,7 @@ class CityTabState extends State<CityTab> {
                                 bloc: _cityBloc,
                                 builder: (context, state) {
                                   if (state is NewUsersLoadingCityState) {
-                                    return const SizedBox.shrink();
-                                    // return _usersLoadingCircularButton();
+                                    return _usersLoadingCircularButton();
                                   } else {
                                     return const SizedBox.shrink();
                                   }
@@ -210,9 +196,6 @@ class CityTabState extends State<CityTab> {
                     ? 45
                     : 25,
           ),
-          physics: const BouncingScrollPhysics(
-              parent: NeverScrollableScrollPhysics()),
-          controller: ScrollController(),
           itemCount: _listLength,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
@@ -698,11 +681,13 @@ class CityTabState extends State<CityTab> {
       }
     }
 
-    /// When scroll position distance to bottom is less than load more offset,
-    if (_searchPeopleListControllerCity.position.pixels >= _searchPeopleListControllerCity.position.maxScrollExtent - (loadMoreOffset ?? 0) &&
-        _searchPeopleListControllerCity.position.userScrollDirection ==  ScrollDirection.reverse) {
-      /// If state is UsersLoadedCityState
-      if (_cityBloc.state is UsersLoadedCityState) {
+    var nextPageTrigger = 0.8 * _searchPeopleListControllerCity.position.maxScrollExtent;
+
+    if(_searchPeopleListControllerCity.position.userScrollDirection ==  ScrollDirection.reverse &&
+        _searchPeopleListControllerCity.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        debugPrint("hello");
         _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
       }
     }
