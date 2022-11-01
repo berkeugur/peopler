@@ -14,7 +14,7 @@ class LocationService {
   }
 
   Future<LocationPermission> requestPermission() async {
-    // This request permission line opens a window requesting location permission from user.
+    /// This request permission line opens a window requesting location permission from user.
     return await _geolocatorPlatform.requestPermission();
   }
 
