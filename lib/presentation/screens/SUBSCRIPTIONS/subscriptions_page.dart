@@ -9,6 +9,7 @@ import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
+import 'dart:io';
 
 class SubscriptionsPage extends StatefulWidget {
   const SubscriptionsPage({Key? key}) : super(key: key);
@@ -334,12 +335,23 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
+                  if (Platform.isIOS)
+                    Text(
+                      SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   Text(
-                    SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
+                    SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: Platform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -468,12 +480,23 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
+                  if (Platform.isIOS)
+                    Text(
+                      SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   Text(
-                    SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
+                    SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: Platform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -586,16 +609,28 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  Text(
-                    SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
-                    textScaleFactor: 1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
-                      fontWeight: FontWeight.w500,
+                  if (Platform.isIOS)
+                    Text(
+                      SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
+                  if (Platform.isAndroid)
+                    Text(
+                      SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: Platform.isIOS ? 14 : 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -807,12 +842,23 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
+                  if (Platform.isIOS)
+                    Text(
+                      SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   Text(
-                    SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
+                    SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: Platform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -941,12 +987,23 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
+                  if (Platform.isIOS)
+                    Text(
+                      SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   Text(
-                    SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
+                    SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: Platform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -1058,16 +1115,28 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  Text(
-                    SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
-                    textScaleFactor: 1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
-                      fontWeight: FontWeight.w500,
+                  if (Platform.isIOS)
+                    Text(
+                      SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
+                  if (Platform.isAndroid)
+                    Text(
+                      SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
+                      textScaleFactor: 1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: Platform.isIOS ? 14 : 16,
+                        color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
