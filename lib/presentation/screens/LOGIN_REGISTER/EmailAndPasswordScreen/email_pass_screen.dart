@@ -9,6 +9,7 @@ import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../data/services/remote_config/remote_config.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
@@ -22,10 +23,12 @@ class EmailAndPasswordScreen extends StatefulWidget {
 
 class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
   late final UserBloc _userBloc;
+  late final ScrollController _jumpToBottomScrollController;
 
   @override
   void initState() {
     _userBloc = BlocProvider.of<UserBloc>(context);
+    _jumpToBottomScrollController = ScrollController();
     super.initState();
   }
 
@@ -33,8 +36,6 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
-    ScrollController _jumpToBottomScrollController = ScrollController();
     double _keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return SafeArea(
@@ -437,11 +438,10 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                           ? true
                           : false;
 
-                  /// DİKKAT
-                  /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
-                  //_isEduDotTr = true;
-
-                  /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
+                  final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
+                  if(_remoteConfigService.isEduRemoteConfig()) {
+                    _isEduDotTr = true;
+                  }
 
                   if (registerPasswordController.text == registerPasswordCheckController.text && _isEduDotTr == true) {
                     _userBloc.add(createUserWithEmailAndPasswordEvent(
@@ -452,7 +452,6 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                     SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
                   } else if (_isEduDotTr == false) {
                     SnackBars(context: context).simple(
-                        "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
                         "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
                   } else {
                     SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");

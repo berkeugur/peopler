@@ -23,4 +23,8 @@ class FirebaseRemoteConfigService  {
   bool isUpdate() {
     return _remoteConfig.getBool(Strings.peopler_version);
   }
+
+  bool isEduRemoteConfig() {
+    return _remoteConfig.getBool('edu');
+  }
 }
