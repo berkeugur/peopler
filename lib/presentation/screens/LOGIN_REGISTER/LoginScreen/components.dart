@@ -44,22 +44,25 @@ Center signInButton(context) {
           SystemUIService().setSystemUIforThemeMode();
 
           Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
+          Reloader.isLoginButtonTapped.value = false;
         } else if (state is SignedInNotVerifiedState) {
           Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);
+          Reloader.isLoginButtonTapped.value = false;
         } else if (state is InvalidEmailState) {
           SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
+          Reloader.isLoginButtonTapped.value = false;
         } else if (state is UserNotFoundState) {
           SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
+          Reloader.isLoginButtonTapped.value = false;
         } else if (state is WrongPasswordState) {
           SnackBars(context: context).simple("Hatalı şifre girdiniz.\nŞifrenizi unuttuysanız sıfırlayabilirsiniz");
+          Reloader.isLoginButtonTapped.value = false;
         }
       },
       child: InkWell(
         onTap: () async {
           Reloader.isLoginButtonTapped.value = true;
-          await signInFunction(context: context).then(
-            (value) => Reloader.isLoginButtonTapped.value = false,
-          );
+          await signInFunction(context: context);
         },
         child: Container(
           padding: const EdgeInsets.all(5),

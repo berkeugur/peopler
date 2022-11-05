@@ -143,7 +143,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "E-Mail Adresin",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
 
@@ -195,7 +196,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Sadece üniversite mailin ile kayıt olabilirsin.",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -212,7 +214,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Şifreni belirle",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -288,7 +291,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Şifre tekrar",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -395,8 +399,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
             SnackBars(context: context).simple(
                 "${registerEmailController.text} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
           } else if (state is WeakPasswordState) {
-            SnackBars(context: context).simple(
-                "${registerEmailController.text} Şifre en az 6 karakterden oluşmalı.");
+            SnackBars(context: context).simple("${registerEmailController.text} Şifre en az 6 karakterden oluşmalı.");
           }
         },
         child: BlocBuilder(
@@ -436,7 +439,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                   /// DİKKAT
                   /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
-                  _isEduDotTr = true;
+                  //_isEduDotTr = true;
 
                   /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
 

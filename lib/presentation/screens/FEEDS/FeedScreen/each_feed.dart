@@ -63,26 +63,27 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
           valueListenable: setTheme,
           builder: (context, x, y) {
             return InkWell(
-                onTap: () {
-                  if (UserBloc.user == null) {
-                    showYouNeedToLogin(context);
-                    return;
-                  }
+              onTap: () {
+                if (UserBloc.user == null) {
+                  showYouNeedToLogin(context);
+                  return;
+                }
 
-                  if (UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
-                    return;
-                  }
+                if (UserBloc.user!.whoBlockedYou.toSet().contains(widget.myFeed.userID)) {
+                  return;
+                }
 
-                  if (widget.myFeed.userID != UserBloc.user!.userID) {
-                    openOthersProfile(context, widget.myFeed.userID, SendRequestButtonStatus.connect);
-                  } else {
-                    FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-                    _homeScreen.currentTab = TabItem.profile;
-                    _homeScreen.changeFloatingActionButtonEvent();
-                  }
-                },
+                if (widget.myFeed.userID != UserBloc.user!.userID) {
+                  openOthersProfile(context, widget.myFeed.userID, SendRequestButtonStatus.connect);
+                } else {
+                  FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
+                  _homeScreen.currentTab = TabItem.profile;
+                  _homeScreen.changeFloatingActionButtonEvent();
+                }
+              },
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
+                margin: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
                 padding: widget.index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
                 decoration: BoxDecoration(
                   boxShadow: <BoxShadow>[
@@ -158,7 +159,8 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                             ],
                           ),
                           Padding(
-                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.15 : 600 * 0.15),
+                            padding: EdgeInsets.only(
+                                right: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.15 : 600 * 0.15),
                             child: BlocProvider<LikedBloc>(
                                 create: (context) => _likedBloc,
                                 child: _buildLikeDislikeIcons(
@@ -229,7 +231,8 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                     widget.myFeed.liked += 1;
                     widget.myFeed.disliked -= 1;
                   } else {
-                    _likedBloc.add(SwapLikedEvent(type: Strings.activityLiked, setClear: true, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
+                    _likedBloc.add(
+                        SwapLikedEvent(type: Strings.activityLiked, setClear: true, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
                     widget.myFeed.liked += 1;
                   }
                 } else {
@@ -270,57 +273,60 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
 
   Widget _buildDislike() {
     return BlocBuilder<LikedBloc, LikedState>(
-        bloc: _likedBloc,
-        builder: (context, state) {
-          return Container(
-            child: InkWell(
-              borderRadius: BorderRadius.circular(99),
-              onTap: () {
-                if (UserBloc.user != null) {
-                  if (state is DislikeState) {
-                    _likedBloc
-                        .add(SwapLikedEvent(type: Strings.activityDisliked, setClear: false, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
-                    widget.myFeed.disliked -= 1;
-                  } else if (state is LikeState) {
-                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
-                    widget.myFeed.disliked += 1;
-                    widget.myFeed.liked -= 1;
-                  } else {
-                    _likedBloc.add(SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
-                    widget.myFeed.disliked += 1;
-                  }
+      bloc: _likedBloc,
+      builder: (context, state) {
+        return Container(
+          child: InkWell(
+            borderRadius: BorderRadius.circular(99),
+            onTap: () {
+              if (UserBloc.user != null) {
+                if (state is DislikeState) {
+                  _likedBloc.add(
+                      SwapLikedEvent(type: Strings.activityDisliked, setClear: false, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
+                  widget.myFeed.disliked -= 1;
+                } else if (state is LikeState) {
+                  _likedBloc.add(
+                      SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
+                  widget.myFeed.disliked += 1;
+                  widget.myFeed.liked -= 1;
                 } else {
-                  GuestAlert.dialog(context);
+                  _likedBloc.add(
+                      SwapLikedEvent(type: Strings.activityDisliked, setClear: true, feedID: widget.myFeed.feedID, userID: UserBloc.user!.userID));
+                  widget.myFeed.disliked += 1;
                 }
-              },
-              child: Container(
-                padding: EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: SvgPicture.asset(
-                          "assets/images/svg_icons/down_arrow.svg",
-                          color: (state is DislikeState) ? Colors.pink : Mode().blackAndWhiteConversion(),
-                          fit: BoxFit.contain,
-                        )),
-                    const SizedBox(
-                      width: 5,
+              } else {
+                GuestAlert.dialog(context);
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(5),
+              child: Row(
+                children: [
+                  SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: SvgPicture.asset(
+                        "assets/images/svg_icons/down_arrow.svg",
+                        color: (state is DislikeState) ? Colors.pink : Mode().blackAndWhiteConversion(),
+                        fit: BoxFit.contain,
+                      )),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    widget.myFeed.disliked.toString(),
+                    textScaleFactor: 1,
+                    style: PeoplerTextStyle.normal.copyWith(
+                      color: _mode.blackAndWhiteConversion(),
                     ),
-                    Text(
-                      widget.myFeed.disliked.toString(),
-                      textScaleFactor: 1,
-                      style: PeoplerTextStyle.normal.copyWith(
-                        color: _mode.blackAndWhiteConversion(),
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Container _buildFeedScreenFeedUserPhoto(context) {
