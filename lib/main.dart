@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,9 +49,9 @@ void main() async {
 
   await setupLocator();
 
-
+  // await updatePhotoUrl();
+  // await fakeUserCreator();
   // await fakeUserDelete();
-  // await fakeUserCreatorCity();
   // await updateAllFakeUserPhotos();
   // await fakeFeedCreator();
 
@@ -255,9 +256,24 @@ Future<void> updateFakeUserPhoto(String userID, String profileURL) async {
   await _userRepository.updateProfilePhoto(userID, downloadLink);
 }
 
+Future<void> updatePhotoUrl() async {
+  final UserRepository _userRepository = locator<UserRepository>();
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+  for(int i=0; i<36; i++) {
+    String userID = 'fake' + i.toString();
+    String _filePath = userID  + '/profile_photo';
+    Reference _storageReference = _firebaseStorage.ref().child(_filePath).child('profile_photo.png');
+    String url = await _storageReference.getDownloadURL();
+
+    await _userRepository.updateProfilePhoto(userID, url);
+  }
+}
+
 Future<void> fakeUserCreator() async {
   FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
   FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
+  UserRepository _ur = locator<UserRepository>();
 
   for(int i=0; i<36; i++) {
     MyUser theUser = MyUser();
@@ -272,6 +288,7 @@ Future<void> fakeUserCreator() async {
 
     await _fu.saveUser(theUser);
     await _fl.setUserInRegion(theUser.userID, '3984700,3281500');
+    await _ur.saveUserToCityCollection(theUser.userID, theUser.city);
   }
 }
 
@@ -311,23 +328,6 @@ Future<void> fakeUserDelete() async {
   }
 }
 
-Future<void> fakeUserCreatorCity() async {
-  FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
-  FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
-  UserRepository _ur = locator<UserRepository>();
-
-  for(int i=0; i<500; i++) {
-    MyUser theUser = MyUser();
-    theUser.userID = 'fake' + i.toString();
-    theUser.city = 'CitadelOfMert';
-    theUser.gender = 'Kadın';
-    theUser.displayName = displayName[i % 35];
-    theUser.biography = biography[i % 35];
-
-    await _fu.saveUser(theUser);
-    await _ur.saveUserToCityCollection(theUser.userID, theUser.city);
-  }
-}
 
 Future<void> fakeCityCreator() async {
   UserRepository _ur = locator<UserRepository>();

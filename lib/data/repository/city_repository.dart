@@ -47,14 +47,17 @@ class CityRepository {
     arrayUserList = arrayUserList.toSet().difference(unnecessaryUsers).toList();
 
     /// Take first n element of all user list and remove them from all user list
-    List<String> tempList = arrayUserList.take(PAGINATION_NUM_USERS).toList();
-    arrayUserList.removeRange(0, PAGINATION_NUM_USERS);
+    List<String> tempList;
+    if (arrayUserList.length < PAGINATION_NUM_USERS) {
+      _hasMoreArr = false;
+      tempList = arrayUserList.take(arrayUserList.length).toList();
+      arrayUserList.removeRange(0, tempList.length);
+    } else {
+      tempList = arrayUserList.take(PAGINATION_NUM_USERS).toList();
+      arrayUserList.removeRange(0, PAGINATION_NUM_USERS);
+    }
 
     List<MyUser> newUsers = await _firestoreDBServiceUsers.getUsersWithUserIDs(tempList);
-
-    if (arrayUserList.length < PAGINATION_NUM_USERS) {
-      _hasMoreCity = false;
-    }
 
     return newUsers;
   }
