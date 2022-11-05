@@ -9,7 +9,12 @@ class InitialSearchState extends LocationState {
   List<Object> get props => [];
 }
 
-class UsersLoadedSearchState extends LocationState {
+class UsersLoadedSearch1State extends LocationState {
+  @override
+  List<Object> get props => [];
+}
+
+class UsersLoadedSearch2State extends LocationState {
   @override
   List<Object> get props => [];
 }

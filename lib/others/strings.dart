@@ -43,6 +43,10 @@ class Strings {
   /// Kaydet duration
   static const int kaydetDurationHour = 6;
 
+  /// Location parameters
+  static const int UPDATE_WIDTH = 20;
+  static const int REGION_WIDTH = 100;
+
   static const List<String> cityData = [
     "İstanbul",
     "Ankara",

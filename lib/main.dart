@@ -18,6 +18,7 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/model/user.dart';
+import 'package:peopler/data/repository/location_repository.dart';
 import 'package:peopler/data/services/db/firebase_db_service_location.dart';
 import 'package:peopler/data/services/db/firestore_db_service_feeds.dart';
 import 'package:peopler/data/services/storage/firebase_storage_service.dart';
@@ -54,6 +55,7 @@ void main() async {
   // await fakeUserDelete();
   // await updateAllFakeUserPhotos();
   // await fakeFeedCreator();
+  // await fakeUserLocationUpdater();
 
   runApp(MyApp());
 }
@@ -274,6 +276,7 @@ Future<void> fakeUserCreator() async {
   FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
   FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
   UserRepository _ur = locator<UserRepository>();
+  LocationRepository _lr = locator<LocationRepository>();
 
   for(int i=0; i<36; i++) {
     MyUser theUser = MyUser();
@@ -287,8 +290,27 @@ Future<void> fakeUserCreator() async {
     await updateFakeUserPhoto(theUser.userID, profileURL);
 
     await _fu.saveUser(theUser);
-    await _fl.setUserInRegion(theUser.userID, '3984700,3281500');
+    List<String> regions = _lr.determineRegionList(3984772, 3281511);
+    for (String region in regions) {
+      await _fl.setUserInRegion(theUser.userID, region);
+    }
     await _ur.saveUserToCityCollection(theUser.userID, theUser.city);
+  }
+}
+
+Future<void> fakeUserLocationUpdater() async {
+  FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
+  FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
+  UserRepository _ur = locator<UserRepository>();
+  LocationRepository _lr = locator<LocationRepository>();
+
+  for(int i=0; i<36; i++) {
+    String userID = 'fake' + i.toString();
+
+    List<String> regions = _lr.determineRegionList(3984772, 3281511);
+    for (String region in regions) {
+      await _fl.setUserInRegion(userID, region);
+    }
   }
 }
 

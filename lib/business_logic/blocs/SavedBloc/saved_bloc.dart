@@ -35,7 +35,11 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
 
         if (savedUserList.isNotEmpty) {
           _allSavedUserList.addAll(savedUserList);
-          emit(UsersLoadedSavedState());
+          if(state is UsersLoadedSaved1State) {
+            emit(UsersLoadedSaved2State());
+          } else {
+            emit(UsersLoadedSaved1State());
+          }
         } else {
           emit(UserNotExistSavedState());
         }
@@ -54,16 +58,19 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         for(SavedUser tempUser in  tempList){
           if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
             savedUserList.removeWhere((item) => item.userID == tempUser.userID);
+            await _savedRepository.deleteSavedUser(UserBloc.user!.userID, tempUser.userID);
           }
-
-          await _savedRepository.deleteSavedUser(UserBloc.user!.userID, tempUser.userID);
         }
 
         // await Future.delayed(const Duration(seconds: 2));
 
         if (savedUserList.isNotEmpty) {
           _allSavedUserList.addAll(savedUserList);
-          emit(UsersLoadedSavedState());
+          if(state is UsersLoadedSaved1State) {
+            emit(UsersLoadedSaved2State());
+          } else {
+            emit(UsersLoadedSaved1State());
+          }
         } else {
           if (_allSavedUserList.isNotEmpty) {
             emit(NoMoreUsersSavedState());
@@ -88,7 +95,11 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         UserBloc.user!.savedUserIDs.add(event.savedUser.userID);
 
         _allSavedUserList.insert(0, savedUser);
-        emit(UsersLoadedSavedState());
+        if(state is UsersLoadedSaved1State) {
+          emit(UsersLoadedSaved2State());
+        } else {
+          emit(UsersLoadedSaved1State());
+        }
       } catch (e) {
         debugPrint("Blocta add my saved error:" + e.toString());
       }

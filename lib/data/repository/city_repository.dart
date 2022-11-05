@@ -51,7 +51,6 @@ class CityRepository {
     if (arrayUserList.length < PAGINATION_NUM_USERS) {
       _hasMoreArr = false;
       tempList = arrayUserList.take(arrayUserList.length).toList();
-      arrayUserList.removeRange(0, tempList.length);
     } else {
       tempList = arrayUserList.take(PAGINATION_NUM_USERS).toList();
       arrayUserList.removeRange(0, PAGINATION_NUM_USERS);

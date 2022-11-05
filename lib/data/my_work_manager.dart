@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:workmanager/workmanager.dart';
 
+import '../others/strings.dart';
 import 'fcm_and_local_notifications.dart';
 
 const String taskFetchBackground = "fetchBackground";
@@ -79,8 +80,7 @@ Future<bool> fetchBackgroundFunction() async {
   /// CHECK LOCATION PERMISSION
   /// *********************************************************************************************************
   LocationPermission _permission = await Geolocator.checkPermission();
-  if (!(_permission == LocationPermission.whileInUse ||
-      _permission == LocationPermission.always)) {
+  if (!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
     /// For debug purposes
     debugPrint("WorkManager: not while in use nor always");
     // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: not while in use nor always");
@@ -99,118 +99,12 @@ Future<bool> fetchBackgroundFunction() async {
 
   /// GET LOCATION
   /// *********************************************************************************************************
-  _position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best);
+  _position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
 
-  const int UPDATE_WIDTH = 20; // 20 meters
-  const int QUERY_WIDTH = 100; // 100 meters
 
-  /// GET SECURE STORAGE VALUES
+  /// ALL BULK OF LOGIC
   /// *********************************************************************************************************
-  const storage = FlutterSecureStorage();
-  Map<String, String> allValues = await storage.readAll();
-
-  final String? sharedUserID = allValues['sharedUserID'];
-  String? sharedRegion = allValues['sharedRegion'];
-  int? sharedLatitude = int.parse(allValues['sharedLatitude']!);
-  int? sharedLongitude = int.parse(allValues['sharedLongitude']!);
-
-  /// CHECK LOCATION CHANGE
-  /// *********************************************************************************************************
-  int latitude = (_position.latitude * 1e5).round();
-  int longitude = (_position.longitude * 1e5).round();
-
-  /// If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
-  if (latitude > sharedLatitude - UPDATE_WIDTH &&
-      latitude < sharedLatitude + UPDATE_WIDTH &&
-      longitude > sharedLongitude - UPDATE_WIDTH &&
-      longitude < sharedLongitude + UPDATE_WIDTH) {
-    return Future.value(true);
-  }
-
-  /// DELETE USER FROM regions COLLECTIONS IF EXISTS (old region)
-  /// *********************************************************************************************************
-  try {
-    DocumentSnapshot _readRegion =
-        await _firebaseDB.collection('regions').doc(sharedRegion).get();
-
-    /// if a region exists with this region on regions collections, then delete userID from array field of users document of regions collections
-    if (_readRegion.data() != null) {
-      await _firebaseDB.collection('regions').doc(sharedRegion).update({
-        "users": FieldValue.arrayRemove([sharedUserID])
-      });
-    } else {
-      /// For debug purposes
-      debugPrint(
-          "WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
-      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
-    }
-  } catch (e) {
-    /// For debug purposes
-    debugPrint("WorkManager: ERROR in deleteUserFromRegion function: $e");
-    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in deleteUserFromRegion function: $e");
-    return Future.value(false);
-  }
-
-  /// UPDATE SECURE STORAGE VALUES
-  /// *********************************************************************************************************
-  /// Query region bottom left corner coordinates
-  int bottomLatitude = latitude - latitude % QUERY_WIDTH;
-  int leftLongitude = longitude - longitude % QUERY_WIDTH;
-
-  String _region = bottomLatitude.toString() + ',' + leftLongitude.toString();
-
-  await storage.write(key: 'sharedRegion', value: _region);
-  await storage.write(key: 'sharedLatitude', value: latitude.toString());
-  await storage.write(key: 'sharedLongitude', value: longitude.toString());
-
-  /// UPDATE user DOCUMENT LOCATION PARAMETERS IF EXISTS
-  /// *********************************************************************************************************
-  DocumentSnapshot _readUser =
-      await _firebaseDB.collection('users').doc(sharedUserID).get();
-  if (_readUser.data() != null) {
-    await _firebaseDB
-        .collection('users')
-        .doc(sharedUserID)
-        .collection('private')
-        .doc('private')
-        .update({
-      'latitude': latitude,
-      'longitude': longitude,
-      'region': _region,
-    });
-  } else {
-    /// For debug purposes
-    debugPrint("WorkManager: ERROR: update user location");
-    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: update user location");
-  }
-
-  /// UPDATE regions COLLECTIONS IF EXISTS, SET IF NOT EXISTS
-  /// *********************************************************************************************************
-  try {
-    DocumentSnapshot _readRegion =
-        await _firebaseDB.collection('regions').doc(_region).get();
-
-    /// if a region exists with this region on regions collections, then add userID to array field of users
-    if (_readRegion.data() != null) {
-      await _firebaseDB.collection('regions').doc(_region).update({
-        "users": FieldValue.arrayUnion([sharedUserID])
-      });
-    } else {
-      await _firebaseDB.collection('regions').doc(_region).set({
-        "users": FieldValue.arrayUnion([sharedUserID])
-      });
-
-      /// For debug purposes
-      debugPrint("WorkManager: Document does not exist, so regionID created");
-      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: Document does not exist, so regionID created");
-    }
-  } catch (e) {
-    /// For debug purposes
-    debugPrint("WorkManager: ERROR in setUserInRegion function: $e");
-    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in setUserInRegion function: $e");
-    return Future.value(false);
-  }
+  await updateUserLocationAtDatabase(_position, _firebaseDB);
 
   /// *********************************************************************************************************
 
@@ -218,4 +112,158 @@ Future<bool> fetchBackgroundFunction() async {
   debugPrint("Basarili ${_position.toString()}");
   // await FCMAndLocalNotifications.showNotificationForDebugPurposes("Basarili ${_position.toString()}");
   return Future.value(true);
+}
+
+Future<bool> updateUserLocationAtDatabase(Position position, FirebaseFirestore firebaseDB) async {
+  try {
+    /// Obtain shared preferences.
+    const storage = FlutterSecureStorage();
+    Map<String, String> allValues = await storage.readAll();
+
+    final String? sharedUserID = allValues['sharedUserID'];
+    int? oldLatitude = int.parse(allValues['sharedLatitude']!);
+    int? oldLongitude = int.parse(allValues['sharedLongitude']!);
+
+    int newLatitude = (position.latitude * 1e5).round();
+    int newLongitude = (position.longitude * 1e5).round();
+
+    /// If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
+    if (newLatitude > oldLatitude - Strings.UPDATE_WIDTH &&
+        newLatitude < oldLatitude + Strings.UPDATE_WIDTH &&
+        newLongitude > oldLongitude - Strings.UPDATE_WIDTH &&
+        newLongitude < oldLongitude + Strings.UPDATE_WIDTH) {
+      return Future.value(true);
+    }
+
+    /// Delete user from old region
+    List<String> oldRegions = determineRegionList(oldLatitude, oldLongitude);
+    for (String region in oldRegions) {
+      await deleteUserFromRegion(sharedUserID!, region, firebaseDB);
+    }
+
+    /// Query region bottom left corner coordinates
+    int bottomLatitude = newLatitude - newLatitude % Strings.REGION_WIDTH;
+    int leftLongitude = newLongitude - newLongitude % Strings.REGION_WIDTH;
+
+    String newRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
+
+    await storage.write(key: 'sharedLatitude', value: newLatitude.toString());
+    await storage.write(key: 'sharedLongitude', value: newLongitude.toString());
+
+    await updateUserLocationAtDatabaseService(sharedUserID!, newLatitude, newLongitude, newRegion, firebaseDB);
+
+    /// Update regions collection
+    List<String> newRegions = determineRegionList(newLatitude, newLongitude);
+    for (String region in newRegions) {
+      await setUserInRegion(sharedUserID, region, firebaseDB);
+    }
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+Future<bool> deleteUserFromRegion(String userID, String region, FirebaseFirestore firebaseDB) async {
+  try {
+    DocumentSnapshot _readRegion = await firebaseDB.collection('regions').doc(region).get();
+    // if a region exists with this region on regions collections, then add userID to array field of users
+    if (_readRegion.data() != null) {
+      await firebaseDB.collection('regions').doc(region).update({
+        "users": FieldValue.arrayRemove([userID])
+      });
+      return true;
+    } else {
+      debugPrint("WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
+      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: Document does not exist, a region with this regionID does not exist");
+      return false;
+    }
+  } catch (e) {
+    /// For debug purposes
+    debugPrint("WorkManager: ERROR in deleteUserFromRegion function: $e");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in deleteUserFromRegion function: $e");
+    return Future.value(false);
+  }
+}
+
+List<String> determineRegionList(int latitude, int longitude) {
+  int _latitude = latitude;
+  int _longitude = longitude;
+
+  /// Query region bottom left corner coordinates
+  int bottomLatitude = _latitude - _latitude % Strings.REGION_WIDTH;
+  int leftLongitude = _longitude - _longitude % Strings.REGION_WIDTH;
+
+  /// Create return variable queryList which keeps regions and subRegions
+  List<String> queryList = [];
+
+  String currentRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
+
+  String bottomLeftRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+  String leftRegion = bottomLatitude.toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+  String topLeftRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+
+  String topRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + leftLongitude.toString();
+  String bottomRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + leftLongitude.toString();
+
+  String bottomRightRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+  String rightRegion = bottomLatitude.toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+  String topRightRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+
+  queryList.add(currentRegion);
+  queryList.add(bottomLeftRegion);
+  queryList.add(leftRegion);
+  queryList.add(topLeftRegion);
+  queryList.add(topRegion);
+  queryList.add(bottomRegion);
+  queryList.add(bottomRightRegion);
+  queryList.add(rightRegion);
+  queryList.add(topRightRegion);
+
+  return queryList;
+}
+
+Future<bool> updateUserLocationAtDatabaseService(String userID, int latitude, int longitude, String region, FirebaseFirestore firebaseDB) async {
+  DocumentSnapshot _readUser = await firebaseDB.collection('users').doc(userID).get();
+
+  if (_readUser.data() != null) {
+    await firebaseDB.collection('users').doc(userID).collection("private").doc("private").update({
+      'latitude': latitude,
+      'longitude': longitude,
+      'region': region,
+    });
+    return true;
+  } else {
+    /// For debug purposes
+    debugPrint("WorkManager: ERROR: update user location");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR: update user location");
+    return Future.value(false);
+  }
+}
+
+Future<bool> setUserInRegion(String userID, String region, FirebaseFirestore firebaseDB) async {
+  try {
+    DocumentSnapshot _readRegion = await firebaseDB.collection('regions').doc(region).get();
+    // if a region exists with this region on regions collections, then add userID to array field of users
+    if (_readRegion.data() != null) {
+      await firebaseDB.collection('regions').doc(region).update({
+        "users": FieldValue.arrayUnion([userID])
+      });
+      return true;
+    } else {
+      await firebaseDB.collection('regions').doc(region).set({
+        "users": FieldValue.arrayUnion([userID])
+      });
+      /// For debug purposes
+      debugPrint("WorkManager: Document does not exist, so regionID created");
+      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: Document does not exist, so regionID created");
+
+      return true;
+    }
+  } catch (e) {
+      /// For debug purposes
+      debugPrint("WorkManager: ERROR in setUserInRegion function: $e");
+      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in setUserInRegion function: $e");
+      return Future.value(false);
+  }
 }

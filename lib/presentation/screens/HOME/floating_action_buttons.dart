@@ -216,7 +216,11 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
             child: BlocBuilder<SavedBloc, SavedState>(
               bloc: _savedBloc,
               builder: (context, state) {
-                return Text('${_savedBloc.allRequestList.length}', style: const TextStyle(color: Colors.white));
+                if(UserBloc.user != null) {
+                  return Text('${UserBloc.user!.savedUserIDs.length}', style: const TextStyle(color: Colors.white));
+                } else {
+                  return const SizedBox.shrink();
+                }
               },
             ),
           ),

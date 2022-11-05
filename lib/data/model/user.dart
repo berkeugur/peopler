@@ -31,7 +31,6 @@ class MyUser {
   String email = "";
   bool isTheAccountConfirmed = false;
   bool missingInfo = true;
-  String region = 'empty';
   int latitude = 0;
   int longitude = 0;
   int numOfSendRequest = 15;
@@ -105,7 +104,6 @@ class MyUser {
       'email': email,
       'isTheAccountConfirmed': isTheAccountConfirmed,
       'missingInfo': missingInfo,
-      'region': region,
       'latitude': latitude,
       'longitude': longitude,
       'numOfSendRequest': numOfSendRequest,
@@ -114,11 +112,9 @@ class MyUser {
   }
 
   void fromPrivateMap(Map<String, dynamic> map) {
-    print(map['updatedAtNumOfSendRequest'].runtimeType);
     email = map['email'] as String;
     isTheAccountConfirmed = map['isTheAccountConfirmed'] as bool;
     missingInfo = map['missingInfo'] as bool;
-    region = map['region'] as String;
     latitude = map['latitude'] as int;
     longitude = map['longitude'] as int;
     numOfSendRequest = map['numOfSendRequest'] as int;

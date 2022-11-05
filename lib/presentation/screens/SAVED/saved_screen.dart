@@ -88,7 +88,10 @@ class _SavedScreenState extends State<SavedScreen> {
                                           return _initialUsersStateWidget();
                                         } else if (state is UserNotExistSavedState) {
                                           return _noUserExistsWidget();
-                                        } else if (state is UsersLoadedSavedState) {
+                                        } else if (state is UsersLoadedSaved1State) {
+                                          loading = false;
+                                          return _showSavedUsers(_size);
+                                        } else if (state is UsersLoadedSaved2State) {
                                           loading = false;
                                           return _showSavedUsers(_size);
                                         } else if (state is NoMoreUsersSavedState) {

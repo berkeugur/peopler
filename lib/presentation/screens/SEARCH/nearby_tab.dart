@@ -119,7 +119,10 @@ class _NearbyTabState extends State<NearbyTab> {
                                       emptyListType: EmptyListType.nearby,
                                       isSVG: false,
                                     );
-                                  } else if (state is UsersLoadedSearchState) {
+                                  } else if (state is UsersLoadedSearch1State) {
+                                    loading = false;
+                                    return _showUsers(widget.size);
+                                  } else if (state is UsersLoadedSearch2State) {
                                     loading = false;
                                     return _showUsers(widget.size);
                                   } else if (state is NoMoreUsersSearchState) {

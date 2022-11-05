@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/feed.dart';
+import 'package:peopler/data/repository/location_repository.dart';
 import 'package:peopler/data/services/db/firebase_db_common.dart';
 import 'package:peopler/data/services/db/firebase_db_service_chat.dart';
 import 'package:peopler/data/services/db/firebase_db_service_location.dart';
@@ -22,6 +23,8 @@ class UserRepository {
   final FirestoreDBServiceCommon _firestoreDBServiceCommon = locator<FirestoreDBServiceCommon>();
   final FirestoreDBServiceLocation _firestoreDBServiceLocation = locator<FirestoreDBServiceLocation>();
   final FirestoreDBServiceChat _firestoreDBServiceChat = locator<FirestoreDBServiceChat>();
+  final LocationRepository _locationRepository = locator<LocationRepository>();
+
 
   Future<MyUser?> getCurrentUser() async {
     MyUser? currentUser = await _firebaseAuthService.getCurrentUser();
@@ -269,8 +272,11 @@ class UserRepository {
     /// Delete all chats after messages (subcollections of chats) deleted
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + myUser.userID + "/chats");
 
-    /// Delete user from his/her last region
-    _firestoreDBServiceLocation.deleteUserFromRegion(myUser.userID, myUser.region);
+    /// Delete user from his/her last regions
+    List<String> regions = _locationRepository.determineRegionList(myUser.latitude, myUser.longitude);
+    for (String region in regions) {
+      _firestoreDBServiceLocation.deleteUserFromRegion(myUser.userID, region);
+    }
 
     /// Delete user from city collection
     await _firestoreDBServiceUsers.removeArrUser(myUser.userID, myUser.city, myUser.city_arr);

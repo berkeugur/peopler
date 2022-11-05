@@ -59,7 +59,6 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
         const storage = FlutterSecureStorage();
         Map<String, String> allValues = await storage.readAll();
 
-        UserBloc.user?.region = allValues['sharedRegion']!;
         UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
         UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
 
@@ -77,7 +76,6 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
         const storage = FlutterSecureStorage();
         Map<String, String> allValues = await storage.readAll();
 
-        UserBloc.guestUser?.region = allValues['sharedRegion']!;
         UserBloc.guestUser?.latitude = int.parse(allValues['sharedLatitude']!);
         UserBloc.guestUser?.longitude = int.parse(allValues['sharedLongitude']!);
 
@@ -124,15 +122,11 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
           await storage.write(
               key: 'sharedUserID', value: UserBloc.user!.userID);
           await storage.write(
-              key: 'sharedRegion', value: UserBloc.user!.region);
-          await storage.write(
               key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
           await storage.write(
               key: 'sharedLongitude',
               value: UserBloc.user!.longitude.toString());
         } else {
-          await storage.write(
-              key: 'sharedRegion', value: UserBloc.guestUser!.region);
           await storage.write(
               key: 'sharedLatitude', value: UserBloc.guestUser!.latitude.toString());
           await storage.write(
@@ -167,8 +161,6 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
 
           await storage.write(
               key: 'sharedUserID', value: UserBloc.user!.userID);
-          await storage.write(
-              key: 'sharedRegion', value: UserBloc.user!.region);
           await storage.write(
               key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
           await storage.write(

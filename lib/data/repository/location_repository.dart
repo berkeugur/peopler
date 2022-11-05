@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:peopler/data/services/db/firestore_db_service_users.dart';
 import 'package:peopler/data/services/location/location_service.dart';
 import '../../others/locator.dart';
+import '../../others/strings.dart';
 import '../model/user.dart';
 import '../services/db/firebase_db_service_location.dart';
 
@@ -13,18 +14,11 @@ class LocationRepository {
   final FirestoreDBServiceLocation _firestoreDBServiceLocation = locator<FirestoreDBServiceLocation>();
   final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
-  static const UPDATE_WIDTH = 20; // 20 meters
-  static const QUERY_WIDTH = 100; // 100 meters
-  static const PAGINATION_NUM_USERS = 10;  // number of query per 9 regions, very important parameter, please do not change
+  static const PAGINATION_NUM_USERS = 10;
 
-  final List<bool> _hasMore = List.filled(9, true);
-  final List<String?> _lastUserElement = List.filled(9, null);
-
-  /// To reference the different list instances, List of List generated like this.
-  /// https://stackoverflow.com/questions/25118921/how-do-i-handle-a-list-of-lists
-  final List<List<String>> _userIDsInRegion = List.generate(9, (i) => []);
-
-  bool _isAllUsersGotFromRegion = false;
+  bool _hasMore = true;
+  bool allUsersGotFromRegion = false;
+  List<String> allUserIDList = [];
 
   Future<bool> checkLocationSetting() async {
     return await _locationServices.checkLocationService();
@@ -49,8 +43,8 @@ class LocationRepository {
   }
 
   Future<void> openLocationSettings() async {
-    const locationChannel = MethodChannel('mertsalar/location_setting');   // This is the same name where we have defined in Native side
-    await locationChannel.invokeMethod('requestLocationSetting', []);      // This method name is the same as Native side, we call this method from Kotlin
+    const locationChannel = MethodChannel('mertsalar/location_setting'); // This is the same name where we have defined in Native side
+    await locationChannel.invokeMethod('requestLocationSetting', []); // This method name is the same as Native side, we call this method from Kotlin
   }
 
   Stream<String> serviceStatusStream() {
@@ -62,61 +56,61 @@ class LocationRepository {
   }
 
   Future<bool> updateUserLocationAtDatabase(Position position) async {
-    try{
-
+    try {
       /// Obtain shared preferences.
       const storage = FlutterSecureStorage();
       Map<String, String> allValues = await storage.readAll();
 
       final String? sharedUserID = allValues['sharedUserID'];
-      String? sharedRegion = allValues['sharedRegion'];
-      int? sharedLatitude = int.parse(allValues['sharedLatitude']!);
-      int? sharedLongitude = int.parse(allValues['sharedLongitude']!);
+      int? oldLatitude = int.parse(allValues['sharedLatitude']!);
+      int? oldLongitude = int.parse(allValues['sharedLongitude']!);
 
-      int latitude = (position.latitude * 1e5).round();
-      int longitude = (position.longitude * 1e5).round();
+      int newLatitude = (position.latitude * 1e5).round();
+      int newLongitude = (position.longitude * 1e5).round();
 
       /// If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
-      if(latitude > sharedLatitude - UPDATE_WIDTH &&
-          latitude < sharedLatitude + UPDATE_WIDTH &&
-          longitude > sharedLongitude - UPDATE_WIDTH &&
-          longitude < sharedLongitude + UPDATE_WIDTH) {
+      if (newLatitude > oldLatitude - Strings.UPDATE_WIDTH &&
+          newLatitude < oldLatitude + Strings.UPDATE_WIDTH &&
+          newLongitude > oldLongitude - Strings.UPDATE_WIDTH &&
+          newLongitude < oldLongitude + Strings.UPDATE_WIDTH) {
         return false;
       }
 
       /// Delete user from old region
-      await _firestoreDBServiceLocation.deleteUserFromRegion(sharedUserID!, sharedRegion!);
+      List<String> oldRegions = determineRegionList(oldLatitude, oldLongitude);
+      for (String region in oldRegions) {
+        await _firestoreDBServiceLocation.deleteUserFromRegion(sharedUserID!, region);
+      }
 
       /// Query region bottom left corner coordinates
-      int bottomLatitude = latitude - latitude % QUERY_WIDTH;
-      int leftLongitude = longitude - longitude % QUERY_WIDTH;
+      int bottomLatitude = newLatitude - newLatitude % Strings.REGION_WIDTH;
+      int leftLongitude = newLongitude - newLongitude % Strings.REGION_WIDTH;
 
-      String _region = bottomLatitude.toString() + ',' + leftLongitude.toString();
+      String newRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
 
-      await storage.write(key: 'sharedRegion', value: _region);
-      await storage.write(key: 'sharedLatitude', value: latitude.toString());
-      await storage.write(key: 'sharedLongitude', value: longitude.toString());
+      await storage.write(key: 'sharedLatitude', value: newLatitude.toString());
+      await storage.write(key: 'sharedLongitude', value: newLongitude.toString());
 
-      await _firestoreDBServiceUsers.updateUserLocationAtDatabase(sharedUserID, latitude, longitude, _region);
+      await _firestoreDBServiceUsers.updateUserLocationAtDatabase(sharedUserID!, newLatitude, newLongitude, newRegion);
 
       /// Update regions collection
-      await _firestoreDBServiceLocation.setUserInRegion(sharedUserID, _region);
+      List<String> newRegions = determineRegionList(newLatitude, newLongitude);
+      for (String region in newRegions) {
+        await _firestoreDBServiceLocation.setUserInRegion(sharedUserID, region);
+      }
 
       return true;
-    }
-    catch(e) {
+    } catch (e) {
       return false;
     }
   }
 
   Future<bool> updateGuestUserLocation(Position position) async {
-    try{
-
+    try {
       /// Obtain shared preferences.
       const storage = FlutterSecureStorage();
       Map<String, String> allValues = await storage.readAll();
 
-      String? sharedRegion = allValues['sharedRegion'];
       int? sharedLatitude = int.parse(allValues['sharedLatitude']!);
       int? sharedLongitude = int.parse(allValues['sharedLongitude']!);
 
@@ -124,53 +118,45 @@ class LocationRepository {
       int longitude = (position.longitude * 1e5).round();
 
       /// If user's new location does not change more than UPDATE_WIDTH, then do not make any database operation.
-      if(latitude > sharedLatitude - UPDATE_WIDTH &&
-          latitude < sharedLatitude + UPDATE_WIDTH &&
-          longitude > sharedLongitude - UPDATE_WIDTH &&
-          longitude < sharedLongitude + UPDATE_WIDTH) {
+      if (latitude > sharedLatitude - Strings.UPDATE_WIDTH &&
+          latitude < sharedLatitude + Strings.UPDATE_WIDTH &&
+          longitude > sharedLongitude - Strings.UPDATE_WIDTH &&
+          longitude < sharedLongitude + Strings.UPDATE_WIDTH) {
         return false;
       }
 
-      /// Query region bottom left corner coordinates
-      int bottomLatitude = latitude - latitude % QUERY_WIDTH;
-      int leftLongitude = longitude - longitude % QUERY_WIDTH;
-
-      String _region = bottomLatitude.toString() + ',' + leftLongitude.toString();
-
-      await storage.write(key: 'sharedRegion', value: _region);
       await storage.write(key: 'sharedLatitude', value: latitude.toString());
       await storage.write(key: 'sharedLongitude', value: longitude.toString());
 
       return true;
-    }
-    catch(e) {
+    } catch (e) {
       return false;
     }
   }
 
-  List<String> determineQueryList(int latitude, int longitude) {
+  List<String> determineRegionList(int latitude, int longitude) {
     int _latitude = latitude;
     int _longitude = longitude;
 
     /// Query region bottom left corner coordinates
-    int bottomLatitude = _latitude - _latitude % QUERY_WIDTH;
-    int leftLongitude = _longitude - _longitude % QUERY_WIDTH;
+    int bottomLatitude = _latitude - _latitude % Strings.REGION_WIDTH;
+    int leftLongitude = _longitude - _longitude % Strings.REGION_WIDTH;
 
     /// Create return variable queryList which keeps regions and subRegions
     List<String> queryList = [];
 
-    String currentRegion =       bottomLatitude.toString() + ',' +                  leftLongitude.toString();
+    String currentRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
 
-    String bottomLeftRegion =   (bottomLatitude - QUERY_WIDTH).toString() + ',' +  (leftLongitude - QUERY_WIDTH).toString();
-    String leftRegion =          bottomLatitude.toString() + ',' +                 (leftLongitude - QUERY_WIDTH).toString();
-    String topLeftRegion =      (bottomLatitude + QUERY_WIDTH).toString() + ',' +  (leftLongitude - QUERY_WIDTH).toString();
+    String bottomLeftRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+    String leftRegion = bottomLatitude.toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+    String topLeftRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
 
-    String topRegion =          (bottomLatitude + QUERY_WIDTH).toString() + ',' +   leftLongitude.toString();
-    String bottomRegion =       (bottomLatitude - QUERY_WIDTH).toString() + ',' +   leftLongitude.toString();
+    String topRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + leftLongitude.toString();
+    String bottomRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + leftLongitude.toString();
 
-    String bottomRightRegion =   (bottomLatitude - QUERY_WIDTH).toString() + ',' + (leftLongitude + QUERY_WIDTH).toString();
-    String rightRegion =         bottomLatitude.toString() + ',' +                 (leftLongitude + QUERY_WIDTH).toString();
-    String topRightRegion =      (bottomLatitude + QUERY_WIDTH).toString() + ',' + (leftLongitude + QUERY_WIDTH).toString();
+    String bottomRightRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+    String rightRegion = bottomLatitude.toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+    String topRightRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
 
     queryList.add(currentRegion);
     queryList.add(bottomLeftRegion);
@@ -185,58 +171,41 @@ class LocationRepository {
     return queryList;
   }
 
-  Future<List<MyUser>> queryUsersWithPagination(List<String> queryList) async {
+  Future<List<MyUser>> queryUsersWithPagination(int latitude, int longitude, Set<String> unnecessaryUsers) async {
+    if (_hasMore == false) return [];
 
-    if(_isAllUsersGotFromRegion == false) {
-      for(int i = 0; i<9; i++) {
-        List<String> _tempList = await _firestoreDBServiceLocation.getAllUserIDsFromRegion(queryList[i]);
-        _userIDsInRegion[i].addAll(_tempList);
-      }
-      _isAllUsersGotFromRegion = true;
+    if(allUsersGotFromRegion == false) {
+      /// Get all userIDs
+      int bottomLatitude = latitude - latitude % Strings.REGION_WIDTH;
+      int leftLongitude = longitude - longitude % Strings.REGION_WIDTH;
+      String queryRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
+      allUserIDList = await _firestoreDBServiceLocation.getAllUserIDsFromRegion(queryRegion);
+
+      /// remove unneccessary users from all user list in the array
+      allUserIDList = allUserIDList.toSet().difference(unnecessaryUsers).toList();
+
+      allUsersGotFromRegion = true;
     }
 
-    List<MyUser> userList = [];
-    for (int i=0; i<9; i++) {
-      if (_hasMore[i] == false) continue;
-      List<String> _tempUserIDList = [];
-
-      if(_lastUserElement[i] == null) {
-        if(_userIDsInRegion[i].length < PAGINATION_NUM_USERS) {
-          _tempUserIDList.addAll(_userIDsInRegion[i]);
-        } else {
-          _tempUserIDList.addAll(_userIDsInRegion[i].take(PAGINATION_NUM_USERS).toList());
-        }
-      } else {
-        int startingUserIDIndex = _userIDsInRegion[i].indexOf(_lastUserElement[i]!) + 1;
-        if(_userIDsInRegion[i].length < startingUserIDIndex + PAGINATION_NUM_USERS) {
-          _tempUserIDList.addAll(_userIDsInRegion[i].getRange(startingUserIDIndex, _userIDsInRegion[i].length-1));
-        } else {
-          _tempUserIDList.addAll(_userIDsInRegion[i].getRange(startingUserIDIndex, startingUserIDIndex + PAGINATION_NUM_USERS));
-        }
-      }
-
-      if(_tempUserIDList.isNotEmpty) _lastUserElement[i] = _tempUserIDList.last;
-
-      /// If number of users get is smaller than the desired, there is no more data
-      if(_tempUserIDList.length < PAGINATION_NUM_USERS) _hasMore[i] = false;
-
-      List<MyUser> tempList = await _firestoreDBServiceUsers.getUsersWithUserIDs(_tempUserIDList);
-
-      userList.addAll(tempList);
+    /// Take first n element of all user list and remove them from all user list
+    List<String> tempList;
+    if (allUserIDList.length < PAGINATION_NUM_USERS) {
+      _hasMore = false;
+      tempList = allUserIDList.take(allUserIDList.length).toList();
+    } else {
+      tempList = allUserIDList.take(PAGINATION_NUM_USERS).toList();
+      allUserIDList.removeRange(0, PAGINATION_NUM_USERS);
     }
 
-    return userList;
+    List<MyUser> newUsers = await _firestoreDBServiceUsers.getUsersWithUserIDs(tempList);
+
+    return newUsers;
   }
-
 
   void restartRepositoryCache() {
-    for(int i=0; i<9; i++)
-      {
-        _hasMore[i] = true;
-        _lastUserElement[i] = null;
-        _userIDsInRegion[i].clear();
-      }
-
-    _isAllUsersGotFromRegion = false;
+      _hasMore = true;
+      allUsersGotFromRegion = false;
+      allUserIDList = [];
   }
 }
+
