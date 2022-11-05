@@ -691,7 +691,6 @@ class CityTabState extends State<CityTab> {
         _searchPeopleListControllerCity.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        debugPrint("hello");
         _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));
       }
     }

@@ -39,7 +39,11 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         if (_transmittedList.isNotEmpty) {
           _allTransmittedList.addAll(_transmittedList);
-          emit(NotificationTransmittedLoadedState());
+          if(state is NotificationTransmittedLoaded1State) {
+            emit(NotificationTransmittedLoaded2State());
+          } else {
+            emit(NotificationTransmittedLoaded1State());
+          }
         } else {
           emit(NotificationTransmittedNotExistState());
         }
@@ -68,7 +72,11 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         if (_transmittedList.isNotEmpty) {
           _allTransmittedList.addAll(_transmittedList);
-          emit(NotificationTransmittedLoadedState());
+          if(state is NotificationTransmittedLoaded1State) {
+            emit(NotificationTransmittedLoaded2State());
+          } else {
+            emit(NotificationTransmittedLoaded1State());
+          }
         } else {
           if (_allTransmittedList.isNotEmpty) {
             emit(NoMoreNotificationTransmittedState());
@@ -89,7 +97,11 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         if(_allTransmittedList.isEmpty) {
           emit(NotificationTransmittedNotExistState());
         } else {
-          emit(NotificationTransmittedLoadedState());
+          if(state is NotificationTransmittedLoaded1State) {
+            emit(NotificationTransmittedLoaded2State());
+          } else {
+            emit(NotificationTransmittedLoaded1State());
+          }
         }
 
         await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);

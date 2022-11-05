@@ -24,11 +24,14 @@ class NotificationScreenState extends State<NotificationScreen> {
   late ScrollController notificationsScreenScrollController;
   late final NotificationBloc _notificationBloc;
 
+  bool loading = false;
+  late final NewNotificationCubit _newNotificationCubit;
+
   @override
   void initState() {
     super.initState();
 
-    NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+    _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
 
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
@@ -61,6 +64,8 @@ class NotificationScreenState extends State<NotificationScreen> {
                           child: NotificationListener<ScrollNotification>(
                             onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                             child: SingleChildScrollView(
+                              controller: notificationsScreenScrollController,
+                              physics: const AlwaysScrollableScrollPhysics(),
                               child: Column(
                                 children: [
                                   BlocBuilder<NotificationBloc, NotificationState>(
@@ -71,8 +76,10 @@ class NotificationScreenState extends State<NotificationScreen> {
                                       } else if (state is NotificationNotExistState) {
                                         return _noNotificationsExistsWidget(context);
                                       } else if (state is NotificationLoadedState1) {
+                                        loading = false;
                                         return _showNotifications(context);
                                       } else if (state is NotificationLoadedState2) {
+                                        loading = false;
                                         return _showNotifications(context);
                                       } else if (state is NoMoreNotificationState) {
                                         return _showNotifications(context);
@@ -123,6 +130,17 @@ class NotificationScreenState extends State<NotificationScreen> {
         });
       }
     }
+
+    var nextPageTrigger = 0.8 * notificationsScreenScrollController.position.maxScrollExtent;
+
+    if(notificationsScreenScrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
+        notificationsScreenScrollController.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
+      }
+    }
+
     return true;
   }
 
@@ -130,13 +148,11 @@ class NotificationScreenState extends State<NotificationScreen> {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: ListView.builder(
-        controller: notificationsScreenScrollController,
-        padding: const EdgeInsets.only(top: 70 + 50),
-        itemCount: _notificationBloc.allNotificationList.length,
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+            parent: NeverScrollableScrollPhysics()),
+        padding: const EdgeInsets.only(top: 70 + 50),
+        itemCount: _notificationBloc.allNotificationList.length,
         itemBuilder: (context, index) {
           return customListItem(index, context);
         },

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
-import '../../../../business_logic/blocs/SavedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
-import '../../../../others/locator.dart';
 import '../../../../others/empty_list.dart';
+import '../../../../others/locator.dart';
 import '../../../../others/widgets/snack_bars.dart';
 import '../notification_screen_list_view.dart';
 
@@ -25,10 +24,14 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
 
   late final NotificationTransmittedBloc _notificationTransmittedBloc;
 
+  bool loading = false;
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     _notificationTransmittedBloc = BlocProvider.of<NotificationTransmittedBloc>(context);
     _notificationTransmittedBloc.add(GetInitialDataEvent());
+    _scrollController = ScrollController();
     super.initState();
   }
 
@@ -45,37 +48,45 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
               color: _mode.search_peoples_scaffold_background(),
               child: SizedBox(
                   width: _maxWidth,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        BlocBuilder<NotificationTransmittedBloc, NotificationTransmittedState>(
-                          bloc: _notificationTransmittedBloc,
-                          builder: (context, state) {
-                            if (state is InitialNotificationTransmittedState) {
-                              return _initialNotificationsTransmittedStateWidget();
-                            } else if (state is NotificationTransmittedNotExistState) {
-                              return _noNotificationsTransmittedExistsWidget();
-                            } else if (state is NotificationTransmittedLoadedState) {
-                              return _showNotificationsTransmitted();
-                            } else if (state is NoMoreNotificationTransmittedState) {
-                              return _showNotificationsTransmitted();
-                            } else if (state is NewNotificationTransmittedLoadingState) {
-                              return _showNotificationsTransmitted();
-                            } else {
-                              return const Text("Impossible");
-                            }
-                          },
-                        ),
-                        BlocBuilder<NotificationTransmittedBloc, NotificationTransmittedState>(
+                  child: NotificationListener(
+                    onNotification: (ScrollNotification scrollNotification) =>
+                        _listScrollListener(),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          BlocBuilder<NotificationTransmittedBloc, NotificationTransmittedState>(
                             bloc: _notificationTransmittedBloc,
                             builder: (context, state) {
-                              if (state is NewNotificationTransmittedLoadingState) {
-                                return _notificationsTransmittedLoadingCircularButton();
+                              if (state is InitialNotificationTransmittedState) {
+                                return _initialNotificationsTransmittedStateWidget();
+                              } else if (state is NotificationTransmittedNotExistState) {
+                                return _noNotificationsTransmittedExistsWidget();
+                              } else if (state is NotificationTransmittedLoaded1State) {
+                                loading = false;
+                                return _showNotificationsTransmitted();
+                              } else if (state is NotificationTransmittedLoaded2State) {
+                                loading = false;
+                                return _showNotificationsTransmitted();
+                              } else if (state is NoMoreNotificationTransmittedState) {
+                                return _showNotificationsTransmitted();
+                              } else if (state is NewNotificationTransmittedLoadingState) {
+                                return _showNotificationsTransmitted();
                               } else {
-                                return const SizedBox.shrink();
+                                return const Text("Impossible");
                               }
-                            }),
-                      ],
+                            },
+                          ),
+                          BlocBuilder<NotificationTransmittedBloc, NotificationTransmittedState>(
+                              bloc: _notificationTransmittedBloc,
+                              builder: (context, state) {
+                                if (state is NewNotificationTransmittedLoadingState) {
+                                  return _notificationsTransmittedLoadingCircularButton();
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              }),
+                        ],
+                      ),
                     ),
                   )),
             ),
@@ -90,8 +101,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
         itemCount: _notificationTransmittedBloc.allTransmittedList.length,
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+            parent: NeverScrollableScrollPhysics()),
         itemBuilder: (context, index) {
           return outGoingRequestWidget(index, setState);
         },
@@ -253,5 +263,19 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
         ],
       ),
     );
+  }
+
+  bool _listScrollListener() {
+    var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
+
+    if(_scrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
+        _scrollController.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        _notificationTransmittedBloc.add(GetMoreDataEvent());
+      }
+    }
+
+    return true;
   }
 }

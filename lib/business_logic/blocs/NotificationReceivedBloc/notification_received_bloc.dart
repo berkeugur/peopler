@@ -35,7 +35,11 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
 
         if (receivedList.isNotEmpty) {
           _allReceivedList.addAll(receivedList);
-          emit(NotificationReceivedLoadedState());
+          if(state is NotificationReceivedLoaded1State) {
+            emit(NotificationReceivedLoaded2State());
+          } else {
+            emit(NotificationReceivedLoaded1State());
+          }
         } else {
           emit(NotificationReceivedNotExistState());
         }
@@ -57,7 +61,11 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
 
         if (receivedList.isNotEmpty) {
           _allReceivedList.addAll(receivedList);
-          emit(NotificationReceivedLoadedState());
+          if(state is NotificationReceivedLoaded1State) {
+            emit(NotificationReceivedLoaded2State());
+          } else {
+            emit(NotificationReceivedLoaded1State());
+          }
         } else {
           if (_allReceivedList.isNotEmpty) {
             emit(NoMoreNotificationReceivedState());

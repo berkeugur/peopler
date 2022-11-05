@@ -47,7 +47,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             newNotificationList.removeWhere((item) => item.notificationVisible == false);
         }
 
-        if(_allNotificationList.isNotEmpty) {
+        if(newNotificationList.isNotEmpty) {
           _allNotificationList.addAll(newNotificationList);
           if(state is NotificationLoadedState1) {
             emit(NotificationLoadedState2());
