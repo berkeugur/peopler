@@ -106,6 +106,121 @@ class FirestoreDBServiceUsers {
     }
   }
 
+  Future<bool> updateUserCityAtDatabase(String userID, String city) async {
+    DocumentSnapshot _readUser = await _firebaseDB.collection('users').doc(userID).get();
+
+    if (_readUser.data() != null) {
+      await _firebaseDB.collection('users').doc(userID).update({
+        'city': city,
+      });
+      return true;
+    } else {
+      debugPrint("updateUserCityAtDatabase ERROR: Document does not exist, a user with this user id does not exist");
+      return false;
+    }
+  }
+
+
+  ///******************************************* CITY OPERATIONS ***************************/
+  ///******************************************* CITY OPERATIONS ***************************/
+  /// ****************************************** CITY OPERATIONS ***************************/
+
+  Future<List<String>> readArrayUsers(String city, int arr) async {
+    try {
+      DocumentSnapshot _readLastArr = await _firebaseDB.collection('city').doc(city).collection('arrays').doc(arr.toString()).get();
+      Map<String, dynamic> arrContentMap = _readLastArr.data() as Map<String, dynamic>;
+      return arrContentMap['users'].map<String>((data) => data.toString()).toList();
+    } catch (e) {
+      debugPrint('readArrayUsers fail' + e.toString());
+      return [];
+    }
+  }
+
+  Future<int?> readCity(String city) async {
+    try {
+      DocumentSnapshot _readCity = await _firebaseDB.collection('city').doc(city).get();
+
+      if (_readCity.data() == null) return null;
+
+      /// If city document exists, check for last_arr field
+      Map<String, dynamic> lastArrMap = _readCity.data() as Map<String, dynamic>;
+      return lastArrMap['last_arr'];
+    } catch (e) {
+      debugPrint('readCity fail' + e.toString());
+      return null;
+    }
+  }
+
+  Future<bool> updateArrUser(String userID, String city, int arr) async {
+    try {
+      await _firebaseDB.collection('city').doc(city).collection('arrays').doc(arr.toString()).update({
+        "users": FieldValue.arrayUnion([userID])
+      });
+      return true;
+    } catch (e) {
+      debugPrint('updateLastArrUser fail' + e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> removeArrUser(String userID, String city, int arr) async {
+    try {
+      await _firebaseDB.collection('city').doc(city).collection('arrays').doc(arr.toString()).update({
+        "users": FieldValue.arrayRemove([userID])
+      });
+      return true;
+    } catch (e) {
+      debugPrint('updateLastArrUser fail' + e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> setArrUser(String userID, String city, int arr) async {
+    try {
+      await _firebaseDB.collection('city').doc(city).collection('arrays').doc(arr.toString()).set({
+        'users': [userID]
+      });
+      return true;
+    } catch (e) {
+      debugPrint('setLastArrUser fail' + e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateCity(String userID, String city) async {
+    try {
+      await _firebaseDB.collection('city').doc(city).update({'last_arr': FieldValue.increment(1)});
+      return true;
+    } catch (e) {
+      debugPrint('updateCityLastArr fail' + e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> setCity(String userID, String city) async {
+    try {
+      await _firebaseDB.collection('city').doc(city).set({'last_arr': 0});
+      return true;
+    } catch (e) {
+      debugPrint('setCityLastArr fail' + e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> setArrFieldInUser(String userID, int cityArr) async {
+    try {
+      await _firebaseDB.collection('users').doc(userID).update({'city_arr': cityArr});
+      return true;
+    } catch (e) {
+      debugPrint('setArrFieldInUser fail' + e.toString());
+      return false;
+    }
+  }
+
+  ///***************************************************************************************/
+  ///***************************************************************************************/
+  ///***************************************************************************************/
+
   Future<bool> updateAccountConfirmed(String userID, bool newAccountConfirmed) async {
     try {
       await _firebaseDB.collection('users').doc(userID).collection("private").doc("private").update({'isTheAccountConfirmed': newAccountConfirmed});
@@ -251,35 +366,6 @@ class FirestoreDBServiceUsers {
     return _allUsers;
   }
 
-  Future<List<MyUser>> getUserCityWithPagination(String city, MyUser? lastSelectedUser, int numberOfElementsWillBeSelected) async {
-    QuerySnapshot _querySnapshot;
-
-    if (lastSelectedUser == null) {
-      _querySnapshot = await _firebaseDB
-          .collection('users')
-          .where('city', isEqualTo: city)
-          .orderBy('createdAt', descending: true)
-          .limit(numberOfElementsWillBeSelected)
-          .get();
-    } else {
-      _querySnapshot = await _firebaseDB
-          .collection('users')
-          .where('city', isEqualTo: city)
-          .orderBy('createdAt', descending: true)
-          .startAfter([lastSelectedUser.createdAt])
-          .limit(numberOfElementsWillBeSelected)
-          .get();
-    }
-
-    List<MyUser> _allUsers = [];
-    for (DocumentSnapshot snap in _querySnapshot.docs) {
-      MyUser _currentUser = MyUser();
-      _currentUser.fromPublicMap(snap.data() as Map<String, dynamic>);
-      _allUsers.add(_currentUser);
-    }
-
-    return _allUsers;
-  }
 
   /// *************** Saved Screen Functions **********************/
 
@@ -409,7 +495,12 @@ class FirestoreDBServiceUsers {
 
   Future<bool> updateCountdownFinished(String myUserID, String requestUserID, bool isCountdownFinished) async {
     try {
-      await _firebaseDB.collection('users').doc(myUserID).collection('savedUsers').doc(requestUserID).update({'isCountdownFinished': isCountdownFinished});
+      await _firebaseDB
+          .collection('users')
+          .doc(myUserID)
+          .collection('savedUsers')
+          .doc(requestUserID)
+          .update({'isCountdownFinished': isCountdownFinished});
       return true;
     } catch (e) {
       debugPrint('Update isCountdownFinished fail');
@@ -534,7 +625,8 @@ class FirestoreDBServiceUsers {
     return _allRequests;
   }
 
-  Future<List<Notifications>> getNotificationsWithPagination(String myUserID, Notifications? lastSelectedRequest, int numberOfElementsWillBeSelected) async {
+  Future<List<Notifications>> getNotificationsWithPagination(
+      String myUserID, Notifications? lastSelectedRequest, int numberOfElementsWillBeSelected) async {
     QuerySnapshot _querySnapshot;
 
     if (lastSelectedRequest == null) {
@@ -566,7 +658,8 @@ class FirestoreDBServiceUsers {
   }
 
   Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
-    var snapShot = _firebaseDB.collection('users').doc(currentUserID).collection("notifications").orderBy("createdAt", descending: true).limit(1).snapshots();
+    var snapShot =
+        _firebaseDB.collection('users').doc(currentUserID).collection("notifications").orderBy("createdAt", descending: true).limit(1).snapshots();
 
     return snapShot.map(
         // Convert Stream<docs> to Stream<List<Object>>

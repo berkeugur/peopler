@@ -116,10 +116,13 @@ class CityTabState extends State<CityTab> {
                                   return _initialUsersStateWidget();
                                 } else if (state is UsersNotExistCityState) {
                                   return _noUserExistsWidget();
-                                } else if (state is UsersLoadedCityState) {
+                                } else if (state is UsersLoadedCity1State) {
                                   loading = false;
                                   return _showUsers(widget.size);
-                                } else if (state is NoMoreUsersCityState) {
+                                } else if (state is UsersLoadedCity2State) {
+                                  loading = false;
+                                  return _showUsers(widget.size);
+                                }else if (state is NoMoreUsersCityState) {
                                   return _showUsers(widget.size);
                                 } else if (state is NewUsersLoadingCityState) {
                                   return _showUsers(widget.size);
@@ -183,6 +186,8 @@ class CityTabState extends State<CityTab> {
     if (_size.width < 335) {
       return ListView.builder(
           shrinkWrap: true,
+          physics: const BouncingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           padding: EdgeInsets.only(
             top: 80,
             left: _size.width > 320
@@ -224,7 +229,6 @@ class CityTabState extends State<CityTab> {
           padding: const EdgeInsets.only(top: 80),
           physics: const BouncingScrollPhysics(
               parent: NeverScrollableScrollPhysics()),
-          controller: ScrollController(),
           itemCount: (_listLength % 2 == 0
                   ? _listLength / 2
                   : ((_listLength - 1) / 2) + 1)

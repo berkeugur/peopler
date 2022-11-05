@@ -316,7 +316,8 @@ class FeedScreenState extends State<FeedScreen> {
     return Column(
       children: [
         ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           shrinkWrap: true,
           itemCount: _feedBloc.allFeedList.length,
           itemBuilder: (context, i) {

@@ -238,6 +238,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
         user!.missingInfo = false;
 
+        await _userRepository.saveUserToCityCollection(user!.userID, user!.city);
         await _userRepository.updateUser(user!);
 
         emit(SignedInNotVerifiedState());
@@ -322,6 +323,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<updateUserInfoForLinkedInEvent>((event, emit) async {
       emit(SigningInState());
+
+      await _userRepository.saveUserToCityCollection(user!.userID, user!.city);
       await _userRepository.updateUser(user!);
 
       await signedInUserPreparations();
@@ -330,7 +333,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<deleteUser>((event, emit) async {
       await closeStreams();
-      await _userRepository.deleteUser(user!.userID, user!.region, user!.email, password: event.password);
+      await _userRepository.deleteUser(user!, password: event.password);
       Restart.restartApp();
     });
   }

@@ -315,6 +315,8 @@ class _NearbyTabState extends State<NearbyTab> {
     if (_size.width < 335) {
       return ListView.builder(
           shrinkWrap: true,
+          physics: const BouncingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           padding: EdgeInsets.only(
             top: 70,
             left: _size.width > 320
@@ -354,8 +356,8 @@ class _NearbyTabState extends State<NearbyTab> {
       return ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 70),
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          controller: ScrollController(),
+          physics: const BouncingScrollPhysics(
+              parent: NeverScrollableScrollPhysics()),
           itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
           itemBuilder: (BuildContext context, int index) {
             int _leftSideIndex = index * 2;

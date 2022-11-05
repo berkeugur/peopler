@@ -148,7 +148,7 @@ class _EditFieldState extends State<EditField> {
                                         filterSearchResults(value.replaceAll(" ", ""), setStateBottomSheet);
                                       },
                                       onSubmitted: (String value) {
-                                        print('Submitted text: $value');
+                                        debugPrint('Submitted text: $value');
                                       },
                                     ),
                                   ),

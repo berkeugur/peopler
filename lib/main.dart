@@ -15,8 +15,11 @@ import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
 import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
+import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/services/db/firebase_db_service_location.dart';
+import 'package:peopler/data/services/db/firestore_db_service_feeds.dart';
+import 'package:peopler/data/services/storage/firebase_storage_service.dart';
 import 'package:peopler/presentation/router/router.dart';
 import 'business_logic/blocs/ChatBloc/chat_bloc.dart';
 import 'business_logic/blocs/CityBloc/city_bloc.dart';
@@ -29,6 +32,7 @@ import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
 import 'business_logic/blocs/UserBloc/user_bloc.dart';
 import 'data/repository/user_repository.dart';
 import 'data/services/auth/firebase_auth_service.dart';
+import 'data/services/db/firebase_db_common.dart';
 import 'data/services/db/firestore_db_service_users.dart';
 import 'others/locator.dart';
 
@@ -44,8 +48,11 @@ void main() async {
 
   await setupLocator();
 
-  // await fakeUserCreator();
+
+  // await fakeUserDelete();
+  // await fakeUserCreatorCity();
   // await updateAllFakeUserPhotos();
+  // await fakeFeedCreator();
 
   runApp(MyApp());
 }
@@ -229,6 +236,7 @@ List<String> profilePhoto = [
 ];
 
 
+
 Future<void> updateAllFakeUserPhotos() async {
   for(int i=0; i<36; i++) {
     String userID = 'fake' + i.toString();
@@ -267,6 +275,83 @@ Future<void> fakeUserCreator() async {
   }
 }
 
+Future<void> fakeUserDelete() async {
+  FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
+  FirestoreDBServiceCommon _fc = locator<FirestoreDBServiceCommon>();
+  FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
+  FirebaseStorageService _fs = locator<FirebaseStorageService>();
+
+  for(int i=0; i<36; i++) {
+    String userID = 'fake' + i.toString();
+
+    await _fc.deleteNestedSubCollections("users/" + userID + "/activities");
+    await _fc.deleteNestedSubCollections("users/" + userID + "/notifications");
+    await _fc.deleteNestedSubCollections("users/" + userID + "/liked");
+    await _fc.deleteNestedSubCollections("users/" + userID + "/disliked");
+    await _fc.deleteNestedSubCollections("users/" + userID + "/savedUsers");
+    await _fc.deleteNestedSubCollections("users/" + userID + "/private");
+
+    /// Delete all messages
+    List<String> chatIDList = await _fc.getAllDocumentIDs("users/" + userID + "/chats");
+    for (String chatID in chatIDList) {
+      await _fc.deleteNestedSubCollections("users/" + userID + "/chats/" + chatID + "/messages");
+    }
+
+    /// Delete all chats after messages (subcollections of chats) deleted
+    await _fc.deleteNestedSubCollections("users/" + userID + "/chats");
+
+    /// Delete user from his/her last region
+    _fl.deleteUserFromRegion(userID, '3984700,3281500');
+
+    /// Delete user from firestore
+    await _fu.deleteUser(userID);
+
+    /// Delete userID's folder from Storage
+    await _fs.deleteFolder(userID);
+  }
+}
+
+Future<void> fakeUserCreatorCity() async {
+  FirestoreDBServiceUsers _fu = locator<FirestoreDBServiceUsers>();
+  FirestoreDBServiceLocation _fl = locator<FirestoreDBServiceLocation>();
+  UserRepository _ur = locator<UserRepository>();
+
+  for(int i=0; i<500; i++) {
+    MyUser theUser = MyUser();
+    theUser.userID = 'fake' + i.toString();
+    theUser.city = 'CitadelOfMert';
+    theUser.gender = 'Kadın';
+    theUser.displayName = displayName[i % 35];
+    theUser.biography = biography[i % 35];
+
+    await _fu.saveUser(theUser);
+    await _ur.saveUserToCityCollection(theUser.userID, theUser.city);
+  }
+}
+
+Future<void> fakeCityCreator() async {
+  UserRepository _ur = locator<UserRepository>();
+
+  String city = "CitadelOfMert";
+
+  for(int i=0; i<500; i++) {
+    String userID = 'fake' + i.toString();
+
+    await _ur.saveUserToCityCollection(userID, city);
+  }
+}
+
+Future<void> fakeFeedCreator() async {
+  FirestoreDBServiceFeeds _fe = locator<FirestoreDBServiceFeeds>();
+
+  for(int i=0; i<200; i++) {
+    MyFeed theFeed = MyFeed(userID: "yMSTAPEcJPO7vVdrbLGeOSjvmUF3");
+    theFeed.feedExplanation = i.toString();
+    theFeed.userGender = 'Erkek';
+
+    await _fe.createFeed(theFeed);
+  }
+}
 
 Future<File> _downloadFile(String url) async {
   String filename = "temp";

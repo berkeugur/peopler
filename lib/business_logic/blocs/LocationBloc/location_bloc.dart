@@ -69,7 +69,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
         _locationRepository.restartRepositoryCache();
 
-        _queryList = await _locationRepository.determineQueryList(_latitude, _longitude);
+        _queryList = _locationRepository.determineQueryList(_latitude, _longitude);
         List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
 
         if(UserBloc.user != null) {

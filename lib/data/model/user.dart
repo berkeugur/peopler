@@ -9,6 +9,7 @@ class MyUser {
   String displayName = "";
   String gender = "";
   String city = "";
+  int city_arr = 0;
   String biography = "";
   String schoolName = "";
   String currentJobName = "";
@@ -45,6 +46,7 @@ class MyUser {
       'displayName': displayName,
       'gender': gender,
       'city': city,
+      'city_arr': city_arr,
       'biography': biography,
       'schoolName': schoolName,
       'currentJobName': currentJobName,
@@ -70,6 +72,7 @@ class MyUser {
     displayName = map['displayName'] as String;
     gender = map['gender'] as String;
     city = map['city'] as String;
+    city_arr = map['city_arr'] as int;
     biography = map['biography'] as String;
     schoolName = map['schoolName'] as String;
     currentJobName = map['currentJobName'] as String;

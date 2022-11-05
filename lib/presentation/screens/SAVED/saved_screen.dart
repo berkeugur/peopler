@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
@@ -27,11 +28,13 @@ class SavedScreen extends StatefulWidget {
 class _SavedScreenState extends State<SavedScreen> {
   final Mode _mode = locator<Mode>();
   final double _secondRowHeight = 160;
-  final ScrollController _searchPeopleListController = ScrollController();
+  final ScrollController _savedListController = ScrollController();
   late final ThemeCubit _themeCubit;
   late final SavedBloc _savedBloc;
 
   final GlobalKey showWidgetsKeySaved = GlobalKey();
+
+  bool loading = false;
 
   @override
   void initState() {
@@ -68,39 +71,46 @@ class _SavedScreenState extends State<SavedScreen> {
                         Expanded(
                           child: SizedBox(
                             width: _maxWidth,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  saved_screen_header(context: context),
-                                  BlocBuilder<SavedBloc, SavedState>(
-                                    key: showWidgetsKeySaved,
-                                    bloc: _savedBloc,
-                                    builder: (context, state) {
-                                      if (state is InitialSavedState) {
-                                        return _initialUsersStateWidget();
-                                      } else if (state is UserNotExistSavedState) {
-                                        return _noUserExistsWidget();
-                                      } else if (state is UsersLoadedSavedState) {
-                                        return _showSavedUsers(_size);
-                                      } else if (state is NoMoreUsersSavedState) {
-                                        return _showSavedUsers(_size);
-                                      } else if (state is NewUsersLoadingSavedState) {
-                                        return _showSavedUsers(_size);
-                                      } else {
-                                        return const Text("Impossible");
-                                      }
-                                    },
-                                  ),
-                                  BlocBuilder<SavedBloc, SavedState>(
+                            child: NotificationListener(
+                              onNotification: (ScrollNotification scrollNotification) =>
+                                  _listScrollListener(),
+                              child: SingleChildScrollView(
+                                controller: _savedListController,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: Column(
+                                  children: [
+                                    saved_screen_header(context: context),
+                                    BlocBuilder<SavedBloc, SavedState>(
+                                      key: showWidgetsKeySaved,
                                       bloc: _savedBloc,
                                       builder: (context, state) {
-                                        if (state is NewUsersLoadingSavedState) {
-                                          return _usersLoadingCircularButton();
+                                        if (state is InitialSavedState) {
+                                          return _initialUsersStateWidget();
+                                        } else if (state is UserNotExistSavedState) {
+                                          return _noUserExistsWidget();
+                                        } else if (state is UsersLoadedSavedState) {
+                                          loading = false;
+                                          return _showSavedUsers(_size);
+                                        } else if (state is NoMoreUsersSavedState) {
+                                          return _showSavedUsers(_size);
+                                        } else if (state is NewUsersLoadingSavedState) {
+                                          return _showSavedUsers(_size);
                                         } else {
-                                          return const SizedBox.shrink();
+                                          return const Text("Impossible");
                                         }
-                                      }),
-                                ],
+                                      },
+                                    ),
+                                    BlocBuilder<SavedBloc, SavedState>(
+                                        bloc: _savedBloc,
+                                        builder: (context, state) {
+                                          if (state is NewUsersLoadingSavedState) {
+                                            return _usersLoadingCircularButton();
+                                          } else {
+                                            return const SizedBox.shrink();
+                                          }
+                                        }),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -161,8 +171,8 @@ class _SavedScreenState extends State<SavedScreen> {
                       ? 45
                       : 25,
             ),
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            controller: _searchPeopleListController,
+        physics: const BouncingScrollPhysics(
+            parent: NeverScrollableScrollPhysics()),
             itemCount: _savedBlocUsersLength,
             itemBuilder: (
               BuildContext context,
@@ -193,8 +203,8 @@ class _SavedScreenState extends State<SavedScreen> {
             })
         : ListView.builder(
             shrinkWrap: true,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            controller: _searchPeopleListController,
+      physics: const BouncingScrollPhysics(
+          parent: NeverScrollableScrollPhysics()),
             itemCount: (_savedBlocUsersLength % 2 == 0 ? _savedBlocUsersLength / 2 : ((_savedBlocUsersLength - 1) / 2) + 1).toInt(),
             itemBuilder: (
               BuildContext context,
@@ -464,6 +474,20 @@ class _SavedScreenState extends State<SavedScreen> {
       ),
     );
   }
+
+  bool _listScrollListener() {
+    var nextPageTrigger = 0.8 * _savedListController.position.maxScrollExtent;
+
+    if(_savedListController.position.userScrollDirection ==  ScrollDirection.reverse &&
+        _savedListController.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        _savedBloc.add(GetMoreSavedUsersEvent(myUserID: UserBloc.user!.userID));
+      }
+    }
+
+    return true;
+  }
 }
 
 Container hobbyItem(int index, double marginLeft, hobbyName) {
@@ -485,104 +509,3 @@ Container hobbyItem(int index, double marginLeft, hobbyName) {
     ),
   );
 }
-
-/*
-List<List<List>> fakeSavedUsers = [
-  [
-    [
-      ["1Ahmet İrtemek"],
-      ["#ppl455441"],
-      [
-        "https://i.picsum.photos/id/402/500/500.jpg?hmac=_x8LTdT3JIoZepA560TkobNXMZ5o9ZZ_M2Z_YjRInp8",
-      ],
-      [
-        "Santranç oynamak isteyen dm",
-      ],
-      [
-        "chess",
-      ]
-    ],
-    [
-      "2022-04-14 10:44:24.720",
-    ],
-    //.parse(),
-  ],
-  [
-    [
-      ["2Ahmet İrtemek"],
-      ["#ppl455441"],
-      [
-        "https://i.picsum.photos/id/402/500/500.jpg?hmac=_x8LTdT3JIoZepA560TkobNXMZ5o9ZZ_M2Z_YjRInp8",
-      ],
-      [
-        "Santranç oynamak isteyen dm",
-      ],
-      [
-        "chess",
-      ]
-    ],
-    [
-      "2022-04-15 10:05:24.720",
-    ],
-    //.parse(),
-  ],
-  [
-    [
-      ["A3hmet İrtemek"],
-      ["#ppl455441"],
-      [
-        "https://i.picsum.photos/id/402/500/500.jpg?hmac=_x8LTdT3JIoZepA560TkobNXMZ5o9ZZ_M2Z_YjRInp8",
-      ],
-      [
-        "Santranç oynamak isteyen dm",
-      ],
-      [
-        "chess",
-      ]
-    ],
-    [
-      "2022-04-15 08:10:24.720",
-    ],
-    //.parse(),
-  ],
-  [
-    [
-      ["4Ahmet İrtemek"],
-      ["#ppl455441"],
-      [
-        "https://i.picsum.photos/id/402/500/500.jpg?hmac=_x8LTdT3JIoZepA560TkobNXMZ5o9ZZ_M2Z_YjRInp8",
-      ],
-      [
-        "Santranç oynamak isteyen dm",
-      ],
-      [
-        "chess",
-      ]
-    ],
-    [
-      "2022-04-15 08:10:24.720",
-    ],
-    //.parse(),
-  ],
-  [
-    [
-      ["A5hmet İrtemek"],
-      ["#ppl455441"],
-      [
-        "https://i.picsum.photos/id/402/500/500.jpg?hmac=_x8LTdT3JIoZepA560TkobNXMZ5o9ZZ_M2Z_YjRInp8",
-      ],
-      [
-        "Santranç oynamak isteyen dm",
-      ],
-      [
-        "chess",
-      ]
-    ],
-    [
-      "2022-04-15 08:10:24.720",
-    ],
-    //.parse(),
-  ],
-];
-*/
-
