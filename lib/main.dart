@@ -45,6 +45,7 @@ void main() async {
   }
 
   /// Firebase App Check
+  /*
   if(Platform.isAndroid) {
       await FirebaseAppCheck.instance.activate(
       webRecaptchaSiteKey: 'recaptcha-v3-site-key',
@@ -55,6 +56,7 @@ void main() async {
         webRecaptchaSiteKey: 'recaptcha-v3-site-key'
     );
   }
+   */
 
   /// Request IOS Notification
   await FirebaseMessaging.instance.requestPermission();

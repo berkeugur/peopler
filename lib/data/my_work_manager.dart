@@ -75,6 +75,7 @@ Future<bool> fetchBackgroundFunction() async {
   }
 
   /// Firebase App Check
+  /*
   if(Platform.isAndroid) {
     await FirebaseAppCheck.instance.activate(
         webRecaptchaSiteKey: 'recaptcha-v3-site-key',
@@ -85,6 +86,7 @@ Future<bool> fetchBackgroundFunction() async {
         webRecaptchaSiteKey: 'recaptcha-v3-site-key'
     );
   }
+   */
 
 
   FirebaseFirestore _firebaseDB = FirebaseFirestore.instance;
