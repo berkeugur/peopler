@@ -73,7 +73,7 @@ showFreeUser(BuildContext context, String text) {
                       width: 5,
                     ),
                     Text(
-                      "Premium/Plus",
+                      "Premium & Plus",
                       style: PeoplerTextStyle.normal.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
@@ -102,7 +102,7 @@ showFreeUser(BuildContext context, String text) {
                   vertical: 10,
                 ),
                 child: Text(
-                  "Şimdi Değil",
+                  "24 Saat Sonra Yenilensin",
                   style: PeoplerTextStyle.normal.copyWith(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w400,
@@ -121,7 +121,7 @@ showFreeUser(BuildContext context, String text) {
 }
 
 showNumOfConnectionRequestsConsumed(BuildContext context) {
-  showFreeUser(context, "İstek gönderme haklarınızı tükettiniz. Sınırsız istek için plus veya premium hesaba geçin.");
+  showFreeUser(context, "Uppss! İstek hakkın bitti. Ayrıcalıkları keşfetmeye nedersin?");
 }
 
 showRestNumOfConnectionRequests(BuildContext context) {
