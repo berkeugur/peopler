@@ -75,7 +75,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
       child: AnimatedContainer(
         padding: const EdgeInsets.all(5),
         height: _menuItemHeight * 1,
-        width: _menuItemWidth * 1.45,
+        width: 50,
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
@@ -109,7 +109,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
       child: AnimatedContainer(
         padding: const EdgeInsets.all(5),
         height: _menuItemHeight * 1,
-        width: _menuItemWidth * 1.45,
+        width: 50,
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
@@ -144,47 +144,44 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
 
         _newMessageCubit.messageSeenEvent();
       },
-      child: Stack(
-        children: [
-            AnimatedContainer(
-            padding: const EdgeInsets.all(5),
-            height: _menuItemHeight * 1,
-            width: _menuItemWidth * 1.45,
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.fastOutSlowIn,
-            decoration: BoxDecoration(
-              color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
-              borderRadius: BorderRadius.circular(menuItemBorderRadius),
-            ),
-            child: SizedBox(
-              height: _menuItemHeight,
-              width: _menuItemWidth,
-              child: SvgPicture.asset(
-                "assets/images/svg_icons/message_icon.svg",
-                color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
-                width: 10,
-                height: 10,
-                fit: BoxFit.contain,
-              ),
+      child: Stack(children: [
+        AnimatedContainer(
+          padding: const EdgeInsets.all(5),
+          height: _menuItemHeight * 1,
+          width: 50,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.fastOutSlowIn,
+          decoration: BoxDecoration(
+            color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
+            borderRadius: BorderRadius.circular(menuItemBorderRadius),
+          ),
+          child: SizedBox(
+            height: _menuItemHeight,
+            width: _menuItemWidth,
+            child: SvgPicture.asset(
+              "assets/images/svg_icons/message_icon.svg",
+              color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
+              width: 10,
+              height: 10,
+              fit: BoxFit.contain,
             ),
           ),
-          BlocBuilder<NewMessageCubit, bool>(
-            bloc: _newMessageCubit,
-            builder: (_, state) {
-              if(state == true) {
-                return const Positioned(
-                  top: 0.0,
-                  right: 0.0,
-                  child: Icon(Icons.brightness_1, size: 8.0,
-                      color: Colors.redAccent),
-                );
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          ),
-        ]
-      ),
+        ),
+        BlocBuilder<NewMessageCubit, bool>(
+          bloc: _newMessageCubit,
+          builder: (_, state) {
+            if (state == true) {
+              return const Positioned(
+                top: 2.5,
+                right: 10.5,
+                child: Icon(Icons.brightness_1, size: 8.0, color: Colors.redAccent),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ]),
     );
   }
 
@@ -201,47 +198,44 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
 
         _newNotificationCubit.notificationSeenEvent();
       },
-      child: Stack(
-        children: [
-            AnimatedContainer(
-            padding: const EdgeInsets.all(5),
-            height: _menuItemHeight * 1,
-            width: _menuItemWidth * 1.45,
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.fastOutSlowIn,
-            decoration: BoxDecoration(
-              color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
-              borderRadius: BorderRadius.circular(menuItemBorderRadius),
-            ),
-            child: SizedBox(
-              height: _menuItemHeight,
-              width: _menuItemWidth,
-              child: SvgPicture.asset(
-                "assets/images/svg_icons/notification.svg",
-                color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
-                width: 10,
-                height: 10,
-                fit: BoxFit.contain,
-              ),
+      child: Stack(children: [
+        AnimatedContainer(
+          padding: const EdgeInsets.all(5),
+          height: _menuItemHeight * 1,
+          width: 50,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.fastOutSlowIn,
+          decoration: BoxDecoration(
+            color: _homeScreen.currentTab.index == index ? _mode.enabledMenuItemBackground() : _mode.disabledSelectedMenuItemBackground(),
+            borderRadius: BorderRadius.circular(menuItemBorderRadius),
+          ),
+          child: SizedBox(
+            height: _menuItemHeight,
+            width: _menuItemWidth,
+            child: SvgPicture.asset(
+              "assets/images/svg_icons/notification.svg",
+              color: _homeScreen.currentTab.index == index ? _mode.enabledBottomMenuItemAssetColor() : _mode.disabledBottomMenuItemAssetColor(),
+              width: 10,
+              height: 10,
+              fit: BoxFit.contain,
             ),
           ),
-          BlocBuilder<NewNotificationCubit, bool>(
-            bloc: _newNotificationCubit,
-            builder: (_, state) {
-                if(state == true) {
-                  return const Positioned(
-                    top: 0.0,
-                    right: 0.0,
-                    child: Icon(Icons.brightness_1, size: 8.0,
-                        color: Colors.redAccent),
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
-          ),
-        ]
-      ),
+        ),
+        BlocBuilder<NewNotificationCubit, bool>(
+          bloc: _newNotificationCubit,
+          builder: (_, state) {
+            if (state == true) {
+              return const Positioned(
+                top: 2.5,
+                right: 10.5,
+                child: Icon(Icons.brightness_1, size: 8.0, color: Colors.redAccent),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+      ]),
     );
   }
 
@@ -257,7 +251,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
       child: AnimatedContainer(
         padding: const EdgeInsets.all(5),
         height: _menuItemHeight * 1,
-        width: _menuItemWidth * 1.45,
+        width: 50,
         duration: const Duration(milliseconds: 250),
         curve: Curves.fastOutSlowIn,
         decoration: BoxDecoration(
