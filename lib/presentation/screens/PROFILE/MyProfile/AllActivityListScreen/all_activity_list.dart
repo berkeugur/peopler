@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import 'package:peopler/others/functions/image_picker_functions.dart';
 import '../../../../../../data/model/activity.dart';
 import '../../../../../data/model/user.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
@@ -95,7 +97,8 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
                                     color: _mode.homeScreenFeedBackgroundColor(),
                                     borderRadius: BorderRadius.circular(10),
                                     boxShadow: <BoxShadow>[
-                                      BoxShadow(color: Color(0xFF939393).withOpacity(0.6), blurRadius: 1, spreadRadius: 0.2, offset: const Offset(0, 0))
+                                      BoxShadow(
+                                          color: Color(0xFF939393).withOpacity(0.6), blurRadius: 1, spreadRadius: 0.2, offset: const Offset(0, 0))
                                     ],
                                   ),
                                   child: feedView(context, index),
@@ -116,7 +119,8 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
     final Mode _mode = locator<Mode>();
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
+      margin:
+          EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
       padding: MediaQuery.of(context).size.width < 340 ? const EdgeInsets.fromLTRB(10, 20, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -351,13 +355,17 @@ class _AllActivityListMyProfileState extends State<AllActivityListMyProfile> {
         height: 50,
         width: 50,
         margin: const EdgeInsets.only(right: 10),
-        child: CircleAvatar(
-          radius: 70,
-          backgroundImage: NetworkImage(
-            imageUrl,
-            //myFeed.userPhotoUrl,
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
           ),
-          backgroundColor: Colors.white,
         )
 
         /*CircleAvatar(

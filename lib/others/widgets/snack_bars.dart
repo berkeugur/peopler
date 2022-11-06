@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
+import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
@@ -22,29 +24,104 @@ showFreeUser(BuildContext context, String text) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        content: Text(text),
-        actions: [
-          TextButton(
-            child: const Text("İptal"),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          TextButton(
-            child: const Text("Ayrıcalıkları Keşfet"),
-            onPressed: () {
-              UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-              _userBloc.mainKey.currentState?.push(
-                MaterialPageRoute(builder: (context) => const SubscriptionsPage()),
-              );
-            },
-          ),
-        ],
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+        contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
+        content: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: PeoplerTextStyle.normal.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Divider(),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+              borderRadius: BorderRadius.circular(99),
+              onTap: () async {
+                UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                _userBloc.mainKey.currentState?.push(
+                  MaterialPageRoute(builder: (context) => const SubscriptionsPage()),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(999),
+                  color: Theme.of(context).primaryColor,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 10,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset("assets/images/svg_icons/ppl_mini_logo.svg"),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Premium & Plus",
+                      style: PeoplerTextStyle.normal.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            InkWell(
+              borderRadius: BorderRadius.circular(99),
+              onTap: () async {
+                Navigator.of(context).pop();
+                //await Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(999),
+                  //color: Theme.of(context).primaryColor,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 10,
+                ),
+                child: Text(
+                  "24 Saat Sonra Yenilensin",
+                  style: PeoplerTextStyle.normal.copyWith(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 0,
+            ),
+          ],
+        ),
       );
     },
   );
 }
 
 showNumOfConnectionRequestsConsumed(BuildContext context) {
-  showFreeUser(context, "İstek gönderme haklarınızı tükettiniz. Sınırsız istek için plus veya premium hesaba geçin.");
+  showFreeUser(context, "Uppss! İstek hakkın bitti. Ayrıcalıkları keşfetmeye nedersin?");
 }
 
 showRestNumOfConnectionRequests(BuildContext context) {
