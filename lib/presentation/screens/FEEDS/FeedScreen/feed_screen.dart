@@ -96,7 +96,10 @@ class FeedScreenState extends State<FeedScreen> {
                                   return _initialFeedsStateWidget();
                                 } else if (state is FeedNotExistState) {
                                   return _noFeedExistsWidget();
-                                } else if (state is FeedsLoadedState) {
+                                } else if (state is FeedsLoaded1State) {
+                                  loading = false;
+                                  return _showFeedsWidget();
+                                } else if (state is FeedsLoaded2State) {
                                   loading = false;
                                   return _showFeedsWidget();
                                 } else if (state is NoMoreFeedsState) {

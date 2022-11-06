@@ -61,11 +61,21 @@ Padding header(BuildContext context) {
                         style: PeoplerTextStyle.normal.copyWith(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
                       );
                     } else if (state is LoadingState) {
-                      // Circular koy
+                      return const CircularProgressIndicator(
+                        color: Colors.white,
+                      );
                     } else if (state is FeedCreateErrorState) {
-                      // Error koy
+                      return Text(
+                        "Paylaş",
+                        textScaleFactor: 1,
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
+                      );
                     } else if (state is FeedCreateSuccessfulState) {
-                      //
+                      return Text(
+                        "Paylaş",
+                        textScaleFactor: 1,
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
+                      );
                     } else {
                       return const Text("Impossible");
                     }
