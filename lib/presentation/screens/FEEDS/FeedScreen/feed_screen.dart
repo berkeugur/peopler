@@ -8,6 +8,7 @@ import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/TUTORIAL/constants.dart';
@@ -84,7 +85,7 @@ class FeedScreenState extends State<FeedScreen> {
                       },
                       child: SingleChildScrollView(
                         controller: _scrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -267,21 +268,23 @@ class FeedScreenState extends State<FeedScreen> {
   }
 
   bool _listScrollListener() {
-    if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      if (Variables.animatedContainerHeight.value != 30) {
-        Variables.animatedAppBarHeight.value = 70;
+    if (ScrollAnimationsConstants().isActive(context, _scrollController)) {
+      if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedContainerHeight.value != 30) {
+          Variables.animatedAppBarHeight.value = 70;
 
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedContainerHeight.value = 30;
-        });
-      }
-    } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      if (Variables.animatedContainerHeight.value != 0) {
-        Variables.animatedContainerHeight.value = 0;
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedContainerHeight.value = 30;
+          });
+        }
+      } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedContainerHeight.value != 0) {
+          Variables.animatedContainerHeight.value = 0;
 
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedAppBarHeight.value = 0;
-        });
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedAppBarHeight.value = 0;
+          });
+        }
       }
     }
 

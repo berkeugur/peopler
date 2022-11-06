@@ -9,6 +9,7 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
+import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/presentation/screens/GUEST_LOGIN/body.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
@@ -585,16 +586,18 @@ class CityTabState extends State<CityTab> {
   }
 
   bool _listScrollListener() {
-    if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
-      if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-        Variables.animatedSearchPeopleHeaderHeight.value = 80;
-        // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-        // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-      }
-    } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
-      if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-        Variables.animatedSearchPeopleHeaderHeight.value = 0;
-        // print("reverse $ach");
+    if (ScrollAnimationsConstants().isActive(context, _searchPeopleListControllerCity)) {
+      if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
+          Variables.animatedSearchPeopleHeaderHeight.value = 80;
+          // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
+          // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
+        }
+      } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
+          Variables.animatedSearchPeopleHeaderHeight.value = 0;
+          // print("reverse $ach");
+        }
       }
     }
 

@@ -10,6 +10,7 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
+import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
@@ -96,7 +97,7 @@ class _NearbyTabState extends State<NearbyTab> {
                   },
                   child: SingleChildScrollView(
                     controller: _searchPeopleListControllerNearby,
-                    physics: const AlwaysScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
                       bloc: _locationPermissionBloc,
                       builder: (context, state) {
@@ -316,8 +317,7 @@ class _NearbyTabState extends State<NearbyTab> {
     if (_size.width < 335) {
       return ListView.builder(
           shrinkWrap: true,
-          physics: const BouncingScrollPhysics(
-              parent: NeverScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           padding: EdgeInsets.only(
             top: 70,
             left: _size.width > 320
@@ -357,8 +357,7 @@ class _NearbyTabState extends State<NearbyTab> {
       return ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 70),
-          physics: const BouncingScrollPhysics(
-              parent: NeverScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
           itemBuilder: (BuildContext context, int index) {
             int _leftSideIndex = index * 2;
@@ -609,9 +608,9 @@ class _NearbyTabState extends State<NearbyTab> {
 
                                     String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
 
-                                    if(_token != null) {
-                                      _sendNotificationService.sendNotification(
-                                          Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                    if (_token != null) {
+                                      _sendNotificationService.sendNotification(Strings.sendRequest, _token, "", UserBloc.user!.displayName,
+                                          UserBloc.user!.profileURL, UserBloc.user!.userID);
                                     }
 
                                     widget.showWidgetsKeyNearby.currentState?.setState(() {});
@@ -712,7 +711,9 @@ class _NearbyTabState extends State<NearbyTab> {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
+        ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),
@@ -726,7 +727,7 @@ class _NearbyTabState extends State<NearbyTab> {
   }
 
   bool _listScrollListener() {
-
+    if (ScrollAnimationsConstants().isActive(context, _searchPeopleListControllerNearby)) {
       if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
         if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
           Variables.animatedSearchPeopleHeaderHeight.value = 80;
@@ -739,17 +740,17 @@ class _NearbyTabState extends State<NearbyTab> {
           // print("reverse $ach");
         }
       }
+    }
+    var nextPageTrigger = 0.8 * _searchPeopleListControllerNearby.position.maxScrollExtent;
 
-      var nextPageTrigger = 0.8 * _searchPeopleListControllerNearby.position.maxScrollExtent;
-
-      if(_searchPeopleListControllerNearby.position.userScrollDirection ==  ScrollDirection.reverse &&
-          _searchPeopleListControllerNearby.position.pixels >= nextPageTrigger) {
-        if (loading == false) {
-          loading = true;
-          debugPrint("hello");
-          _locationBloc.add(GetMoreSearchUsersEvent());
-        }
+    if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse &&
+        _searchPeopleListControllerNearby.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        debugPrint("hello");
+        _locationBloc.add(GetMoreSearchUsersEvent());
       }
+    }
 
     return true;
   }
