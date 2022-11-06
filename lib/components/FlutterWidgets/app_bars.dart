@@ -11,6 +11,9 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 
+import '../../business_logic/blocs/NotificationBloc/notification_bloc.dart';
+import '../../business_logic/cubits/NewNotificationCubit.dart';
+
 class PeoplerAppBars {
   final BuildContext context;
   PeoplerAppBars({required this.context});

@@ -103,6 +103,10 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
         }
 
         await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
+
+        if(_allReceivedList.length < 5) {
+          add(GetMoreDataReceivedEvent());
+        }
       } catch (e) {
         debugPrint("Blocta get more data ClickNotAcceptEvent hata:" + e.toString());
       }

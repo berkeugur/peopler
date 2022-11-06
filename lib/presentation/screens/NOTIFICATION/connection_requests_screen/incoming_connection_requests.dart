@@ -474,7 +474,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
         _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!, index: index));
 
         NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-        _notificationBloc.add(GeriAlButtonEvent(requestUserID: _currentItem.requestUserID!));
+        _notificationBloc.allNotificationList.removeWhere((element) => element.requestUserID == _currentItem.requestUserID!);
       },
       child: Container(
         height: _buttonSize,

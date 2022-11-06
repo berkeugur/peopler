@@ -5,21 +5,15 @@ import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import '../../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
+import '../../../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import 'incoming_connection_requests.dart';
 import 'outgoing_connection_requests.dart';
 
 class ConnectionRequestScreenFunctions {
-  void backButton(context) {
-    final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
-    _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};
-    _homeScreen.changeFloatingActionButtonEvent();
-    Navigator.pop(context);
-    debugPrint("pressed back button");
-  }
-
   void pressedTitle(context, ScrollController _scrollController) {
     _scrollController.animateTo(10, duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
     return;
@@ -67,11 +61,16 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: PeoplerAppBars(context: context).CONNECTION_REQ(() {
+          NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+          NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+
+          _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
+
           final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};
           _homeScreen.changeFloatingActionButtonEvent();
+
           Navigator.pop(context);
-          debugPrint("pressed back button");
         }));
   }
 

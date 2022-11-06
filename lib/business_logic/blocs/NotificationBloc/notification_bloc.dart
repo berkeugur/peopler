@@ -149,8 +149,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         if(_allNotificationList.isEmpty) {
           emit(NotificationNotExistState());
         } else {
-          emit(NotificationsLoadingState());
-          emit(NotificationLoadedState1());
+          if(state is NotificationLoadedState1) {
+            emit(NotificationLoadedState2());
+          } else {
+            emit(NotificationLoadedState1());
+          }
         }
 
         await _notificationRepository.makeNotificationInvisible(UserBloc.user!.userID, event.notificationID);
@@ -171,14 +174,23 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         if(_allNotificationList.isEmpty) {
           emit(NotificationNotExistState());
         } else {
-          emit(NotificationLoadedState1());
+          if(state is NotificationLoadedState1) {
+            emit(NotificationLoadedState2());
+          } else {
+            emit(NotificationLoadedState1());
+          }
         }
         await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
+
+        if(_allNotificationList.length < 5) {
+          add(GetMoreNotificationEvent());
+        }
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }
     });
   }
+
 
   @override
   Future<void> close() async {

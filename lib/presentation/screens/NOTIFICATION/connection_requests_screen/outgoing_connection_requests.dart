@@ -247,9 +247,8 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
                     String requestUserID = _notificationTransmittedBloc.allTransmittedList[index].requestUserID!;
                     _notificationTransmittedBloc.add(GeriAlTransmittedButtonEvent(requestUserID: requestUserID));
 
-
                     NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-                    _notificationBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
+                    _notificationBloc.allNotificationList.removeWhere((element) => element.requestUserID == requestUserID);
                   },
                   child: SizedBox(
                       height: _buttonSize + 7,

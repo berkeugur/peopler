@@ -105,6 +105,10 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         }
 
         await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
+
+        if(_allTransmittedList.length < 5) {
+          add(GetMoreDataTransmittedEvent());
+        }
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }
