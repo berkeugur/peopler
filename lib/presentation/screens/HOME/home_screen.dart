@@ -166,7 +166,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return;
     }
 
-    /*
+
     /// When both currentTab and clicked tab are Notification tab button, and screen is received invitations
     if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsReceivedScreen) {
       NotificationReceivedBloc _notificationReceivedBloc = BlocProvider.of<NotificationReceivedBloc>(context);
@@ -180,7 +180,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       _notificationTransmittedBloc.add(GetMoreDataTransmittedEvent());
       return;
     }
-     */
+
 
     /// When clicked tab is Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
     if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
