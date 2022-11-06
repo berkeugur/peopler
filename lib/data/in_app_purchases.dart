@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import '../others/strings.dart';
 
 class PurchaseApi {
   static const _apiKeyIOS = 'appl_ywiwctMGVJhMAvcwXcWpUHkUJOo';
@@ -10,7 +11,7 @@ class PurchaseApi {
   static late Offering? currentOffering;
 
   Future<void> init() async {
-    await Purchases.setDebugLogsEnabled(true);
+    await Purchases.setDebugLogsEnabled(Strings.isDebug);
 
     PurchasesConfiguration? configuration;
 

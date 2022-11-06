@@ -1,11 +1,11 @@
 import 'dart:io';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
@@ -15,7 +15,6 @@ import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
 import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/data/repository/location_repository.dart';
@@ -33,16 +32,28 @@ import 'business_logic/blocs/NotificationReceivedBloc/notification_received_bloc
 import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
 import 'business_logic/blocs/UserBloc/user_bloc.dart';
 import 'data/repository/user_repository.dart';
-import 'data/services/auth/firebase_auth_service.dart';
 import 'data/services/db/firebase_db_common.dart';
 import 'data/services/db/firestore_db_service_users.dart';
 import 'others/locator.dart';
+import 'others/strings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp();
+  }
+
+  /// Firebase App Check
+  if(Platform.isAndroid) {
+      await FirebaseAppCheck.instance.activate(
+      webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+      androidProvider: Strings.isDebug ? AndroidProvider.debug : AndroidProvider.playIntegrity
+    );
+  } else {
+    await FirebaseAppCheck.instance.activate(
+        webRecaptchaSiteKey: 'recaptcha-v3-site-key'
+    );
   }
 
   /// Request IOS Notification
