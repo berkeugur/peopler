@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -220,16 +221,21 @@ class ChannelListBodyState extends State<ChannelListBody> {
 
   Container _buildProfilePhoto(String _image) {
     return Container(
-      height: _imageSize,
-      width: _imageSize,
-      margin: const EdgeInsets.only(right: 15, left: 10),
-      child: CircleAvatar(
-        backgroundImage: NetworkImage(
-          _image,
-        ),
-        backgroundColor: Colors.transparent,
-      ),
-    );
+        height: _imageSize,
+        width: _imageSize,
+        margin: const EdgeInsets.only(right: 15, left: 10),
+        child: CachedNetworkImage(
+          imageUrl: _image,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          ),
+        ));
   }
 
   SizedBox _buildNameAndLastMessage(String _nameSurname, String _lastMassage, bool _isNewMessage) {
