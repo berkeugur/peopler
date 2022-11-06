@@ -230,6 +230,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<createUserWithEmailAndPasswordEvent>((event, emit) async {
       try {
+        await Future.delayed(const Duration(microseconds: 100));
+
         emit(SigningInState());
         MyUser? tempUser = await _userRepository.createUserWithEmailAndPassword(event.email, event.password);
         user!.userID = tempUser!.userID;

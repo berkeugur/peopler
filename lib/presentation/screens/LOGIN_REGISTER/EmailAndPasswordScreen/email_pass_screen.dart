@@ -392,8 +392,6 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
           } else if (state is InvalidEmailState) {
             SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
-          } else if (state is SigningInState) {
-            debugPrint("SIGNING IN");
           } else if (state is UserNotFoundState) {
             SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
           } else if (state is EmailAlreadyInUseState) {

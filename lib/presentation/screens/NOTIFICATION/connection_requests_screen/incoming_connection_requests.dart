@@ -92,6 +92,8 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
                     onNotification: (ScrollNotification scrollNotification) =>
                         _listScrollListener(),
                     child: SingleChildScrollView(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -137,12 +139,10 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
 
   SizedBox _showNotificationsReceived() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
       child: ListView.builder(
         itemCount: _notificationReceivedBloc.allReceivedList.length,
         shrinkWrap: true,
-        physics: const BouncingScrollPhysics(
-            parent: NeverScrollableScrollPhysics()),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
           if (_currentItem.didAccepted == true) {

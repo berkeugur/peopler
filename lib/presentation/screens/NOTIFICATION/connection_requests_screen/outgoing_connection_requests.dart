@@ -52,6 +52,8 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
                     onNotification: (ScrollNotification scrollNotification) =>
                         _listScrollListener(),
                     child: SingleChildScrollView(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
                         children: [
                           BlocBuilder<NotificationTransmittedBloc, NotificationTransmittedState>(
@@ -96,12 +98,10 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
 
   _showNotificationsTransmitted() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
       child: ListView.builder(
         itemCount: _notificationTransmittedBloc.allTransmittedList.length,
         shrinkWrap: true,
-        physics: const BouncingScrollPhysics(
-            parent: NeverScrollableScrollPhysics()),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return outGoingRequestWidget(index, setState);
         },
@@ -118,7 +118,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
   }
 
   EmptyList _noNotificationsTransmittedExistsWidget() {
-    return EmptyList(
+    return const EmptyList(
       emptyListType: EmptyListType.outgoingRequest,
       isSVG: true,
     );

@@ -228,7 +228,7 @@ class PeoplerDialogs {
                     ),
                   ),
                   onTap: () {
-                    print("Tap Event");
+                    debugPrint("Tap Event");
                   },
                 ),
               ),
