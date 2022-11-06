@@ -72,11 +72,10 @@ class _SavedScreenState extends State<SavedScreen> {
                           child: SizedBox(
                             width: _maxWidth,
                             child: NotificationListener(
-                              onNotification: (ScrollNotification scrollNotification) =>
-                                  _listScrollListener(),
+                              onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                               child: SingleChildScrollView(
                                 controller: _savedListController,
-                                physics: const AlwaysScrollableScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 child: Column(
                                   children: [
                                     saved_screen_header(context: context),
@@ -174,8 +173,7 @@ class _SavedScreenState extends State<SavedScreen> {
                       ? 45
                       : 25,
             ),
-        physics: const BouncingScrollPhysics(
-            parent: NeverScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
             itemCount: _savedBlocUsersLength,
             itemBuilder: (
               BuildContext context,
@@ -206,8 +204,7 @@ class _SavedScreenState extends State<SavedScreen> {
             })
         : ListView.builder(
             shrinkWrap: true,
-      physics: const BouncingScrollPhysics(
-          parent: NeverScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
             itemCount: (_savedBlocUsersLength % 2 == 0 ? _savedBlocUsersLength / 2 : ((_savedBlocUsersLength - 1) / 2) + 1).toInt(),
             itemBuilder: (
               BuildContext context,
@@ -481,8 +478,7 @@ class _SavedScreenState extends State<SavedScreen> {
   bool _listScrollListener() {
     var nextPageTrigger = 0.8 * _savedListController.position.maxScrollExtent;
 
-    if(_savedListController.position.userScrollDirection ==  ScrollDirection.reverse &&
-        _savedListController.position.pixels >= nextPageTrigger) {
+    if (_savedListController.position.userScrollDirection == ScrollDirection.reverse && _savedListController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _savedBloc.add(GetMoreSavedUsersEvent(myUserID: UserBloc.user!.userID));
@@ -500,7 +496,9 @@ Container hobbyItem(int index, double marginLeft, hobbyName) {
     width: _size,
     margin: EdgeInsets.only(left: marginLeft),
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
+      boxShadow: <BoxShadow>[
+        BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
+      ],
       borderRadius: const BorderRadius.all(Radius.circular(999)),
       color: Colors.white, //Colors.orange,
     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
+import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import '../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../others/classes/variables.dart';
@@ -114,25 +115,26 @@ class NotificationScreenState extends State<NotificationScreen> {
   }
 
   bool _listScrollListener() {
-    if (notificationsScreenScrollController.hasClients &&
-        notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
-      if (Variables.animatedNotificationHeaderBottom.value != 50) {
-        Variables.animatedNotificationsHeaderTop.value = 70;
+    if (ScrollAnimationsConstants().isActive(context, notificationsScreenScrollController)) {
+      if (notificationsScreenScrollController.hasClients &&
+          notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedNotificationHeaderBottom.value != 50) {
+          Variables.animatedNotificationsHeaderTop.value = 70;
 
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedNotificationHeaderBottom.value = 50;
-        });
-      }
-    } else if (notificationsScreenScrollController.hasClients &&
-        notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      if (Variables.animatedNotificationHeaderBottom.value != 0) {
-        Variables.animatedNotificationHeaderBottom.value = 0;
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedNotificationsHeaderTop.value = 0;
-        });
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedNotificationHeaderBottom.value = 50;
+          });
+        }
+      } else if (notificationsScreenScrollController.hasClients &&
+          notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedNotificationHeaderBottom.value != 0) {
+          Variables.animatedNotificationHeaderBottom.value = 0;
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedNotificationsHeaderTop.value = 0;
+          });
+        }
       }
     }
-
     var nextPageTrigger = 0.8 * notificationsScreenScrollController.position.maxScrollExtent;
 
     if (notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse &&

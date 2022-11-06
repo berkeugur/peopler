@@ -49,11 +49,10 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
               child: SizedBox(
                   width: _maxWidth,
                   child: NotificationListener(
-                    onNotification: (ScrollNotification scrollNotification) =>
-                        _listScrollListener(),
+                    onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                     child: SingleChildScrollView(
                       controller: _scrollController,
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         children: [
                           BlocBuilder<NotificationTransmittedBloc, NotificationTransmittedState>(
@@ -169,7 +168,9 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
       width: _maxWidth,
       decoration: BoxDecoration(
         color: _mode.bottomMenuBackground(),
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+        ],
         //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
       ),
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -268,8 +269,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
   bool _listScrollListener() {
     var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
 
-    if(_scrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
-        _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _notificationTransmittedBloc.add(GetMoreDataTransmittedEvent());

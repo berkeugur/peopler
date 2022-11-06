@@ -89,11 +89,10 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
               child: SizedBox(
                   width: _maxWidth,
                   child: NotificationListener(
-                    onNotification: (ScrollNotification scrollNotification) =>
-                        _listScrollListener(),
+                    onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                     child: SingleChildScrollView(
                       controller: _scrollController,
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -516,8 +515,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
   bool _listScrollListener() {
     var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
 
-    if(_scrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
-        _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _notificationReceivedBloc.add(GetMoreDataReceivedEvent());
