@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:peopler/data/model/activity.dart';
 import 'package:peopler/data/model/feed.dart';
+import 'package:peopler/data/repository/feed_repository.dart';
 import 'package:peopler/data/repository/location_repository.dart';
 import 'package:peopler/data/services/db/firebase_db_common.dart';
 import 'package:peopler/data/services/db/firebase_db_service_chat.dart';
@@ -24,6 +25,7 @@ class UserRepository {
   final FirestoreDBServiceLocation _firestoreDBServiceLocation = locator<FirestoreDBServiceLocation>();
   final FirestoreDBServiceChat _firestoreDBServiceChat = locator<FirestoreDBServiceChat>();
   final LocationRepository _locationRepository = locator<LocationRepository>();
+  final FeedRepository _feedRepository = locator<FeedRepository>();
 
 
   Future<MyUser?> getCurrentUser() async {
@@ -267,6 +269,12 @@ class UserRepository {
     List<String> chatIDList = await _firestoreDBServiceCommon.getAllDocumentIDs("users/" + myUser.userID + "/chats");
     for (String chatID in chatIDList) {
       await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + myUser.userID + "/chats/" + chatID + "/messages");
+    }
+
+    /// Delete all feeds
+    List<String> feedlist = await myUser.feedIDs;
+    for (String feedID in feedlist) {
+      await _feedRepository.deleteFeed(myUser.userID, feedID);
     }
 
     /// Delete all chats after messages (subcollections of chats) deleted

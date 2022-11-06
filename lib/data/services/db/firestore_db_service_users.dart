@@ -716,4 +716,32 @@ class FirestoreDBServiceUsers {
       return false;
     }
   }
+
+  /// ********************************************************************/
+  Future<bool> updateFeedIDsField(String myUserID, String feedID) async {
+    try {
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "feedIDs": FieldValue.arrayUnion([feedID])
+      });
+      return true;
+    } catch (e) {
+      debugPrint('Update feedIDs fail');
+      return false;
+    }
+  }
+
+  Future<bool> deleteFeedIDsField(String myUserID, String feedID) async {
+    try {
+      await _firebaseDB.collection('users').doc(myUserID).update({
+        "feedIDs": FieldValue.arrayRemove([feedID])
+      });
+      return true;
+    } catch (e) {
+      debugPrint('Update feedIDs fail');
+      return false;
+    }
+  }
 }
+
+
+

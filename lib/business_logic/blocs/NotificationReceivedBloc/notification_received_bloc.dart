@@ -102,7 +102,7 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
           emit(NotificationReceivedNotExistState());
         }
 
-        await _notificationRepository.notAcceptConnectionRequest(UserBloc.user!.userID, event.requestUserID);
+        await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
       } catch (e) {
         debugPrint("Blocta get more data ClickNotAcceptEvent hata:" + e.toString());
       }

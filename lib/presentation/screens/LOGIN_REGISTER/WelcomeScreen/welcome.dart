@@ -13,7 +13,7 @@ import 'package:peopler/presentation/screens/REGISTER/register_normal_screens.da
 
 const String wpPeoplerTitle = "peopler";
 const String wpAreYouAlreadyMember = "Zaten üye misin?";
-const String wpContinueWithLinkedin = "LIKNEDIN İLE DEVAM ET";
+const String wpContinueWithLinkedin = "LINKEDIN İLE DEVAM ET";
 const String wpContinueWithUniversityEmail = "ÜNİVERSİTE MAİLİ İLE DEVAM ET";
 
 class WelcomeScreen extends StatefulWidget {

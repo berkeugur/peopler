@@ -104,7 +104,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
           }
         }
 
-        await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);
+        await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }

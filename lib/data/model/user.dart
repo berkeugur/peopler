@@ -35,6 +35,7 @@ class MyUser {
   int longitude = 0;
   int numOfSendRequest = 15;
   DateTime? updatedAtNumOfSendRequest;
+  List<String> feedIDs = [];
 
   MyUser();
 
@@ -108,6 +109,7 @@ class MyUser {
       'longitude': longitude,
       'numOfSendRequest': numOfSendRequest,
       'updatedAtNumOfSendRequest': updatedAtNumOfSendRequest ?? DateTime.now(),
+      'feedIDs': feedIDs,
     };
   }
 
@@ -123,6 +125,7 @@ class MyUser {
         : map['updatedAtNumOfSendRequest'].runtimeType == Timestamp
             ? (map['updatedAtNumOfSendRequest'] as Timestamp).toDate()
             : map['updatedAtNumOfSendRequest'].toDate();
+    feedIDs = map['feedIDs'].map<String>((data) => data.toString()).toList();
   }
 
   String randomNumberGenerator() {

@@ -12,6 +12,7 @@ import 'package:peopler/presentation/screens/CONNECTIONS/connections_service.dar
 import 'package:peopler/presentation/screens/REGISTER/Screens/gender_screen.dart';
 
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../data/services/remote_config/remote_config.dart';
 
 Future<void> completionFABFuncion(
   BuildContext context,
@@ -60,11 +61,10 @@ Future<void> completionFABFuncion(
               if (_connection == false) return;
               bool _isEduDotTr = emailController.text.replaceAll(" ", "").toLowerCase().substring(emailController.text.length - 7) == ".edu.tr" ? true : false;
 
-              /// DİKKAT
-              /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
-              _isEduDotTr = true;
-
-              /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
+              final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
+              if(_remoteConfigService.isEduRemoteConfig()) {
+                _isEduDotTr = true;
+              }
 
               if (passwordController.text.length < 6) {
                 _animateToPage(5).then((value) => SnackBars(context: context).simple("Şifreniz en az 6 karakterden oluşmalıdır."));
