@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -387,16 +388,21 @@ Stack profilePhoto(BuildContext context, String _data) {
         ),
       ),
       SizedBox(
-        height: _photoSize(),
-        width: _photoSize(),
-        child: //_userBloc != null ?
-            CircleAvatar(
-          backgroundImage: NetworkImage(
-            _data,
-          ),
-          backgroundColor: Colors.transparent,
-        ),
-      ),
+          height: _photoSize(),
+          width: _photoSize(),
+          child: //_userBloc != null ?
+              CachedNetworkImage(
+            imageUrl: _data,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+          )),
     ],
   );
 }
@@ -436,7 +442,9 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
     width: _itemSize(),
     margin: EdgeInsets.only(left: _customMarginLeftValue()),
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))],
+      boxShadow: <BoxShadow>[
+        BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))
+      ],
       borderRadius: const BorderRadius.all(Radius.circular(999)),
       color: Colors.white, //Colors.orange,
     ),
