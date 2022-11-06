@@ -48,7 +48,7 @@ void main() async {
   if(Platform.isAndroid) {
       await FirebaseAppCheck.instance.activate(
       webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-      androidProvider: Strings.isDebug ? AndroidProvider.debug : AndroidProvider.playIntegrity
+      androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity
     );
   } else {
     await FirebaseAppCheck.instance.activate(

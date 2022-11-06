@@ -2,9 +2,6 @@ class Strings {
   /// VERSION
   static const String peopler_version = "update_v1_1";
 
-  /// Debug Mode
-  static const isDebug = true;
-
   /// LinkedIn Parameters (From LinkedIn Developer Page)
   static const String redirectUrlLinkedIn = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
   static const String clientIDLinkedIn = '86y9muk6ijz659';

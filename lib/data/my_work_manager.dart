@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:workmanager/workmanager.dart';
@@ -77,7 +78,7 @@ Future<bool> fetchBackgroundFunction() async {
   if(Platform.isAndroid) {
     await FirebaseAppCheck.instance.activate(
         webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-        androidProvider: Strings.isDebug ? AndroidProvider.debug : AndroidProvider.playIntegrity
+        androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity
     );
   } else {
     await FirebaseAppCheck.instance.activate(
