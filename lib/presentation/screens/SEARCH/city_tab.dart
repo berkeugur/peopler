@@ -351,7 +351,7 @@ class CityTabState extends State<CityTab> {
                     LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                     CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
-                    _cityBloc.add(TrigUsersNotExistCityStateEvent());
+                    _cityBloc.add(TrigUsersNotExistCityStateEvent(city: UserBloc.user!.city));
                     _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                   },
                   child: Container(

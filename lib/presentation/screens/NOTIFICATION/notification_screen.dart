@@ -35,7 +35,7 @@ class NotificationScreenState extends State<NotificationScreen> {
     _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
 
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
+    _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
     notificationsScreenScrollController = ScrollController();
   }
 
@@ -141,7 +141,7 @@ class NotificationScreenState extends State<NotificationScreen> {
         notificationsScreenScrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
+        _notificationBloc.add(GetMoreNotificationEvent());
       }
     }
 
@@ -152,7 +152,7 @@ class NotificationScreenState extends State<NotificationScreen> {
     return SizedBox(
       child: ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.only(top: 70 + 50),
         itemCount: _notificationBloc.allNotificationList.length,
         itemBuilder: (context, index) {

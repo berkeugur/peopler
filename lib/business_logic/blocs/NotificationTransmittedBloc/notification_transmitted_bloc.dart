@@ -89,7 +89,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
       }
     });
 
-    on<GeriAlButtonEvent>((event, emit) async {
+    on<GeriAlTransmittedButtonEvent>((event, emit) async {
       try {
         UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
         _allTransmittedList.removeWhere((element) => element.requestUserID == event.requestUserID);

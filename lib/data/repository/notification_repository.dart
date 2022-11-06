@@ -13,6 +13,7 @@ class NotificationRepository {
 
   bool _hasMoreTransmitted = true;
   bool _hasMoreReceived = true;
+  bool _hasMoreNotification = true;
 
   Future<List<Notifications>> getNotificationTransmittedWithPagination(String myUserID, Notifications? lastElement) async {
     if (_hasMoreTransmitted == false) return [];
@@ -25,14 +26,26 @@ class NotificationRepository {
 
     if (requestList.isEmpty) return [];
 
+    List<String> deletedUserIDs = [];
+
     for (int index=0; index < requestList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(requestList[index].requestUserID!);
 
-      if(_user == null) continue; // DİKKAT
+      // DİKKAT
+      // remove deleted users
+      if(_user == null) {
+        deletedUserIDs.add(requestList[index].requestUserID!);
+        await _userRepository.removeConnection(myUserID, requestList[index].requestUserID!);
+        continue;
+      }
 
       requestList[index].requestDisplayName = _user.displayName;
       requestList[index].requestProfileURL = _user.profileURL;
       requestList[index].requestBiography = _user.biography;
+    }
+
+    for(String deletedUserID in deletedUserIDs) {
+      requestList.removeWhere((element) => element.requestUserID == deletedUserID);
     }
 
     return requestList;
@@ -74,28 +87,44 @@ class NotificationRepository {
     return requestList;
   }
 
+  Future<List<Notifications>> getNotificationWithPagination(String myUserID, Notifications? lastElement) async {
+    if (_hasMoreNotification == false) return [];
 
+    List<Notifications> _allNotifications = await _firestoreDBServiceUsers.getNotificationsWithPagination(myUserID, lastElement, _numberOfElements);
 
-  Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
-    return _firestoreDBServiceUsers.getNotificationWithStream(currentUserID);
-  }
+    if (_allNotifications.length < _numberOfElements) {
+      _hasMoreNotification = false;
+    }
 
-  Future<List<Notifications>> getNotificationWithPagination(String currentUserID, Notifications? lastNotification, int numberOfElements) async {
-    List<Notifications> _allNotifications = await _firestoreDBServiceUsers.getNotificationsWithPagination(currentUserID, lastNotification, numberOfElements);
+    if (_allNotifications.isEmpty) return [];
+
+    List<String> deletedUserIDs = [];
 
     for (int index=0; index < _allNotifications.length; index++) {
-      if(_allNotifications[index].requestUserID == null) continue;
-
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(_allNotifications[index].requestUserID!);
 
-      if(_user == null) continue; // DİKKAT
+      // DİKKAT
+      // remove deleted users
+      if(_user == null) {
+        deletedUserIDs.add(_allNotifications[index].requestUserID!);
+        await _userRepository.removeConnection(myUserID, _allNotifications[index].requestUserID!);
+        continue;
+      }
 
       _allNotifications[index].requestDisplayName = _user.displayName;
       _allNotifications[index].requestProfileURL = _user.profileURL;
       _allNotifications[index].requestBiography = _user.biography;
     }
 
+    for(String deletedUserID in deletedUserIDs) {
+      _allNotifications.removeWhere((element) => element.requestUserID == deletedUserID);
+    }
+
     return _allNotifications;
+  }
+
+  Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
+    return _firestoreDBServiceUsers.getNotificationWithStream(currentUserID);
   }
 
 
@@ -132,5 +161,9 @@ class NotificationRepository {
 
   void restartReceivedRequestCache() async {
     _hasMoreReceived = true;
+  }
+
+  void restartNotificationCache() async {
+    _hasMoreNotification = true;
   }
 }

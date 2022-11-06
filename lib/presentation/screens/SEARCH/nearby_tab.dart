@@ -484,7 +484,9 @@ class _NearbyTabState extends State<NearbyTab> {
                     LocationBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
                     CityBloc.allUserList.removeWhere((element) => element.userID == _deletedUserID);
 
-                    _cityBloc.add(TrigUsersNotExistCityStateEvent());
+                    if (UserBloc.user != null) {
+                      _cityBloc.add(TrigUsersNotExistCityStateEvent(city: UserBloc.user!.city));
+                    }
                     _locationBloc.add(TrigUsersNotExistSearchStateEvent());
                   },
                   child: Container(

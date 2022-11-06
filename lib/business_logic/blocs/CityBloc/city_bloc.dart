@@ -75,7 +75,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(city, unnecessaryUsers);
 
       allUserList.addAll(userList);
-      add(TrigUsersNotExistCityStateEvent());
+      add(TrigUsersNotExistCityStateEvent(city: UserBloc.user!.city));
     } catch (e) {
       debugPrint("Blocta initial city hata:" + e.toString());
     }
@@ -110,7 +110,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
               .getMyUserWithStream(UserBloc.user!.userID)
               .listen((myUser) async {
 
-            add(NewUserListenerEvent(myUser: myUser));
+            add(NewUserListenerEvent(myUser: myUser, city: event.city));
           });
         }
       } catch (e) {
@@ -161,11 +161,15 @@ class CityBloc extends Bloc<CityEvent, CityState> {
           emit(UsersLoadedCity1State());
         }
       }
+
+      if(allUserList.length < 5) {
+        add(GetMoreSearchUsersCityEvent(city: event.city));
+      }
     });
 
     on<NewUserListenerEvent>((event, emit) async {
       removeUnnecessaryUsersFromUserList(allUserList, event.myUser);
-      add(TrigUsersNotExistCityStateEvent());
+      add(TrigUsersNotExistCityStateEvent(city: event.city));
     });
   }
 

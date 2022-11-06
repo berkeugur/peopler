@@ -7,15 +7,20 @@ import '../../cubits/NewNotificationCubit.dart';
 @immutable
 abstract class NotificationEvent extends Equatable {}
 
-class GetNotificationWithPaginationEvent extends NotificationEvent {
+class GetInitialNotificationEvent extends NotificationEvent {
   final NewNotificationCubit newNotificationCubit;
 
-  GetNotificationWithPaginationEvent({
+  GetInitialNotificationEvent({
     required this.newNotificationCubit
   });
 
   @override
   List<Object> get props => [newNotificationCubit];
+}
+
+class GetMoreNotificationEvent extends NotificationEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }
 
 class NewNotificationListenerEvent extends NotificationEvent {

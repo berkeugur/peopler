@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import '../../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
@@ -244,7 +245,11 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
                     }
 
                     String requestUserID = _notificationTransmittedBloc.allTransmittedList[index].requestUserID!;
-                    _notificationTransmittedBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
+                    _notificationTransmittedBloc.add(GeriAlTransmittedButtonEvent(requestUserID: requestUserID));
+
+
+                    NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+                    _notificationBloc.add(GeriAlButtonEvent(requestUserID: requestUserID));
                   },
                   child: SizedBox(
                       height: _buttonSize + 7,

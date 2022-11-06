@@ -162,7 +162,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
       NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
       NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-      _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
+      _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
       return;
     }
 
@@ -170,14 +170,14 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     /// When both currentTab and clicked tab are Notification tab button, and screen is received invitations
     if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsReceivedScreen) {
       NotificationReceivedBloc _notificationReceivedBloc = BlocProvider.of<NotificationReceivedBloc>(context);
-      _notificationReceivedBloc.add(GetMoreDataReceivedEvent());
+      _notificationReceivedBloc.add(GetInitialDataReceivedEvent());
       return;
     }
 
     /// When both currentTab and clicked tab are Notification tab button, and screen is transmitted invitations
     if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsTransmittedScreen) {
       NotificationTransmittedBloc _notificationTransmittedBloc = BlocProvider.of<NotificationTransmittedBloc>(context);
-      _notificationTransmittedBloc.add(GetMoreDataTransmittedEvent());
+      _notificationTransmittedBloc.add(GetInitialDataTransmittedEvent());
       return;
     }
 

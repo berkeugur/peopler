@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/ChatBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import '../../../../business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import '../../../../business_logic/blocs/NotificationReceivedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../data/model/notifications.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/empty_list.dart';
 import '../../../../others/locator.dart';
+import '../../../../others/widgets/snack_bars.dart';
 import '../../MESSAGE/message_screen.dart';
 import '../notification_screen_list_view.dart';
 
@@ -462,7 +466,15 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
     Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
     return InkWell(
       onTap: () {
+        if (UserBloc.entitlement == SubscriptionTypes.free) {
+          showGeriAlWarning(context);
+          return;
+        }
+
         _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!, index: index));
+
+        NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+        _notificationBloc.add(GeriAlButtonEvent(requestUserID: _currentItem.requestUserID!));
       },
       child: Container(
         height: _buttonSize,

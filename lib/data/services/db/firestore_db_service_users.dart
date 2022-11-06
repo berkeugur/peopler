@@ -633,6 +633,7 @@ class FirestoreDBServiceUsers {
           .collection('users')
           .doc(myUserID)
           .collection('notifications')
+          .where('notificationVisible', isEqualTo: true)
           .orderBy('createdAt', descending: true)
           .limit(numberOfElementsWillBeSelected)
           .get();
@@ -641,6 +642,7 @@ class FirestoreDBServiceUsers {
           .collection('users')
           .doc(myUserID)
           .collection('notifications')
+          .where('notificationVisible', isEqualTo: true)
           .orderBy('createdAt', descending: true)
           .startAfter([lastSelectedRequest.createdAt])
           .limit(numberOfElementsWillBeSelected)
@@ -658,7 +660,14 @@ class FirestoreDBServiceUsers {
 
   Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
     var snapShot =
-        _firebaseDB.collection('users').doc(currentUserID).collection("notifications").orderBy("createdAt", descending: true).limit(1).snapshots();
+        _firebaseDB
+            .collection('users')
+            .doc(currentUserID)
+            .collection("notifications")
+            .where('notificationVisible', isEqualTo: true)
+            .orderBy("createdAt", descending: true)
+            .limit(1)
+            .snapshots();
 
     return snapShot.map(
         // Convert Stream<docs> to Stream<List<Object>>

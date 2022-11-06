@@ -192,6 +192,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           emit(UsersLoadedSearch1State());
         }
       }
+
+      if(allUserList.length < 5) {
+        add(GetMoreSearchUsersEvent());
+      }
     });
 
     on<NewUserListenerEvent>((event, emit) async {
