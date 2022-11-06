@@ -59,13 +59,13 @@ class NotificationScreenState extends State<NotificationScreen> {
                     child: Stack(
                       alignment: Alignment.topCenter,
                       children: [
-                        SizedBox(
+                        Container(
                           width: _maxWidth,
                           child: NotificationListener<ScrollNotification>(
                             onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                             child: SingleChildScrollView(
                               controller: notificationsScreenScrollController,
-                              physics: const AlwaysScrollableScrollPhysics(),
+                              physics: BouncingScrollPhysics(),
                               child: Column(
                                 children: [
                                   BlocBuilder<NotificationBloc, NotificationState>(
@@ -114,7 +114,8 @@ class NotificationScreenState extends State<NotificationScreen> {
   }
 
   bool _listScrollListener() {
-    if (notificationsScreenScrollController.hasClients && notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
+    if (notificationsScreenScrollController.hasClients &&
+        notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
       if (Variables.animatedNotificationHeaderBottom.value != 50) {
         Variables.animatedNotificationsHeaderTop.value = 70;
 
@@ -122,7 +123,8 @@ class NotificationScreenState extends State<NotificationScreen> {
           Variables.animatedNotificationHeaderBottom.value = 50;
         });
       }
-    } else if (notificationsScreenScrollController.hasClients && notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
+    } else if (notificationsScreenScrollController.hasClients &&
+        notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
       if (Variables.animatedNotificationHeaderBottom.value != 0) {
         Variables.animatedNotificationHeaderBottom.value = 0;
         Future.delayed(const Duration(milliseconds: 450), () {
@@ -133,7 +135,7 @@ class NotificationScreenState extends State<NotificationScreen> {
 
     var nextPageTrigger = 0.8 * notificationsScreenScrollController.position.maxScrollExtent;
 
-    if(notificationsScreenScrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
+    if (notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse &&
         notificationsScreenScrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
@@ -146,11 +148,9 @@ class NotificationScreenState extends State<NotificationScreen> {
 
   SizedBox _showNotifications(context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
       child: ListView.builder(
         shrinkWrap: true,
-        physics: const BouncingScrollPhysics(
-            parent: NeverScrollableScrollPhysics()),
+        physics: NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.only(top: 70 + 50),
         itemCount: _notificationBloc.allNotificationList.length,
         itemBuilder: (context, index) {

@@ -59,21 +59,21 @@ String _imagePath({required EmptyListType emptyListType}) {
 List<String> _actionButtonText({required EmptyListType emptyListType}) {
   switch (emptyListType) {
     case EmptyListType.nearby:
-      return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
+      return []; //["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
     case EmptyListType.citySearch:
-      return ["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
+      return []; //["Çevrenizi Keşfedin", "Arkadaşlarımla Paylaş"];
     case EmptyListType.emptyChannelList:
-      return ["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
+      return []; //["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
     case EmptyListType.emptyFeed:
-      return [];
+      return []; //[];
     case EmptyListType.emptyNotifications:
-      return [];
+      return []; //[];
     case EmptyListType.incomingRequest:
-      return ["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
+      return []; //["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
     case EmptyListType.outgoingRequest:
-      return ["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
+      return []; //["Çevrenizi Keşfedin", "Şehrinizi Keşfedin"];
     case EmptyListType.saved:
-      return ["Çevrenizi Keşfedin", "Şehrinizi Keşfedin", "Nasıl Çalışır?"];
+      return []; //["Çevrenizi Keşfedin", "Şehrinizi Keşfedin", "Nasıl Çalışır?"];
     default:
       {
         return ["error"];
@@ -217,7 +217,11 @@ class EmptyList extends StatelessWidget {
         valueListenable: setTheme,
         builder: (context, x, y) {
           return SizedBox(
-            height: emptyListType == EmptyListType.incomingRequest || emptyListType == EmptyListType.outgoingRequest ? screenHeight - 180 : screenHeight - 75,
+            height: emptyListType == EmptyListType.emptyChannelList ||
+                    emptyListType == EmptyListType.incomingRequest ||
+                    emptyListType == EmptyListType.outgoingRequest
+                ? screenHeight - 180
+                : screenHeight - 75,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
