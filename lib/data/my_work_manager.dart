@@ -230,7 +230,6 @@ Future<bool> updateUserLocationAtDatabaseService(String userID, int latitude, in
     await firebaseDB.collection('users').doc(userID).collection("private").doc("private").update({
       'latitude': latitude,
       'longitude': longitude,
-      'region': region,
     });
     return true;
   } else {

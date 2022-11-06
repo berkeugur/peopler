@@ -68,8 +68,6 @@ class FeedScreenState extends State<FeedScreen> {
       child: ValueListenableBuilder(
           valueListenable: setTheme,
           builder: (context, x, y) {
-            debugPrint("~~~~~~~~~~~~~~~~feed~~~~~~~~~~~~~~~");
-            debugPrint(Mode.isEnableDarkMode.toString());
             return Stack(
               children: [
                 Container(

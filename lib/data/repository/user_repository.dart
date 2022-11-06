@@ -119,13 +119,13 @@ class UserRepository {
     }
   }
 
-  Future<bool> changeUserToCityCollection(String userID, String city) async {
+  Future<bool> changeUserToCityCollection(String userID, String city, String oldCity) async {
     try {
       /// Change city
       await _firestoreDBServiceUsers.updateUserCityAtDatabase(userID, city);
 
       /// Delete user from city collection
-      await _firestoreDBServiceUsers.removeArrUser(UserBloc.user!.userID, UserBloc.user!.city, UserBloc.user!.city_arr);
+      await _firestoreDBServiceUsers.removeArrUser(UserBloc.user!.userID, oldCity, UserBloc.user!.city_arr);
 
       return await saveUserToCityCollection(userID, city);
     } catch (e) {

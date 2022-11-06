@@ -90,14 +90,13 @@ class FirestoreDBServiceUsers {
     }
   }
 
-  Future<bool> updateUserLocationAtDatabase(String userID, int latitude, int longitude, String region) async {
+  Future<bool> updateUserLocationAtDatabase(String userID, int latitude, int longitude) async {
     DocumentSnapshot _readUser = await _firebaseDB.collection('users').doc(userID).get();
 
     if (_readUser.data() != null) {
       await _firebaseDB.collection('users').doc(userID).collection("private").doc("private").update({
         'latitude': latitude,
         'longitude': longitude,
-        'region': region,
       });
       return true;
     } else {

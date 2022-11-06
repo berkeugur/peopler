@@ -14,10 +14,11 @@ class CityChangeService {
     FocusScope.of(context).unfocus();
     if (UserBloc.user != null) {
       if (UserBloc.user!.city != controller.text) {
+        String oldCity = UserBloc.user!.city;
         UserBloc.user!.city = controller.text;
 
         final UserRepository _ur = locator<UserRepository>();
-        await _ur.changeUserToCityCollection(UserBloc.user!.userID , UserBloc.user!.city ).then((value) {
+        await _ur.changeUserToCityCollection(UserBloc.user!.userID , UserBloc.user!.city, oldCity).then((value) {
           Future.delayed(const Duration(milliseconds: 500), () {
             setStateEditProfile.value = !setStateEditProfile.value;
             setStateProfileScreen.value = !setStateProfileScreen.value;

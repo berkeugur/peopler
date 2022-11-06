@@ -183,9 +183,10 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        WidgetVisibility.isCommentsVisiable
+        WidgetVisibility.isCommentsVisible
             ? TextButton(
                 onPressed: () {
+                  /*
                   if (kDebugMode) {
                     print("feedID: $feedID");
                   }
@@ -196,6 +197,8 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                           ),
                         ),
                       );
+
+                   */
                 },
                 child: const Text("Yorumlar"),
               )

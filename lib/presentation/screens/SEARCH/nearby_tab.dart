@@ -82,8 +82,6 @@ class _NearbyTabState extends State<NearbyTab> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          debugPrint("~~~~~~~~~~~~~nearby~~~~~~~~~~~~~~~~~~");
-          debugPrint(Mode.isEnableDarkMode.toString());
           return Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: SizedBox(

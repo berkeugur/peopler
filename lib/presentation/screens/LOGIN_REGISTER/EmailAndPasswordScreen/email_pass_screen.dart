@@ -161,7 +161,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: TextField(
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
-                                                if (jumpToBottomScrollController.hasClients) {
+                                                if (_jumpToBottomScrollController.hasClients) {
                                                   _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
                                                       duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }

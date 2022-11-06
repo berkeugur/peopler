@@ -82,16 +82,10 @@ class LocationRepository {
         await _firestoreDBServiceLocation.deleteUserFromRegion(sharedUserID!, region);
       }
 
-      /// Query region bottom left corner coordinates
-      int bottomLatitude = newLatitude - newLatitude % Strings.REGION_WIDTH;
-      int leftLongitude = newLongitude - newLongitude % Strings.REGION_WIDTH;
-
-      String newRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
-
       await storage.write(key: 'sharedLatitude', value: newLatitude.toString());
       await storage.write(key: 'sharedLongitude', value: newLongitude.toString());
 
-      await _firestoreDBServiceUsers.updateUserLocationAtDatabase(sharedUserID!, newLatitude, newLongitude, newRegion);
+      await _firestoreDBServiceUsers.updateUserLocationAtDatabase(sharedUserID!, newLatitude, newLongitude);
 
       /// Update regions collection
       List<String> newRegions = determineRegionList(newLatitude, newLongitude);
