@@ -367,7 +367,7 @@ Future<void> fakeFeedCreator() async {
   FirestoreDBServiceFeeds _fe = locator<FirestoreDBServiceFeeds>();
 
   for(int i=0; i<200; i++) {
-    MyFeed theFeed = MyFeed(userID: "yMSTAPEcJPO7vVdrbLGeOSjvmUF3");
+    MyFeed theFeed = MyFeed(userID: "jMV8pc8gUXNrA3q7AKrFapFKspi1");
     theFeed.feedExplanation = i.toString();
     theFeed.userGender = 'Erkek';
 
