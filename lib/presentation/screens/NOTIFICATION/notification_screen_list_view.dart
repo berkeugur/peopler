@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -614,16 +615,21 @@ Stack profilePhoto(BuildContext context, String _data, String userID) {
       InkWell(
         onTap: () => openOthersProfile(context, userID, SendRequestButtonStatus.connect),
         child: SizedBox(
-          height: _photoSize,
-          width: _photoSize,
-          child: //_userBloc != null ?
-              CircleAvatar(
-            backgroundImage: NetworkImage(
-              _data,
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+            height: _photoSize,
+            width: _photoSize,
+            child: //_userBloc != null ?
+                CachedNetworkImage(
+              imageUrl: _data,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+            )),
       ),
     ],
   );
