@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -452,17 +453,22 @@ class _NearbyTabState extends State<NearbyTab> {
                           openOthersProfile(context, LocationBloc.allUserList[index].userID, SendRequestButtonStatus.save);
                         },
                         child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          height: 100,
-                          width: 100,
-                          child: //_userBloc != null ?
-                              CircleAvatar(
-                            backgroundImage: NetworkImage(LocationBloc.allUserList[index].profileURL
-// _userBloc.user!.profileURL
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            height: 100,
+                            width: 100,
+                            child: CachedNetworkImage(
+                              imageUrl: LocationBloc.allUserList[index].profileURL,
+                              progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                  borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                              imageBuilder: (context, imageProvider) => Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                 ),
-                            backgroundColor: Colors.transparent,
-                          ), //: const CircleAvatar(backgroundColor: Colors.transparent,),
-                        ),
+                              ),
+                            ) //: const CircleAvatar(backgroundColor: Colors.transparent,),
+                            ),
                       ),
                     ],
                   ),

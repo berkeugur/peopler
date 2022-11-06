@@ -691,16 +691,20 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
           ),
         ),
         SizedBox(
-          height: _itemSize(),
-          width: _itemSize(),
-          child: //_userBloc != null ?
-              CircleAvatar(
-            backgroundImage: NetworkImage(
-              photoUrl,
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+            height: _itemSize(),
+            width: _itemSize(),
+            child: CachedNetworkImage(
+              imageUrl: photoUrl,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+            )),
       ],
     ),
   );

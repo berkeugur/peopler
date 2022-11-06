@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -303,17 +304,21 @@ class _SavedScreenState extends State<SavedScreen> {
                     InkWell(
                       onTap: () => openOthersProfile(context, _savedBloc.allRequestList[index].userID, SendRequestButtonStatus.connect),
                       child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 5),
-                        height: 100,
-                        width: 100,
-                        child: //_userBloc != null ?
-                            CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            _savedBloc.allRequestList[index].profileURL,
-                          ),
-                          backgroundColor: Colors.transparent,
-                        ),
-                      ),
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          height: 100,
+                          width: 100,
+                          child: CachedNetworkImage(
+                            imageUrl: _savedBloc.allRequestList[index].profileURL,
+                            progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                              ),
+                            ),
+                          )),
                     ),
                   ],
                 ),

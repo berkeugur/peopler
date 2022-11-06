@@ -77,7 +77,9 @@ class ProfileScreenComponentsOthersProfile {
         AnimatedContainer(
             decoration: BoxDecoration(
               color: Mode().homeScreenScaffoldBackgroundColor(),
-              boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+              boxShadow: <BoxShadow>[
+                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+              ],
             ),
             width: MediaQuery.of(context).size.width,
             duration: const Duration(seconds: 1),
@@ -131,23 +133,26 @@ class ProfileScreenComponentsOthersProfile {
           ),
         ),
         Container(
-          height: _photoSize,
-          width: _photoSize,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(
-                width: 5,
-                color: _mode.search_peoples_scaffold_background() as Color,
-              )),
-          child: //_userBloc != null ?
-              CircleAvatar(
-            radius: 999,
-            backgroundImage: NetworkImage(
-              profileData.profileURL,
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+            height: _photoSize,
+            width: _photoSize,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(999),
+                border: Border.all(
+                  width: 5,
+                  color: _mode.search_peoples_scaffold_background() as Color,
+                )),
+            child: CachedNetworkImage(
+              imageUrl: profileData.profileURL,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+            )),
       ],
     );
   }
@@ -270,8 +275,8 @@ class ProfileScreenComponentsOthersProfile {
                                       ),
                                     ),
                                     imageUrl: profileData.photosURL[index],
-                                    progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                        ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                    progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                        borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
                                     errorWidget: (context, url, error) => Icon(Icons.error),
                                   ),
                                 );
@@ -436,7 +441,7 @@ class ProfileScreenComponentsOthersProfile {
         _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
         String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
-        if(_token != null) {
+        if (_token != null) {
           await _sendNotificationService
               .sendNotification(
             Strings.sendRequest,
@@ -859,7 +864,8 @@ class ProfileScreenComponentsOthersProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                  BoxShadow(
+                                      color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
@@ -877,7 +883,8 @@ class ProfileScreenComponentsOthersProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                BoxShadow(
+                                    color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -889,14 +896,14 @@ class ProfileScreenComponentsOthersProfile {
                                     Text(
                                       profileData.pplName!,
                                       textScaleFactor: 1,
-                                      style:
-                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                                      style: PeoplerTextStyle.normal
+                                          .copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       " " + activityText(index),
                                       textScaleFactor: 1,
-                                      style:
-                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
+                                      style: PeoplerTextStyle.normal
+                                          .copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                     ),
                                   ],
                                 ),
@@ -1039,7 +1046,8 @@ class ProfileScreenComponentsOthersProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                  BoxShadow(
+                                      color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
@@ -1057,7 +1065,8 @@ class ProfileScreenComponentsOthersProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                BoxShadow(
+                                    color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -1103,8 +1112,8 @@ class ProfileScreenComponentsOthersProfile {
                                     Text(
                                       "r434rgf",
                                       textScaleFactor: 1,
-                                      style:
-                                          PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
+                                      style: PeoplerTextStyle.normal
+                                          .copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
@@ -1288,7 +1297,9 @@ class ProfileScreenComponentsOthersProfile {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
+        ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),
