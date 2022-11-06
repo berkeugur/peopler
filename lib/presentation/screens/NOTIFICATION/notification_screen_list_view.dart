@@ -21,7 +21,10 @@ import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 String elapsedTime(String date) {
   DateTime _oldDay = DateTime.parse(date);
   int _subMinute = DateTime.now().difference(_oldDay).inMinutes;
-  if (_subMinute < 60) {
+
+  if (_subMinute == 0) {
+    return "yeni";
+  } else if (_subMinute < 60) {
     return "${_subMinute}dk"; //dakika
   } else if (_subMinute >= 60 && _subMinute < 24 * 60) {
     return "${(_subMinute / 60).toStringAsFixed(0)}sa"; //saat
@@ -113,8 +116,8 @@ Widget customListItem(int index, context) {
   );
 }
 
-Container newFeedWidget(
-    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
+Container newFeedWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize,
+    double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -198,8 +201,8 @@ Container newFeedWidget(
   );
 }
 
-Container youAreOnTheOtherPeoplesList(
-    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
+Container youAreOnTheOtherPeoplesList(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
+    double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -283,8 +286,8 @@ Container youAreOnTheOtherPeoplesList(
   );
 }
 
-Widget acceptYourRequestWidget(
-    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
+Widget acceptYourRequestWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
+    double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -661,7 +664,9 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
     width: _itemSize(),
     margin: EdgeInsets.only(left: _customMarginLeftValue()),
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))],
+      boxShadow: <BoxShadow>[
+        BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))
+      ],
       borderRadius: const BorderRadius.all(Radius.circular(999)),
       color: Colors.white, //Colors.orange,
     ),

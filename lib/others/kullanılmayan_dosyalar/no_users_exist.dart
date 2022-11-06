@@ -6,11 +6,11 @@ import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
-import '../../../others/classes/dark_light_mode_controller.dart';
-import '../../../others/locator.dart';
+import '../../business_logic/cubits/FloatingActionButtonCubit.dart';
+import '../classes/dark_light_mode_controller.dart';
+import '../locator.dart';
 
-import 'city_nearby_buttons.dart';
+import '../../presentation/screens/SEARCH/city_nearby_buttons.dart';
 
 class NoUsersExistInNearby extends StatefulWidget {
   const NoUsersExistInNearby({Key? key}) : super(key: key);

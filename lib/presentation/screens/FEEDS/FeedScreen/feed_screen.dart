@@ -289,8 +289,7 @@ class FeedScreenState extends State<FeedScreen> {
 
     var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
 
-    if(_scrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
-        _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         debugPrint("hello");
@@ -316,8 +315,7 @@ class FeedScreenState extends State<FeedScreen> {
     return Column(
       children: [
         ListView.builder(
-          physics: const BouncingScrollPhysics(
-              parent: NeverScrollableScrollPhysics()),
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           shrinkWrap: true,
           itemCount: _feedBloc.allFeedList.length,
           itemBuilder: (context, i) {
