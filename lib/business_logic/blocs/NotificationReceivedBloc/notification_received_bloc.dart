@@ -18,7 +18,7 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
   final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
   NotificationReceivedBloc() : super(InitialNotificationReceivedState()) {
-    on<GetInitialDataEvent>((event, emit) async {
+    on<GetInitialDataReceivedEvent>((event, emit) async {
       try {
         emit(InitialNotificationReceivedState());
 
@@ -48,7 +48,7 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
       }
     });
 
-    on<GetMoreDataEvent>((event, emit) async {
+    on<GetMoreDataReceivedEvent>((event, emit) async {
       try {
         emit(NewNotificationReceivedLoadingState());
 

@@ -13,14 +13,16 @@ import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/presentation/router/chat_tab.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import '../../../business_logic/blocs/NotificationReceivedBloc/bloc.dart';
+import '../../../business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import '../../../business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/bloc.dart';
+import '../../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../core/constants/enums/screen_item_enum.dart';
 import '../../../data/repository/location_repository.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
-
 import '../FEEDS/FeedScreen/feed_screen.dart';
 import '../../router/feed_tab.dart';
 import '../../router/notifications_tab.dart';
@@ -153,7 +155,32 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     /// When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
     if (_oldTab == TabItem.feed && TabItem.values[index] == TabItem.feed && _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {
       feedListKey.currentState!.scrollToTop();
+      return;
     }
+
+    /// When both currentTab and clicked tab are Notification tab button, and screen is mai notification screen
+    if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
+      NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+      NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+      _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
+      return;
+    }
+
+    /*
+    /// When both currentTab and clicked tab are Notification tab button, and screen is received invitations
+    if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsReceivedScreen) {
+      NotificationReceivedBloc _notificationReceivedBloc = BlocProvider.of<NotificationReceivedBloc>(context);
+      _notificationReceivedBloc.add(GetMoreDataReceivedEvent());
+      return;
+    }
+
+    /// When both currentTab and clicked tab are Notification tab button, and screen is transmitted invitations
+    if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsTransmittedScreen) {
+      NotificationTransmittedBloc _notificationTransmittedBloc = BlocProvider.of<NotificationTransmittedBloc>(context);
+      _notificationTransmittedBloc.add(GetMoreDataTransmittedEvent());
+      return;
+    }
+     */
 
     /// When clicked tab is Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
     if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
@@ -165,11 +192,13 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
         _locationBloc.add(GetInitialSearchUsersEvent());
       }
+      return;
     }
 
     /// When clicked tab is Search tab button, and screen item is cityUsers, then trig City Bloc
     if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
       _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
+      return;
     }
   }
 

@@ -5,12 +5,12 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class NotificationReceivedEvent extends Equatable {}
 
-class GetMoreDataEvent extends NotificationReceivedEvent {
+class GetMoreDataReceivedEvent extends NotificationReceivedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
 
-class GetInitialDataEvent extends NotificationReceivedEvent {
+class GetInitialDataReceivedEvent extends NotificationReceivedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }

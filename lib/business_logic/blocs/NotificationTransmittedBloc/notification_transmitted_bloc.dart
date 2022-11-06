@@ -14,7 +14,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
   Notifications? _lastSelectedTransmitted;
 
   NotificationTransmittedBloc() : super(InitialNotificationTransmittedState()) {
-    on<GetInitialDataEvent>((event, emit) async {
+    on<GetInitialDataTransmittedEvent>((event, emit) async {
       try {
         emit(InitialNotificationTransmittedState());
 
@@ -52,7 +52,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
       }
     });
 
-    on<GetMoreDataEvent>((event, emit) async {
+    on<GetMoreDataTransmittedEvent>((event, emit) async {
       try {
         emit(NewNotificationTransmittedLoadingState());
 

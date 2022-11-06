@@ -30,7 +30,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
   @override
   void initState() {
     _notificationTransmittedBloc = BlocProvider.of<NotificationTransmittedBloc>(context);
-    _notificationTransmittedBloc.add(GetInitialDataEvent());
+    _notificationTransmittedBloc.add(GetInitialDataTransmittedEvent());
     _scrollController = ScrollController();
     super.initState();
   }
@@ -272,7 +272,7 @@ class _OutGoingConnectionRequestListState extends State<OutGoingConnectionReques
         _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        _notificationTransmittedBloc.add(GetMoreDataEvent());
+        _notificationTransmittedBloc.add(GetMoreDataTransmittedEvent());
       }
     }
 

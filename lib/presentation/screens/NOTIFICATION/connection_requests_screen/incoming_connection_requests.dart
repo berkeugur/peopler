@@ -68,7 +68,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
   @override
   void initState() {
     _notificationReceivedBloc = BlocProvider.of<NotificationReceivedBloc>(context);
-    _notificationReceivedBloc.add(GetInitialDataEvent());
+    _notificationReceivedBloc.add(GetInitialDataReceivedEvent());
     _chatBloc = BlocProvider.of<ChatBloc>(context);
     _scrollController = ScrollController();
     super.initState();
@@ -520,7 +520,7 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
         _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        _notificationReceivedBloc.add(GetMoreDataEvent());
+        _notificationReceivedBloc.add(GetMoreDataReceivedEvent());
       }
     }
 
