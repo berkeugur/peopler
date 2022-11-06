@@ -56,6 +56,12 @@ class GeriAlButtonEvent extends NotificationEvent {
   List<Object> get props => [requestUserID];
 }
 
+class TrigNotificationsNotExistEvent extends NotificationEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+
 class DeleteNotification extends NotificationEvent {
   final String notificationID;
 
