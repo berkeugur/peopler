@@ -43,118 +43,174 @@ about_field(context) {
               context: context,
               builder: (_ctx) {
                 return AlertDialog(
-                  title: const Text("Destek"),
-                  content: Container(
-                    alignment: Alignment.center,
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF0353EF),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextFormField(
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).unfocus();
-                      },
-                      autofocus: true,
-                      keyboardType: TextInputType.text,
-                      cursorColor: Colors.white,
-                      maxLength: MaxLengthConstants.SUGGEST,
-                      controller: _controller,
-                      textInputAction: TextInputAction.send,
-                      autocorrect: true,
-                      decoration: const InputDecoration(
-                        counterText: "",
-                        contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
-                        hintMaxLines: 1,
-                        border: InputBorder.none,
-                        hintText: 'Mesajınız',
-                        hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                  contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
+                  content: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF0353EF),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: TextFormField(
+                          onFieldSubmitted: (_) {
+                            FocusScope.of(context).unfocus();
+                          },
+                          autofocus: true,
+                          keyboardType: TextInputType.text,
+                          cursorColor: Colors.white,
+                          maxLength: MaxLengthConstants.SUGGEST,
+                          controller: _controller,
+                          textInputAction: TextInputAction.send,
+                          autocorrect: true,
+                          decoration: const InputDecoration(
+                            counterText: "",
+                            contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
+                            hintMaxLines: 1,
+                            border: InputBorder.none,
+                            hintText: 'Mesajınız',
+                            hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                          ),
+                          style: const TextStyle(
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
                       ),
-                      style: const TextStyle(
-                        color: Color(0xFFFFFFFF),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("iptal"),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        if (_controller.text.isNotEmpty) {
-                          await FirebaseFirestore.instance.collection("supports").doc().set({
-                            "message": _controller.text,
-                            "fromUserID": UserBloc.user?.userID,
-                            "fromUserEmail": UserBloc.user?.email,
-                            "createdAt": Timestamp.now(),
-                          }).then((value) {
-                            Navigator.of(context).pop();
-                            showDialog(
-                              context: context,
-                              builder: (contextSD) => AlertDialog(
-                                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                                contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
-                                content: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
-                                      textAlign: TextAlign.center,
-                                      style: PeoplerTextStyle.normal.copyWith(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
+                      const Divider(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(99),
+                        onTap: () async {
+                          if (_controller.text.isNotEmpty) {
+                            await FirebaseFirestore.instance.collection("supports").doc().set({
+                              "message": _controller.text,
+                              "fromUserID": UserBloc.user?.userID,
+                              "fromUserEmail": UserBloc.user?.email,
+                              "createdAt": Timestamp.now(),
+                            }).then((value) {
+                              Navigator.of(context).pop();
+                              showDialog(
+                                context: context,
+                                builder: (contextSD) => AlertDialog(
+                                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                  contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                  content: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
+                                        textAlign: TextAlign.center,
+                                        style: PeoplerTextStyle.normal.copyWith(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    const Divider(),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(999),
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 10,
-                                        ),
-                                        child: Text(
-                                          "TAMAM",
-                                          style: PeoplerTextStyle.normal.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400,
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Divider(),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(999),
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 30,
+                                            vertical: 10,
+                                          ),
+                                          child: Text(
+                                            "TAMAM",
+                                            style: PeoplerTextStyle.normal.copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          });
-                        } else {
-                          SnackBars(context: context).simple("boş bırakmayınız");
-                        }
-                      },
-                      child: const Text("Gönder"),
-                    ),
-                  ],
+                              );
+                            });
+                          } else {
+                            SnackBars(context: context).simple("boş bırakmayınız");
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 10,
+                          ),
+                          child: Text(
+                            "Gönder",
+                            style: PeoplerTextStyle.normal.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(99),
+                        onTap: () async {
+                          Navigator.of(context).pop();
+                          //await Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            //color: Theme.of(context).primaryColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 10,
+                          ),
+                          child: Text(
+                            "Şimdi Değil",
+                            style: PeoplerTextStyle.normal.copyWith(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 0,
+                      ),
+                    ],
+                  ),
                 );
               },
             );

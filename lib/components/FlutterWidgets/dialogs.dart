@@ -109,7 +109,7 @@ class PeoplerDialogs {
       context: context,
       builder: (contextSD) => AlertDialog(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-        contentPadding: const EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+        contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,7 +160,7 @@ class PeoplerDialogs {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
             InkWell(
               borderRadius: BorderRadius.circular(99),
@@ -186,14 +186,17 @@ class PeoplerDialogs {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 0,
+            ),
           ],
         ),
       ),
     );
   }
 
-   loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts})  {
-     showDialog(
+  loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts}) {
+    showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => Center(
