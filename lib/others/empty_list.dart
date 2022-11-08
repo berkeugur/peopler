@@ -187,7 +187,7 @@ String _explanation({required EmptyListType emptyListType}) {
     case EmptyListType.emptyChannelList:
       return "İnsanlarla mesajlaşmak için yeni bağlantılar edin!";
     case EmptyListType.emptyFeed:
-      return "En kısa sürede yeni feedler paylaşılacağına eminiz. Lütfen daha sonra tekrar deneyin.";
+      return "Feed listen boş";
     case EmptyListType.emptyNotifications:
       return "Hiç bildirimin bulunmuyor.";
     case EmptyListType.incomingRequest:

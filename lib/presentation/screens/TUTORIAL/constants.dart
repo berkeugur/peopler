@@ -8,7 +8,7 @@ class TutorialScreenStrings {
   ];
 
   static const List<String> description = [
-    "Peopler sayesinde tığın insanlara kolayca bağlantı isteği gönderebilirsin.",
+    "Peopler sayesinde aynı ortamı paylaştığın insanlara kolayca bağlantı isteği gönderebilirsin.",
     "Peopler gizliliğini önemser. Kimseyle tam konumunu paylaşmaz. People uygulamasını kullanmayan kişiler seni göremez.",
     "Düşüncelerini ana sayfa üzerinden rahatlıkla kelimelere dök.",
   ];
