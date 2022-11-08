@@ -49,7 +49,7 @@ class MessageScreenBody extends StatelessWidget {
                 onNotification: (ScrollNotification scrollNotification) => _listScrollListener(context, loadMoreOffset),
                 child: SingleChildScrollView(
                   controller: messageListController,
-                  physics: const ScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

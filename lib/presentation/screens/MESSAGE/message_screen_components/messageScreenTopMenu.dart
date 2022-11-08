@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -88,39 +89,17 @@ InkWell _buildProfilePhoto(double _imageSize, context) {
         height: _imageSize,
         width: _imageSize,
         margin: const EdgeInsets.only(right: 15, left: 10),
-        child: CircleAvatar(
-          backgroundImage:
-              /*
-                    ImageNetwork(
-                      image: _image,
-                      imageCache: CachedNetworkImageProvider(_image),
-                      height: _imageSize,
-                      width: _imageSize,
-                      duration: 500,
-                      curve: Curves.easeIn,
-                      onPointer: true,
-                      debugPrint: false,
-                      fullScreen: false,
-                      fitAndroidIos: BoxFit.cover,
-                      fitWeb: BoxFitWeb.cover,
-                      borderRadius: BorderRadius.circular(70),
-                      onLoading: const CircularProgressIndicator(
-                        color: Colors.indigoAccent,
-                      ),
-                      onError: const Icon(
-                        Icons.error,
-                        color: Colors.blue,
-                      ),
-                      onTap: () {
-                        debugPrint("©gabriel_patrick_souza");
-                      },
-                    ),
-                     */
-
-              NetworkImage(
-            _messageBloc.currentChat!.hostUserProfileUrl,
+        child: CachedNetworkImage(
+          imageUrl: _messageBloc.currentChat!.hostUserProfileUrl,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
           ),
-          backgroundColor: Colors.transparent,
         )),
   );
 }

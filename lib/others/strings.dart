@@ -1,6 +1,6 @@
 class Strings {
   /// VERSION
-  static const String peopler_version = "update_v1_0";
+  static const String peopler_version = "update_v1_1";
 
   /// LinkedIn Parameters (From LinkedIn Developer Page)
   static const String redirectUrlLinkedIn = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
@@ -42,6 +42,10 @@ class Strings {
 
   /// Kaydet duration
   static const int kaydetDurationHour = 6;
+
+  /// Location parameters
+  static const int UPDATE_WIDTH = 20;
+  static const int REGION_WIDTH = 100;
 
   static const List<String> cityData = [
     "İstanbul",

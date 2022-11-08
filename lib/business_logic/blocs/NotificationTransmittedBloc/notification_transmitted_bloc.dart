@@ -14,7 +14,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
   Notifications? _lastSelectedTransmitted;
 
   NotificationTransmittedBloc() : super(InitialNotificationTransmittedState()) {
-    on<GetInitialDataEvent>((event, emit) async {
+    on<GetInitialDataTransmittedEvent>((event, emit) async {
       try {
         emit(InitialNotificationTransmittedState());
 
@@ -39,7 +39,11 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         if (_transmittedList.isNotEmpty) {
           _allTransmittedList.addAll(_transmittedList);
-          emit(NotificationTransmittedLoadedState());
+          if(state is NotificationTransmittedLoaded1State) {
+            emit(NotificationTransmittedLoaded2State());
+          } else {
+            emit(NotificationTransmittedLoaded1State());
+          }
         } else {
           emit(NotificationTransmittedNotExistState());
         }
@@ -48,7 +52,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
       }
     });
 
-    on<GetMoreDataEvent>((event, emit) async {
+    on<GetMoreDataTransmittedEvent>((event, emit) async {
       try {
         emit(NewNotificationTransmittedLoadingState());
 
@@ -68,7 +72,11 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         if (_transmittedList.isNotEmpty) {
           _allTransmittedList.addAll(_transmittedList);
-          emit(NotificationTransmittedLoadedState());
+          if(state is NotificationTransmittedLoaded1State) {
+            emit(NotificationTransmittedLoaded2State());
+          } else {
+            emit(NotificationTransmittedLoaded1State());
+          }
         } else {
           if (_allTransmittedList.isNotEmpty) {
             emit(NoMoreNotificationTransmittedState());
@@ -81,7 +89,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
       }
     });
 
-    on<GeriAlButtonEvent>((event, emit) async {
+    on<GeriAlTransmittedButtonEvent>((event, emit) async {
       try {
         UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
         _allTransmittedList.removeWhere((element) => element.requestUserID == event.requestUserID);
@@ -89,10 +97,18 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         if(_allTransmittedList.isEmpty) {
           emit(NotificationTransmittedNotExistState());
         } else {
-          emit(NotificationTransmittedLoadedState());
+          if(state is NotificationTransmittedLoaded1State) {
+            emit(NotificationTransmittedLoaded2State());
+          } else {
+            emit(NotificationTransmittedLoaded1State());
+          }
         }
 
-        await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);
+        await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
+
+        if(_allTransmittedList.length < 5) {
+          add(GetMoreDataTransmittedEvent());
+        }
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }

@@ -1,20 +1,21 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/ChatBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
-
-import '../../../../business_logic/blocs/NotificationBloc/bloc.dart';
+import '../../../../business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import '../../../../business_logic/blocs/NotificationReceivedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../../data/model/chat.dart';
+import '../../../../core/constants/enums/subscriptions_enum.dart';
 import '../../../../data/model/notifications.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
-import '../../../../others/locator.dart';
-import '../../MESSAGE/message_screen.dart';
 import '../../../../others/empty_list.dart';
+import '../../../../others/locator.dart';
+import '../../../../others/widgets/snack_bars.dart';
+import '../../MESSAGE/message_screen.dart';
 import '../notification_screen_list_view.dart';
 
 /*
@@ -65,11 +66,15 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
   late final ChatBloc _chatBloc;
   final Mode _mode = locator<Mode>();
 
+  late ScrollController _scrollController;
+  bool loading = false;
+
   @override
   void initState() {
     _notificationReceivedBloc = BlocProvider.of<NotificationReceivedBloc>(context);
-    _notificationReceivedBloc.add(GetInitialDataEvent());
+    _notificationReceivedBloc.add(GetInitialDataReceivedEvent());
     _chatBloc = BlocProvider.of<ChatBloc>(context);
+    _scrollController = ScrollController();
     super.initState();
   }
 
@@ -87,38 +92,47 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
               color: _mode.search_peoples_scaffold_background(),
               child: SizedBox(
                   width: _maxWidth,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        BlocBuilder<NotificationReceivedBloc, NotificationReceivedState>(
-                          bloc: _notificationReceivedBloc,
-                          builder: (context, state) {
-                            if (state is InitialNotificationReceivedState) {
-                              return _initialNotificationsReceivedStateWidget();
-                            } else if (state is NotificationReceivedNotExistState) {
-                              return _noNotificationsReceivedExistsWidget();
-                            } else if (state is NotificationReceivedLoadedState) {
-                              return _showNotificationsReceived();
-                            } else if (state is NoMoreNotificationReceivedState) {
-                              return _showNotificationsReceived();
-                            } else if (state is NewNotificationReceivedLoadingState) {
-                              return _showNotificationsReceived();
-                            } else {
-                              return const Text("Impossible");
-                            }
-                          },
-                        ),
-                        BlocBuilder<NotificationReceivedBloc, NotificationReceivedState>(
+                  child: NotificationListener(
+                    onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          BlocBuilder<NotificationReceivedBloc, NotificationReceivedState>(
                             bloc: _notificationReceivedBloc,
                             builder: (context, state) {
-                              if (state is NewNotificationReceivedLoadingState) {
-                                return _notificationsReceivedLoadingCircularButton();
+                              if (state is InitialNotificationReceivedState) {
+                                return _initialNotificationsReceivedStateWidget();
+                              } else if (state is NotificationReceivedNotExistState) {
+                                return _noNotificationsReceivedExistsWidget();
+                              } else if (state is NotificationReceivedLoaded1State) {
+                                loading = false;
+                                return _showNotificationsReceived();
+                              } else if (state is NotificationReceivedLoaded2State) {
+                                loading = false;
+                                return _showNotificationsReceived();
+                              } else if (state is NoMoreNotificationReceivedState) {
+                                return _showNotificationsReceived();
+                              } else if (state is NewNotificationReceivedLoadingState) {
+                                return _showNotificationsReceived();
                               } else {
-                                return const SizedBox.shrink();
+                                return const Text("Impossible");
                               }
-                            }),
-                      ],
+                            },
+                          ),
+                          BlocBuilder<NotificationReceivedBloc, NotificationReceivedState>(
+                              bloc: _notificationReceivedBloc,
+                              builder: (context, state) {
+                                if (state is NewNotificationReceivedLoadingState) {
+                                  return _notificationsReceivedLoadingCircularButton();
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              }),
+                        ],
+                      ),
                     ),
                   )),
             ),
@@ -128,13 +142,10 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
 
   SizedBox _showNotificationsReceived() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
       child: ListView.builder(
         itemCount: _notificationReceivedBloc.allReceivedList.length,
         shrinkWrap: true,
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
           if (_currentItem.didAccepted == true) {
@@ -455,7 +466,15 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
     Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
     return InkWell(
       onTap: () {
+        if (UserBloc.entitlement == SubscriptionTypes.free) {
+          showGeriAlWarning(context);
+          return;
+        }
+
         _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!, index: index));
+
+        NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+        _notificationBloc.allNotificationList.removeWhere((element) => element.requestUserID == _currentItem.requestUserID!);
       },
       child: Container(
         height: _buttonSize,
@@ -503,5 +522,18 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
         ),
       ),
     );
+  }
+
+  bool _listScrollListener() {
+    var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
+
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        _notificationReceivedBloc.add(GetMoreDataReceivedEvent());
+      }
+    }
+
+    return true;
   }
 }

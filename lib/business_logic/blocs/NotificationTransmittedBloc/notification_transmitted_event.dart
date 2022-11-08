@@ -5,19 +5,19 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class NotificationTransmittedEvent extends Equatable {}
 
-class GetMoreDataEvent extends NotificationTransmittedEvent {
+class GetMoreDataTransmittedEvent extends NotificationTransmittedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
 
-class GetInitialDataEvent extends NotificationTransmittedEvent {
+class GetInitialDataTransmittedEvent extends NotificationTransmittedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
 
-class GeriAlButtonEvent extends NotificationTransmittedEvent {
+class GeriAlTransmittedButtonEvent extends NotificationTransmittedEvent {
   final String requestUserID;
-  GeriAlButtonEvent({
+  GeriAlTransmittedButtonEvent({
     required this.requestUserID,
   });
 

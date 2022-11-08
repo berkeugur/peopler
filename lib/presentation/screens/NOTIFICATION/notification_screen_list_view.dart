@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,10 @@ import '../PROFILE/OthersProfile/profile/profile_screen_components.dart';
 String elapsedTime(String date) {
   DateTime _oldDay = DateTime.parse(date);
   int _subMinute = DateTime.now().difference(_oldDay).inMinutes;
-  if (_subMinute < 60) {
+
+  if (_subMinute == 0) {
+    return "yeni";
+  } else if (_subMinute < 60) {
     return "${_subMinute}dk"; //dakika
   } else if (_subMinute >= 60 && _subMinute < 24 * 60) {
     return "${(_subMinute / 60).toStringAsFixed(0)}sa"; //saat
@@ -113,8 +117,8 @@ Widget customListItem(int index, context) {
   );
 }
 
-Container newFeedWidget(
-    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
+Container newFeedWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize,
+    double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -198,8 +202,8 @@ Container newFeedWidget(
   );
 }
 
-Container youAreOnTheOtherPeoplesList(
-    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
+Container youAreOnTheOtherPeoplesList(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
+    double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -283,8 +287,8 @@ Container youAreOnTheOtherPeoplesList(
   );
 }
 
-Widget acceptYourRequestWidget(
-    double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize, double _customTextSize, double _rightColumnSize) {
+Widget acceptYourRequestWidget(double _maxWidth, double _leftColumnSize, context, Notifications _data, double _centerColumnSize,
+    double _customTextSize, double _rightColumnSize) {
   final Mode _mode = locator<Mode>();
   return Container(
     width: _maxWidth,
@@ -611,16 +615,21 @@ Stack profilePhoto(BuildContext context, String _data, String userID) {
       InkWell(
         onTap: () => openOthersProfile(context, userID, SendRequestButtonStatus.connect),
         child: SizedBox(
-          height: _photoSize,
-          width: _photoSize,
-          child: //_userBloc != null ?
-              CircleAvatar(
-            backgroundImage: NetworkImage(
-              _data,
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+            height: _photoSize,
+            width: _photoSize,
+            child: //_userBloc != null ?
+                CachedNetworkImage(
+              imageUrl: _data,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+            )),
       ),
     ],
   );
@@ -661,7 +670,9 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
     width: _itemSize(),
     margin: EdgeInsets.only(left: _customMarginLeftValue()),
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))],
+      boxShadow: <BoxShadow>[
+        BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))
+      ],
       borderRadius: const BorderRadius.all(Radius.circular(999)),
       color: Colors.white, //Colors.orange,
     ),
@@ -680,16 +691,20 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
           ),
         ),
         SizedBox(
-          height: _itemSize(),
-          width: _itemSize(),
-          child: //_userBloc != null ?
-              CircleAvatar(
-            backgroundImage: NetworkImage(
-              photoUrl,
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+            height: _itemSize(),
+            width: _itemSize(),
+            child: CachedNetworkImage(
+              imageUrl: photoUrl,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+            )),
       ],
     ),
   );

@@ -9,6 +9,7 @@ import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/connectivity_repository.dart';
+import '../../../../data/services/remote_config/remote_config.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
@@ -22,10 +23,12 @@ class EmailAndPasswordScreen extends StatefulWidget {
 
 class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
   late final UserBloc _userBloc;
+  late final ScrollController _jumpToBottomScrollController;
 
   @override
   void initState() {
     _userBloc = BlocProvider.of<UserBloc>(context);
+    _jumpToBottomScrollController = ScrollController();
     super.initState();
   }
 
@@ -33,8 +36,6 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
-    ScrollController _jumpToBottomScrollController = ScrollController();
     double _keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return SafeArea(
@@ -143,10 +144,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "E-Mail Adresin",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
 
@@ -158,16 +157,13 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
                                           margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
+                                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(20)),
                                           child: TextField(
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
-                                                if (jumpToBottomScrollController.hasClients) {
-                                                  _jumpToBottomScrollController.animateTo(
-                                                      _jumpToBottomScrollController.position.maxScrollExtent,
-                                                      duration: const Duration(milliseconds: 500),
-                                                      curve: Curves.ease);
+                                                if (_jumpToBottomScrollController.hasClients) {
+                                                  _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }
                                               });
                                             },
@@ -201,10 +197,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Sadece üniversite mailin ile kayıt olabilirsin.",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -221,10 +215,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Şifreni belirle",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -243,10 +235,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
                                                 if (_jumpToBottomScrollController.hasClients) {
-                                                  _jumpToBottomScrollController.animateTo(
-                                                      _jumpToBottomScrollController.position.maxScrollExtent,
-                                                      duration: const Duration(milliseconds: 500),
-                                                      curve: Curves.ease);
+                                                  _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }
                                               });
                                             },
@@ -302,10 +292,8 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           child: Text(
                                             "Şifre tekrar",
                                             textScaleFactor: 1,
-                                            style: PeoplerTextStyle.normal.copyWith(
-                                                color: const Color(0xFF000000),
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w300),
+                                            style: PeoplerTextStyle.normal
+                                                .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                                           ),
                                         ),
                                         /*----------------------------------------------------------------------------*/
@@ -316,16 +304,13 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                           padding: EdgeInsets.fromLTRB(screenWidth < 300 ? 10 : 40, 0, 20, 0),
                                           margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                                           height: 50,
-                                          decoration: BoxDecoration(
-                                              color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(25)),
+                                          decoration: BoxDecoration(color: const Color(0xFF0353EF), borderRadius: BorderRadius.circular(25)),
                                           child: TextField(
                                             onTap: () async {
                                               await Future.delayed(const Duration(milliseconds: 500), () {
                                                 if (_jumpToBottomScrollController.hasClients) {
-                                                  _jumpToBottomScrollController.animateTo(
-                                                      _jumpToBottomScrollController.position.maxScrollExtent,
-                                                      duration: const Duration(milliseconds: 500),
-                                                      curve: Curves.ease);
+                                                  _jumpToBottomScrollController.animateTo(_jumpToBottomScrollController.position.maxScrollExtent,
+                                                      duration: const Duration(milliseconds: 500), curve: Curves.ease);
                                                 }
                                               });
                                             },
@@ -346,9 +331,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                                     });
                                                   },
                                                   icon: Icon(
-                                                    isVisibleCheckPassword == true
-                                                        ? Icons.visibility
-                                                        : Icons.visibility_off,
+                                                    isVisibleCheckPassword == true ? Icons.visibility : Icons.visibility_off,
                                                     color: const Color(0xFF9ABAF9),
                                                   )),
                                               counterText: "",
@@ -406,12 +389,9 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
               _userBloc.add(uploadProfilePhoto(imageFile: image));
             }
 
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
           } else if (state is InvalidEmailState) {
             SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
-          } else if (state is SigningInState) {
-            debugPrint("SIGNING IN");
           } else if (state is UserNotFoundState) {
             SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
           } else if (state is EmailAlreadyInUseState) {
@@ -440,9 +420,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                       style: PeoplerTextStyle.normal.copyWith(
                           color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                           fontSize: 22,
-                          fontWeight: nameController.text.isEmpty || UserBloc.user?.city == ""
-                              ? FontWeight.w300
-                              : FontWeight.w500),
+                          fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
                     );
                   });
             } else {
@@ -453,19 +431,15 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
 
                   if (_connection == false) return;
 
-                  bool _isEduDotTr = registerEmailController.text
-                              .replaceAll(" ", "")
-                              .toLowerCase()
-                              .substring(registerEmailController.text.length - 7) ==
-                          ".edu.tr"
-                      ? true
-                      : false;
+                  bool _isEduDotTr =
+                      registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7) == ".edu.tr"
+                          ? true
+                          : false;
 
-                  /// DİKKAT
-                  /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
-                  // _isEduDotTr = true;
-
-                  /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ///
+                  final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
+                  if(_remoteConfigService.isEduRemoteConfig()) {
+                    _isEduDotTr = true;
+                  }
 
                   if (registerPasswordController.text == registerPasswordCheckController.text && _isEduDotTr == true) {
                     _userBloc.add(createUserWithEmailAndPasswordEvent(
@@ -476,7 +450,6 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                     SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
                   } else if (_isEduDotTr == false) {
                     SnackBars(context: context).simple(
-                        "$_isEduDotTr ${registerEmailController.text.replaceAll(" ", "").toLowerCase().substring(registerEmailController.text.length - 7)}"
                         "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
                   } else {
                     SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
@@ -488,8 +461,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                   style: PeoplerTextStyle.normal.copyWith(
                       color: UserBloc.user?.gender == "" ? const Color(0xFF0353EF) : const Color(0xFF0353EF),
                       fontSize: 22,
-                      fontWeight:
-                          nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
+                      fontWeight: nameController.text.isEmpty || UserBloc.user?.city == "" ? FontWeight.w300 : FontWeight.w500),
                 ),
               );
             }

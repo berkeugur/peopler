@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:peopler/data/repository/user_repository.dart';
+
 import '../../others/locator.dart';
 import '../../others/strings.dart';
 import '../model/activity.dart';
@@ -37,21 +40,39 @@ class FeedRepository {
 
     if (feedList.isEmpty) return [];
 
+    List<String> deletedUserIDs = [];
+
     for (int index = 0; index < feedList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(feedList[index].userID);
 
-      if(_user == null) continue; // DİKKAT
+      // DİKKAT
+      // remove deleted users
+      if(_user == null) {
+        deletedUserIDs.add(feedList[index].userID);
+        continue;
+      }
 
       feedList[index].userDisplayName = _user.displayName;
       feedList[index].userPhotoUrl = _user.profileURL;
       feedList[index].numberOfConnections = _user.connectionUserIDs.length;
     }
 
+    for(String deletedUserID in deletedUserIDs) {
+      feedList.removeWhere((element) => element.userID == deletedUserID);
+    }
+
     return feedList;
   }
 
-  Future<bool> deleteFeed(String feedID) async {
-    return await _firestoreDBServiceFeeds.deleteFeed(feedID);
+
+  Future<bool> deleteFeed(String userID, String feedID) async {
+    try {
+      await _firestoreDBServiceUsers.deleteFeedIDsField(userID, feedID);
+      await _firestoreDBServiceUsers.removeActivity(userID, feedID);
+      return await _firestoreDBServiceFeeds.deleteFeed(feedID);
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<MyFeed?> readFeedWithFeedId(String feedID) async {
@@ -59,25 +80,31 @@ class FeedRepository {
   }
 
   Future<MyFeed?> addFeed(MyFeed myFeed) async {
-    /// Create Feed
-    bool _result = await _firestoreDBServiceFeeds.createFeed(myFeed);
+    try {
+      /// Create Feed
+      bool _result = await _firestoreDBServiceFeeds.createFeed(myFeed);
 
-    /// Add Activity
-    MyActivity _myActivity = MyActivity();
-    _myActivity.feedID = myFeed.feedID;
-    _myActivity.activityType = Strings.activityShared;
-    _myActivity.liked = myFeed.liked;
-    _myActivity.disliked = myFeed.disliked;
-    _myActivity.feedExplanation = myFeed.feedExplanation;
-    _myActivity.userDisplayName = myFeed.userDisplayName;
-    _myActivity.userPhotoUrl = myFeed.userPhotoUrl;
-    print("this activity= ${_myActivity.toMap()}");
+      /// Add Activity
+      MyActivity _myActivity = MyActivity();
+      _myActivity.feedID = myFeed.feedID;
+      _myActivity.activityType = Strings.activityShared;
+      _myActivity.liked = myFeed.liked;
+      _myActivity.disliked = myFeed.disliked;
+      _myActivity.feedExplanation = myFeed.feedExplanation;
+      _myActivity.userDisplayName = myFeed.userDisplayName;
+      _myActivity.userPhotoUrl = myFeed.userPhotoUrl;
+      debugPrint("this activity= ${_myActivity.toMap()}");
 
-    await _firestoreDBServiceUsers.addActivity(myFeed.userID, _myActivity);
+      await _firestoreDBServiceUsers.addActivity(myFeed.userID, _myActivity);
 
-    /// Read Feed and Return
-    if (_result == false) return null;
-    return await _firestoreDBServiceFeeds.readFeed(myFeed.feedID);
+      await _firestoreDBServiceUsers.updateFeedIDsField(myFeed.userID, myFeed.feedID);
+
+      /// Read Feed and Return
+      if (_result == false) return null;
+      return await _firestoreDBServiceFeeds.readFeed(myFeed.feedID);
+    } catch(e) {
+     return null;
+    }
   }
 
   void restartFeedCache() async {

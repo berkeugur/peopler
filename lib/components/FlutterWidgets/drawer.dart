@@ -35,15 +35,12 @@ class CircularImage extends StatelessWidget {
     return Container(
       width: _width,
       height: _height,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(image: image),
-          boxShadow: const [
-            BoxShadow(
-              blurRadius: 10,
-              color: Colors.black45,
-            )
-          ]),
+      decoration: BoxDecoration(shape: BoxShape.circle, image: DecorationImage(image: image), boxShadow: const [
+        BoxShadow(
+          blurRadius: 10,
+          color: Colors.black45,
+        )
+      ]),
     );
   }
 }
@@ -74,14 +71,25 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   @override
+  void initState() {
+    super.initState();
+    ZoomDrawer.of(context)?.stateNotifier.addListener(() {
+      if (ZoomDrawer.of(context)!.isOpen()) {
+        SystemUIService().setSystemUIForBlue();
+      } else {
+        SystemUIService().setSystemUIforThemeMode();
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     final _themeCubit = BlocProvider.of<ThemeCubit>(context);
     return Scaffold(
       backgroundColor: const Color(0xFF0353EF),
       body: Padding(
-        padding: EdgeInsets.only(
-            top: _height * 0.1, bottom: _height * 0.1, left: 40),
+        padding: EdgeInsets.only(top: _height * 0.1, bottom: _height * 0.1, left: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,10 +104,7 @@ class _MenuPageState extends State<MenuPage> {
                 Text(
                   UserBloc.user?.displayName ?? "null display name",
                   textScaleFactor: 1,
-                  style: PeoplerTextStyle.normal.copyWith(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500),
+                  style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 15,
@@ -122,10 +127,7 @@ class _MenuPageState extends State<MenuPage> {
                   InkWell(
                     borderRadius: BorderRadius.circular(999),
                     onTap: () async {
-                      await FirebaseFirestore.instance
-                          .collection("eventsbutton")
-                          .doc()
-                          .set({
+                      await FirebaseFirestore.instance.collection("eventsbutton").doc().set({
                         "createdAt": Timestamp.now(),
                         "cretedMonth": Timestamp.now().toDate().month,
                         "cretedYear": Timestamp.now().toDate().year,
@@ -136,11 +138,8 @@ class _MenuPageState extends State<MenuPage> {
                       await showDialog(
                         context: context,
                         builder: (contextSD) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(32.0))),
-                          contentPadding: EdgeInsets.only(
-                              top: 20.0, bottom: 5, left: 25, right: 25),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                          contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
                           content: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,19 +162,14 @@ class _MenuPageState extends State<MenuPage> {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  await FirebaseFirestore.instance
-                                      .collection("eventsbutton")
-                                      .doc()
-                                      .set({
+                                  await FirebaseFirestore.instance.collection("eventsbutton").doc().set({
                                     "createdAt": Timestamp.now(),
-                                    "cretedMonth":
-                                        Timestamp.now().toDate().month,
+                                    "cretedMonth": Timestamp.now().toDate().month,
                                     "cretedYear": Timestamp.now().toDate().year,
                                     "cretedDay": Timestamp.now().toDate().day,
                                     "createdFromUserID": UserBloc.user?.userID,
                                     "isNeedEmailNotification": true,
-                                    "createdFromUserEmail":
-                                        UserBloc.user?.email,
+                                    "createdFromUserEmail": UserBloc.user?.email,
                                   }).then((value) {
                                     Navigator.of(context).pop();
                                   });
@@ -263,9 +257,9 @@ class _MenuPageState extends State<MenuPage> {
                     UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
                     if (UserBloc.user != null) {
                       ZoomDrawer.of(context)!.toggle();
+
                       _userBloc.mainKey.currentState?.push(
-                        MaterialPageRoute(
-                            builder: (context) => const SettingsScreen()),
+                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
                       );
                     } else {
                       GuestAlert.dialog(context);
@@ -283,146 +277,179 @@ class _MenuPageState extends State<MenuPage> {
                     itemtext: "Destek",
                     icon: Icons.support_agent,
                     function: () {
-                      TextEditingController _controller =
-                          TextEditingController();
+                      TextEditingController _controller = TextEditingController();
                       showDialog(
                         context: context,
                         builder: (_ctx) {
                           return AlertDialog(
-                            title: const Text("Destek"),
-                            content: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0353EF),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: TextFormField(
-                                onFieldSubmitted: (_) {
-                                  FocusScope.of(context).unfocus();
-                                },
-                                autofocus: true,
-                                keyboardType: TextInputType.text,
-                                cursorColor: Colors.white,
-                                maxLength: MaxLengthConstants.SUGGEST,
-                                controller: _controller,
-                                textInputAction: TextInputAction.send,
-                                autocorrect: true,
-                                decoration: const InputDecoration(
-                                  counterText: "",
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(0, 13, 0, 10),
-                                  hintMaxLines: 1,
-                                  border: InputBorder.none,
-                                  hintText: 'Mesajınız',
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFF9ABAF9), fontSize: 16),
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                            contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
+                            content: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  height: 50,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF0353EF),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: TextFormField(
+                                    onFieldSubmitted: (_) {
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                    autofocus: true,
+                                    keyboardType: TextInputType.text,
+                                    cursorColor: Colors.white,
+                                    maxLength: MaxLengthConstants.SUGGEST,
+                                    controller: _controller,
+                                    textInputAction: TextInputAction.send,
+                                    autocorrect: true,
+                                    decoration: const InputDecoration(
+                                      counterText: "",
+                                      contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
+                                      hintMaxLines: 1,
+                                      border: InputBorder.none,
+                                      hintText: 'Mesajınız',
+                                      hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                                    ),
+                                    style: const TextStyle(
+                                      color: Color(0xFFFFFFFF),
+                                    ),
+                                  ),
                                 ),
-                                style: const TextStyle(
-                                  color: Color(0xFFFFFFFF),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("iptal"),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  if (_controller.text.isNotEmpty) {
-                                    await FirebaseFirestore.instance
-                                        .collection("supports")
-                                        .doc()
-                                        .set({
-                                      "message": _controller.text,
-                                      "fromUserID": UserBloc.user?.userID,
-                                      "fromUserEmail": UserBloc.user?.email,
-                                      "createdAt": Timestamp.now(),
-                                    }).then((value) {
-                                      Navigator.of(context).pop();
-                                      showDialog(
-                                        context: context,
-                                        builder: (contextSD) => AlertDialog(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(32.0))),
-                                          contentPadding: EdgeInsets.only(
-                                              top: 20.0,
-                                              bottom: 5,
-                                              left: 25,
-                                              right: 25),
-                                          content: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
-                                                textAlign: TextAlign.center,
-                                                style: PeoplerTextStyle.normal
-                                                    .copyWith(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
+                                const Divider(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                  borderRadius: BorderRadius.circular(99),
+                                  onTap: () async {
+                                    if (_controller.text.isNotEmpty) {
+                                      await FirebaseFirestore.instance.collection("supports").doc().set({
+                                        "message": _controller.text,
+                                        "fromUserID": UserBloc.user?.userID,
+                                        "fromUserEmail": UserBloc.user?.email,
+                                        "createdAt": Timestamp.now(),
+                                      }).then((value) {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                          context: context,
+                                          builder: (contextSD) => AlertDialog(
+                                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                                            contentPadding: EdgeInsets.only(top: 20.0, bottom: 5, left: 25, right: 25),
+                                            content: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
+                                                  textAlign: TextAlign.center,
+                                                  style: PeoplerTextStyle.normal.copyWith(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              const Divider(),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            999),
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 30,
-                                                    vertical: 10,
-                                                  ),
-                                                  child: Text(
-                                                    "TAMAM",
-                                                    style: PeoplerTextStyle
-                                                        .normal
-                                                        .copyWith(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w400,
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                const Divider(),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(999),
+                                                      color: Theme.of(context).primaryColor,
+                                                    ),
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 30,
+                                                      vertical: 10,
+                                                    ),
+                                                    child: Text(
+                                                      "TAMAM",
+                                                      style: PeoplerTextStyle.normal.copyWith(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.w400,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                            ],
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    });
-                                  } else {
-                                    SnackBars(context: context)
-                                        .simple("boş bırakmayınız");
-                                  }
-                                },
-                                child: const Text("Gönder"),
-                              ),
-                            ],
+                                        );
+                                      });
+                                    } else {
+                                      SnackBars(context: context).simple("boş bırakmayınız");
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(999),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 30,
+                                      vertical: 10,
+                                    ),
+                                    child: Text(
+                                      "Gönder",
+                                      style: PeoplerTextStyle.normal.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                InkWell(
+                                  borderRadius: BorderRadius.circular(99),
+                                  onTap: () async {
+                                    Navigator.of(context).pop();
+                                    //await Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(999),
+                                      //color: Theme.of(context).primaryColor,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 30,
+                                      vertical: 10,
+                                    ),
+                                    child: Text(
+                                      "Şimdi Değil",
+                                      style: PeoplerTextStyle.normal.copyWith(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 0,
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -445,9 +472,7 @@ class _MenuPageState extends State<MenuPage> {
         Container(
           height: _photoSize,
           width: _photoSize,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(width: 5, color: Colors.white)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), border: Border.all(width: 5, color: Colors.white)),
           child: const CircleAvatar(
             backgroundColor: Color(0xFF0353EF),
             child: Text(
@@ -459,17 +484,12 @@ class _MenuPageState extends State<MenuPage> {
         Container(
           height: _photoSize,
           width: _photoSize,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(999),
-              border: Border.all(width: 3, color: Colors.white)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), border: Border.all(width: 3, color: Colors.white)),
           child: //_userBloc != null ?
               CachedNetworkImage(
             imageUrl: profileData!.profileURL,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(999),
-                    child: CircularProgressIndicator(
-                        value: downloadProgress.progress)),
+                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
@@ -498,9 +518,7 @@ class _MenuPageState extends State<MenuPage> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Mode.isEnableDarkMode == false
-                  ? Colors.white
-                  : Colors.transparent,
+              color: Mode.isEnableDarkMode == false ? Colors.white : Colors.transparent,
               borderRadius: BorderRadius.circular(999),
             ),
             child: Padding(
@@ -511,9 +529,7 @@ class _MenuPageState extends State<MenuPage> {
                     "assets/images/svg_icons/light_mode.svg",
                     width: 15,
                     height: 15,
-                    color: Mode.isEnableDarkMode == false
-                        ? const Color(0xFF0353EF)
-                        : Colors.white,
+                    color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
@@ -523,9 +539,7 @@ class _MenuPageState extends State<MenuPage> {
                     "Aydınlık",
                     textScaleFactor: 1,
                     style: PeoplerTextStyle.normal.copyWith(
-                      color: Mode.isEnableDarkMode == false
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                      color: Mode.isEnableDarkMode == false ? const Color(0xFF0353EF) : Colors.white,
                     ),
                   ),
                 ],
@@ -540,9 +554,7 @@ class _MenuPageState extends State<MenuPage> {
           onTap: () => _themeCubit.openDarkMode(),
           child: Container(
             decoration: BoxDecoration(
-              color: Mode.isEnableDarkMode == true
-                  ? Colors.white
-                  : Colors.transparent,
+              color: Mode.isEnableDarkMode == true ? Colors.white : Colors.transparent,
               borderRadius: BorderRadius.circular(999),
             ),
             child: Padding(
@@ -553,9 +565,7 @@ class _MenuPageState extends State<MenuPage> {
                     "assets/images/svg_icons/dark_mode.svg",
                     width: 15,
                     height: 15,
-                    color: Mode.isEnableDarkMode == true
-                        ? const Color(0xFF0353EF)
-                        : Colors.white,
+                    color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(
@@ -565,9 +575,7 @@ class _MenuPageState extends State<MenuPage> {
                     "Karanlık",
                     textScaleFactor: 1,
                     style: PeoplerTextStyle.normal.copyWith(
-                      color: Mode.isEnableDarkMode == true
-                          ? const Color(0xFF0353EF)
-                          : Colors.white,
+                      color: Mode.isEnableDarkMode == true ? const Color(0xFF0353EF) : Colors.white,
                     ),
                   ),
                 ],
@@ -579,12 +587,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget MenuItems(
-      {required BuildContext context,
-      String? svgiconpath,
-      required String itemtext,
-      IconData? icon,
-      void Function()? function}) {
+  Widget MenuItems({required BuildContext context, String? svgiconpath, required String itemtext, IconData? icon, void Function()? function}) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
       child: InkWell(
@@ -620,10 +623,7 @@ class _MenuPageState extends State<MenuPage> {
                 itemtext,
                 textScaleFactor: 1,
                 textAlign: TextAlign.left,
-                style: PeoplerTextStyle.normal.copyWith(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
+                style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
               )
             ],
           ),
@@ -647,16 +647,15 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
   ZoomDrawerController controller = ZoomDrawerController();
 
   @override
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, _, __) {
           return ZoomDrawer(
             controller: controller,
-            shadowLayer1Color:
-                Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
-            shadowLayer2Color:
-                Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
+            shadowLayer1Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.25),
+            shadowLayer2Color: Mode().homeScreenScaffoldBackgroundColor()!.withOpacity(0.70),
             showShadow: true,
             mainScreenTapClose: true,
             borderRadius: 24.0,

@@ -20,38 +20,25 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   /// Since refreshIndicator widget works with Future functions, a Future function in bloc
   /// is created. However, when home button is clicked, event mechanism
   /// should work.
-  Future<String> getRefreshDataFuture() async {
+  Future<void> getRefreshDataFuture() async {
     try {
       _feedRepository.restartFeedCache();
 
       _lastSelectedFeed = null;
       List<MyFeed> shuffledList = await getKadinAndErkekList();
 
-      // await Future.delayed(const Duration(seconds: 2));
-
-      if (shuffledList.isNotEmpty) {
-        _allFeedList = [];
-        _allFeedList.addAll(shuffledList);
-        return 'FeedsLoadedState';
-      } else {
-        _allFeedList = [];
-        return 'FeedNotExistState';
-      }
+      _allFeedList = [];
+      _allFeedList.addAll(shuffledList);
     } catch (e) {
       debugPrint("Blocta refresh event hata:" + e.toString());
-      return 'Impossible';
     }
   }
 
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData() async {
     try {
-      String emitState = await getRefreshDataFuture();
-      if(emitState == 'FeedsLoadedState') {
-        add(TrigFeedsLoadedStateEvent());
-      } else if(emitState == 'FeedNotExistState') {
-        add(TrigFeedNotExistStateEvent());
-      }
+      await getRefreshDataFuture();
+      add(TrigFeedNotExistStateEvent());
     } catch (e) {
       debugPrint("Blocta refresh event hata:" + e.toString());
     }
@@ -100,7 +87,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
         if (shuffledList.isNotEmpty) {
           _allFeedList.addAll(shuffledList);
-          emit(FeedsLoadedState());
+          if(state is FeedsLoaded1State) {
+            emit(FeedsLoaded2State());
+          } else {
+            emit(FeedsLoaded1State());
+          }
         } else {
           emit(FeedNotExistState());
         }
@@ -120,7 +111,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
         if (shuffledList.isNotEmpty) {
           _allFeedList.addAll(shuffledList);
-          emit(FeedsLoadedState());
+          if(state is FeedsLoaded1State) {
+            emit(FeedsLoaded2State());
+          } else {
+            emit(FeedsLoaded1State());
+          }
         } else {
           if (_allFeedList.isNotEmpty) {
             emit(NoMoreFeedsState());
@@ -143,7 +138,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         event.myFeed.numberOfConnections = _user.connectionUserIDs.length;
 
         _allFeedList.insert(0, event.myFeed);
-        emit(FeedsLoadedState());
+        if(state is FeedsLoaded1State) {
+          emit(FeedsLoaded2State());
+        } else {
+          emit(FeedsLoaded1State());
+        }
       } catch (e) {
         debugPrint("Blocta get more data feed hata:" + e.toString());
       }
@@ -154,11 +153,15 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       /// Since refresh indicator just wait for finishing future function, state mechanism does not work for it
       /// Therefore, EventRefreshingState not emitted inside Future function to prevent BlocBuilder-EventRefreshingState collide with RefreshIndicator indicator.
       emit(NewFeedsLoadingState());
-      String emitState = await getRefreshDataFuture();
-      if(emitState == 'FeedsLoadedState') {
-        emit(FeedsLoadedState());
-      } else if(emitState == 'FeedNotExistState') {
+      await getRefreshDataFuture();
+      if(allFeedList.isEmpty) {
         emit(FeedNotExistState());
+      } else {
+        if(state is FeedsLoaded1State) {
+          emit(FeedsLoaded2State());
+        } else {
+          emit(FeedsLoaded1State());
+        }
       }
     });
 
@@ -166,12 +169,16 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       emit(NewFeedsLoadingState());
     });
 
-    on<TrigFeedsLoadedStateEvent>((event, emit) async {
-      emit(FeedsLoadedState());
-    });
-
     on<TrigFeedNotExistStateEvent>((event, emit) async {
-      emit(FeedNotExistState());
+      if(allFeedList.isEmpty) {
+        emit(FeedNotExistState());
+      } else {
+        if(state is FeedsLoaded1State) {
+          emit(FeedsLoaded2State());
+        } else {
+          emit(FeedsLoaded1State());
+        }
+      }
     });
   }
 }

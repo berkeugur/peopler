@@ -9,6 +9,7 @@ class MyUser {
   String displayName = "";
   String gender = "";
   String city = "";
+  int city_arr = 0;
   String biography = "";
   String schoolName = "";
   String currentJobName = "";
@@ -30,11 +31,11 @@ class MyUser {
   String email = "";
   bool isTheAccountConfirmed = false;
   bool missingInfo = true;
-  String region = 'empty';
   int latitude = 0;
   int longitude = 0;
   int numOfSendRequest = 15;
   DateTime? updatedAtNumOfSendRequest;
+  List<String> feedIDs = [];
 
   MyUser();
 
@@ -45,6 +46,7 @@ class MyUser {
       'displayName': displayName,
       'gender': gender,
       'city': city,
+      'city_arr': city_arr,
       'biography': biography,
       'schoolName': schoolName,
       'currentJobName': currentJobName,
@@ -70,6 +72,7 @@ class MyUser {
     displayName = map['displayName'] as String;
     gender = map['gender'] as String;
     city = map['city'] as String;
+    city_arr = map['city_arr'] as int;
     biography = map['biography'] as String;
     schoolName = map['schoolName'] as String;
     currentJobName = map['currentJobName'] as String;
@@ -102,20 +105,18 @@ class MyUser {
       'email': email,
       'isTheAccountConfirmed': isTheAccountConfirmed,
       'missingInfo': missingInfo,
-      'region': region,
       'latitude': latitude,
       'longitude': longitude,
       'numOfSendRequest': numOfSendRequest,
       'updatedAtNumOfSendRequest': updatedAtNumOfSendRequest ?? DateTime.now(),
+      'feedIDs': feedIDs,
     };
   }
 
   void fromPrivateMap(Map<String, dynamic> map) {
-    print(map['updatedAtNumOfSendRequest'].runtimeType);
     email = map['email'] as String;
     isTheAccountConfirmed = map['isTheAccountConfirmed'] as bool;
     missingInfo = map['missingInfo'] as bool;
-    region = map['region'] as String;
     latitude = map['latitude'] as int;
     longitude = map['longitude'] as int;
     numOfSendRequest = map['numOfSendRequest'] as int;
@@ -124,6 +125,7 @@ class MyUser {
         : map['updatedAtNumOfSendRequest'].runtimeType == Timestamp
             ? (map['updatedAtNumOfSendRequest'] as Timestamp).toDate()
             : map['updatedAtNumOfSendRequest'].toDate();
+    feedIDs = map['feedIDs'].map<String>((data) => data.toString()).toList();
   }
 
   String randomNumberGenerator() {

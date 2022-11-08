@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,49 +57,44 @@ class ChannelListBodyState extends State<ChannelListBody> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          return SizedBox(
-            width: _size!.width >= 600 ? 600 : _size!.width,
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: const ScrollPhysics(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlocBuilder<ChatBloc, ChatState>(
+          return NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BlocBuilder<ChatBloc, ChatState>(
+                    bloc: _chatBloc,
+                    builder: (context, state) {
+                      if (state is InitialChatState) {
+                        return _initialChatsStateWidget();
+                      } else if (state is ChatNotExistState) {
+                        return _noChatExistsWidget();
+                      } else if (state is ChatsLoadedState1) {
+                        return _showChatsWidget();
+                      } else if (state is ChatsLoadedState2) {
+                        return _showChatsWidget();
+                      } else if (state is NoMoreChatsState) {
+                        return _showChatsWidget();
+                      } else if (state is ChatsLoadingState) {
+                        return _showChatsWidget();
+                      } else {
+                        return const Text("Impossible");
+                      }
+                    },
+                  ),
+                  BlocBuilder<ChatBloc, ChatState>(
                       bloc: _chatBloc,
                       builder: (context, state) {
-                        if (state is InitialChatState) {
-                          return _initialChatsStateWidget();
-                        } else if (state is ChatNotExistState) {
-                          return _noChatExistsWidget();
-                        } else if (state is ChatsLoadedState1) {
-                          return _showChatsWidget();
-                        } else if (state is ChatsLoadedState2) {
-                          return _showChatsWidget();
-                        } else if (state is NoMoreChatsState) {
-                          return _showChatsWidget();
-                        } else if (state is ChatsLoadingState) {
-                          return _showChatsWidget();
+                        if (state is ChatsLoadingState) {
+                          return _chatsLoadingCircularButton();
                         } else {
-                          return const Text("Impossible");
+                          return const SizedBox.shrink();
                         }
-                      },
-                    ),
-                    BlocBuilder<ChatBloc, ChatState>(
-                        bloc: _chatBloc,
-                        builder: (context, state) {
-                          if (state is ChatsLoadingState) {
-                            return _chatsLoadingCircularButton();
-                          } else {
-                            return const SizedBox.shrink();
-                          }
-                        }),
-                  ],
-                ),
+                      }),
+                ],
               ),
             ),
           );
@@ -225,16 +221,21 @@ class ChannelListBodyState extends State<ChannelListBody> {
 
   Container _buildProfilePhoto(String _image) {
     return Container(
-      height: _imageSize,
-      width: _imageSize,
-      margin: const EdgeInsets.only(right: 15, left: 10),
-      child: CircleAvatar(
-        backgroundImage: NetworkImage(
-          _image,
-        ),
-        backgroundColor: Colors.transparent,
-      ),
-    );
+        height: _imageSize,
+        width: _imageSize,
+        margin: const EdgeInsets.only(right: 15, left: 10),
+        child: CachedNetworkImage(
+          imageUrl: _image,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          ),
+        ));
   }
 
   SizedBox _buildNameAndLastMessage(String _nameSurname, String _lastMassage, bool _isNewMessage) {

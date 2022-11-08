@@ -36,11 +36,6 @@ class TrigNewFeedsLoadingStateEvent extends FeedEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class TrigFeedsLoadedStateEvent extends FeedEvent {
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
-
 class TrigFeedNotExistStateEvent extends FeedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();

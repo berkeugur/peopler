@@ -16,6 +16,19 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   static StreamSubscription? _streamSubscription;
   static bool _newUserListenListener = false;
 
+  static Set<String> unnecessaryUsers = {};
+
+  void findUnnecessaryUsersFromUserList() {
+    unnecessaryUsers = {};
+    unnecessaryUsers.add(UserBloc.user!.userID);
+    unnecessaryUsers.addAll(UserBloc.user!.savedUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.transmittedRequestUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.receivedRequestUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.connectionUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.whoBlockedYou);
+    unnecessaryUsers.addAll(UserBloc.user!.blockedUsers);
+  }
+
   void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
     /// Remove myself from list
     userList.removeWhere((item) => item.userID == myUser.userID);
@@ -54,14 +67,15 @@ class CityBloc extends Bloc<CityEvent, CityState> {
   Future<void> getRefreshIndicatorData(String city) async {
     try {
       allUserList = [];
+
       _cityRepository.restartRepositoryCache();
 
-      List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(city);
+      findUnnecessaryUsersFromUserList();
 
-      removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
+      List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(city, unnecessaryUsers);
 
       allUserList.addAll(userList);
-      add(TrigUsersNotExistCityStateEvent());
+      add(TrigUsersNotExistCityStateEvent(city: UserBloc.user!.city));
     } catch (e) {
       debugPrint("Blocta initial city hata:" + e.toString());
     }
@@ -79,13 +93,13 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         allUserList = [];
         _cityRepository.restartRepositoryCache();
 
-        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city);
+        findUnnecessaryUsersFromUserList();
 
-        removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
+        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, unnecessaryUsers);
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-          emit(UsersLoadedCityState());
+          emit(UsersLoadedCity1State());
         } else {
           emit(UsersNotExistCityState());
         }
@@ -96,7 +110,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
               .getMyUserWithStream(UserBloc.user!.userID)
               .listen((myUser) async {
 
-            add(NewUserListenerEvent(myUser: myUser));
+            add(NewUserListenerEvent(myUser: myUser, city: event.city));
           });
         }
       } catch (e) {
@@ -112,13 +126,16 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       try {
         emit(NewUsersLoadingCityState());
 
-        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city);
+        findUnnecessaryUsersFromUserList();
 
-        removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
-
+        List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, unnecessaryUsers);
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-          emit(UsersLoadedCityState());
+          if(state is UsersLoadedCity1State) {
+            emit(UsersLoadedCity2State());
+          } else {
+            emit(UsersLoadedCity1State());
+          }
         } else {
           if (allUserList.isNotEmpty) {
             emit(NoMoreUsersCityState());
@@ -138,12 +155,21 @@ class CityBloc extends Bloc<CityEvent, CityState> {
       if(allUserList.isEmpty) {
         emit(UsersNotExistCityState());
       } else {
-        emit(UsersLoadedCityState());
+        if(state is UsersLoadedCity1State) {
+          emit(UsersLoadedCity2State());
+        } else {
+          emit(UsersLoadedCity1State());
+        }
+      }
+
+      if(allUserList.length < 5) {
+        add(GetMoreSearchUsersCityEvent(city: event.city));
       }
     });
+
     on<NewUserListenerEvent>((event, emit) async {
       removeUnnecessaryUsersFromUserList(allUserList, event.myUser);
-      add(TrigUsersNotExistCityStateEvent());
+      add(TrigUsersNotExistCityStateEvent(city: event.city));
     });
   }
 

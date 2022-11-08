@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 
 class FirebaseStorageService {
-  FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   Future<String> uploadFile(String filePath, String fileName, File uploadedFile) async {
     Reference _storageReference = _firebaseStorage.ref().child(filePath).child(fileName);

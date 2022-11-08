@@ -17,7 +17,18 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   static StreamSubscription? _streamSubscription;
   static bool _newUserListenListener = false;
 
-  static List<String> _queryList = List.filled(9, '');
+  static Set<String> unnecessaryUsers = {};
+
+  void findUnnecessaryUsersFromUserList() {
+    unnecessaryUsers = {};
+    unnecessaryUsers.add(UserBloc.user!.userID);
+    unnecessaryUsers.addAll(UserBloc.user!.savedUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.transmittedRequestUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.receivedRequestUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.connectionUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.whoBlockedYou);
+    unnecessaryUsers.addAll(UserBloc.user!.blockedUsers);
+  }
 
   void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
     /// Remove myself from list
@@ -56,34 +67,26 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData() async {
     try {
-        int _latitude;
-        int _longitude;
+      int _latitude;
+      int _longitude;
 
-        if (UserBloc.user != null) {
-          _latitude = UserBloc.user!.latitude;
-          _longitude = UserBloc.user!.longitude;
-        } else {
-          _latitude = UserBloc.guestUser!.latitude;
-          _longitude = UserBloc.guestUser!.longitude;
-        }
+      if (UserBloc.user != null) {
+        _latitude = UserBloc.user!.latitude;
+        _longitude = UserBloc.user!.longitude;
+      } else {
+        _latitude = UserBloc.guestUser!.latitude;
+        _longitude = UserBloc.guestUser!.longitude;
+      }
 
-        _locationRepository.restartRepositoryCache();
+      allUserList = [];
+      _locationRepository.restartRepositoryCache();
 
-        _queryList = await _locationRepository.determineQueryList(_latitude, _longitude);
-        List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
+      findUnnecessaryUsersFromUserList();
 
-        if(UserBloc.user != null) {
-          removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
-        }
+      List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_latitude, _longitude, unnecessaryUsers);
 
-        allUserList = [];
-
-        if (userList.isNotEmpty) {
-          allUserList.addAll(userList);
-          add(TrigUsersLoadedSearchStateEvent());
-        } else {
-          add(TrigUsersNotExistSearchStateEvent());
-        }
+      allUserList.addAll(userList);
+      add(TrigUsersNotExistSearchStateEvent());
     } catch (e) {
       debugPrint("Blocta refresh event hata:" + e.toString());
     }
@@ -95,7 +98,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     /******************************************************************************************/
     on<GetInitialSearchUsersEvent>((event, emit) async {
       try {
-        while(LocationUpdateBloc.firstUpdate == false) {
+        while (LocationUpdateBloc.firstUpdate == false) {
           await Future.delayed(const Duration(seconds: 1));
         }
 
@@ -115,26 +118,24 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         allUserList = [];
         _locationRepository.restartRepositoryCache();
 
-        _queryList = await _locationRepository.determineQueryList(_latitude, _longitude);
-        List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
+        findUnnecessaryUsersFromUserList();
 
-        if(UserBloc.user != null) {
-          removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
-        }
+        List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_latitude, _longitude, unnecessaryUsers);
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-          emit(UsersLoadedSearchState());
+          if (state is UsersLoadedSearch1State) {
+            emit(UsersLoadedSearch2State());
+          } else {
+            emit(UsersLoadedSearch1State());
+          }
         } else {
           emit(UsersNotExistSearchState());
         }
 
         if (_newUserListenListener == false) {
           _newUserListenListener = true;
-          _streamSubscription = _userRepository
-              .getMyUserWithStream(UserBloc.user!.userID)
-              .listen((myUser) async {
-
+          _streamSubscription = _userRepository.getMyUserWithStream(UserBloc.user!.userID).listen((myUser) async {
             add(NewUserListenerEvent(myUser: myUser));
           });
         }
@@ -147,15 +148,28 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       try {
         emit(NewUsersLoadingSearchState());
 
-        List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_queryList);
+        int _latitude;
+        int _longitude;
 
-        if(UserBloc.user != null) {
-          removeUnnecessaryUsersFromUserList(userList, UserBloc.user!);
+        if (UserBloc.user != null) {
+          _latitude = UserBloc.user!.latitude;
+          _longitude = UserBloc.user!.longitude;
+        } else {
+          _latitude = UserBloc.guestUser!.latitude;
+          _longitude = UserBloc.guestUser!.longitude;
         }
+
+        findUnnecessaryUsersFromUserList();
+
+        List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_latitude, _longitude, unnecessaryUsers);
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
-          emit(UsersLoadedSearchState());
+          if (state is UsersLoadedSearch1State) {
+            emit(UsersLoadedSearch2State());
+          } else {
+            emit(UsersLoadedSearch1State());
+          }
         } else {
           if (allUserList.isNotEmpty) {
             emit(NoMoreUsersSearchState());
@@ -168,15 +182,19 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       }
     });
 
-    on<TrigUsersLoadedSearchStateEvent>((event, emit) async {
-      emit(UsersLoadedSearchState());
-    });
-
     on<TrigUsersNotExistSearchStateEvent>((event, emit) async {
-      if(allUserList.isEmpty) {
+      if (allUserList.isEmpty) {
         emit(UsersNotExistSearchState());
       } else {
-        emit(UsersLoadedSearchState());
+        if (state is UsersLoadedSearch1State) {
+          emit(UsersLoadedSearch2State());
+        } else {
+          emit(UsersLoadedSearch1State());
+        }
+      }
+
+      if(allUserList.length < 5) {
+        add(GetMoreSearchUsersEvent());
       }
     });
 

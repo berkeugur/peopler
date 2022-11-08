@@ -14,7 +14,12 @@ class NewUsersLoadingSavedState extends SavedState {
   List<Object> get props => [];
 }
 
-class UsersLoadedSavedState extends SavedState {
+class UsersLoadedSaved1State extends SavedState {
+  @override
+  List<Object> get props => [];
+}
+
+class UsersLoadedSaved2State extends SavedState {
   @override
   List<Object> get props => [];
 }

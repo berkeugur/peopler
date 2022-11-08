@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
+import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_state.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/classes/responsive_size.dart';
 import '../../../../../others/locator.dart';
@@ -49,10 +52,29 @@ Padding header(BuildContext context) {
             width: 80,
             child: TextButton(
                 onPressed: () => feed_share_button_on_pressed(context),
-                child: Text(
-                  "Paylaş",
-                  textScaleFactor: 1,
-                  style: PeoplerTextStyle.normal.copyWith(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
+                child: BlocBuilder<AddFeedBloc, AddFeedState>(
+                  builder: (context, state) {
+                    if (state is PrepareDataState) {
+                      return Text(
+                        "Paylaş",
+                        textScaleFactor: 1,
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: ResponsiveSize().fs2(context), color: const Color(0xFF0353EF)),
+                      );
+                    } else if (state is LoadingState) {
+                      return const SizedBox.square(
+                        dimension: 25,
+                        child: CircularProgressIndicator(),
+                      );
+                      // Circular koy
+                    } else if (state is FeedCreateErrorState) {
+                      // Error koy
+                      return const SizedBox();
+                    } else if (state is FeedCreateSuccessfulState) {
+                      return const SizedBox();
+                    } else {
+                      return const Text("Impossible");
+                    }
+                  },
                 )))
       ],
     ),

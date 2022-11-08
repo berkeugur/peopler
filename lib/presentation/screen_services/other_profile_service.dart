@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import '../../business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import '../../business_logic/blocs/OtherUserBloc/bloc.dart';
 import '../screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
@@ -8,6 +10,11 @@ class OtherProfileService {
   Future removeConnection({required OtherUserBloc otherUserBloc, required BuildContext context, required String otherUserID}) async {
     UserBloc.user?.connectionUserIDs.remove(otherUserID);
     otherUserBloc.add(RemoveConnectionEvent(otherUserID: otherUserID));
+
+    NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+    _notificationBloc.allNotificationList.removeWhere((element) => element.requestUserID == otherUserID);
+    _notificationBloc.add(TrigNotificationsNotExistEvent());
+
     Future.delayed(Duration.zero);
   }
 

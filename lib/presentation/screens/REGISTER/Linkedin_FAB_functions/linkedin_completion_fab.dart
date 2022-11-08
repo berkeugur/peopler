@@ -46,9 +46,6 @@ Future<void> linkedinCompletionFABFuncion(
 
           if (_connection == false) return;
 
-          /// DİKKAT
-          /// !!!!!!!!!!!!!!!   DELETE FOLLOWING LINE To ACTIVATE EDU !!!!!!!!!!!!!!!!!!!!! ///
-
           UserBloc.user = MyUser();
 
           UserBloc.user?.gender = getGenderText(selectedGender.value!);

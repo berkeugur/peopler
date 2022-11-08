@@ -16,7 +16,13 @@ class NewFeedsLoadingState extends FeedState {
   List<Object> get props => [];
 }
 
-class FeedsLoadedState extends FeedState {
+class FeedsLoaded1State extends FeedState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class FeedsLoaded2State extends FeedState {
   @override
   // TODO: implement props
   List<Object> get props => [];

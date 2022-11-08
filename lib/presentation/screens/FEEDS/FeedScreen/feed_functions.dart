@@ -126,7 +126,7 @@ Future<void> _showReportBottomSheet(
 ) async {
   await showModalBottomSheet(
       context: context,
-      backgroundColor: Color(0xFF0353EF),
+      backgroundColor: const Color(0xFF0353EF),
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -143,7 +143,7 @@ Future<void> _showReportBottomSheet(
               children: [
                 Container(
                   height: 5,
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width * 0.10,
                   decoration: BoxDecoration(
                     color: Colors.white,

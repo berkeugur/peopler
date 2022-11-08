@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +14,8 @@ class Connection {
   final String city;
   final String bio;
   final List<String> mutualConnectionsProfilePhotos;
-  Connection({required this.bio, required this.profilePhotoUrl, required this.fullName, required this.city, required this.mutualConnectionsProfilePhotos});
+  Connection(
+      {required this.bio, required this.profilePhotoUrl, required this.fullName, required this.city, required this.mutualConnectionsProfilePhotos});
 }
 
 int numberOfTotalConnections = 408;
@@ -477,16 +479,20 @@ Stack profilePhoto(BuildContext context, String _data) {
         ),
       ),
       SizedBox(
-        height: _photoSize(),
-        width: _photoSize(),
-        child: //_userBloc != null ?
-            CircleAvatar(
-          backgroundImage: NetworkImage(
-            _data,
-          ),
-          backgroundColor: Colors.transparent,
-        ),
-      ),
+          height: _photoSize(),
+          width: _photoSize(),
+          child: CachedNetworkImage(
+            imageUrl: _data,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
+          )),
     ],
   );
 }
@@ -526,7 +532,9 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
     width: _itemSize(),
     margin: EdgeInsets.only(left: _customMarginLeftValue()),
     decoration: BoxDecoration(
-      boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))],
+      boxShadow: <BoxShadow>[
+        BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(1.0, 0.75))
+      ],
       borderRadius: const BorderRadius.all(Radius.circular(999)),
       color: Colors.white, //Colors.orange,
     ),
@@ -545,16 +553,20 @@ Container mutualFriendProfilePhotoItem(BuildContext context, int index, String p
           ),
         ),
         Container(
-          height: _itemSize(),
-          width: _itemSize(),
-          child: //_userBloc != null ?
-              CircleAvatar(
-            backgroundImage: NetworkImage(
-              photoUrl,
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+            height: _itemSize(),
+            width: _itemSize(),
+            child: CachedNetworkImage(
+              imageUrl: photoUrl,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                ),
+              ),
+            )),
       ],
     ),
   );

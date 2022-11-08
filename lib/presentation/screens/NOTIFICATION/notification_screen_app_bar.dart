@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
+import '../../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/locator.dart';
@@ -32,8 +34,6 @@ class NotificationScreenFunctions {
   void pushConnectionRequestPage(context) {
     final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
     _homeScreen.navigatorKeys[TabItem.notifications]!.currentState!.pushNamed(NavigationConstants.INVITATIONS);
-
-    print("bağlantı isteklerinin gösterildiği sayfaya gider");
   }
 }
 

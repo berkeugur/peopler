@@ -8,6 +8,7 @@ import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
 import 'package:peopler/presentation/screens/TUTORIAL/constants.dart';
@@ -68,8 +69,6 @@ class FeedScreenState extends State<FeedScreen> {
       child: ValueListenableBuilder(
           valueListenable: setTheme,
           builder: (context, x, y) {
-            debugPrint("~~~~~~~~~~~~~~~~feed~~~~~~~~~~~~~~~");
-            debugPrint(Mode.isEnableDarkMode.toString());
             return Stack(
               children: [
                 Container(
@@ -86,7 +85,7 @@ class FeedScreenState extends State<FeedScreen> {
                       },
                       child: SingleChildScrollView(
                         controller: _scrollController,
-                        physics: const AlwaysScrollableScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -97,7 +96,10 @@ class FeedScreenState extends State<FeedScreen> {
                                   return _initialFeedsStateWidget();
                                 } else if (state is FeedNotExistState) {
                                   return _noFeedExistsWidget();
-                                } else if (state is FeedsLoadedState) {
+                                } else if (state is FeedsLoaded1State) {
+                                  loading = false;
+                                  return _showFeedsWidget();
+                                } else if (state is FeedsLoaded2State) {
                                   loading = false;
                                   return _showFeedsWidget();
                                 } else if (state is NoMoreFeedsState) {
@@ -269,28 +271,29 @@ class FeedScreenState extends State<FeedScreen> {
   }
 
   bool _listScrollListener() {
-    if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
-      if (Variables.animatedContainerHeight.value != 30) {
-        Variables.animatedAppBarHeight.value = 70;
+    if (ScrollAnimationsConstants().isActive(context, _scrollController)) {
+      if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedContainerHeight.value != 30) {
+          Variables.animatedAppBarHeight.value = 70;
 
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedContainerHeight.value = 30;
-        });
-      }
-    } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      if (Variables.animatedContainerHeight.value != 0) {
-        Variables.animatedContainerHeight.value = 0;
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedContainerHeight.value = 30;
+          });
+        }
+      } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedContainerHeight.value != 0) {
+          Variables.animatedContainerHeight.value = 0;
 
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedAppBarHeight.value = 0;
-        });
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedAppBarHeight.value = 0;
+          });
+        }
       }
     }
 
     var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
 
-    if(_scrollController.position.userScrollDirection ==  ScrollDirection.reverse &&
-        _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         debugPrint("hello");
@@ -316,7 +319,7 @@ class FeedScreenState extends State<FeedScreen> {
     return Column(
       children: [
         ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
           shrinkWrap: true,
           itemCount: _feedBloc.allFeedList.length,
           itemBuilder: (context, i) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
+import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import '../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../others/classes/variables.dart';
@@ -24,14 +25,17 @@ class NotificationScreenState extends State<NotificationScreen> {
   late ScrollController notificationsScreenScrollController;
   late final NotificationBloc _notificationBloc;
 
+  bool loading = false;
+  late final NewNotificationCubit _newNotificationCubit;
+
   @override
   void initState() {
     super.initState();
 
-    NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+    _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
 
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _notificationBloc.add(GetNotificationWithPaginationEvent(newNotificationCubit: _newNotificationCubit));
+    _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
     notificationsScreenScrollController = ScrollController();
   }
 
@@ -56,11 +60,13 @@ class NotificationScreenState extends State<NotificationScreen> {
                     child: Stack(
                       alignment: Alignment.topCenter,
                       children: [
-                        SizedBox(
+                        Container(
                           width: _maxWidth,
                           child: NotificationListener<ScrollNotification>(
                             onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
                             child: SingleChildScrollView(
+                              controller: notificationsScreenScrollController,
+                              physics: BouncingScrollPhysics(),
                               child: Column(
                                 children: [
                                   BlocBuilder<NotificationBloc, NotificationState>(
@@ -71,8 +77,10 @@ class NotificationScreenState extends State<NotificationScreen> {
                                       } else if (state is NotificationNotExistState) {
                                         return _noNotificationsExistsWidget(context);
                                       } else if (state is NotificationLoadedState1) {
+                                        loading = false;
                                         return _showNotifications(context);
                                       } else if (state is NotificationLoadedState2) {
+                                        loading = false;
                                         return _showNotifications(context);
                                       } else if (state is NoMoreNotificationState) {
                                         return _showNotifications(context);
@@ -107,36 +115,46 @@ class NotificationScreenState extends State<NotificationScreen> {
   }
 
   bool _listScrollListener() {
-    if (notificationsScreenScrollController.hasClients && notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
-      if (Variables.animatedNotificationHeaderBottom.value != 50) {
-        Variables.animatedNotificationsHeaderTop.value = 70;
+    if (ScrollAnimationsConstants().isActive(context, notificationsScreenScrollController)) {
+      if (notificationsScreenScrollController.hasClients &&
+          notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.forward) {
+        if (Variables.animatedNotificationHeaderBottom.value != 50) {
+          Variables.animatedNotificationsHeaderTop.value = 70;
 
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedNotificationHeaderBottom.value = 50;
-        });
-      }
-    } else if (notificationsScreenScrollController.hasClients && notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
-      if (Variables.animatedNotificationHeaderBottom.value != 0) {
-        Variables.animatedNotificationHeaderBottom.value = 0;
-        Future.delayed(const Duration(milliseconds: 450), () {
-          Variables.animatedNotificationsHeaderTop.value = 0;
-        });
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedNotificationHeaderBottom.value = 50;
+          });
+        }
+      } else if (notificationsScreenScrollController.hasClients &&
+          notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        if (Variables.animatedNotificationHeaderBottom.value != 0) {
+          Variables.animatedNotificationHeaderBottom.value = 0;
+          Future.delayed(const Duration(milliseconds: 450), () {
+            Variables.animatedNotificationsHeaderTop.value = 0;
+          });
+        }
       }
     }
+    var nextPageTrigger = 0.8 * notificationsScreenScrollController.position.maxScrollExtent;
+
+    if (notificationsScreenScrollController.position.userScrollDirection == ScrollDirection.reverse &&
+        notificationsScreenScrollController.position.pixels >= nextPageTrigger) {
+      if (loading == false) {
+        loading = true;
+        _notificationBloc.add(GetMoreNotificationEvent());
+      }
+    }
+
     return true;
   }
 
   SizedBox _showNotifications(context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
       child: ListView.builder(
-        controller: notificationsScreenScrollController,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.only(top: 70 + 50),
         itemCount: _notificationBloc.allNotificationList.length,
-        shrinkWrap: true,
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
         itemBuilder: (context, index) {
           return customListItem(index, context);
         },

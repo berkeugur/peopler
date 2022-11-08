@@ -13,41 +13,30 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final NotificationRepository _notificationRepository = locator<NotificationRepository>();
   final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
-  final List<Notifications> _allNotificationList = [];
+  static List<Notifications> _allNotificationList = [];
   List<Notifications> get allNotificationList => _allNotificationList;
 
   static Notifications? _lastSelectedNotification;
 
-  static const int _numberOfElements = 10;
   static StreamSubscription? _streamSubscription;
   static bool _newNotificationListenListener = false;
-  static bool _hasMore = true;
+
 
   NotificationBloc() : super(InitialNotificationState()) {
+    on<GetInitialNotificationEvent>((event, emit) async {
+      try {
+        emit(InitialNotificationState());
 
-    on<GetNotificationWithPaginationEvent>((event, emit) async {
-      if (_hasMore == false) {
-        emit(NoMoreNotificationState());
-      } else {
-        emit(NotificationsLoadingState());
+        _allNotificationList = [];
+        _notificationRepository.restartNotificationCache();
 
-        if (_allNotificationList.isNotEmpty) {
-          _lastSelectedNotification = _allNotificationList.last;
+        _lastSelectedNotification = null;
+        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification);
+        if(newNotificationList.isNotEmpty) {
+          _lastSelectedNotification = newNotificationList.last;
         }
 
-        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification, _numberOfElements);
-
-        if (newNotificationList.length < _numberOfElements) {
-          _hasMore = false;
-        }
-
-        /// If notification is not visible (if it is deleted by user before), then remove it from list
-        int newNotificationListLength = newNotificationList.length;
-        for(int i=0; i<newNotificationListLength; i++){
-            newNotificationList.removeWhere((item) => item.notificationVisible == false);
-        }
-
-        if(_allNotificationList.isNotEmpty) {
+        if (newNotificationList.isNotEmpty) {
           _allNotificationList.addAll(newNotificationList);
           if(state is NotificationLoadedState1) {
             emit(NotificationLoadedState2());
@@ -87,6 +76,36 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
           });
         }
+      } catch (e) {
+        debugPrint("Blocta initial Notificationhata:" + e.toString());
+      }
+    });
+
+    on<GetMoreNotificationEvent>((event, emit) async {
+      try {
+        emit(NotificationsLoadingState());
+
+        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification);
+        if(newNotificationList.isNotEmpty) {
+          _lastSelectedNotification = newNotificationList.last;
+        }
+
+        if (newNotificationList.isNotEmpty) {
+          _allNotificationList.addAll(newNotificationList);
+          if(state is NotificationLoadedState1) {
+            emit(NotificationLoadedState2());
+          } else {
+            emit(NotificationLoadedState1());
+          }
+        } else {
+          if (_allNotificationList.isNotEmpty) {
+            emit(NoMoreNotificationState());
+          } else {
+            emit(NotificationNotExistState());
+          }
+        }
+      } catch (e) {
+        debugPrint("Blocta get more data Notification hata:" + e.toString());
       }
     });
 
@@ -125,15 +144,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
     on<DeleteNotification>((event, emit) async {
       try {
-        int index = _allNotificationList.indexWhere((element) => element.notificationID == event.notificationID);
-        _allNotificationList.removeAt(index);
+        _allNotificationList.removeWhere((element) => element.notificationID == event.notificationID);
 
-        if(_allNotificationList.isEmpty) {
-          emit(NotificationNotExistState());
-        } else {
-          emit(NotificationsLoadingState());
-          emit(NotificationLoadedState1());
-        }
+        add(TrigNotificationsNotExistEvent());
 
         await _notificationRepository.makeNotificationInvisible(UserBloc.user!.userID, event.notificationID);
       } catch (e) {
@@ -146,17 +159,30 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
         _allNotificationList.removeWhere((element) => element.requestUserID == event.requestUserID);
 
-        if(_allNotificationList.isEmpty) {
-          emit(NotificationNotExistState());
-        } else {
-          emit(NotificationLoadedState1());
-        }
-        await _notificationRepository.deleteConnectionRequest(UserBloc.user!.userID, event.requestUserID);
+        add(TrigNotificationsNotExistEvent());
+        await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }
     });
+
+    on<TrigNotificationsNotExistEvent>((event, emit) async {
+      if (_allNotificationList.isEmpty) {
+        emit(NotificationNotExistState());
+      } else {
+        if (state is NotificationLoadedState1) {
+          emit(NotificationLoadedState2());
+        } else {
+          emit(NotificationLoadedState1());
+        }
+      }
+
+      if(_allNotificationList.length < 5) {
+        add(GetMoreNotificationEvent());
+      }
+    });
   }
+
 
   @override
   Future<void> close() async {

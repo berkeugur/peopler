@@ -30,16 +30,23 @@ class GetMoreSearchUsersCityEvent extends CityEvent {
 }
 
 class TrigUsersNotExistCityStateEvent extends CityEvent {
+  final String city;
+  TrigUsersNotExistCityStateEvent({
+    required this.city,
+  });
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [city];
 }
 
 class NewUserListenerEvent extends CityEvent {
   final MyUser myUser;
+  final String city;
   NewUserListenerEvent({
     required this.myUser,
+    required this.city,
   });
 
   @override
-  List<Object> get props => [myUser];
+  List<Object> get props => [myUser, city];
 }

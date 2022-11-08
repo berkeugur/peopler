@@ -1,10 +1,8 @@
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutterfire_ui/firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
@@ -16,6 +14,8 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+
+/*
 
 class FeedComments extends StatefulWidget {
   final MyFeed feed;
@@ -509,3 +509,5 @@ class _FeedCommentsState extends State<FeedComments> {
     );
   }
 }
+
+*/
