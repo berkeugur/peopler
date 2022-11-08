@@ -81,13 +81,17 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   "Profilini",
                                   textScaleFactor: 1,
                                   style: PeoplerTextStyle.normal.copyWith(
-                                      color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
+                                      color: const Color(0xFF000B21),
+                                      fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
+                                      fontWeight: FontWeight.w300),
                                 ),
                                 Text(
                                   "Oluşturalım",
                                   textScaleFactor: 1,
                                   style: PeoplerTextStyle.normal.copyWith(
-                                      color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
+                                      color: const Color(0xFF000B21),
+                                      fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
+                                      fontWeight: FontWeight.w300),
                                 ),
                                 SizedBox(
                                   height: screenHeight < 630 ? 30 : 60,
@@ -121,7 +125,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                           ? CachedNetworkImage(
                                               imageUrl: UserBloc.user?.profileURL ?? Strings.defaultNonBinaryProfilePhotoUrl,
                                               progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-                                                  borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                                  borderRadius: BorderRadius.circular(999),
+                                                  child: CircularProgressIndicator(value: downloadProgress.progress)),
                                               errorWidget: (context, url, error) => const Icon(Icons.camera_alt),
                                               imageBuilder: (context, imageProvider) => Container(
                                                 decoration: BoxDecoration(
@@ -161,7 +166,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 ),
                                 Center(
                                   child: Text(
-                                    "Kendini anlat",
+                                    "Hadi bize biraz kendinden bahset!",
                                     textScaleFactor: 1,
                                     style: PeoplerTextStyle.normal.copyWith(
                                         color: const Color(0xFF000B21),
@@ -214,18 +219,19 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             if (_userBloc.state == SignedInMissingInfoState()) {
               UserBloc.user?.missingInfo = false;
 
-              if(image != null) {
+              if (image != null) {
                 final UserRepository _userRepository = locator<UserRepository>();
-                String downloadLink =
-                await _userRepository.uploadFile(UserBloc.user!.userID, 'profile_photo', 'profile_photo.png', image!);
-                await _userRepository.updateProfilePhoto(UserBloc.user!.userID, downloadLink);
+                String downloadLink = await _userRepository
+                    .uploadFile(UserBloc.user!.userID, 'profile_photo', 'profile_photo.png', image!)
+                    .onError((error, stackTrace) => printf(error));
+                await _userRepository.updateProfilePhoto(UserBloc.user!.userID, downloadLink).onError((error, stackTrace) => printf(error));
                 UserBloc.user?.profileURL = downloadLink;
               }
 
               _userBloc.add(updateUserInfoForLinkedInEvent());
 
               final LocationRepository _locationRepository = locator<LocationRepository>();
-              LocationPermission _permission = await _locationRepository.checkPermissions();
+              LocationPermission _permission = await _locationRepository.checkPermissions().onError((error, stackTrace) => printf(error));
               if (_permission == LocationPermission.always) {
                 /// Set theme mode before Home Screen
                 SystemUIService().setSystemUIforThemeMode();
@@ -398,7 +404,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                   });
             },
             child: Text(
-              UserBloc.user?.city != "" ? UserBloc.user?.city ?? "null" : "Şehir Seçin",
+              UserBloc.user?.city != "" ? UserBloc.user?.city ?? "null" : " Yaşadığın yer neresi?",
               textScaleFactor: 1,
               style: PeoplerTextStyle.normal
                   .copyWith(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
@@ -428,7 +434,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
           hintMaxLines: 1,
           border: InputBorder.none,
-          hintText: 'Ahmetleri Severim',
+          hintText: """Gitar çalmayı severim, Boğaziçi'liyim.""",
           hintStyle: TextStyle(color: Color(0xFFB3CBFA), fontSize: 14),
         ),
         style: const TextStyle(color: Color(0xFFFFFFFF)),

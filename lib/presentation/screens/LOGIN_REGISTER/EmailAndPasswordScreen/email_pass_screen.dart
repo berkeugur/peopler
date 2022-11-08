@@ -142,7 +142,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                                         Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 40.0),
                                           child: Text(
-                                            "E-Mail Adresin",
+                                            "Doğrulama kodunu nereye gönderelim?",
                                             textScaleFactor: 1,
                                             style: PeoplerTextStyle.normal
                                                 .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
@@ -437,7 +437,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                           : false;
 
                   final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
-                  if(_remoteConfigService.isEduRemoteConfig()) {
+                  if (_remoteConfigService.isEduRemoteConfig()) {
                     _isEduDotTr = true;
                   }
 
@@ -449,8 +449,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
                   } else if (registerPasswordController.text != registerPasswordCheckController.text) {
                     SnackBars(context: context).simple("Girdiğiniz şifreler aynı değil!");
                   } else if (_isEduDotTr == false) {
-                    SnackBars(context: context).simple(
-                        "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
+                    SnackBars(context: context).simple("Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
                   } else {
                     SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
                   }

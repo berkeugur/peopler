@@ -19,7 +19,7 @@ Center buildTitle() {
       wpPeoplerTitle,
       style: GoogleFonts.spartan(
         color: const Color(0xFFFFFFFF),
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
         fontSize: 54,
       ),
     ),
@@ -31,11 +31,12 @@ Column buildButtons(BuildContext context) {
     children: [
       continueWithButton(
         context,
-        icon: SvgPicture.asset(
-          "assets/images/svg_icons/linkedin.svg",
-          width: 20,
-          height: 20,
-          fit: BoxFit.contain,
+        icon: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Image.asset(
+            "assets/auth/linkedin_auth.png",
+            fit: BoxFit.contain,
+          ),
         ),
         text: wpContinueWithLinkedin,
         onPressed: () {
@@ -47,7 +48,13 @@ Column buildButtons(BuildContext context) {
       ),
       continueWithButton(
         context,
-        icon: null,
+        icon: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Image.asset(
+            "assets/auth/edu_auth.png",
+            fit: BoxFit.contain,
+          ),
+        ),
         text: wpContinueWithUniversityEmail,
         onPressed: () {
           continueWithUniversityEmailOnPressed(context);
@@ -58,13 +65,14 @@ Column buildButtons(BuildContext context) {
       ),
       continueWithButton(
         context,
-        icon: SvgPicture.asset(
-          "assets/images/svg_icons/linkedin.svg",
-          width: 0,
-          height: 0,
-          fit: BoxFit.contain,
+        icon: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Image.asset(
+            "assets/auth/guest_auth.png",
+            fit: BoxFit.contain,
+          ),
         ),
-        text: "MİSAFİR",
+        text: wpContinueWithGuest,
         onPressed: () async {
           UserBloc.guestUser = MyUser();
 
@@ -80,11 +88,16 @@ Column buildButtons(BuildContext context) {
           }
         },
       ),
+      const SizedBox(
+        height: 20,
+      ),
+      continueText(context)
     ],
   );
 }
 
-Center continueWithButton(BuildContext context, {Color? backgroundColor, required Widget? icon, required String text, required VoidCallback onPressed}) {
+Center continueWithButton(BuildContext context,
+    {Color? backgroundColor, required Widget? icon, required String text, required VoidCallback onPressed}) {
   return Center(
     child: InkWell(
       borderRadius: BorderRadius.circular(99),
@@ -92,7 +105,7 @@ Center continueWithButton(BuildContext context, {Color? backgroundColor, require
       child: Container(
         width: 285,
         height: 43,
-        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+        padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
               Radius.circular(92),
@@ -123,6 +136,7 @@ Center continueWithButton(BuildContext context, {Color? backgroundColor, require
                 Text(
                   text,
                   textScaleFactor: 1,
+                  textAlign: TextAlign.center,
                   style: PeoplerTextStyle.normal.copyWith(color: backgroundColor != null ? Colors.white : Colors.black, fontSize: 15),
                 ),
               ],

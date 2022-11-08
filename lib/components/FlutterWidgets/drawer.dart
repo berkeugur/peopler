@@ -118,9 +118,6 @@ class _MenuPageState extends State<MenuPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const Divider(
-                    color: Colors.white,
-                  ),
                   const SizedBox(
                     height: 15,
                   ),
@@ -146,7 +143,7 @@ class _MenuPageState extends State<MenuPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "Etkinlikler Bölümü Deneme Aşamasındadır.",
+                                "Etkinlikler bölümünü senin için geliştiriyoruz.",
                                 textAlign: TextAlign.center,
                                 style: PeoplerTextStyle.normal.copyWith(
                                   fontSize: 18,
@@ -184,7 +181,7 @@ class _MenuPageState extends State<MenuPage> {
                                     vertical: 10,
                                   ),
                                   child: Text(
-                                    "E-Posta İle Haber Ver",
+                                    "E posta yoluyla haber al!",
                                     style: PeoplerTextStyle.normal.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w400,
@@ -213,7 +210,7 @@ class _MenuPageState extends State<MenuPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(
-                            Icons.arrow_forward_ios,
+                            Icons.tag,
                             color: Colors.white,
                             size: 25,
                           ),
