@@ -658,6 +658,7 @@ class _DrawerHomePageState extends State<DrawerHomePage> {
             borderRadius: 24.0,
             angle: 0,
             style: DrawerStyle.defaultStyle,
+            disableDragGesture: UserBloc.user != null ? false : true,
             // showShadow: true,
             openCurve: Curves.fastOutSlowIn,
             slideWidth: MediaQuery.of(context).size.width * 0.70,
