@@ -78,13 +78,6 @@ class search_peoples_header extends StatelessWidget {
         if (_cityNearbyButtons.isNearby == true) {
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.searchNearByScreen};
           _locationPermissionBloc.add(GetLocationPermissionEvent());
-
-          final LocationRepository _locationRepository = locator<LocationRepository>();
-          LocationPermission _permission = await _locationRepository.checkPermissions();
-          if (_permission == LocationPermission.whileInUse || _permission == LocationPermission.always) {
-            LocationBloc _locationBloc = BlocProvider.of<LocationBloc>(context);
-            _locationBloc.add(GetInitialSearchUsersEvent());
-          }
         } else {
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.searchCityScreen};
 
