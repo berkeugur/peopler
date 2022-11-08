@@ -59,7 +59,7 @@ howItWork(context) {
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               child: Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(
-                  "Aynı ortamı paylaştığınız insanları gördüğünüzde ve onları kaydettiğinizde, kaydettiğiniz insanları burada göreceksiniz. \n\nKaydettikten 1 gün sonra artık istek gönderebileceksiniz. \n\nUnutmayın kaydettiğiniz kullanıcılar kaydettikten 3 gün sonra silinir ve onlara istek göndermek için yalnızca 2 gününüz var! ",
+                  "Aynı ortamı paylaştığın insanlarla bağlantıya geçmen için işe biraz sihir kattık. \n\nBundan dolayı aynı ortamı paylaştığın insanları önce kaydetmelisin. \n\n6 saat sonra ise kaydettiğin kişilere kaydedilenler sayfasından ulaşıp bağlantıya geçebilirsin! Ama çabuk olmalısın, 2 gün içerisinde kaydettiğin kişiler silinir.",
                   textScaleFactor: 1,
                   style: PeoplerTextStyle.normal.copyWith(
                     color: Colors.white,

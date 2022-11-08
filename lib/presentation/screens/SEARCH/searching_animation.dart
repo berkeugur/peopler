@@ -25,7 +25,7 @@ class _SearchingCaseState extends State<SearchingCase> with SingleTickerProvider
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 3),
     );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
@@ -114,7 +114,7 @@ class _CustomAnimatedSearchIconState extends State<CustomAnimatedSearchIcon> {
           height: 60,
           width: 60,
           child: Animator<double>(
-            duration: const Duration(milliseconds: 1200),
+            duration: const Duration(milliseconds: 1800),
             cycles: 0,
             curve: Curves.easeInOut,
             tween: Tween<double>(begin: 0.0, end: 15.0),

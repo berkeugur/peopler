@@ -160,17 +160,17 @@ String _title({required EmptyListType emptyListType}) {
     case EmptyListType.citySearch:
       return "Şehrinizde gösterebileceğimiz birisi bulunmuyor.";
     case EmptyListType.emptyChannelList:
-      return "Mesaj listeniz boş.";
+      return "Mesaj listen boş.";
     case EmptyListType.emptyFeed:
       return "Feed listeniz boş.";
     case EmptyListType.emptyNotifications:
-      return "Bildirim listeniz boş.";
+      return "Bildirim sayfan boş.";
     case EmptyListType.incomingRequest:
-      return "Gelen bağlantı isteğiniz bulunmuyor.";
+      return "Gelen bağlantı isteğin bulunmuyor.";
     case EmptyListType.outgoingRequest:
-      return "Gönderilmiş bağlantı isteğiniz bulunmuyor.";
+      return "Gönderilmiş bağlantı isteğin bulunmuyor.";
     case EmptyListType.saved:
-      return "Kaydedilen kimse bulunmuyor.";
+      return "Kaydettiğin kimse bulunmuyor.";
     default:
       {
         return "error";
@@ -181,21 +181,21 @@ String _title({required EmptyListType emptyListType}) {
 String _explanation({required EmptyListType emptyListType}) {
   switch (emptyListType) {
     case EmptyListType.nearby:
-      return """Aynı ortamı paylaştığınız peopler kullanıcısı yok. Topluluğumuzu büyütmek için çalışmaya devam ediyoruz.""";
+      return """Aynı ortamı paylaştığın Peopler kullanıcısı bulamadık. Ancak hiç endişelenme topluluğumuzu büyütmeye devam ediyoruz!""";
     case EmptyListType.citySearch:
       return "En kısa sürede şehrinizde yeni peopler kullanıcıları olacağına eminiz. Lütfen daha sonra tekrar kontrol edin.";
     case EmptyListType.emptyChannelList:
-      return "Yeni insanlar ile mesajlaşmak için yeni bağlantılar edinin.";
+      return "İnsanlarla mesajlaşmak için yeni bağlantılar edin!";
     case EmptyListType.emptyFeed:
-      return "En kısa sürede yeni feedler paylaşılacağına eminiz. Lütfen daha sonra tekrar deneyin.";
+      return "Feed listen boş";
     case EmptyListType.emptyNotifications:
-      return "Bildirim listeniz boş.";
+      return "Hiç bildirimin bulunmuyor.";
     case EmptyListType.incomingRequest:
-      return "İlk adımı kendin atmaya ne dersiniz?";
+      return "Başkaları bu boş sayfayı görmesin istersen ilk adımı sen atabilirsin!";
     case EmptyListType.outgoingRequest:
-      return "Yeni insanlar ile tanışmak için keşfet, kaydet ve bağlantı isteği gönder.";
+      return "İnsanlarla yeni bağlantılar kurmak için arama kısmına gidebilir veya ana sayfadan düşüncelerini paylaşabilirsin.";
     case EmptyListType.saved:
-      return "Bağlantı isteği göndermek üzere kaydettiğiniz kimse bulunmuyor.";
+      return "Aynı ortamı paylaştığın insanları kaydettiğinde burada görüntülenir.";
     default:
       {
         return "error";

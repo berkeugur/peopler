@@ -8,9 +8,9 @@ class TutorialScreenStrings {
   ];
 
   static const List<String> description = [
-    "Peopler içerisinde, aynı ortamı paylaştığın insanlara kolayca baglantı istekleri göndebilirsin. \n\nBöylece aynı kafe veya ortam içerisinde bulunduğun insanlara rahatsızlık vermeden onlarla baglantı kurabilirsin. ",
-    "Sen izin vermeden aynı ortamı paylaştığın insanlara fotoğraflarını ve ismini göstermez. \n\nPeopler ile hayat, insanlarlar, deneyimler, kitaplar, yemekler hakkında hep daha fazlasını keşfet. ",
-    "Yakınında birileri yoksa düşüncelerini paylaşarak yeni insanların senle bağlantıya geçmesini sağlamak da fena fikir sayılmaz. :) \n\nFeed ekranı üzerinden düşüncelerini paylaşan diğer Peopler kullanıcılarını görüntüleyip direkt bağlantı isteği yollaman mümkün!"
+    "Peopler sayesinde aynı ortamı paylaştığın insanlara kolayca bağlantı isteği gönderebilirsin.",
+    "Peopler gizliliğini önemser. Kimseyle tam konumunu paylaşmaz. People uygulamasını kullanmayan kişiler seni göremez.",
+    "Düşüncelerini ana sayfa üzerinden rahatlıkla kelimelere dök.",
   ];
 
   static const List<String> localImagesSVG = [

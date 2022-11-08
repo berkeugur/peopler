@@ -13,8 +13,9 @@ import 'package:peopler/presentation/screens/REGISTER/register_normal_screens.da
 
 const String wpPeoplerTitle = "peopler";
 const String wpAreYouAlreadyMember = "Zaten üye misin?";
-const String wpContinueWithLinkedin = "LINKEDIN İLE DEVAM ET";
-const String wpContinueWithUniversityEmail = "ÜNİVERSİTE MAİLİ İLE DEVAM ET";
+const String wpContinueWithLinkedin = "Linkedin ile devam et";
+const String wpContinueWithUniversityEmail = "Üniversite maili ile devam et";
+const String wpContinueWithGuest = "Misafir Girişi";
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -31,9 +32,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: const Color(0xFF0353EF),
-      body: buildBody(screenWidth, context),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/auth/background.png"),
+          fit: BoxFit.fitHeight,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: buildBody(screenWidth, context),
+      ),
     );
   }
 
@@ -44,10 +53,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Column(
           children: [
             Expanded(
-              flex: 5,
+              flex: 8,
               child: buildTitle(),
             ),
-            Expanded(flex: 2, child: continueText(context)),
             Expanded(
               flex: 4,
               child: buildButtons(context),
@@ -56,148 +64,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               flex: 3,
               child: Column(
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      TextEditingController _controller = TextEditingController();
-                      showDialog(
-                        context: context,
-                        builder: (_ctx) {
-                          return AlertDialog(
-                            title: const Text("Bekleme Listesine Başvur"),
-                            content: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0353EF),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: TextFormField(
-                                onFieldSubmitted: (_) {
-                                  FocusScope.of(context).unfocus();
-                                },
-                                autofocus: true,
-                                keyboardType: TextInputType.emailAddress,
-                                cursorColor: Colors.white,
-                                maxLength: MaxLengthConstants.EMAIL,
-                                controller: _controller,
-                                textInputAction: TextInputAction.send,
-                                autocorrect: true,
-                                decoration: const InputDecoration(
-                                  counterText: "",
-                                  contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
-                                  hintMaxLines: 1,
-                                  border: InputBorder.none,
-                                  hintText: 'E-Posta Adresiniz',
-                                  hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
-                                ),
-                                style: const TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                ),
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("iptal"),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  if (_controller.text.isNotEmpty) {
-                                    await FirebaseFirestore.instance.collection("waitinglist").doc().set({
-                                      "email": _controller.text,
-                                      "createdAt": Timestamp.now(),
-                                    }).then((value) {
-                                      Navigator.of(context).pop();
-                                      showDialog(
-                                        context: context,
-                                        builder: (contextSD) => AlertDialog(
-                                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                                          contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
-                                          content: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
-                                                textAlign: TextAlign.center,
-                                                style: PeoplerTextStyle.normal.copyWith(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              const Divider(),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(999),
-                                                    color: Theme.of(context).primaryColor,
-                                                  ),
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 30,
-                                                    vertical: 10,
-                                                  ),
-                                                  child: Text(
-                                                    "TAMAM",
-                                                    style: PeoplerTextStyle.normal.copyWith(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.w400,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                  } else {
-                                    SnackBars(context: context).simple("boş bırakmayınız");
-                                  }
-                                },
-                                child: const Text("Başvur"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: const Text(
-                      "Bunlardan hiçbiri yok mu?",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Rubik",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
+                  buildWaitingList(context),
                   Visibility(
                     visible: WidgetVisibility.isNewRegisterScreensVisiable,
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LinkedinRegisterScreens(),
+                            builder: (context) => const LinkedinRegisterScreens(),
                           ));
                         },
-                        child: Text("yeni kayıt ekranları")),
+                        child: const Text("yeni kayıt ekranları")),
                   ),
                   areYouAlreadyMemberText(
                     onPressed: () {
@@ -208,6 +84,142 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildWaitingList(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        TextEditingController _controller = TextEditingController();
+        showDialog(
+          context: context,
+          builder: (_ctx) {
+            return AlertDialog(
+              title: const Text("Bekleme Listesine Başvur"),
+              content: Container(
+                alignment: Alignment.center,
+                height: 50,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0353EF),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).unfocus();
+                  },
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Colors.white,
+                  maxLength: MaxLengthConstants.EMAIL,
+                  controller: _controller,
+                  textInputAction: TextInputAction.send,
+                  autocorrect: true,
+                  decoration: const InputDecoration(
+                    counterText: "",
+                    contentPadding: EdgeInsets.fromLTRB(0, 13, 0, 10),
+                    hintMaxLines: 1,
+                    border: InputBorder.none,
+                    hintText: 'E-Posta Adresiniz',
+                    hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                  ),
+                  style: const TextStyle(
+                    color: Color(0xFFFFFFFF),
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("iptal"),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (_controller.text.isNotEmpty) {
+                      await FirebaseFirestore.instance.collection("waitinglist").doc().set({
+                        "email": _controller.text,
+                        "createdAt": Timestamp.now(),
+                      }).then((value) {
+                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (contextSD) => AlertDialog(
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                            contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
+                            content: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "En kısa sürede e-posta yoluyla iletişime geçeceğiz",
+                                  textAlign: TextAlign.center,
+                                  style: PeoplerTextStyle.normal.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Divider(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(999),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 30,
+                                      vertical: 10,
+                                    ),
+                                    child: Text(
+                                      "TAMAM",
+                                      style: PeoplerTextStyle.normal.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                    } else {
+                      SnackBars(context: context).simple("boş bırakmayınız");
+                    }
+                  },
+                  child: const Text("Başvur"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: const Text(
+        "Bunlardan hiçbiri yok mu?",
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
+          fontFamily: "Rubik",
+          fontStyle: FontStyle.normal,
+          fontSize: 16.0,
         ),
       ),
     );

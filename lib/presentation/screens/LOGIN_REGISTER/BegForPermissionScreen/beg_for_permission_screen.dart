@@ -64,7 +64,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                   dimension: 10,
                 ),
                 Text(
-                  "Bu uygulama kapalı olsa bile aynı ortamınızdaki insanları görüntüleyebilmeniz için ve onların da sizi görüntüleyebilmesi için konum bilginizi kullanır. \nTam konumun kimse ile paylaşılmaz.\n\nİzin veriyor musunuz? ",
+                  "Bu uygulama kapalı olsa bile aynı ortamındaki insanları görüntüleyebilmen için ve onların da seni görüntüleyebilmesi için konum bilgini kullanır. \nTam konumun kimse ile paylaşılmaz.\n\nİzin veriyor musunuz? ",
                   textScaleFactor: 1,
                   style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
                 ),

@@ -103,6 +103,7 @@ class _NearbyTabState extends State<NearbyTab> {
                       bloc: _locationPermissionBloc,
                       builder: (context, state) {
                         if (state is ReadyState) {
+                          _locationBloc.add(GetInitialSearchUsersEvent());
                           return Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
