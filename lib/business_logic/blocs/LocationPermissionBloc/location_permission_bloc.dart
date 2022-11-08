@@ -55,7 +55,7 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
         } else if (_permission == LocationPermission.whileInUse) {
           if(Platform.isAndroid) {
             /// When notification button clicked, open Permission Settings
-            await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!', Strings.permissionSettings);
+            await FCMAndLocalNotifications.showNotificationForLocationPermissions('Konum İzni', 'Aynı ortamındaki insanların seni düzgün bir şekilde görüntüleyebilmesi için konumunu her zaman kullanalım!', Strings.permissionSettings);
           } else if(Platform.isIOS) {
             await _locationRepository.requestPermission();
           }
@@ -65,11 +65,11 @@ class LocationPermissionBloc extends Bloc<LocationPermissionEvent, LocationPermi
 
         } else if(_permission == LocationPermission.denied){
           /// When notification button clicked, requestPermission dialog opens
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için Uygulamayı Kullanırken seçiniz.', Strings.requestPermission);
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('Konum İzni', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için Uygulamayı Kullanırken seçiniz.', Strings.requestPermission);
 
         } else if(_permission == LocationPermission.deniedForever ){
           /// When notification button clicked, open Permission Settings window because requestPermission does not run
-          await FCMAndLocalNotifications.showNotificationForLocationPermissions('İzin', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için ayarlardan Uygulamayı Kullanırken seçiniz.', Strings.permissionSettings);
+          await FCMAndLocalNotifications.showNotificationForLocationPermissions('Konum İzni', 'Yakınınızdaki kişileri bulabilmek veya onların sizi bulabilmesi için ayarlardan Uygulamayı Kullanırken seçiniz.', Strings.permissionSettings);
 
         } else if(_locationStatus == false){
           /// When notification button clicked, open Google's location setting dialog window.
