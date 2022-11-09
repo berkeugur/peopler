@@ -19,6 +19,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   static Set<String> unnecessaryUsers = {};
 
+  static bool busy = false;
+
   void findUnnecessaryUsersFromUserList() {
     unnecessaryUsers = {};
     unnecessaryUsers.add(UserBloc.user!.userID);
@@ -66,6 +68,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   /// getRefreshDataFuture function is used in this Refresh Indicator function.
   Future<void> getRefreshIndicatorData() async {
+    if(busy == true) return;
+    busy = true;
+
     try {
       int _latitude;
       int _longitude;
@@ -87,8 +92,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
       allUserList.addAll(userList);
       add(TrigUsersNotExistSearchStateEvent());
+      busy = false;
     } catch (e) {
       debugPrint("Blocta refresh event hata:" + e.toString());
+      busy = false;
     }
   }
 
@@ -97,6 +104,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     /**************************** NEARBY USERS ************************************************/
     /******************************************************************************************/
     on<GetInitialSearchUsersEvent>((event, emit) async {
+      if(busy == true) return;
+      busy = true;
+
       try {
         while (LocationUpdateBloc.firstUpdate == false) {
           await Future.delayed(const Duration(seconds: 1));
@@ -138,9 +148,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           _streamSubscription = _userRepository.getMyUserWithStream(UserBloc.user!.userID).listen((myUser) async {
             add(NewUserListenerEvent(myUser: myUser));
           });
+          busy = false;
+        } else {
+          busy = false;
         }
       } catch (e) {
         debugPrint("Blocta initial location hata:" + e.toString());
+        busy = false;
       }
     });
 
