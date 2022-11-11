@@ -6,6 +6,10 @@ class Strings {
   static const String redirectUrlLinkedIn = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_callback';
   static const String clientIDLinkedIn = '86y9muk6ijz659';
 
+  /// LinkedIn Parameters (From LinkedIn Developer Page)
+  static const String redirectUrlApple = 'https://peopler-2376c.firebaseapp.com/__/auth/handler';
+  static const String clientIDApple = '86y9muk6ijz659';
+
   /// Firebase Functions URl for recreate LinkedIn custom token
   static const String recreateCustomTokenUrl = 'https://us-central1-peopler-2376c.cloudfunctions.net/app/linkedin_recreate_token';
 

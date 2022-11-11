@@ -27,7 +27,6 @@ class UserRepository {
   final LocationRepository _locationRepository = locator<LocationRepository>();
   final FeedRepository _feedRepository = locator<FeedRepository>();
 
-
   Future<MyUser?> getCurrentUser() async {
     MyUser? currentUser = await _firebaseAuthService.getCurrentUser();
 
@@ -78,11 +77,10 @@ class UserRepository {
 
   Future<bool> saveUserToCityCollection(String userID, String city) async {
     try {
-
       int? lastArr = await _firestoreDBServiceUsers.readCity(city);
 
       /// If there is no city document named city
-      if(lastArr == null) {
+      if (lastArr == null) {
         /// Create a city and set lastArr to 0
         await _firestoreDBServiceUsers.setCity(userID, city);
 
@@ -95,6 +93,7 @@ class UserRepository {
       }
 
       List<String>? users = await _firestoreDBServiceUsers.readArrayUsers(city, lastArr);
+
       /// If the length of users registered in last_arr document is smaller than 100
       if (users.length < 100) {
         /// Update existing arr[x] document by adding userID
@@ -107,6 +106,7 @@ class UserRepository {
 
       /// Create a new arr[x] document
       lastArr = lastArr + 1;
+
       /// Update lastArr + 1 in city document
       await _firestoreDBServiceUsers.updateCity(userID, city);
 
@@ -155,6 +155,26 @@ class UserRepository {
         debugPrint('User created but cannot stored');
         return null;
       }
+
+      return await _firestoreDBServiceUsers.readUserPrivileged(currentUser.userID);
+    } on FirebaseAuthException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<MyUser?> signInWithApple() async {
+    try {
+      var currentUser = await _firebaseAuthService.signInWithApple();
+
+      if (currentUser == null) return null;
+      MyUser? result = await _firestoreDBServiceUsers.readUserPrivileged(currentUser.userID);
+
+      if (result != null) return result;
+
+      bool _result = await _firestoreDBServiceUsers.saveUser(currentUser);
+      if (_result == false) return null;
 
       return await _firestoreDBServiceUsers.readUserPrivileged(currentUser.userID);
     } on FirebaseAuthException {
@@ -298,7 +318,7 @@ class UserRepository {
     await _firestoreDBServiceUsers.deleteToken(myUser.userID);
 
     /// Sign-in recently is required to delete user
-    if(password != null) {
+    if (password != null) {
       await _firebaseAuthService.signInWithEmailAndPassword(myUser.email, password);
     } else {
       String? customToken = await _firebaseAuthService.recreateCustomToken(myUser.email);
