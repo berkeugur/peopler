@@ -198,6 +198,30 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
+    on<SignInWithAppleEvent>((event, emit) async {
+      try {
+        emit(SigningInState());
+        user = await _userRepository.signInWithApple();
+
+        if (user?.missingInfo == true) {
+          emit(SignedInMissingInfoState());
+        } else {
+          await signedInUserPreparations();
+          emit(SignedInState());
+        }
+      } on FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case "account-exists-with-different-credential":
+            emit(InvalidEmailState());
+            break;
+        }
+        debugPrint(e.code);
+        debugPrint(e.message);
+      } catch (e) {
+        debugPrint('$e');
+      }
+    });
+
     on<signInWithEmailandPasswordEvent>((event, emit) async {
       try {
         emit(SigningInState());

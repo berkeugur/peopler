@@ -99,6 +99,12 @@ class signInWithEmailandPasswordEvent extends UserEvent {
   List<Object> get props => [email, password];
 }
 
+class SignInWithAppleEvent extends UserEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
 class deleteUser extends UserEvent {
   String? password;
   deleteUser({this.password});
