@@ -59,6 +59,7 @@ Column buildButtons(BuildContext context) {
       ),
       GuestButton.style1(
         onTap: () async {
+          UserBloc.user = null;
           UserBloc.guestUser = MyUser();
 
           final LocationRepository _locationRepository = locator<LocationRepository>();
