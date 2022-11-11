@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
@@ -9,12 +10,14 @@ import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
-import 'package:peopler/presentation/screens/REGISTER/register_normal_screens.dart';
+import '../../../../business_logic/blocs/UserBloc/bloc.dart';
+import '../../../../core/constants/navigation/navigation_constants.dart';
 
 const String wpPeoplerTitle = "peopler";
 const String wpAreYouAlreadyMember = "Zaten üye misin?";
 const String wpContinueWithLinkedin = "Linkedin ile devam et";
 const String wpContinueWithUniversityEmail = "Üniversite maili ile devam et";
+const String wpContinueWithApple = "Apple Girişi";
 const String wpContinueWithGuest = "Misafir Girişi";
 
 class WelcomeScreen extends StatefulWidget {
@@ -32,18 +35,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/auth/background.png"),
-          fit: BoxFit.fitHeight,
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: buildBody(screenWidth, context),
-      ),
-    );
+    UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+    return BlocListener<UserBloc, UserState>(
+        bloc: _userBloc,
+        listener: (context, UserState state) {
+          if (state is SignedInState) {
+            /// Set theme mode before Home Screen
+            SystemUIService().setSystemUIforThemeMode();
+
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                NavigationConstants.HOME_SCREEN,
+                (Route<dynamic> route) => false);
+          } else if (state is SignedInMissingInfoState) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                NavigationConstants.GENDER_SELECT_SCREEN,
+                (Route<dynamic> route) => false);
+          }
+        },
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/auth/background.png"),
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: buildBody(screenWidth, context),
+          ),
+        ));
   }
 
   Center buildBody(double screenWidth, BuildContext context) {
@@ -70,7 +90,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const LinkedinRegisterScreens(),
+                            builder: (context) =>
+                                const LinkedinRegisterScreens(),
                           ));
                         },
                         child: const Text("yeni kayıt ekranları")),
@@ -125,7 +146,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     hintMaxLines: 1,
                     border: InputBorder.none,
                     hintText: 'E-Posta Adresiniz',
-                    hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                    hintStyle:
+                        TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
                   ),
                   style: const TextStyle(
                     color: Color(0xFFFFFFFF),
@@ -140,7 +162,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 TextButton(
                   onPressed: () async {
                     if (_controller.text.isNotEmpty) {
-                      await FirebaseFirestore.instance.collection("waitinglist").doc().set({
+                      await FirebaseFirestore.instance
+                          .collection("waitinglist")
+                          .doc()
+                          .set({
                         "email": _controller.text,
                         "createdAt": Timestamp.now(),
                       }).then((value) {
@@ -148,8 +173,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         showDialog(
                           context: context,
                           builder: (contextSD) => AlertDialog(
-                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
-                            contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(32.0))),
+                            contentPadding: const EdgeInsets.only(
+                                top: 25.0, bottom: 10, left: 25, right: 25),
                             content: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,6 +47,7 @@ Column buildButtons(BuildContext context) {
       const SizedBox(
         height: 20,
       ),
+      Platform.isAndroid ?
       continueWithButton(
         context,
         icon: Padding(
@@ -58,6 +60,19 @@ Column buildButtons(BuildContext context) {
         text: wpContinueWithUniversityEmail,
         onPressed: () {
           continueWithUniversityEmailOnPressed(context);
+        },
+      ) :       continueWithButton(
+        context,
+        icon: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Image.asset(
+            "assets/auth/edu_auth.png",
+            fit: BoxFit.contain,
+          ),
+        ),
+        text: wpContinueWithApple,
+        onPressed: () {
+          continueWithAppleOnPressed(context);
         },
       ),
       const SizedBox(

@@ -119,3 +119,8 @@ void continueWithUniversityEmailOnPressed(BuildContext context) {
   _userBloc.add(initializeMyUserEvent());
   Navigator.of(context).pushNamed(NavigationConstants.NAME_SCREEN);
 }
+
+void continueWithAppleOnPressed(BuildContext context) {
+  UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+  _userBloc.add(SignInWithAppleEvent());
+}
