@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/components/CustomWidgets/AUTH_BUTTONS/apple.dart';
+import 'package:peopler/components/CustomWidgets/AUTH_BUTTONS/edu.dart';
+import 'package:peopler/components/CustomWidgets/AUTH_BUTTONS/guest.dart';
+import 'package:peopler/components/CustomWidgets/AUTH_BUTTONS/linkedin.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import 'package:peopler/core/constants/app_platform.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
@@ -30,65 +35,30 @@ Center buildTitle() {
 Column buildButtons(BuildContext context) {
   return Column(
     children: [
-      continueWithButton(
-        context,
-        icon: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Image.asset(
-            "assets/auth/linkedin_auth.png",
-            fit: BoxFit.contain,
-          ),
-        ),
-        text: wpContinueWithLinkedin,
-        onPressed: () {
+      LinkedinButton.style1(
+        onTap: () {
           continueWithLinkedinButtonOnPressed(context);
         },
       ),
       const SizedBox(
         height: 20,
       ),
-      Platform.isAndroid ?
-      continueWithButton(
-        context,
-        icon: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Image.asset(
-            "assets/auth/edu_auth.png",
-            fit: BoxFit.contain,
-          ),
-        ),
-        text: wpContinueWithUniversityEmail,
-        onPressed: () {
-          continueWithUniversityEmailOnPressed(context);
-        },
-      ) :       continueWithButton(
-        context,
-        icon: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Image.asset(
-            "assets/auth/edu_auth.png",
-            fit: BoxFit.contain,
-          ),
-        ),
-        text: wpContinueWithApple,
-        onPressed: () {
-          continueWithAppleOnPressed(context);
-        },
-      ),
+      AppPlatform.isAndroid
+          ? EducationButton.style1(
+              onTap: () {
+                continueWithUniversityEmailOnPressed(context);
+              },
+            )
+          : AppleButton.style1(
+              onTap: () {
+                continueWithAppleOnPressed(context);
+              },
+            ),
       const SizedBox(
         height: 20,
       ),
-      continueWithButton(
-        context,
-        icon: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Image.asset(
-            "assets/auth/guest_auth.png",
-            fit: BoxFit.contain,
-          ),
-        ),
-        text: wpContinueWithGuest,
-        onPressed: () async {
+      GuestButton.style1(
+        onTap: () async {
           UserBloc.guestUser = MyUser();
 
           final LocationRepository _locationRepository = locator<LocationRepository>();

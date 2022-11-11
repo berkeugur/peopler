@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
@@ -79,7 +80,10 @@ void termOfUseTextOnPressed(BuildContext context) {
                     ValueListenableBuilder(
                         valueListenable: _progressPercent,
                         builder: (context, value, x) {
-                          return Text("%$_progressPercent yükleniyor.");
+                          return Text(
+                            "%$_progressPercent yükleniyor.",
+                            style: GoogleFonts.dmSans(color: Colors.black),
+                          );
                         }),
                   ],
                 ),

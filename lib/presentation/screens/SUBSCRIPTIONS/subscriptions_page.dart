@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import 'package:peopler/core/constants/app_platform.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscription_features.dart';
@@ -335,7 +336,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  if (Platform.isIOS)
+                  if (AppPlatform.isIOS)
                     Text(
                       SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
@@ -351,7 +352,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Platform.isIOS ? 14 : 16,
+                      fontSize: AppPlatform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -480,7 +481,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  if (Platform.isIOS)
+                  if (AppPlatform.isIOS)
                     Text(
                       SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
@@ -496,7 +497,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Platform.isIOS ? 14 : 16,
+                      fontSize: AppPlatform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -609,7 +610,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  if (Platform.isIOS)
+                  if (AppPlatform.isIOS)
                     Text(
                       SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
@@ -620,13 +621,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  if (Platform.isAndroid)
+                  if (AppPlatform.isAndroid)
                     Text(
                       SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.premium),
                       textScaleFactor: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: Platform.isIOS ? 14 : 16,
+                        fontSize: AppPlatform.isIOS ? 14 : 16,
                         color: _tabController.index == 0 ? const Color(0xFF0353EF) : Colors.white,
                         fontWeight: FontWeight.w500,
                       ),
@@ -842,7 +843,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  if (Platform.isIOS)
+                  if (AppPlatform.isIOS)
                     Text(
                       SubscriptionService().priceText(plan: SubscriptionPlan.sixMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
@@ -858,7 +859,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Platform.isIOS ? 14 : 16,
+                      fontSize: AppPlatform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -987,7 +988,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  if (Platform.isIOS)
+                  if (AppPlatform.isIOS)
                     Text(
                       SubscriptionService().priceText(plan: SubscriptionPlan.threeMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
@@ -1003,7 +1004,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Platform.isIOS ? 14 : 16,
+                      fontSize: AppPlatform.isIOS ? 14 : 16,
                       color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                       fontWeight: FontWeight.w500,
                     ),
@@ -1115,7 +1116,7 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                       ),
                     ],
                   ),
-                  if (Platform.isIOS)
+                  if (AppPlatform.isIOS)
                     Text(
                       SubscriptionService().priceText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
@@ -1126,13 +1127,13 @@ class _SubscriptionsPageState extends State<SubscriptionsPage> with SingleTicker
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  if (Platform.isAndroid)
+                  if (AppPlatform.isAndroid)
                     Text(
                       SubscriptionService().priceMonthlyText(plan: SubscriptionPlan.oneMonth, type: SubscriptionType.plus),
                       textScaleFactor: 1,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: Platform.isIOS ? 14 : 16,
+                        fontSize: AppPlatform.isIOS ? 14 : 16,
                         color: _tabController.index == 0 ? Mode().disabledBottomMenuItemAssetColor()! : Colors.white,
                         fontWeight: FontWeight.w500,
                       ),

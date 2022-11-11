@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+import 'package:peopler/core/constants/app_platform.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/core/system_ui_service.dart';
@@ -37,33 +37,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
     return BlocListener<UserBloc, UserState>(
-        bloc: _userBloc,
-        listener: (context, UserState state) {
-          if (state is SignedInState) {
-            /// Set theme mode before Home Screen
-            SystemUIService().setSystemUIforThemeMode();
+      bloc: _userBloc,
+      listener: (context, UserState state) {
+        if (state is SignedInState) {
+          /// Set theme mode before Home Screen
+          SystemUIService().setSystemUIforThemeMode();
 
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                NavigationConstants.HOME_SCREEN,
-                (Route<dynamic> route) => false);
-          } else if (state is SignedInMissingInfoState) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                NavigationConstants.GENDER_SELECT_SCREEN,
-                (Route<dynamic> route) => false);
-          }
-        },
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/auth/background.png"),
-              fit: BoxFit.fitHeight,
-            ),
-          ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: buildBody(screenWidth, context),
-          ),
-        ));
+          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+        } else if (state is SignedInMissingInfoState) {
+          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFF0353EF),
+        body: buildBody(screenWidth, context),
+      ),
+    );
   }
 
   Center buildBody(double screenWidth, BuildContext context) {
@@ -73,25 +62,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Column(
           children: [
             Expanded(
-              flex: 8,
+              flex: MediaQuery.of(context).size.height > 800
+                  ? 70
+                  : MediaQuery.of(context).size.height > 700
+                      ? 60
+                      : MediaQuery.of(context).size.height > 600
+                          ? 50
+                          : MediaQuery.of(context).size.height > 500
+                              ? 30
+                              : 20,
               child: buildTitle(),
             ),
             Expanded(
-              flex: 4,
+              flex: MediaQuery.of(context).size.height > 600 ? 45 : 40,
               child: buildButtons(context),
             ),
             Expanded(
-              flex: 3,
+              flex: MediaQuery.of(context).size.height > 600 ? 20 : 15,
               child: Column(
                 children: [
-                  buildWaitingList(context),
+                  if (AppPlatform.isAndroid) buildWaitingList(context),
                   Visibility(
                     visible: WidgetVisibility.isNewRegisterScreensVisiable,
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                const LinkedinRegisterScreens(),
+                            builder: (context) => const LinkedinRegisterScreens(),
                           ));
                         },
                         child: const Text("yeni kayıt ekranları")),
@@ -146,8 +142,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     hintMaxLines: 1,
                     border: InputBorder.none,
                     hintText: 'E-Posta Adresiniz',
-                    hintStyle:
-                        TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
+                    hintStyle: TextStyle(color: Color(0xFF9ABAF9), fontSize: 16),
                   ),
                   style: const TextStyle(
                     color: Color(0xFFFFFFFF),
@@ -162,10 +157,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 TextButton(
                   onPressed: () async {
                     if (_controller.text.isNotEmpty) {
-                      await FirebaseFirestore.instance
-                          .collection("waitinglist")
-                          .doc()
-                          .set({
+                      await FirebaseFirestore.instance.collection("waitinglist").doc().set({
                         "email": _controller.text,
                         "createdAt": Timestamp.now(),
                       }).then((value) {
@@ -173,11 +165,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         showDialog(
                           context: context,
                           builder: (contextSD) => AlertDialog(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(32.0))),
-                            contentPadding: const EdgeInsets.only(
-                                top: 25.0, bottom: 10, left: 25, right: 25),
+                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0))),
+                            contentPadding: const EdgeInsets.only(top: 25.0, bottom: 10, left: 25, right: 25),
                             content: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
