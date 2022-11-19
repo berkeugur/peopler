@@ -16,11 +16,6 @@ class NameScreen extends StatefulWidget {
 }
 
 class _NameScreenState extends State<NameScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   late double screenHeight;
   late double screenWidth;
   late double keyboardHeight;
@@ -30,7 +25,6 @@ class _NameScreenState extends State<NameScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
     keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
@@ -63,14 +57,14 @@ class _NameScreenState extends State<NameScreen> {
                     Text(
                       "Etrafındaki İnsanları",
                       textScaleFactor: 1,
-                      style: PeoplerTextStyle.normal
-                          .copyWith(color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
+                      style: PeoplerTextStyle.normal.copyWith(
+                          color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
                     ),
                     Text(
                       "Keşfet",
                       textScaleFactor: 1,
-                      style: PeoplerTextStyle.normal
-                          .copyWith(color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
+                      style: PeoplerTextStyle.normal.copyWith(
+                          color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 20 : 28, fontWeight: FontWeight.w300),
                     ),
                     SizedBox(
                       height: screenHeight < 630 ? 30 : 60,
