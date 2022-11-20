@@ -65,72 +65,70 @@ class FeedScreenState extends State<FeedScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     double paddingTopSafeArea = MediaQuery.of(context).padding.top;
 
-    return SafeArea(
-      child: ValueListenableBuilder(
-          valueListenable: setTheme,
-          builder: (context, x, y) {
-            return Stack(
-              children: [
-                Container(
-                  color: Mode().homeScreenScaffoldBackgroundColor(),
-                  height: screenHeight - paddingTopSafeArea - 50,
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-                    child: RefreshIndicator(
-                      color: const Color(0xFF0353EF),
-                      displacement: 120.0,
-                      onRefresh: () async {
-                        /// Refresh feeds
-                        await _feedBloc.getRefreshIndicatorData();
-                      },
-                      child: SingleChildScrollView(
-                        controller: _scrollController,
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            BlocBuilder<FeedBloc, FeedState>(
+    return ValueListenableBuilder(
+        valueListenable: setTheme,
+        builder: (context, x, y) {
+          return Stack(
+            children: [
+              Container(
+                color: Mode().homeScreenScaffoldBackgroundColor(),
+                height: screenHeight - paddingTopSafeArea - 50,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
+                  child: RefreshIndicator(
+                    color: const Color(0xFF0353EF),
+                    displacement: 120.0,
+                    onRefresh: () async {
+                      /// Refresh feeds
+                      await _feedBloc.getRefreshIndicatorData();
+                    },
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          BlocBuilder<FeedBloc, FeedState>(
+                            bloc: _feedBloc,
+                            builder: (context, state) {
+                              if (state is InitialFeedState) {
+                                return _initialFeedsStateWidget();
+                              } else if (state is FeedNotExistState) {
+                                return _noFeedExistsWidget();
+                              } else if (state is FeedsLoaded1State) {
+                                loading = false;
+                                return _showFeedsWidget();
+                              } else if (state is FeedsLoaded2State) {
+                                loading = false;
+                                return _showFeedsWidget();
+                              } else if (state is NoMoreFeedsState) {
+                                return _showFeedsWidget();
+                              } else if (state is NewFeedsLoadingState) {
+                                return _showFeedsWidget();
+                              } else {
+                                return const Text("Impossible");
+                              }
+                            },
+                          ),
+                          BlocBuilder<FeedBloc, FeedState>(
                               bloc: _feedBloc,
                               builder: (context, state) {
-                                if (state is InitialFeedState) {
-                                  return _initialFeedsStateWidget();
-                                } else if (state is FeedNotExistState) {
-                                  return _noFeedExistsWidget();
-                                } else if (state is FeedsLoaded1State) {
-                                  loading = false;
-                                  return _showFeedsWidget();
-                                } else if (state is FeedsLoaded2State) {
-                                  loading = false;
-                                  return _showFeedsWidget();
-                                } else if (state is NoMoreFeedsState) {
-                                  return _showFeedsWidget();
-                                } else if (state is NewFeedsLoadingState) {
-                                  return _showFeedsWidget();
+                                if (state is NewFeedsLoadingState && _feedBloc.allFeedList.length > 5) {
+                                  return _feedsLoadingCircularButton();
                                 } else {
-                                  return const Text("Impossible");
+                                  return const SizedBox.shrink();
                                 }
-                              },
-                            ),
-                            BlocBuilder<FeedBloc, FeedState>(
-                                bloc: _feedBloc,
-                                builder: (context, state) {
-                                  if (state is NewFeedsLoadingState && _feedBloc.allFeedList.length > 5) {
-                                    return _feedsLoadingCircularButton();
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
-                                }),
-                          ],
-                        ),
+                              }),
+                        ],
                       ),
                     ),
                   ),
                 ),
-                _buildAppBar(context, screenWidth, _scrollController),
-              ],
-            );
-          }),
-    );
+              ),
+              _buildAppBar(context, screenWidth, _scrollController),
+            ],
+          );
+        });
   }
 
   Column _buildAppBar(BuildContext context, double screenWidth, _scrollController) {
@@ -293,7 +291,8 @@ class FeedScreenState extends State<FeedScreen> {
 
     var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
 
-    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse &&
+        _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         debugPrint("hello");

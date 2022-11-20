@@ -83,60 +83,61 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       bloc: _homeScreen,
                       builder: (_, trig) {
                         return Scaffold(
-                          backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
-                          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                          floatingActionButton: const MyFloatingActionButtons(),
-                          body:
-                              /*
-                              PreloadPageView.builder(
-                                preloadPagesCount: 5,
-                                itemBuilder: (BuildContext context, int position) {
-                                  switch (position) {
-                                    case 1:
-                                      return FeedScreenNavigator(
-                                        feedListKey: feedListKey,
-                                      );
-                                    case 2:
-                                      return const NotificationScreenNavigator();
-                                    case 3:
-                                      return const SearchScreenNavigator();
-                                    case 4:
-                                      return const ChatScreenNavigator();
-                                    case 5:
-                                      return const ProfileScreenNavigator();
-                                    default:
-                                      return const ProfileScreenNavigator();
-                                  }
-                                },
-                                controller: _pageController,
-                                onPageChanged: (int position) {
-                                  _homeScreen.currentTab = TabItem.values[position];
-                                  _homeScreen.changeFloatingActionButtonEvent();
-                                },
-                              ),
-                               */
+                            backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
+                            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                            floatingActionButton: const MyFloatingActionButtons(),
+                            body:
+                                /*
+                                PreloadPageView.builder(
+                                  preloadPagesCount: 5,
+                                  itemBuilder: (BuildContext context, int position) {
+                                    switch (position) {
+                                      case 1:
+                                        return FeedScreenNavigator(
+                                          feedListKey: feedListKey,
+                                        );
+                                      case 2:
+                                        return const NotificationScreenNavigator();
+                                      case 3:
+                                        return const SearchScreenNavigator();
+                                      case 4:
+                                        return const ChatScreenNavigator();
+                                      case 5:
+                                        return const ProfileScreenNavigator();
+                                      default:
+                                        return const ProfileScreenNavigator();
+                                    }
+                                  },
+                                  controller: _pageController,
+                                  onPageChanged: (int position) {
+                                    _homeScreen.currentTab = TabItem.values[position];
+                                    _homeScreen.changeFloatingActionButtonEvent();
+                                  },
+                                ),
+                                 */
 
 
-                          IndexedStack(
-                            index: _homeScreen.currentTab.index,
-                            children: [
-                              FeedScreenNavigator(
-                                feedListKey: feedListKey,
-                              ),
-                              const NotificationScreenNavigator(),
-                              const SearchScreenNavigator(),
-                              const ChatScreenNavigator(),
-                              const ProfileScreenNavigator()
-                            ],
+                                IndexedStack(
+                              index: _homeScreen.currentTab.index,
+                              children: [
+                                FeedScreenNavigator(
+                                  feedListKey: feedListKey,
+                                ),
+                                const NotificationScreenNavigator(),
+                                const SearchScreenNavigator(),
+                                const ChatScreenNavigator(),
+                                const ProfileScreenNavigator()
+                              ],
+                            ),
+
+
+
+                            bottomNavigationBar: MyBottomNavigationBar(
+                                // Callback Function, when another tab is clicked, this method will run
+                                onBottomTabTapped: (index) {
+                              _buildOnBottomTabTapped(index);
+                            }),
                           ),
-
-
-
-                          bottomNavigationBar: MyBottomNavigationBar(
-                              // Callback Function, when another tab is clicked, this method will run
-                              onBottomTabTapped: (index) {
-                            _buildOnBottomTabTapped(index);
-                          }),
                         );
                       });
                 }),

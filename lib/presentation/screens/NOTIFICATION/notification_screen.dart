@@ -54,60 +54,58 @@ class NotificationScreenState extends State<NotificationScreen> {
           return BlocBuilder<ThemeCubit, bool>(
               bloc: _themeCubit,
               builder: (_, state) {
-                return SafeArea(
-                  child: Container(
-                    color: _mode.search_peoples_scaffold_background(),
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        Container(
-                          width: _maxWidth,
-                          child: NotificationListener<ScrollNotification>(
-                            onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-                            child: SingleChildScrollView(
-                              controller: notificationsScreenScrollController,
-                              physics: BouncingScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  BlocBuilder<NotificationBloc, NotificationState>(
+                return Container(
+                  color: _mode.search_peoples_scaffold_background(),
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      SizedBox(
+                        width: _maxWidth,
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
+                          child: SingleChildScrollView(
+                            controller: notificationsScreenScrollController,
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                BlocBuilder<NotificationBloc, NotificationState>(
+                                  bloc: _notificationBloc,
+                                  builder: (context, state) {
+                                    if (state is InitialNotificationState) {
+                                      return _initialNotificationsStateWidget(context);
+                                    } else if (state is NotificationNotExistState) {
+                                      return _noNotificationsExistsWidget(context);
+                                    } else if (state is NotificationLoadedState1) {
+                                      loading = false;
+                                      return _showNotifications(context);
+                                    } else if (state is NotificationLoadedState2) {
+                                      loading = false;
+                                      return _showNotifications(context);
+                                    } else if (state is NoMoreNotificationState) {
+                                      return _showNotifications(context);
+                                    } else if (state is NotificationsLoadingState) {
+                                      return _showNotifications(context);
+                                    } else {
+                                      return const Text("Impossible");
+                                    }
+                                  },
+                                ),
+                                BlocBuilder<NotificationBloc, NotificationState>(
                                     bloc: _notificationBloc,
                                     builder: (context, state) {
-                                      if (state is InitialNotificationState) {
-                                        return _initialNotificationsStateWidget(context);
-                                      } else if (state is NotificationNotExistState) {
-                                        return _noNotificationsExistsWidget(context);
-                                      } else if (state is NotificationLoadedState1) {
-                                        loading = false;
-                                        return _showNotifications(context);
-                                      } else if (state is NotificationLoadedState2) {
-                                        loading = false;
-                                        return _showNotifications(context);
-                                      } else if (state is NoMoreNotificationState) {
-                                        return _showNotifications(context);
-                                      } else if (state is NotificationsLoadingState) {
-                                        return _showNotifications(context);
+                                      if (state is NotificationsLoadingState) {
+                                        return _notificationsLoadingCircularButton();
                                       } else {
-                                        return const Text("Impossible");
+                                        return const SizedBox.shrink();
                                       }
-                                    },
-                                  ),
-                                  BlocBuilder<NotificationBloc, NotificationState>(
-                                      bloc: _notificationBloc,
-                                      builder: (context, state) {
-                                        if (state is NotificationsLoadingState) {
-                                          return _notificationsLoadingCircularButton();
-                                        } else {
-                                          return const SizedBox.shrink();
-                                        }
-                                      }),
-                                ],
-                              ),
+                                    }),
+                              ],
                             ),
                           ),
                         ),
-                        notificationScreenAppBar(context, notificationsScreenScrollController),
-                      ],
-                    ),
+                      ),
+                      notificationScreenAppBar(context, notificationsScreenScrollController),
+                    ],
                   ),
                 );
               });

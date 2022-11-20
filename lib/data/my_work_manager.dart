@@ -76,16 +76,10 @@ Future<bool> fetchBackgroundFunction() async {
 
   /// Firebase App Check
   /*
-  if(Platform.isAndroid) {
-    await FirebaseAppCheck.instance.activate(
-        webRecaptchaSiteKey: 'recaptcha-v3-site-key',
-        androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity
-    );
-  } else {
-    await FirebaseAppCheck.instance.activate(
-        webRecaptchaSiteKey: 'recaptcha-v3-site-key'
-    );
-  }
+  await FirebaseAppCheck.instance.activate(
+      webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+      androidProvider:
+          kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity);
    */
 
 
