@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
@@ -66,14 +64,18 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                   Text(
                     "Bulunabilir ol ve",
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal
-                        .copyWith(color: const Color(0xFF000B21), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
+                    style: PeoplerTextStyle.normal.copyWith(
+                        color: const Color(0xFF000B21),
+                        fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
+                        fontWeight: FontWeight.w300),
                   ),
                   Text(
                     "Bul",
                     textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal
-                        .copyWith(color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36, fontWeight: FontWeight.w300),
+                    style: PeoplerTextStyle.normal.copyWith(
+                        color: const Color(0xFF0353EF),
+                        fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
+                        fontWeight: FontWeight.w300),
                   ),
                   SizedBox(
                     height: screenHeight < 630 ? 30 : 60,
@@ -106,7 +108,10 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                         child: Text(
                           "Cinsiyetin ?",
                           textScaleFactor: 1,
-                          style: PeoplerTextStyle.normal.copyWith(color: Colors.black, fontSize: ResponsiveSize().gs2(context), fontWeight: FontWeight.w300),
+                          style: PeoplerTextStyle.normal.copyWith(
+                              color: Colors.black,
+                              fontSize: ResponsiveSize().gs2(context),
+                              fontWeight: FontWeight.w300),
                         ),
                       ),
                       SizedBox(

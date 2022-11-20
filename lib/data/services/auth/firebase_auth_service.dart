@@ -62,9 +62,11 @@ class FirebaseAuthService {
 
   Future<String?> recreateCustomToken(String email) async {
     try {
-      final response = await http.post(Uri.parse(Strings.recreateCustomTokenUrl), headers: {
-        'Content-Type': 'application/json',
-      }, body: jsonEncode({'emailAddress': email}));
+      final response = await http.post(Uri.parse(Strings.recreateCustomTokenUrl),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({'emailAddress': email}));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonReceived = json.decode(response.body);
@@ -78,7 +80,6 @@ class FirebaseAuthService {
       return null;
     }
   }
-
 
   Future<MyUser?> createUserWithEmailAndPassword(String email, String password) async {
     try {
@@ -139,10 +140,7 @@ class FirebaseAuthService {
 
       // Request credential for the currently signed in Apple account.
       final appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
+        scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
         nonce: nonce,
       );
 
@@ -152,8 +150,7 @@ class FirebaseAuthService {
         rawNonce: rawNonce,
       );
 
-      UserCredential result =
-      await _firebaseAuth.signInWithCredential(oauthCredential);
+      UserCredential result = await _firebaseAuth.signInWithCredential(oauthCredential);
       User? user = result.user;
       return _userFromFirebase(user);
     } on FirebaseAuthException {
@@ -177,7 +174,6 @@ class FirebaseAuthService {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
-
 
   Future<void> resetPassword(String email) async {
     try {

@@ -20,7 +20,9 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
   File? newProfileimage;
 
   _profilePhotoChangeImgFromCamera({required StateSetter stateSetter}) async {
-    await ImagePicker().pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20).then((value) {
+    await ImagePicker()
+        .pickImage(source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear, imageQuality: 20)
+        .then((value) {
       if (value != null) {
         profilePhotoEditChangeCrop(photo: File(value.path));
       }
@@ -51,7 +53,7 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
       setStateEditProfile.value = !setStateEditProfile.value;
     }).then((value) async {
       UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-      _userBloc.add(uploadProfilePhoto(imageFile: newProfileimage));
+      _userBloc.add(uploadProfilePhotoEvent(imageFile: newProfileimage));
       setStateEditProfile.value = !setStateEditProfile.value;
     });
   }
@@ -153,7 +155,8 @@ class _ProfilePhotoEditState extends State<ProfilePhotoEdit> {
                           width: 5,
                           color: Mode().search_peoples_scaffold_background() as Color,
                         )),
-                    child: CircleAvatar(backgroundColor: Color(0xFF0353EF).withOpacity(0.3), child: const Icon(Icons.photo_camera)),
+                    child: CircleAvatar(
+                        backgroundColor: Color(0xFF0353EF).withOpacity(0.3), child: const Icon(Icons.photo_camera)),
                   ),
                 ),
               ],

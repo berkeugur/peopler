@@ -15,7 +15,6 @@ void show_privacy_policy(BuildContext context) {
   ValueNotifier<int> _progressPercent = ValueNotifier(0);
   final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {Factory(() => EagerGestureRecognizer())};
 
-  UniqueKey _key = UniqueKey();
   showModalBottomSheet<void>(
     context: context,
     builder: (BuildContext context) {

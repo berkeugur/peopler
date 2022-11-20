@@ -1,11 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_event.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
 import 'package:peopler/data/model/user.dart';
-import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/others/functions/image_picker_functions.dart';
 import 'package:peopler/others/locator.dart';
 import 'package:peopler/presentation/screens/CONNECTIONS/connections_service.dart';
@@ -36,40 +34,52 @@ Future<void> completionFABFuncion(
   }
 
   if (displayNameController.text.isEmpty) {
-    await _animateToPage(0).then((value) => SnackBars(context: context).simple("İsim soyisim kısmını doldurmanız gereklidir."));
+    await _animateToPage(0)
+        .then((value) => SnackBars(context: context).simple("İsim soyisim kısmını doldurmanız gereklidir."));
   } else if (displayNameController.text.isNotEmpty && displayNameController.text.length < 5) {
-    await _animateToPage(0).then((value) => {SnackBars(context: context).simple("İsim soayisminiz 5 karakterden az olamaz")});
+    await _animateToPage(0)
+        .then((value) => {SnackBars(context: context).simple("İsim soayisminiz 5 karakterden az olamaz")});
   } else {
     if (selectedGender.value == null) {
       await _animateToPage(1).then((value) => {SnackBars(context: context).simple("Cinsiyetiniz Nedir?")});
     } else {
       if (biographyController.text.isEmpty) {
-        await _animateToPage(2).then((value) => SnackBars(context: context).simple("İsim soyisim kısmını doldurmanız gereklidir."));
+        await _animateToPage(2)
+            .then((value) => SnackBars(context: context).simple("İsim soyisim kısmını doldurmanız gereklidir."));
       } else {
         if (selecetCity.value == null) {
-          await _animateToPage(3).then((value) => SnackBars(context: context).simple("Şehir kısmını doldurmanız gereklidir."));
+          await _animateToPage(3)
+              .then((value) => SnackBars(context: context).simple("Şehir kısmını doldurmanız gereklidir."));
         } else {
           if (image != null) {
             if (emailController.text.isEmpty) {
-              await _animateToPage(4).then((value) => SnackBars(context: context).simple("E-posta adresinizi girmelisiniz."));
+              await _animateToPage(4)
+                  .then((value) => SnackBars(context: context).simple("E-posta adresinizi girmelisiniz."));
             } else if (emailController.text.length <= 7) {
-              _animateToPage(4).then((value) => SnackBars(context: context).simple("E-posta adresi 7 karakterden az olamaz"));
+              _animateToPage(4)
+                  .then((value) => SnackBars(context: context).simple("E-posta adresi 7 karakterden az olamaz"));
             } else {
               final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
               bool _connection = await _connectivityRepository.checkConnection(context);
 
               if (_connection == false) return;
-              bool _isEduDotTr = emailController.text.replaceAll(" ", "").toLowerCase().substring(emailController.text.length - 7) == ".edu.tr" ? true : false;
+              bool _isEduDotTr =
+                  emailController.text.replaceAll(" ", "").toLowerCase().substring(emailController.text.length - 7) ==
+                          ".edu.tr"
+                      ? true
+                      : false;
 
               final FirebaseRemoteConfigService _remoteConfigService = locator<FirebaseRemoteConfigService>();
-              if(_remoteConfigService.isEduRemoteConfig()) {
+              if (_remoteConfigService.isEduRemoteConfig()) {
                 _isEduDotTr = true;
               }
 
               if (passwordController.text.length < 6) {
-                _animateToPage(5).then((value) => SnackBars(context: context).simple("Şifreniz en az 6 karakterden oluşmalıdır."));
+                _animateToPage(5)
+                    .then((value) => SnackBars(context: context).simple("Şifreniz en az 6 karakterden oluşmalıdır."));
               } else if (_isEduDotTr == false) {
-                _animateToPage(4).then((value) => SnackBars(context: context).simple("Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!"));
+                _animateToPage(4).then((value) => SnackBars(context: context)
+                    .simple("Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!"));
               } else if (_isEduDotTr == true && passwordController.text.length >= 6) {
                 UserBloc.user = MyUser();
                 UserBloc.user?.displayName = displayNameController.text;
@@ -91,7 +101,7 @@ Future<void> completionFABFuncion(
 
                 /// Upload Profile Photo
                 if (image != null) {
-                  _userBloc.add(uploadProfilePhoto(imageFile: image!));
+                  _userBloc.add(uploadProfilePhotoEvent(imageFile: image!));
                 }
                 if (_isEduDotTr == true) {
                   _userBloc.add(createUserWithEmailAndPasswordEvent(
@@ -99,9 +109,9 @@ Future<void> completionFABFuncion(
                     password: passwordController.text,
                   ));
                 } else if (_isEduDotTr == false) {
-                  SnackBars(context: context)
-                      .simple("$_isEduDotTr ${emailController.text.replaceAll(" ", "").toLowerCase().substring(emailController.text.length - 7)}"
-                          "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
+                  SnackBars(context: context).simple(
+                      "$_isEduDotTr ${emailController.text.replaceAll(" ", "").toLowerCase().substring(emailController.text.length - 7)}"
+                      "Sadece .edu.tr uzantılı üniversite mailin ile kayıt olabilirsin!");
                 } else {
                   SnackBars(context: context).simple("Hata kodu #852585. Lütfen bize bildirin destek@peopler.app !");
                 }

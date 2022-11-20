@@ -35,10 +35,12 @@ Future<void> linkedinCompletionFABFuncion(
     await _animateToPage(0).then((value) => {SnackBars(context: context).simple("Cinsiyetiniz Nedir?")});
   } else {
     if (biographyController.text.isEmpty) {
-      await _animateToPage(1).then((value) => SnackBars(context: context).simple("Kendinizi tanıtan birkaç kelime ekleyin."));
+      await _animateToPage(1)
+          .then((value) => SnackBars(context: context).simple("Kendinizi tanıtan birkaç kelime ekleyin."));
     } else {
       if (selecetCity.value == null) {
-        await _animateToPage(2).then((value) => SnackBars(context: context).simple("Şehir kısmını doldurmanız gereklidir."));
+        await _animateToPage(2)
+            .then((value) => SnackBars(context: context).simple("Şehir kısmını doldurmanız gereklidir."));
       } else {
         if (image != null) {
           final ConnectivityRepository _connectivityRepository = locator<ConnectivityRepository>();
@@ -63,7 +65,7 @@ Future<void> linkedinCompletionFABFuncion(
 
           /// Upload Profile Photo
           if (image != null) {
-            _userBloc.add(uploadProfilePhoto(imageFile: image!));
+            _userBloc.add(uploadProfilePhotoEvent(imageFile: image!));
           }
 
           //email password  kontrolleri burada firebase e göre yapılacak

@@ -16,6 +16,7 @@ import '../CityBloc/city_bloc.dart';
 import '../LocationBloc/location_bloc.dart';
 import '../NotificationBloc/notification_bloc.dart';
 import 'bloc.dart';
+import 'dart:io';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository _userRepository = locator<UserRepository>();
@@ -55,9 +56,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     if (_userListener == false) {
       _userListener = true;
-      _streamSubscription = _userRepository
-          .getMyUserWithStream(UserBloc.user!.userID)
-          .listen((updatedUser) async {
+      _streamSubscription = _userRepository.getMyUserWithStream(UserBloc.user!.userID).listen((updatedUser) async {
         UserBloc.user!.fromPublicMap(updatedUser.toPublicMap());
       });
     }
@@ -82,25 +81,43 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     PurchaseApi.purchaserInfo = await Purchases.getCustomerInfo();
 
     final entitlements = PurchaseApi.purchaserInfo.entitlements.active.values.toList();
-    if(entitlements.isEmpty ) {
+    if (entitlements.isEmpty) {
       entitlement = SubscriptionTypes.free;
     } else {
       String entitlementIdentifier = entitlements[0].identifier.toString();
-      if(entitlementIdentifier == "plus") {
-        entitlement =  SubscriptionTypes.plus;
-      } else if(entitlementIdentifier == "premium") {
-        entitlement =  SubscriptionTypes.premium;
+      if (entitlementIdentifier == "plus") {
+        entitlement = SubscriptionTypes.plus;
+      } else if (entitlementIdentifier == "premium") {
+        entitlement = SubscriptionTypes.premium;
       } else {
-        entitlement =  SubscriptionTypes.free;
+        entitlement = SubscriptionTypes.free;
       }
     }
 
-    if(user == null) {
+    if (user == null) {
       return;
     }
 
-    if(adminUsers.contains(user!.email)) {
+    if (adminUsers.contains(user!.email)) {
       entitlement = SubscriptionTypes.admin;
+    }
+  }
+
+  Future<void> uploadProfilePhoto(File? imageFile) async {
+    if (imageFile != null) {
+      String downloadLink =
+          await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', imageFile);
+      await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
+      user?.profileURL = downloadLink;
+    } else {
+      if (user?.gender == 'Kadın') {
+        user?.profileURL = Strings.defaultFemaleProfilePhotoUrl;
+      } else if (user?.gender == 'Erkek') {
+        user?.profileURL = Strings.defaultMaleProfilePhotoUrl;
+      } else {
+        user?.profileURL = Strings.defaultNonBinaryProfilePhotoUrl;
+      }
+      await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
     }
   }
 
@@ -121,22 +138,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       user = MyUser();
     });
 
-    on<uploadProfilePhoto>((event, emit) async {
-      if (event.imageFile != null) {
-        String downloadLink =
-        await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', event.imageFile!);
-        await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
-        user?.profileURL = downloadLink;
-      } else {
-        if(user?.gender == 'Kadın') {
-          user?.profileURL = Strings.defaultFemaleProfilePhotoUrl;
-        } else if(user?.gender == 'Erkek'){
-          user?.profileURL = Strings.defaultMaleProfilePhotoUrl;
-        } else {
-          user?.profileURL = Strings.defaultNonBinaryProfilePhotoUrl;
-        }
-        await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
-      }
+    on<uploadProfilePhotoEvent>((event, emit) async {
+      await uploadProfilePhoto(event.imageFile);
     });
 
     on<checkUserSignedInEvent>((event, emit) async {
@@ -145,7 +148,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         user = await _userRepository.getCurrentUser().timeout(const Duration(seconds: 5));
 
         DateTime? _countDownFinishTime;
-        if(user != null) {
+        if (user != null) {
           _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
         }
 
@@ -337,7 +340,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
 
         /// If account is confirmed, then cancel timer
-        if(user?.isTheAccountConfirmed == true) {
+        if (user?.isTheAccountConfirmed == true) {
           _timer?.cancel();
         }
       });
@@ -370,7 +373,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       _streamSubscription?.cancel();
     }
 
-    if(_timer != null) {
+    if (_timer != null) {
       _timer?.cancel();
     }
     super.close();

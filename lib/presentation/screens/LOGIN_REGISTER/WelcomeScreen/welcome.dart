@@ -43,9 +43,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           /// Set theme mode before Home Screen
           SystemUIService().setSystemUIforThemeMode();
 
-          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
         } else if (state is SignedInMissingInfoState) {
-          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
+          if (UserBloc.user?.displayName == null || UserBloc.user?.displayName == '') {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(NavigationConstants.NAME_SCREEN, (Route<dynamic> route) => false);
+          } else {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
+          }
         }
       },
       child: Scaffold(

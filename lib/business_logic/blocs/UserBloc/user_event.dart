@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-
 @immutable
 abstract class UserEvent extends Equatable {}
 
@@ -79,10 +78,10 @@ class createUserWithEmailAndPasswordEvent extends UserEvent {
   List<Object> get props => [email, password];
 }
 
-class uploadProfilePhoto extends UserEvent {
+class uploadProfilePhotoEvent extends UserEvent {
   File? imageFile;
 
-  uploadProfilePhoto({required this.imageFile});
+  uploadProfilePhotoEvent({required this.imageFile});
 
   @override
 // TODO: implement props
