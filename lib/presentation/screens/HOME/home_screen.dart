@@ -59,7 +59,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _pageController = PreloadPageController(initialPage: _homeScreen.currentTab.index);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
 
-    if(UserBloc.user != null) {
+    if (UserBloc.user != null) {
       _savedBloc.add(GetInitialSavedUsersEvent(myUserID: UserBloc.user!.userID));
       FCMAndLocalNotifications().initializeFCMNotifications(context);
     }
@@ -83,11 +83,11 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       bloc: _homeScreen,
                       builder: (_, trig) {
                         return Scaffold(
-                            backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
-                            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                            floatingActionButton: const MyFloatingActionButtons(),
-                            body:
-                                /*
+                          backgroundColor: _mode.homeScreenScaffoldBackgroundColor(),
+                          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                          floatingActionButton: const MyFloatingActionButtons(),
+                          body:
+                              /*
                                 PreloadPageView.builder(
                                   preloadPagesCount: 5,
                                   itemBuilder: (BuildContext context, int position) {
@@ -116,28 +116,23 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 ),
                                  */
 
-
-                                IndexedStack(
-                              index: _homeScreen.currentTab.index,
-                              children: [
-                                FeedScreenNavigator(
-                                  feedListKey: feedListKey,
-                                ),
-                                const NotificationScreenNavigator(),
-                                const SearchScreenNavigator(),
-                                const ChatScreenNavigator(),
-                                const ProfileScreenNavigator()
-                              ],
-                            ),
-
-
-
-                            bottomNavigationBar: MyBottomNavigationBar(
-                                // Callback Function, when another tab is clicked, this method will run
-                                onBottomTabTapped: (index) {
-                              _buildOnBottomTabTapped(index);
-                            }),
+                              IndexedStack(
+                            index: _homeScreen.currentTab.index,
+                            children: [
+                              FeedScreenNavigator(
+                                feedListKey: feedListKey,
+                              ),
+                              const NotificationScreenNavigator(),
+                              const SearchScreenNavigator(),
+                              const ChatScreenNavigator(),
+                              const ProfileScreenNavigator()
+                            ],
                           ),
+                          bottomNavigationBar: MyBottomNavigationBar(
+                              // Callback Function, when another tab is clicked, this method will run
+                              onBottomTabTapped: (index) {
+                            _buildOnBottomTabTapped(index);
+                          }),
                         );
                       });
                 }),
@@ -154,37 +149,44 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     // _pageController.jumpToPage(_homeScreen.currentTab.index);
 
     /// When both currentTab and clicked tab are Feed tab button, trigger feed_list_screen scrollToTap
-    if (_oldTab == TabItem.feed && TabItem.values[index] == TabItem.feed && _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {
+    if (_oldTab == TabItem.feed &&
+        TabItem.values[index] == TabItem.feed &&
+        _homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen) {
       feedListKey.currentState!.scrollToTop();
       return;
     }
 
     /// When both currentTab and clicked tab are Notification tab button, and screen is mai notification screen
-    if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
+    if (_oldTab == TabItem.notifications &&
+        TabItem.values[index] == TabItem.notifications &&
+        _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
       NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
       NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
       _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
       return;
     }
 
-
     /// When both currentTab and clicked tab are Notification tab button, and screen is received invitations
-    if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsReceivedScreen) {
+    if (_oldTab == TabItem.notifications &&
+        TabItem.values[index] == TabItem.notifications &&
+        _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsReceivedScreen) {
       NotificationReceivedBloc _notificationReceivedBloc = BlocProvider.of<NotificationReceivedBloc>(context);
       _notificationReceivedBloc.add(GetInitialDataReceivedEvent());
       return;
     }
 
     /// When both currentTab and clicked tab are Notification tab button, and screen is transmitted invitations
-    if (_oldTab == TabItem.notifications && TabItem.values[index] == TabItem.notifications && _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsTransmittedScreen) {
+    if (_oldTab == TabItem.notifications &&
+        TabItem.values[index] == TabItem.notifications &&
+        _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.invitationsTransmittedScreen) {
       NotificationTransmittedBloc _notificationTransmittedBloc = BlocProvider.of<NotificationTransmittedBloc>(context);
       _notificationTransmittedBloc.add(GetInitialDataTransmittedEvent());
       return;
     }
 
-
     /// When clicked tab is Search tab button, and screen item is nearbyUsers, then check for permissions (and location setting)
-    if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
+    if (TabItem.values[index] == TabItem.search &&
+        _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
       _locationPermissionBloc.add(GetLocationPermissionEvent());
 
       final LocationRepository _locationRepository = locator<LocationRepository>();
@@ -197,14 +199,16 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
 
     /// When clicked tab is Search tab button, and screen item is cityUsers, then trig City Bloc
-    if (TabItem.values[index] == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
+    if (TabItem.values[index] == TabItem.search &&
+        _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
       _cityBloc.add(GetInitialSearchUsersCityEvent(city: UserBloc.user!.city));
       return;
     }
   }
 
   Future<bool> _buildWillPopScope() async {
-    if ([ScreenItem.invitationsReceivedScreen, ScreenItem.invitationsTransmittedScreen].contains(_homeScreen.currentScreen[_homeScreen.currentTab])) {
+    if ([ScreenItem.invitationsReceivedScreen, ScreenItem.invitationsTransmittedScreen]
+        .contains(_homeScreen.currentScreen[_homeScreen.currentTab])) {
       _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};
       _homeScreen.changeFloatingActionButtonEvent();
       return !await _homeScreen.navigatorKeys[_homeScreen.currentTab]!.currentState!.maybePop();
