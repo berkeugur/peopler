@@ -119,6 +119,8 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                       genderItem(context, genderText: "Erkek", stateSetter: setState),
                       SizedBox(height: screenHeight < 580 ? 5 : 10),
                       genderItem(context, genderText: "Diğer", stateSetter: setState),
+                      SizedBox(height: screenHeight < 580 ? 5 : 10),
+                      genderItem(context, genderText: "Belirtmek İstemiyorum", stateSetter: setState),
                     ],
                   ),
                 ],
