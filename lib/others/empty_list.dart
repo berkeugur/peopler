@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/SAVED/how_it_work.dart';
@@ -211,7 +210,6 @@ class EmptyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Mode _mode = locator<Mode>();
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return ValueListenableBuilder(
         valueListenable: setTheme,

@@ -154,7 +154,6 @@ class FeedScreenState extends State<FeedScreen> {
     if (_scrollController.position.axisDirection == AxisDirection.down && _scrollController.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        debugPrint("hello");
         _feedBloc.add(GetMoreDataEvent());
       }
     }

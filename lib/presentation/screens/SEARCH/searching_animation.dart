@@ -51,7 +51,7 @@ class _SearchingCaseState extends State<SearchingCase> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    widget.height == null ? widget.height = MediaQuery.of(context).size.height : null;
+    widget.height == null ? widget.height = MediaQuery.of(context).size.height - 100 : null;
     widget.width == null ? widget.width = MediaQuery.of(context).size.width : null;
     return SizedBox(
       height: widget.height,

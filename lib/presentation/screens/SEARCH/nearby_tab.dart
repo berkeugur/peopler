@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
@@ -11,12 +10,12 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
-import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import 'package:peopler/core/constants/svg_paths/svg_paths.dart';
 import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/others/empty_list.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
+import 'package:peopler/presentation/screens/SEARCH/seach_peoples_header.dart';
 import 'package:peopler/presentation/screens/SEARCH/searching_animation.dart';
 import 'package:provider/provider.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
@@ -24,7 +23,6 @@ import '../../../data/model/saved_user.dart';
 import '../../../data/send_notification_service.dart';
 import '../../../data/services/db/firestore_db_service_users.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
-import '../../../others/classes/variables.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
 import '../../../others/widgets/snack_bars.dart';
@@ -71,8 +69,6 @@ class _NearbyTabState extends State<NearbyTab> {
   @override
   void initState() {
     super.initState();
-
-    _searchPeopleListControllerNearby = ScrollController();
   }
 
   @override
@@ -84,90 +80,124 @@ class _NearbyTabState extends State<NearbyTab> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: SizedBox(
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-                child: RefreshIndicator(
-                  color: const Color(0xFF0353EF),
-                  displacement: 80.0,
-                  onRefresh: () async {
-                    /// Refresh users
-                    await _locationBloc.getRefreshIndicatorData();
-                  },
-                  child: SingleChildScrollView(
-                    controller: _searchPeopleListControllerNearby,
-                    physics: const BouncingScrollPhysics(),
-                    child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
-                      bloc: _locationPermissionBloc,
-                      builder: (context, state) {
-                        if (state is ReadyState) {
-                          _locationBloc.add(GetInitialSearchUsersEvent());
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              BlocBuilder<LocationBloc, LocationState>(
-                                key: widget.showWidgetsKeyNearby,
-                                bloc: _locationBloc,
-                                builder: (context, state) {
-                                  if (state is InitialSearchState) {
-                                    // return _initialUsersStateWidget();
-                                    SystemUIService().setSystemUIforThemeMode();
-                                    return SearchingCase();
-                                  } else if (state is UsersNotExistSearchState) {
-                                    return const EmptyList(
-                                      emptyListType: EmptyListType.nearby,
-                                      isSVG: false,
-                                    );
-                                  } else if (state is UsersLoadedSearch1State) {
-                                    loading = false;
-                                    return _showUsers(widget.size);
-                                  } else if (state is UsersLoadedSearch2State) {
-                                    loading = false;
-                                    return _showUsers(widget.size);
-                                  } else if (state is NoMoreUsersSearchState) {
-                                    return _showUsers(widget.size);
-                                  } else if (state is NewUsersLoadingSearchState) {
-                                    return _showUsers(widget.size);
-                                  } else {
-                                    return const Text("Impossible");
-                                  }
-                                },
-                              ),
-                              BlocBuilder<LocationBloc, LocationState>(
-                                  bloc: _locationBloc,
-                                  builder: (context, state) {
-                                    if (state is NewUsersLoadingSearchState && LocationBloc.allUserList.length > 4) {
-                                      return _usersLoadingCircularButton();
-                                    } else {
-                                      return const SizedBox.shrink();
-                                    }
-                                  }),
-                            ],
-                          );
-                        } else if (state is NoLocationState) {
-                          return _noLocationWidget();
-                        } else if (state is NoPermissionState) {
-                          return _noPermissionWidget();
-                        } else if (state is NoPermissionClickSettingsState) {
-                          return _noPermissionRefreshWidget();
-                        } else {
-                          return const Text("Impossible");
-                        }
-                      },
-                    ),
-                  ),
+          return NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
+              return <Widget>[
+                SliverOverlapAbsorber(
+                  // This widget takes the overlapping behavior of the SliverAppBar,
+                  // and redirects it to the SliverOverlapInjector below. If it is
+                  // missing, then it is possible for the nested "inner" scroll view
+                  // below to end up under the SliverAppBar even when the inner
+                  // scroll view thinks it has not been scrolled.
+                  // This is not necessary if the "headerSliverBuilder" only builds
+                  // widgets that do not overlap the next sliver.
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: MySearchScreenAppBar(),
                 ),
-              ),
-            ),
+              ];
+            },
+            body: Builder(
+                // This Builder is needed to provide a BuildContext that is "inside"
+                // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+                // find the NestedScrollView.
+                builder: (BuildContext context) {
+              _searchPeopleListControllerNearby = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+              if (_searchPeopleListControllerNearby.hasListeners == false) {
+                _searchPeopleListControllerNearby.addListener(_listScrollListener);
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  /// Refresh users
+                  await _locationBloc.getRefreshIndicatorData();
+                },
+                child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
+                  bloc: _locationPermissionBloc,
+                  builder: (context, state) {
+                    if (state is ReadyState) {
+                      _locationBloc.add(GetInitialSearchUsersEvent());
+                      return CustomScrollView(
+                        // The controller must be the inner controller of nested scroll view widget.
+                        controller: _searchPeopleListControllerNearby,
+                        slivers: <Widget>[
+                          SliverOverlapInjector(
+                            // This is the flip side of the SliverOverlapAbsorber above.
+                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                          ),
+                          BlocBuilder<LocationBloc, LocationState>(
+                            key: widget.showWidgetsKeyNearby,
+                            bloc: _locationBloc,
+                            builder: (context, state) {
+                              if (state is InitialSearchState) {
+                                // return _initialUsersStateWidget();
+                                SystemUIService().setSystemUIforThemeMode();
+                                return SliverToBoxAdapter(child: SearchingCase());
+                              } else if (state is UsersNotExistSearchState) {
+                                return const SliverToBoxAdapter(
+                                  child: EmptyList(
+                                    emptyListType: EmptyListType.nearby,
+                                    isSVG: false,
+                                  ),
+                                );
+                              } else if (state is UsersLoadedSearch1State) {
+                                loading = false;
+                                return _showUsers(widget.size);
+                              } else if (state is UsersLoadedSearch2State) {
+                                loading = false;
+                                return _showUsers(widget.size);
+                              } else if (state is NoMoreUsersSearchState) {
+                                return _showUsers(widget.size);
+                              } else if (state is NewUsersLoadingSearchState) {
+                                return _showUsers(widget.size);
+                              } else {
+                                return const Text("Impossible");
+                              }
+                            },
+                          ),
+                          BlocBuilder<LocationBloc, LocationState>(
+                              bloc: _locationBloc,
+                              builder: (context, state) {
+                                if (state is NewUsersLoadingSearchState && LocationBloc.allUserList.length > 4) {
+                                  return _usersLoadingCircularButton();
+                                } else {
+                                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                                }
+                              }),
+                        ],
+                      );
+                    } else {
+                      Widget _widget;
+
+                      if (state is NoLocationState) {
+                        _widget = _noLocationWidget();
+                      } else if (state is NoPermissionState) {
+                        _widget = _noPermissionWidget();
+                      } else if (state is NoPermissionClickSettingsState) {
+                        _widget = _noPermissionRefreshWidget();
+                      } else {
+                        _widget = const Text("Impossible");
+                      }
+
+                      return CustomScrollView(
+                          // The controller must be the inner controller of nested scroll view widget.
+                          controller: _searchPeopleListControllerNearby,
+                          slivers: <Widget>[
+                            SliverOverlapInjector(
+                              // This is the flip side of the SliverOverlapAbsorber above.
+                              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                            ),
+                            _widget
+                          ]);
+                    }
+                  },
+                ),
+              );
+            }),
           );
         });
   }
 
-  SizedBox _noLocationWidget() {
-    return SizedBox(
-      height: MediaQuery.of(widget.context).size.height,
+  SliverToBoxAdapter _noLocationWidget() {
+    return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -204,10 +234,9 @@ class _NearbyTabState extends State<NearbyTab> {
     );
   }
 
-  Center _noPermissionWidget() {
-    return Center(
-      child: SizedBox(
-        height: MediaQuery.of(widget.context).size.height - 50,
+  SliverToBoxAdapter _noPermissionWidget() {
+    return SliverToBoxAdapter(
+      child: Center(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(
@@ -281,9 +310,8 @@ class _NearbyTabState extends State<NearbyTab> {
     );
   }
 
-  SizedBox _noPermissionRefreshWidget() {
-    return SizedBox(
-      height: MediaQuery.of(widget.context).size.height,
+  SliverToBoxAdapter _noPermissionRefreshWidget() {
+    return SliverToBoxAdapter(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         const Center(
           child: Text(
@@ -303,38 +331,25 @@ class _NearbyTabState extends State<NearbyTab> {
     );
   }
 
-  Padding _usersLoadingCircularButton() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(children: const [
-        Expanded(flex: 5, child: SizedBox()),
-        Flexible(flex: 1, child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator())),
-        Expanded(flex: 5, child: SizedBox()),
-      ]),
+  SliverToBoxAdapter _usersLoadingCircularButton() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(children: const [
+          Expanded(flex: 5, child: SizedBox()),
+          Flexible(flex: 1, child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator())),
+          Expanded(flex: 5, child: SizedBox()),
+        ]),
+      ),
     );
   }
 
-  ListView _showUsers(Size _size) {
+  SliverList _showUsers(Size _size) {
     int _listLength = LocationBloc.allUserList.length;
     if (_size.width < 335) {
-      return ListView.builder(
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          padding: EdgeInsets.only(
-            top: 70,
-            left: _size.width > 320
-                ? 60
-                : _size.width > 280
-                    ? 45
-                    : 25,
-            right: _size.width > 320
-                ? 60
-                : _size.width > 280
-                    ? 45
-                    : 25,
-          ),
-          itemCount: _listLength,
-          itemBuilder: (BuildContext context, int index) {
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
@@ -354,14 +369,14 @@ class _NearbyTabState extends State<NearbyTab> {
                 ],
               ),
             );
-          });
+          },
+          childCount: _listLength,
+        ),
+      );
     } else {
-      return ListView.builder(
-          shrinkWrap: true,
-          padding: const EdgeInsets.only(top: 70),
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
-          itemBuilder: (BuildContext context, int index) {
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
             int _leftSideIndex = index * 2;
             int _rightSideIndex = _leftSideIndex + 1;
 
@@ -410,7 +425,10 @@ class _NearbyTabState extends State<NearbyTab> {
                 ],
               ),
             );
-          });
+          },
+          childCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
+        ),
+      );
     }
   }
 
@@ -736,27 +754,12 @@ class _NearbyTabState extends State<NearbyTab> {
   }
 
   bool _listScrollListener() {
-    if (ScrollAnimationsConstants().isActive(context, _searchPeopleListControllerNearby)) {
-      if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.forward) {
-        if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-          Variables.animatedSearchPeopleHeaderHeight.value = 80;
-          // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-          // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-        }
-      } else if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse) {
-        if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-          Variables.animatedSearchPeopleHeaderHeight.value = 0;
-          // print("reverse $ach");
-        }
-      }
-    }
     var nextPageTrigger = 0.8 * _searchPeopleListControllerNearby.position.maxScrollExtent;
 
-    if (_searchPeopleListControllerNearby.position.userScrollDirection == ScrollDirection.reverse &&
+    if (_searchPeopleListControllerNearby.position.axisDirection == AxisDirection.down &&
         _searchPeopleListControllerNearby.position.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        debugPrint("hello");
         _locationBloc.add(GetMoreSearchUsersEvent());
       }
     }

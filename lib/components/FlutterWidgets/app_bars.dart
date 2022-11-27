@@ -17,7 +17,7 @@ import '../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 
 class PEOPLER_TITLE extends StatelessWidget {
-  PEOPLER_TITLE({
+  const PEOPLER_TITLE({
     Key? key,
   }) : super(key: key);
 
@@ -33,8 +33,25 @@ class PEOPLER_TITLE extends StatelessWidget {
   }
 }
 
+class NOTIFICATION_TITLE extends StatelessWidget {
+  const NOTIFICATION_TITLE({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+      child: Text(
+        "Bildirimler",
+        style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 32),
+      ),
+    );
+  }
+}
+
 class DRAWER_MENU_ICON extends StatelessWidget {
-  DRAWER_MENU_ICON({
+  const DRAWER_MENU_ICON({
     Key? key,
   }) : super(key: key);
 
@@ -182,40 +199,6 @@ class PeoplerAppBars {
       }),
       centerTitle: true,
       title: PEOPLER_TITLE(),
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  CHANNEL_LIST() {
-    return AppBar(
-      centerTitle: true,
-      title: PEOPLER_TITLE(),
-      backgroundColor: Colors.transparent,
-      shadowColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  MYPROFILE({void Function()? titleFunction, void Function()? leadingFunction}) {
-    return AppBar(
-      leading: DRAWER_MENU_ICON(),
-      centerTitle: true,
-      title: PEOPLER_TITLE(),
-      backgroundColor: Colors.transparent,
-      shadowColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  NOTIFICATION() {
-    return AppBar(
-      toolbarHeight: Variables.animatedNotificationsHeaderTop.value,
-      title: _TITLE(title: "Bildirimler"),
-      backgroundColor: Colors.transparent,
-      shadowColor: Colors.transparent,
-      automaticallyImplyLeading: false,
     );
   }
 

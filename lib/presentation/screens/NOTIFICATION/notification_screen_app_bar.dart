@@ -37,77 +37,81 @@ class NotificationScreenFunctions {
   }
 }
 
-Column notificationScreenAppBar(BuildContext context, _scrollController) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      notificationScreenTopAppBar(_scrollController),
-      notificationScreenBottomAppBar(context),
-    ],
-  );
+// SliverAppBar is stateless because when we scroll, state change is because of NestedScrollView in HomeScreen, not SliverAppBar
+class MyNotificationScreenAppBar extends StatelessWidget {
+  MyNotificationScreenAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  final Mode _mode = locator<Mode>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      snap: true,
+      floating: true,
+      title: const NOTIFICATION_TITLE(),
+      centerTitle: true,
+      backgroundColor: _mode.bottomMenuBackground(),
+      shadowColor: Colors.transparent,
+      expandedHeight: 2 * kToolbarHeight,
+      flexibleSpace: const Padding(
+        padding: EdgeInsets.only(top: kToolbarHeight),
+        child: Padding(
+          padding: EdgeInsets.all(4.0),
+          child: _BottomAppBar(),
+        ),
+      ),
+    );
+  }
 }
 
-ValueListenableBuilder<double> notificationScreenTopAppBar(_scrollController) {
-  final Mode _mode = locator<Mode>();
-  NotificationScreenFunctions _func = NotificationScreenFunctions();
-  return ValueListenableBuilder(
-      valueListenable: Variables.animatedNotificationsHeaderTop,
-      builder: (context, value, _) {
-        return AnimatedContainer(
-          decoration: BoxDecoration(
-            color: _mode.bottomMenuBackground(),
-          ),
-          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-          height: Variables.animatedNotificationsHeaderTop.value,
-          duration: const Duration(milliseconds: 250),
-          child: PeoplerAppBars(context: context).NOTIFICATION(),
-        );
-      });
-}
+class _BottomAppBar extends StatelessWidget {
+  const _BottomAppBar({
+    Key? key,
+  }) : super(key: key);
 
-Widget notificationScreenBottomAppBar(BuildContext context) {
-  final Mode _mode = locator<Mode>();
-  return ValueListenableBuilder(
-      valueListenable: Variables.animatedNotificationHeaderBottom,
-      builder: (context, value, _) {
-        return InkWell(
-          onTap: () => NotificationScreenFunctions().pushConnectionRequestPage(context),
-          child: AnimatedContainer(
-            decoration: BoxDecoration(
-              color: _mode.bottomMenuBackground(),
-              boxShadow: <BoxShadow>[
-                BoxShadow(color: const Color(0xFFE3E2E2).withOpacity(0.6), blurRadius: 1.5, spreadRadius: 0.7, offset: const Offset(0, 0))
-              ],
+  @override
+  Widget build(BuildContext context) {
+    final Mode _mode = locator<Mode>();
+
+    return InkWell(
+      onTap: () => NotificationScreenFunctions().pushConnectionRequestPage(context),
+      child: AnimatedContainer(
+        decoration: BoxDecoration(
+          color: _mode.bottomMenuBackground(),
+          boxShadow: <BoxShadow>[
+            BoxShadow(color: const Color(0xFFE3E2E2).withOpacity(0.6), blurRadius: 1.5, spreadRadius: 0.7, offset: const Offset(0, 0))
+          ],
+        ),
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+        height: Variables.animatedNotificationHeaderBottom.value,
+        duration: const Duration(milliseconds: 250),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Davetiyeler", //(${NotificationScreenFunctions().numberOfConnectionRequest()})
+              textScaleFactor: 1,
+              style: PeoplerTextStyle.normal.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: _mode.disabledBottomMenuItemAssetColor(),
+              ),
             ),
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            height: Variables.animatedNotificationHeaderBottom.value,
-            duration: const Duration(milliseconds: 250),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Davetiyeler", //(${NotificationScreenFunctions().numberOfConnectionRequest()})
-                  textScaleFactor: 1,
-                  style: PeoplerTextStyle.normal.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: _mode.disabledBottomMenuItemAssetColor(),
-                  ),
-                ),
-                RotatedBox(
-                  quarterTurns: 2,
-                  child: SvgPicture.asset(
-                    "assets/images/svg_icons/back_arrow.svg",
-                    width: 20,
-                    height: 20,
-                    color: _mode.homeScreenIconsColor(),
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ],
+            RotatedBox(
+              quarterTurns: 2,
+              child: SvgPicture.asset(
+                "assets/images/svg_icons/back_arrow.svg",
+                width: 20,
+                height: 20,
+                color: _mode.homeScreenIconsColor(),
+                fit: BoxFit.contain,
+              ),
             ),
-          ),
-        );
-      });
+          ],
+        ),
+      ),
+    );
+  }
 }
