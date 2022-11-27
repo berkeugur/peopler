@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +14,52 @@ import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/pro
 
 import '../../business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import '../../business_logic/cubits/NewNotificationCubit.dart';
+import '../../presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
+
+class PEOPLER_TITLE extends StatelessWidget {
+  PEOPLER_TITLE({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+      child: Text(
+        ApplicationConstants.COMPANY_NAME.toLowerCase(),
+        style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 32),
+      ),
+    );
+  }
+}
+
+class DRAWER_MENU_ICON extends StatelessWidget {
+  DRAWER_MENU_ICON({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(99),
+      onTap: () => op_settings_icon(context),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            width: 20,
+          ),
+          SvgPicture.asset(
+            "assets/images/svg_icons/sort.svg",
+            height: 35,
+            width: 35,
+            color: Mode().homeScreenTitleColor(),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class PeoplerAppBars {
   final BuildContext context;
@@ -40,66 +87,11 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
-  _DRAWER_MENU_ICON(void Function()? function) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(99),
-      onTap: function,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(
-            width: 20,
-          ),
-          SvgPicture.asset(
-            "assets/images/svg_icons/sort.svg",
-            height: 35,
-            width: 35,
-            color: Mode().homeScreenTitleColor(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ignore: non_constant_identifier_names
   Widget _TITLE({required String title, Color? color}) {
     return Text(
       title,
       textScaleFactor: 1,
       style: PeoplerTextStyle.normal.copyWith(color: color ?? Mode().homeScreenTitleColor(), fontWeight: FontWeight.w500, fontSize: 24),
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  Widget _PEOPLER_TITLE(void Function()? titleFunction) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (false)
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
-                child: Text(
-                  ApplicationConstants.COMPANY_NAME.toLowerCase(),
-                  style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w900, fontSize: 32),
-                ),
-              ),
-              Text(
-                "remium",
-                style: PeoplerTextStyle.normal.copyWith(color: Mode().homeScreenTitleColor()),
-              ),
-            ],
-          ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
-          child: Text(
-            ApplicationConstants.COMPANY_NAME.toLowerCase(),
-            style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 32),
-          ),
-        ),
-      ],
     );
   }
 
@@ -189,7 +181,7 @@ class PeoplerAppBars {
         );
       }),
       centerTitle: true,
-      title: _PEOPLER_TITLE(() {}),
+      title: PEOPLER_TITLE(),
     );
   }
 
@@ -197,19 +189,7 @@ class PeoplerAppBars {
   CHANNEL_LIST() {
     return AppBar(
       centerTitle: true,
-      title: _PEOPLER_TITLE(() {}),
-      backgroundColor: Colors.transparent,
-      shadowColor: Colors.transparent,
-      automaticallyImplyLeading: false,
-    );
-  }
-
-  // ignore: non_constant_identifier_names
-  FEED({void Function()? titleFunction, void Function()? leadingFunction}) {
-    return AppBar(
-      leading: _DRAWER_MENU_ICON(leadingFunction),
-      centerTitle: true,
-      title: _PEOPLER_TITLE(() {}),
+      title: PEOPLER_TITLE(),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,
@@ -219,9 +199,9 @@ class PeoplerAppBars {
   // ignore: non_constant_identifier_names
   MYPROFILE({void Function()? titleFunction, void Function()? leadingFunction}) {
     return AppBar(
-      leading: _DRAWER_MENU_ICON(leadingFunction),
+      leading: DRAWER_MENU_ICON(),
       centerTitle: true,
-      title: _PEOPLER_TITLE(() {}),
+      title: PEOPLER_TITLE(),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,
@@ -349,7 +329,7 @@ class PeoplerAppBars {
     return AppBar(
       centerTitle: true,
       leading: _BACK_BUTTON(),
-      title: _PEOPLER_TITLE(() {}),
+      title: PEOPLER_TITLE(),
       backgroundColor: Colors.transparent,
       shadowColor: Colors.transparent,
       automaticallyImplyLeading: false,

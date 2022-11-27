@@ -26,9 +26,8 @@ import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class eachFeedWidget extends StatefulWidget {
   final MyFeed myFeed;
-  final int index;
 
-  eachFeedWidget({Key? key, required this.myFeed, required this.index}) : super(key: key);
+  eachFeedWidget({Key? key, required this.myFeed}) : super(key: key);
 
   @override
   State<eachFeedWidget> createState() => _eachFeedWidgetState();
@@ -84,7 +83,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
               child: Container(
                 margin: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width > 600 ? MediaQuery.of(context).size.width / 2 - 300 : 0, vertical: 5),
-                padding: widget.index == 0 ? const EdgeInsets.fromLTRB(20, 110, 0, 20) : const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
                 decoration: BoxDecoration(
                   boxShadow: <BoxShadow>[
                     BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))

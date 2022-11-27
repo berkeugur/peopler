@@ -18,14 +18,17 @@ class FeedRepository {
 
   bool _hasMoreKadin = true;
   bool _hasMoreErkek = true;
+  bool _hasMoreOther = true;
 
   Future<List<MyFeed>> getFeedWithPagination(MyFeed? lastFeedListElement, String gender) async {
     int _numberOfElementsWillBeSelected = (gender == 'Kadın') ? (_numberOfElementsWomen) : (_numberOfElementsMen);
 
     if (gender == 'Kadın') {
       if (_hasMoreKadin == false) return [];
-    } else {
+    } else if (gender == 'Erkek'){
       if (_hasMoreErkek == false) return [];
+    } else if (gender == 'Diğer'){
+      if (_hasMoreOther == false) return [];
     }
 
     List<MyFeed> feedList = await _firestoreDBServiceFeeds.getFeedWithPagination(lastFeedListElement, _numberOfElementsWillBeSelected, gender);
@@ -33,8 +36,10 @@ class FeedRepository {
     if (feedList.length < _numberOfElementsWillBeSelected) {
       if (gender == 'Kadın') {
         _hasMoreKadin = false;
-      } else {
+      } else if (gender == 'Erkek') {
         _hasMoreErkek = false;
+      } else if (gender == 'Diğer') {
+        _hasMoreOther = false;
       }
     }
 
@@ -110,5 +115,6 @@ class FeedRepository {
   void restartFeedCache() async {
     _hasMoreErkek = true;
     _hasMoreKadin = true;
+    _hasMoreOther = true;
   }
 }

@@ -140,6 +140,7 @@ class _GenderSelectScreenState extends State<GenderSelectScreen> {
                   if (UserBloc.user?.gender == "") {
                     SnackBars(context: context).simple("Lütfen cinsiyetinizi seçin.");
                   } else {
+                    if (UserBloc.user?.gender == "Belirtmek İstemiyorum") UserBloc.user?.gender = "Diğer";
                     Navigator.pushNamed(context, NavigationConstants.CREATE_PROFILE_SCREEN);
                   }
                 },
