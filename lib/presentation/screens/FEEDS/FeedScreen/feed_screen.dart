@@ -1,30 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationUpdateBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
-import 'package:peopler/components/FlutterWidgets/app_bars.dart';
-import 'package:peopler/components/FlutterWidgets/drawer.dart';
-import 'package:peopler/core/constants/scroll_animation_activation.dart';
-import 'package:peopler/core/system_ui_service.dart';
-import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_page.dart';
-import 'package:peopler/presentation/screens/TUTORIAL/constants.dart';
-import 'package:peopler/presentation/screens/TUTORIAL/onboardingscreen.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_bloc.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_event.dart';
 import '../../../../business_logic/blocs/FeedBloc/feed_state.dart';
-import '../../../../business_logic/blocs/UserBloc/bloc.dart';
-import '../../../../others/classes/variables.dart';
-import '../../../../others/classes/dark_light_mode_controller.dart';
-import '../../../../others/locator.dart';
 import '../../../../others/empty_list.dart';
 import 'each_feed.dart';
 import 'feed_app_bar.dart';
-import 'feed_functions.dart';
-import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -37,7 +21,7 @@ class FeedScreenState extends State<FeedScreen> {
   late final LocationPermissionBloc _locationPermissionBloc;
   late final LocationUpdateBloc _locationUpdateBloc;
 
-  late ScrollController _scrollController;
+  late ScrollController _scrollControllerFeed;
 
   bool loading = false;
 
@@ -83,9 +67,9 @@ class FeedScreenState extends State<FeedScreen> {
                 // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
                 // find the NestedScrollView.
                 builder: (BuildContext context) {
-                  _scrollController = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
-                  if (_scrollController.hasListeners == false) {
-                    _scrollController.addListener(_listScrollListener);
+                  _scrollControllerFeed = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                  if (_scrollControllerFeed.hasListeners == false) {
+                    _scrollControllerFeed.addListener(_listScrollListener);
                   }
                   return RefreshIndicator(
                     onRefresh: () async {
@@ -94,7 +78,7 @@ class FeedScreenState extends State<FeedScreen> {
                     },
                     child: CustomScrollView(
                       // The controller must be the inner controller of nested scroll view widget.
-                      controller: _scrollController,
+                      controller: _scrollControllerFeed,
                       slivers: <Widget>[
                         SliverOverlapInjector(
                           // This is the flip side of the SliverOverlapAbsorber above.
@@ -145,13 +129,16 @@ class FeedScreenState extends State<FeedScreen> {
   void scrollToTop() {
     /// Scroll to Top
     /// -100 is the offset. Since scrollController is inner, offset=0 is not enough to expand SliverAppBar so we use -100
-    _scrollController.animateTo(-100, duration: const Duration(milliseconds: 500), curve: Curves.decelerate).then((value) => null);
+    _scrollControllerFeed
+        .animateTo(-100, duration: const Duration(milliseconds: 500), curve: Curves.decelerate)
+        .then((value) => null);
   }
 
   bool _listScrollListener() {
-    var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
+    var nextPageTrigger = 0.8 * _scrollControllerFeed.positions.last.maxScrollExtent;
 
-    if (_scrollController.position.axisDirection == AxisDirection.down && _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollControllerFeed.positions.last.axisDirection == AxisDirection.down &&
+        _scrollControllerFeed.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _feedBloc.add(GetMoreDataEvent());
@@ -174,7 +161,7 @@ class FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  _showFeedsWidget() {
+  SliverList _showFeedsWidget() {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {

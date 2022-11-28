@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -82,7 +80,6 @@ Future<bool> fetchBackgroundFunction() async {
           kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity);
    */
 
-
   FirebaseFirestore _firebaseDB = FirebaseFirestore.instance;
   FCMAndLocalNotifications.initializeAwesomeNotifications();
 
@@ -111,7 +108,6 @@ Future<bool> fetchBackgroundFunction() async {
   /// GET LOCATION
   /// *********************************************************************************************************
   _position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-
 
   /// ALL BULK OF LOGIC
   /// *********************************************************************************************************
@@ -210,16 +206,20 @@ List<String> determineRegionList(int latitude, int longitude) {
 
   String currentRegion = bottomLatitude.toString() + ',' + leftLongitude.toString();
 
-  String bottomLeftRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+  String bottomLeftRegion =
+      (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
   String leftRegion = bottomLatitude.toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
-  String topLeftRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
+  String topLeftRegion =
+      (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude - Strings.REGION_WIDTH).toString();
 
   String topRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + leftLongitude.toString();
   String bottomRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + leftLongitude.toString();
 
-  String bottomRightRegion = (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+  String bottomRightRegion =
+      (bottomLatitude - Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
   String rightRegion = bottomLatitude.toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
-  String topRightRegion = (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
+  String topRightRegion =
+      (bottomLatitude + Strings.REGION_WIDTH).toString() + ',' + (leftLongitude + Strings.REGION_WIDTH).toString();
 
   queryList.add(currentRegion);
   queryList.add(bottomLeftRegion);
@@ -234,7 +234,8 @@ List<String> determineRegionList(int latitude, int longitude) {
   return queryList;
 }
 
-Future<bool> updateUserLocationAtDatabaseService(String userID, int latitude, int longitude, String region, FirebaseFirestore firebaseDB) async {
+Future<bool> updateUserLocationAtDatabaseService(
+    String userID, int latitude, int longitude, String region, FirebaseFirestore firebaseDB) async {
   DocumentSnapshot _readUser = await firebaseDB.collection('users').doc(userID).get();
 
   if (_readUser.data() != null) {
@@ -264,6 +265,7 @@ Future<bool> setUserInRegion(String userID, String region, FirebaseFirestore fir
       await firebaseDB.collection('regions').doc(region).set({
         "users": FieldValue.arrayUnion([userID])
       });
+
       /// For debug purposes
       debugPrint("WorkManager: Document does not exist, so regionID created");
       // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: Document does not exist, so regionID created");
@@ -271,9 +273,9 @@ Future<bool> setUserInRegion(String userID, String region, FirebaseFirestore fir
       return true;
     }
   } catch (e) {
-      /// For debug purposes
-      debugPrint("WorkManager: ERROR in setUserInRegion function: $e");
-      // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in setUserInRegion function: $e");
-      return Future.value(false);
+    /// For debug purposes
+    debugPrint("WorkManager: ERROR in setUserInRegion function: $e");
+    // await FCMAndLocalNotifications.showNotificationForDebugPurposes("WorkManager: ERROR in setUserInRegion function: $e");
+    return Future.value(false);
   }
 }

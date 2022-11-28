@@ -77,107 +77,47 @@ class _NearbyTabState extends State<NearbyTab> {
     _locationPermissionBloc = BlocProvider.of<LocationPermissionBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
 
-    return ValueListenableBuilder(
-        valueListenable: setTheme,
-        builder: (context, x, y) {
-          return NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
-              return <Widget>[
-                SliverOverlapAbsorber(
-                  // This widget takes the overlapping behavior of the SliverAppBar,
-                  // and redirects it to the SliverOverlapInjector below. If it is
-                  // missing, then it is possible for the nested "inner" scroll view
-                  // below to end up under the SliverAppBar even when the inner
-                  // scroll view thinks it has not been scrolled.
-                  // This is not necessary if the "headerSliverBuilder" only builds
-                  // widgets that do not overlap the next sliver.
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: MySearchScreenAppBar(),
-                ),
-              ];
-            },
-            body: Builder(
-                // This Builder is needed to provide a BuildContext that is "inside"
-                // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
-                // find the NestedScrollView.
-                builder: (BuildContext context) {
-              _searchPeopleListControllerNearby = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
-              if (_searchPeopleListControllerNearby.hasListeners == false) {
-                _searchPeopleListControllerNearby.addListener(_listScrollListener);
-              }
-              return RefreshIndicator(
-                onRefresh: () async {
-                  /// Refresh users
-                  await _locationBloc.getRefreshIndicatorData();
-                },
-                child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
-                  bloc: _locationPermissionBloc,
-                  builder: (context, state) {
-                    if (state is ReadyState) {
-                      _locationBloc.add(GetInitialSearchUsersEvent());
-                      return CustomScrollView(
-                        // The controller must be the inner controller of nested scroll view widget.
-                        controller: _searchPeopleListControllerNearby,
-                        slivers: <Widget>[
-                          SliverOverlapInjector(
-                            // This is the flip side of the SliverOverlapAbsorber above.
-                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                          ),
-                          BlocBuilder<LocationBloc, LocationState>(
-                            key: widget.showWidgetsKeyNearby,
-                            bloc: _locationBloc,
-                            builder: (context, state) {
-                              if (state is InitialSearchState) {
-                                // return _initialUsersStateWidget();
-                                SystemUIService().setSystemUIforThemeMode();
-                                return SliverToBoxAdapter(child: SearchingCase());
-                              } else if (state is UsersNotExistSearchState) {
-                                return const SliverToBoxAdapter(
-                                  child: EmptyList(
-                                    emptyListType: EmptyListType.nearby,
-                                    isSVG: false,
-                                  ),
-                                );
-                              } else if (state is UsersLoadedSearch1State) {
-                                loading = false;
-                                return _showUsers(widget.size);
-                              } else if (state is UsersLoadedSearch2State) {
-                                loading = false;
-                                return _showUsers(widget.size);
-                              } else if (state is NoMoreUsersSearchState) {
-                                return _showUsers(widget.size);
-                              } else if (state is NewUsersLoadingSearchState) {
-                                return _showUsers(widget.size);
-                              } else {
-                                return const Text("Impossible");
-                              }
-                            },
-                          ),
-                          BlocBuilder<LocationBloc, LocationState>(
-                              bloc: _locationBloc,
-                              builder: (context, state) {
-                                if (state is NewUsersLoadingSearchState && LocationBloc.allUserList.length > 4) {
-                                  return _usersLoadingCircularButton();
-                                } else {
-                                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                                }
-                              }),
-                        ],
-                      );
-                    } else {
-                      Widget _widget;
-
-                      if (state is NoLocationState) {
-                        _widget = _noLocationWidget();
-                      } else if (state is NoPermissionState) {
-                        _widget = _noPermissionWidget();
-                      } else if (state is NoPermissionClickSettingsState) {
-                        _widget = _noPermissionRefreshWidget();
-                      } else {
-                        _widget = const Text("Impossible");
-                      }
-
-                      return CustomScrollView(
+    return SafeArea(
+      child: ValueListenableBuilder(
+          valueListenable: setTheme,
+          builder: (context, x, y) {
+            return NestedScrollView(
+              headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverOverlapAbsorber(
+                    // This widget takes the overlapping behavior of the SliverAppBar,
+                    // and redirects it to the SliverOverlapInjector below. If it is
+                    // missing, then it is possible for the nested "inner" scroll view
+                    // below to end up under the SliverAppBar even when the inner
+                    // scroll view thinks it has not been scrolled.
+                    // This is not necessary if the "headerSliverBuilder" only builds
+                    // widgets that do not overlap the next sliver.
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                    sliver: MySearchScreenAppBar(),
+                  ),
+                ];
+              },
+              body: Builder(
+                  // This Builder is needed to provide a BuildContext that is "inside"
+                  // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+                  // find the NestedScrollView.
+                  builder: (BuildContext context) {
+                _searchPeopleListControllerNearby =
+                    context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                if (_searchPeopleListControllerNearby.hasListeners == false) {
+                  _searchPeopleListControllerNearby.addListener(_listScrollListener);
+                }
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    /// Refresh users
+                    await _locationBloc.getRefreshIndicatorData();
+                  },
+                  child: BlocBuilder<LocationPermissionBloc, LocationPermissionState>(
+                    bloc: _locationPermissionBloc,
+                    builder: (context, state) {
+                      if (state is ReadyState) {
+                        _locationBloc.add(GetInitialSearchUsersEvent());
+                        return CustomScrollView(
                           // The controller must be the inner controller of nested scroll view widget.
                           controller: _searchPeopleListControllerNearby,
                           slivers: <Widget>[
@@ -185,15 +125,78 @@ class _NearbyTabState extends State<NearbyTab> {
                               // This is the flip side of the SliverOverlapAbsorber above.
                               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                             ),
-                            _widget
-                          ]);
-                    }
-                  },
-                ),
-              );
-            }),
-          );
-        });
+                            BlocBuilder<LocationBloc, LocationState>(
+                              key: widget.showWidgetsKeyNearby,
+                              bloc: _locationBloc,
+                              builder: (context, state) {
+                                if (state is InitialSearchState) {
+                                  // return _initialUsersStateWidget();
+                                  SystemUIService().setSystemUIforThemeMode();
+                                  return SliverToBoxAdapter(child: SearchingCase());
+                                } else if (state is UsersNotExistSearchState) {
+                                  return const SliverToBoxAdapter(
+                                    child: EmptyList(
+                                      emptyListType: EmptyListType.nearby,
+                                      isSVG: false,
+                                    ),
+                                  );
+                                } else if (state is UsersLoadedSearch1State) {
+                                  loading = false;
+                                  return _showUsers(widget.size);
+                                } else if (state is UsersLoadedSearch2State) {
+                                  loading = false;
+                                  return _showUsers(widget.size);
+                                } else if (state is NoMoreUsersSearchState) {
+                                  return _showUsers(widget.size);
+                                } else if (state is NewUsersLoadingSearchState) {
+                                  return _showUsers(widget.size);
+                                } else {
+                                  return const Text("Impossible");
+                                }
+                              },
+                            ),
+                            BlocBuilder<LocationBloc, LocationState>(
+                                bloc: _locationBloc,
+                                builder: (context, state) {
+                                  if (state is NewUsersLoadingSearchState && LocationBloc.allUserList.length > 4) {
+                                    return _usersLoadingCircularButton();
+                                  } else {
+                                    return const SliverToBoxAdapter(child: SizedBox.shrink());
+                                  }
+                                }),
+                          ],
+                        );
+                      } else {
+                        Widget _widget;
+
+                        if (state is NoLocationState) {
+                          _widget = _noLocationWidget();
+                        } else if (state is NoPermissionState) {
+                          _widget = _noPermissionWidget();
+                        } else if (state is NoPermissionClickSettingsState) {
+                          _widget = _noPermissionRefreshWidget();
+                        } else {
+                          _widget = const Text("Impossible");
+                        }
+
+                        return CustomScrollView(
+                            // The controller must be the inner controller of nested scroll view widget.
+                            controller: _searchPeopleListControllerNearby,
+                            slivers: <Widget>[
+                              SliverOverlapInjector(
+                                // This is the flip side of the SliverOverlapAbsorber above.
+                                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                              ),
+                              _widget
+                            ]);
+                      }
+                    },
+                  ),
+                );
+              }),
+            );
+          }),
+    );
   }
 
   SliverToBoxAdapter _noLocationWidget() {
@@ -469,7 +472,8 @@ class _NearbyTabState extends State<NearbyTab> {
                             showYouNeedToLogin(context);
                             return;
                           }
-                          openOthersProfile(context, LocationBloc.allUserList[index].userID, SendRequestButtonStatus.save);
+                          openOthersProfile(
+                              context, LocationBloc.allUserList[index].userID, SendRequestButtonStatus.save);
                         },
                         child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
@@ -478,7 +482,8 @@ class _NearbyTabState extends State<NearbyTab> {
                             child: CachedNetworkImage(
                               imageUrl: LocationBloc.allUserList[index].profileURL,
                               progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-                                  borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                  borderRadius: BorderRadius.circular(999),
+                                  child: CircularProgressIndicator(value: downloadProgress.progress)),
                               errorWidget: (context, url, error) => const Icon(Icons.error),
                               imageBuilder: (context, imageProvider) => Container(
                                 decoration: BoxDecoration(
@@ -567,7 +572,8 @@ class _NearbyTabState extends State<NearbyTab> {
                           textScaleFactor: 1,
                           maxLines: 3,
                           //_size.width * 0.038 < 15 ? 3 : _size.width * 0.038 <20  ? 2:1,
-                          style: const TextStyle(height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
+                          style: const TextStyle(
+                              height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
                         ),
                       ),
                       const SizedBox(
@@ -608,7 +614,8 @@ class _NearbyTabState extends State<NearbyTab> {
                               onTap: () async {
                                 if (UserBloc.user != null) {
                                   if (UserBloc.entitlement != SubscriptionTypes.premium) {
-                                    _savedBloc.add(ClickSaveButtonEvent(savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
+                                    _savedBloc.add(ClickSaveButtonEvent(
+                                        savedUser: LocationBloc.allUserList[index], myUserID: UserBloc.user!.userID));
 
                                     Provider.of<SaveButton>(context, listen: false).saveUser();
                                     await Future.delayed(const Duration(milliseconds: 1500));
@@ -616,8 +623,10 @@ class _NearbyTabState extends State<NearbyTab> {
                                     widget.showWidgetsKeyNearby.currentState?.setState(() {});
                                     widget.showWidgetsKeyCity.currentState?.setState(() {});
                                   } else {
-                                    final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
-                                    final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
+                                    final SendNotificationService _sendNotificationService =
+                                        locator<SendNotificationService>();
+                                    final FirestoreDBServiceUsers _firestoreDBServiceUsers =
+                                        locator<FirestoreDBServiceUsers>();
 
                                     SavedUser _savedUser = SavedUser();
                                     _savedUser.userID = LocationBloc.allUserList[index].userID;
@@ -628,7 +637,8 @@ class _NearbyTabState extends State<NearbyTab> {
                                     _savedUser.biography = LocationBloc.allUserList[index].biography;
                                     _savedUser.hobbies = LocationBloc.allUserList[index].hobbies;
 
-                                    _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+                                    _savedBloc.add(
+                                        ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
                                     Provider.of<SaveButton>(context, listen: false).saveUser();
                                     await Future.delayed(const Duration(milliseconds: 1500));
@@ -636,8 +646,8 @@ class _NearbyTabState extends State<NearbyTab> {
                                     String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
 
                                     if (_token != null) {
-                                      _sendNotificationService.sendNotification(Strings.sendRequest, _token, "", UserBloc.user!.displayName,
-                                          UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                      _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
+                                          UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
                                     }
 
                                     widget.showWidgetsKeyNearby.currentState?.setState(() {});
@@ -652,7 +662,8 @@ class _NearbyTabState extends State<NearbyTab> {
                                   width: 104,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    border: Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
+                                    border:
+                                        Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
                                     color: Colors.transparent,
                                     //Colors.purple,
                                     borderRadius: const BorderRadius.all(Radius.circular(999)),
@@ -677,7 +688,9 @@ class _NearbyTabState extends State<NearbyTab> {
                                                 width: 3,
                                               ),
                                               Text(
-                                                UserBloc.entitlement == SubscriptionTypes.premium ? "Bağlantı Kur" : "Kaydet",
+                                                UserBloc.entitlement == SubscriptionTypes.premium
+                                                    ? "Bağlantı Kur"
+                                                    : "Kaydet",
                                                 textScaleFactor: 1,
                                                 style: PeoplerTextStyle.normal.copyWith(
                                                   color: _mode.disabledBottomMenuItemAssetColor(),
@@ -739,7 +752,11 @@ class _NearbyTabState extends State<NearbyTab> {
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
         boxShadow: <BoxShadow>[
-          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
+          BoxShadow(
+              color: const Color(0xFF939393).withOpacity(0.6),
+              blurRadius: 2.0,
+              spreadRadius: 0,
+              offset: const Offset(-1.0, 0.75))
         ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
@@ -754,10 +771,10 @@ class _NearbyTabState extends State<NearbyTab> {
   }
 
   bool _listScrollListener() {
-    var nextPageTrigger = 0.8 * _searchPeopleListControllerNearby.position.maxScrollExtent;
+    var nextPageTrigger = 0.8 * _searchPeopleListControllerNearby.positions.last.maxScrollExtent;
 
-    if (_searchPeopleListControllerNearby.position.axisDirection == AxisDirection.down &&
-        _searchPeopleListControllerNearby.position.pixels >= nextPageTrigger) {
+    if (_searchPeopleListControllerNearby.positions.last.axisDirection == AxisDirection.down &&
+        _searchPeopleListControllerNearby.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _locationBloc.add(GetMoreSearchUsersEvent());

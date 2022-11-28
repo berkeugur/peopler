@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -86,27 +85,17 @@ class MyApp extends StatelessWidget {
               BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
               BlocProvider<UserBloc>(create: (context) => UserBloc(mainKey)),
               BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
-              BlocProvider<LocationUpdateBloc>(
-                  create: (context) => LocationUpdateBloc()),
-              BlocProvider<LocationPermissionBloc>(
-                  create: (context) => LocationPermissionBloc()),
-              BlocProvider<FloatingActionButtonCubit>(
-                  create: (context) => FloatingActionButtonCubit()),
-              BlocProvider<NewNotificationCubit>(
-                  create: (context) => NewNotificationCubit()),
-              BlocProvider<NewMessageCubit>(
-                  create: (context) => NewMessageCubit()),
-              BlocProvider<NotificationTransmittedBloc>(
-                  create: (context) => NotificationTransmittedBloc()),
-              BlocProvider<NotificationReceivedBloc>(
-                  create: (context) => NotificationReceivedBloc()),
-              BlocProvider<NotificationBloc>(
-                  create: (context) => NotificationBloc()),
+              BlocProvider<LocationUpdateBloc>(create: (context) => LocationUpdateBloc()),
+              BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
+              BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
+              BlocProvider<NewNotificationCubit>(create: (context) => NewNotificationCubit()),
+              BlocProvider<NewMessageCubit>(create: (context) => NewMessageCubit()),
+              BlocProvider<NotificationTransmittedBloc>(create: (context) => NotificationTransmittedBloc()),
+              BlocProvider<NotificationReceivedBloc>(create: (context) => NotificationReceivedBloc()),
+              BlocProvider<NotificationBloc>(create: (context) => NotificationBloc()),
               BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
-              BlocProvider<PurchaseGetOfferBloc>(
-                  create: (context) => PurchaseGetOfferBloc()),
-              BlocProvider<PurchaseMakePurchaseBloc>(
-                  create: (context) => PurchaseMakePurchaseBloc()),
+              BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
+              BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => PurchaseMakePurchaseBloc()),
             ],
             child: MaterialApp(
                 navigatorKey: mainKey,
@@ -254,8 +243,7 @@ List<String> profilePhoto = [
 Future<void> updateAllFakeUserPhotos() async {
   for (int i = 0; i < 36; i++) {
     String userID = 'fake' + i.toString();
-    String profileURL =
-        'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
+    String profileURL = 'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
 
     await updateFakeUserPhoto(userID, profileURL);
   }
@@ -266,8 +254,7 @@ Future<void> updateFakeUserPhoto(String userID, String profileURL) async {
 
   File imageFile = await _downloadFile(profileURL);
 
-  String downloadLink = await _userRepository.uploadFile(
-      userID, 'profile_photo', 'profile_photo.png', imageFile);
+  String downloadLink = await _userRepository.uploadFile(userID, 'profile_photo', 'profile_photo.png', imageFile);
   await _userRepository.updateProfilePhoto(userID, downloadLink);
 }
 
@@ -278,8 +265,7 @@ Future<void> updatePhotoUrl() async {
   for (int i = 0; i < 36; i++) {
     String userID = 'fake' + i.toString();
     String _filePath = userID + '/profile_photo';
-    Reference _storageReference =
-        _firebaseStorage.ref().child(_filePath).child('profile_photo.png');
+    Reference _storageReference = _firebaseStorage.ref().child(_filePath).child('profile_photo.png');
     String url = await _storageReference.getDownloadURL();
 
     await _userRepository.updateProfilePhoto(userID, url);
@@ -300,8 +286,7 @@ Future<void> fakeUserCreator() async {
     theUser.displayName = displayName[i];
     theUser.biography = biography[i];
 
-    String profileURL =
-        'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
+    String profileURL = 'https://drive.google.com/uc?export=view&id=' + profilePhoto[i];
     await updateFakeUserPhoto(theUser.userID, profileURL);
 
     await _fu.saveUser(theUser);
@@ -346,11 +331,9 @@ Future<void> fakeUserDelete() async {
     await _fc.deleteNestedSubCollections("users/" + userID + "/private");
 
     /// Delete all messages
-    List<String> chatIDList =
-        await _fc.getAllDocumentIDs("users/" + userID + "/chats");
+    List<String> chatIDList = await _fc.getAllDocumentIDs("users/" + userID + "/chats");
     for (String chatID in chatIDList) {
-      await _fc.deleteNestedSubCollections(
-          "users/" + userID + "/chats/" + chatID + "/messages");
+      await _fc.deleteNestedSubCollections("users/" + userID + "/chats/" + chatID + "/messages");
     }
 
     /// Delete all chats after messages (subcollections of chats) deleted

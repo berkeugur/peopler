@@ -78,13 +78,13 @@ class CityTabState extends State<CityTab> {
       return const GuestLoginScreenBody();
     }
 
-    return ValueListenableBuilder(
-        valueListenable: setTheme,
-        builder: (context, x, y) {
-          debugPrint("~~~~~~~~~~~~~city~~~~~~~~~~~~~~~~~~");
-          debugPrint(Mode.isEnableDarkMode.toString());
-          return NestedScrollView(
-            headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
+    return SafeArea(
+      child: ValueListenableBuilder(
+          valueListenable: setTheme,
+          builder: (context, x, y) {
+            debugPrint("~~~~~~~~~~~~~city~~~~~~~~~~~~~~~~~~");
+            debugPrint(Mode.isEnableDarkMode.toString());
+            return NestedScrollView(headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
               return <Widget>[
                 SliverOverlapAbsorber(
                   // This widget takes the overlapping behavior of the SliverAppBar,
@@ -98,71 +98,66 @@ class CityTabState extends State<CityTab> {
                   sliver: MySearchScreenAppBar(),
                 ),
               ];
-            },
-            body: Builder(
-              // This Builder is needed to provide a BuildContext that is "inside"
-              // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
-              // find the NestedScrollView.
+            }, body: Builder(
+                // This Builder is needed to provide a BuildContext that is "inside"
+                // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+                // find the NestedScrollView.
                 builder: (BuildContext context) {
-                  _searchPeopleListControllerCity = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
-                  if (_searchPeopleListControllerCity.hasListeners == false) {
-                    _searchPeopleListControllerCity.addListener(_listScrollListener);
-                  }
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      /// Refresh users
-                      await _cityBloc.getRefreshIndicatorData(UserBloc.user!.city);
-                    },
-                    child: CustomScrollView(
-                      // The controller must be the inner controller of nested scroll view widget.
-                        controller: _searchPeopleListControllerCity,
-                        slivers: <Widget>[
-                          SliverOverlapInjector(
-                            // This is the flip side of the SliverOverlapAbsorber above.
-                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                          ),
-                          BlocBuilder<CityBloc, CityState>(
-                            key: widget.showWidgetsKeyCity,
-                            bloc: _cityBloc,
-                            builder: (context, state) {
-                              if (state is InitialCityState) {
-                                return _initialUsersStateWidget();
-                              } else if (state is UsersNotExistCityState) {
-                                return _noUserExistsWidget();
-                              } else if (state is UsersLoadedCity1State) {
-                                loading = false;
-                                return _showUsers(widget.size);
-                              } else if (state is UsersLoadedCity2State) {
-                                loading = false;
-                                return _showUsers(widget.size);
-                              } else if (state is NoMoreUsersCityState) {
-                                return _showUsers(widget.size);
-                              } else if (state is NewUsersLoadingCityState) {
-                                return _showUsers(widget.size);
-                              } else {
-                                return const Text("Impossible");
-                              }
-                            },
-                          ),
-                          BlocBuilder<CityBloc, CityState>(
-                              bloc: _cityBloc,
-                              builder: (context, state) {
-                                if (state is NewUsersLoadingCityState) {
-                                  return _usersLoadingCircularButton();
-                                } else {
-                                  return const SliverToBoxAdapter(child: SizedBox.shrink());
-                                }
-                              }),
-                        ]),
-                  );
-                })
-
-
-
-
-
-          );
-        });
+              _searchPeopleListControllerCity =
+                  context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+              if (_searchPeopleListControllerCity.hasListeners == false) {
+                _searchPeopleListControllerCity.addListener(_listScrollListener);
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  /// Refresh users
+                  await _cityBloc.getRefreshIndicatorData(UserBloc.user!.city);
+                },
+                child: CustomScrollView(
+                    // The controller must be the inner controller of nested scroll view widget.
+                    controller: _searchPeopleListControllerCity,
+                    slivers: <Widget>[
+                      SliverOverlapInjector(
+                        // This is the flip side of the SliverOverlapAbsorber above.
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                      ),
+                      BlocBuilder<CityBloc, CityState>(
+                        key: widget.showWidgetsKeyCity,
+                        bloc: _cityBloc,
+                        builder: (context, state) {
+                          if (state is InitialCityState) {
+                            return _initialUsersStateWidget();
+                          } else if (state is UsersNotExistCityState) {
+                            return _noUserExistsWidget();
+                          } else if (state is UsersLoadedCity1State) {
+                            loading = false;
+                            return _showUsers(widget.size);
+                          } else if (state is UsersLoadedCity2State) {
+                            loading = false;
+                            return _showUsers(widget.size);
+                          } else if (state is NoMoreUsersCityState) {
+                            return _showUsers(widget.size);
+                          } else if (state is NewUsersLoadingCityState) {
+                            return _showUsers(widget.size);
+                          } else {
+                            return const Text("Impossible");
+                          }
+                        },
+                      ),
+                      BlocBuilder<CityBloc, CityState>(
+                          bloc: _cityBloc,
+                          builder: (context, state) {
+                            if (state is NewUsersLoadingCityState) {
+                              return _usersLoadingCircularButton();
+                            } else {
+                              return const SliverToBoxAdapter(child: SizedBox.shrink());
+                            }
+                          }),
+                    ]),
+              );
+            }));
+          }),
+    );
   }
 
   SliverToBoxAdapter _initialUsersStateWidget() {
@@ -318,7 +313,8 @@ class CityTabState extends State<CityTab> {
                             showYouNeedToLogin(context);
                             return;
                           }
-                          openOthersProfile(context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect);
+                          openOthersProfile(
+                              context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
@@ -329,7 +325,8 @@ class CityTabState extends State<CityTab> {
                               CachedNetworkImage(
                             imageUrl: CityBloc.allUserList[index].profileURL,
                             progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-                                borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                borderRadius: BorderRadius.circular(999),
+                                child: CircularProgressIndicator(value: downloadProgress.progress)),
                             errorWidget: (context, url, error) => const Icon(Icons.error),
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
@@ -418,7 +415,8 @@ class CityTabState extends State<CityTab> {
                           textScaleFactor: 1,
                           maxLines: 3,
                           //_size.width * 0.038 < 15 ? 3 : _size.width * 0.038 <20  ? 2:1,
-                          style: const TextStyle(height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
+                          style: const TextStyle(
+                              height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
                         ),
                       ),
                       const SizedBox(
@@ -456,17 +454,21 @@ class CityTabState extends State<CityTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
+                                if (UserBloc.entitlement == SubscriptionTypes.free &&
+                                    UserBloc.user!.numOfSendRequest < 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                   return;
                                 }
 
-                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest == 1) {
+                                if (UserBloc.entitlement == SubscriptionTypes.free &&
+                                    UserBloc.user!.numOfSendRequest == 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                 }
 
-                                final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
-                                final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
+                                final SendNotificationService _sendNotificationService =
+                                    locator<SendNotificationService>();
+                                final FirestoreDBServiceUsers _firestoreDBServiceUsers =
+                                    locator<FirestoreDBServiceUsers>();
 
                                 SavedUser _savedUser = SavedUser();
                                 _savedUser.userID = CityBloc.allUserList[index].userID;
@@ -477,7 +479,8 @@ class CityTabState extends State<CityTab> {
                                 _savedUser.biography = CityBloc.allUserList[index].biography;
                                 _savedUser.hobbies = CityBloc.allUserList[index].hobbies;
 
-                                _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+                                _savedBloc
+                                    .add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
                                 if (UserBloc.entitlement == SubscriptionTypes.free) {
                                   showRestNumOfConnectionRequests(context);
@@ -489,8 +492,8 @@ class CityTabState extends State<CityTab> {
                                 String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
 
                                 if (_token != null) {
-                                  _sendNotificationService.sendNotification(
-                                      Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                  _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
+                                      UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
                                 }
 
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
@@ -501,7 +504,8 @@ class CityTabState extends State<CityTab> {
                                   width: 104,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    border: Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
+                                    border:
+                                        Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
                                     color: Colors.transparent,
                                     //Colors.purple,
                                     borderRadius: const BorderRadius.all(Radius.circular(999)),
@@ -575,7 +579,11 @@ class CityTabState extends State<CityTab> {
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
         boxShadow: <BoxShadow>[
-          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
+          BoxShadow(
+              color: const Color(0xFF939393).withOpacity(0.6),
+              blurRadius: 2.0,
+              spreadRadius: 0,
+              offset: const Offset(-1.0, 0.75))
         ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,

@@ -263,7 +263,7 @@ class EmptyList extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
-                  itemBuilder: (BuildContext, index) {
+                  itemBuilder: (BuildContext context, index) {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,

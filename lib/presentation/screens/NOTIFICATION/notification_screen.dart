@@ -58,7 +58,8 @@ class NotificationScreenState extends State<NotificationScreen> {
                 // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
                 // find the NestedScrollView.
                 builder: (BuildContext context) {
-                  notificationsScreenScrollController = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                  notificationsScreenScrollController =
+                      context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
                   if (notificationsScreenScrollController.hasListeners == false) {
                     notificationsScreenScrollController.addListener(_listScrollListener);
                   }
@@ -111,10 +112,10 @@ class NotificationScreenState extends State<NotificationScreen> {
   }
 
   bool _listScrollListener() {
-    var nextPageTrigger = 0.8 * notificationsScreenScrollController.position.maxScrollExtent;
+    var nextPageTrigger = 0.8 * notificationsScreenScrollController.positions.last.maxScrollExtent;
 
-    if (notificationsScreenScrollController.position.axisDirection == AxisDirection.down &&
-        notificationsScreenScrollController.position.pixels >= nextPageTrigger) {
+    if (notificationsScreenScrollController.positions.last.axisDirection == AxisDirection.down &&
+        notificationsScreenScrollController.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _notificationBloc.add(GetMoreNotificationEvent());

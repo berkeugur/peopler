@@ -128,11 +128,13 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               const ProfileScreenNavigator()
                             ],
                           ),
-                          bottomNavigationBar: MyBottomNavigationBar(
-                              // Callback Function, when another tab is clicked, this method will run
-                              onBottomTabTapped: (index) {
-                            _buildOnBottomTabTapped(index);
-                          }),
+                          bottomNavigationBar: SafeArea(
+                            child: MyBottomNavigationBar(
+                                // Callback Function, when another tab is clicked, this method will run
+                                onBottomTabTapped: (index) {
+                              _buildOnBottomTabTapped(index);
+                            }),
+                          ),
                         );
                       });
                 }),

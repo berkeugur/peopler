@@ -71,25 +71,23 @@ class _SearchScreenState extends State<SearchScreen> {
               return BlocBuilder<ThemeCubit, bool>(
                   bloc: _themeCubit,
                   builder: (_, state) {
-                    return SafeArea(
-                      child: _isNearby == true
-                          ? NearbyTab(
-                              screenHeight: screenHeight,
-                              paddingTopSafeArea: paddingTopSafeArea,
-                              maxWidth: _maxWidth,
-                              context: context,
-                              size: _size,
-                              showWidgetsKeyNearby: showWidgetsKeyNearby,
-                              showWidgetsKeyCity: showWidgetsKeyCity)
-                          : CityTab(
-                              screenHeight: screenHeight,
-                              paddingTopSafeArea: paddingTopSafeArea,
-                              maxWidth: _maxWidth,
-                              context: context,
-                              size: _size,
-                              showWidgetsKeyNearby: showWidgetsKeyNearby,
-                              showWidgetsKeyCity: showWidgetsKeyCity),
-                    );
+                    return _isNearby == true
+                        ? NearbyTab(
+                            screenHeight: screenHeight,
+                            paddingTopSafeArea: paddingTopSafeArea,
+                            maxWidth: _maxWidth,
+                            context: context,
+                            size: _size,
+                            showWidgetsKeyNearby: showWidgetsKeyNearby,
+                            showWidgetsKeyCity: showWidgetsKeyCity)
+                        : CityTab(
+                            screenHeight: screenHeight,
+                            paddingTopSafeArea: paddingTopSafeArea,
+                            maxWidth: _maxWidth,
+                            context: context,
+                            size: _size,
+                            showWidgetsKeyNearby: showWidgetsKeyNearby,
+                            showWidgetsKeyCity: showWidgetsKeyCity);
                   });
             }),
           );
