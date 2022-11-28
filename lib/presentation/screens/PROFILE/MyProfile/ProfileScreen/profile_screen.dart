@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/CustomWidgets/PROFILE/hobby_field.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
+import 'package:peopler/components/FlutterWidgets/drawer.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/data/model/user.dart';
-import 'package:peopler/components/FlutterWidgets/drawer.dart';
-import 'package:peopler/presentation/screens/PROFILE_EDIT/Home/profile_edit_home.dart';
-import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen_components.dart';
 import '../../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../../others/locator.dart';
-import '../../../../../../others/strings.dart';
 import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 
 //tam bir profil için olması gerekenler
@@ -33,6 +29,7 @@ ValueNotifier<bool> setStateProfileScreen = ValueNotifier(false);
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final Mode _mode = locator<Mode>();
+  late ScrollController profileScreenScrollController;
 
   @override
   void initState() {
@@ -44,13 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          return Scaffold(
-            appBar: PeoplerAppBars(context: context).MYPROFILE(
-                titleFunction: () {},
-                leadingFunction: () {
-                  op_settings_icon(context);
-                }),
-            backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
+          return SafeArea(
 
             //profile edit ekranındaki değişiklikleri uygulamak için kaydet butonuna basıldığında.
             //profil ekranını set state etmek amacıyla valuelistenable builder koyup kaydete tıkladığında
@@ -58,79 +49,105 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //valuelistenable builder tetiklenmiş oluyor ilerde burayı daha iyi bir yöntemle
             //değiştirebiliriz.
 
-            body: ValueListenableBuilder(
+            child: ValueListenableBuilder(
                 valueListenable: setStateProfileScreen,
                 builder: (context, xbool, xwidget) {
-                  return SafeArea(
-                    child: _buildBody(),
+                  final MyUser profileData = UserBloc.user!;
+                  ProfileScreenComponentsMyProfile _profileScreenComponents = ProfileScreenComponentsMyProfile();
+
+                  return NestedScrollView(
+                    headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
+                      return <Widget>[
+                        SliverOverlapAbsorber(
+                          // This widget takes the overlapping behavior of the SliverAppBar,
+                          // and redirects it to the SliverOverlapInjector below. If it is
+                          // missing, then it is possible for the nested "inner" scroll view
+                          // below to end up under the SliverAppBar even when the inner
+                          // scroll view thinks it has not been scrolled.
+                          // This is not necessary if the "headerSliverBuilder" only builds
+                          // widgets that do not overlap the next sliver.
+                          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                          sliver: MyProfileScreenAppBar(),
+                        ),
+                      ];
+                    },
+                    body: Builder(
+                      // This Builder is needed to provide a BuildContext that is "inside"
+                      // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+                      // find the NestedScrollView.
+                      builder: (BuildContext context) {
+                        profileScreenScrollController = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                        return CustomScrollView(
+                          // The controller must be the inner controller of nested scroll view widget.
+                          controller: profileScreenScrollController,
+                          slivers: <Widget>[
+                            SliverOverlapInjector(
+                              // This is the flip side of the SliverOverlapAbsorber above.
+                              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                            ),
+                            SliverToBoxAdapter(
+                              child: Column(
+                              children: [
+                                _profileScreenComponents.photos(context, profileData.photosURL, profileData.profileURL),
+                                _profileScreenComponents.nameField(),
+                                SizedBox(
+                                  height: UserBloc.user!.schoolName != "" ? 5 : 0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width - 40,
+                                      child: Text(
+                                        UserBloc.user!.schoolName,
+                                        textScaleFactor: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        softWrap: false,
+                                        style: PeoplerTextStyle.normal.copyWith(
+                                          fontSize: 14,
+                                          color: _mode.blackAndWhiteConversion(),
+                                        ),
+                                      ),
+                                    ),
+                                    /*_profileScreenComponents.schoolName(context),
+                                    UserBloc.user!.company.isEmpty || UserBloc.user!.currentJobName.isEmpty
+                                        ? SizedBox.shrink()
+                                        : const Text(" / "),
+                                    _profileScreenComponents.currentJob(context),
+                                    */
+                                  ],
+                                ),
+                                UserBloc.user!.schoolName != "" && UserBloc.user!.currentJobName != "" ? const SizedBox(height: 5) : const SizedBox.shrink(),
+//(UserBloc.user!.schoolName.isEmpty || UserBloc.user!.currentJobName.isEmpty ? "" : " / ") +UserBloc.user!.currentJobName
+                                _titles(),
+                                //_profileScreenComponents.companyName(),
+                                UserBloc.user!.company != "" ? const SizedBox(height: 0) : const SizedBox.shrink(),
+                                _profileScreenComponents.connections(context),
+                                UserBloc.user!.connectionUserIDs.isNotEmpty ? const SizedBox(height: 5) : const SizedBox.shrink(),
+                                _profileScreenComponents.profileEditButton(context),
+                                const SizedBox(height: 10),
+                                _profileScreenComponents.locationText(),
+                                const SizedBox(height: 15),
+                                _profileScreenComponents.biographyField(context, profileData.biography),
+                                const SizedBox(height: 15),
+                                _profileScreenComponents.activityList(context, UserBloc.myActivities),
+                                const SizedBox(height: 10),
+                                ProfileHobbyField(profileData: profileData),
+                                //const SizedBox(height: 30),
+                                //_profileScreenComponents.experiencesList(context),
+                              ],
+                            ),),
+                          ],
+                        );
+                      },
+                    ),
                   );
                 }),
           );
         });
-  }
-
-  Widget _buildBody() {
-    final MyUser profileData = UserBloc.user!;
-    ProfileScreenComponentsMyProfile _profileScreenComponents = ProfileScreenComponentsMyProfile();
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          //header(context),
-
-          _profileScreenComponents.photos(context, profileData.photosURL, profileData.profileURL),
-          _profileScreenComponents.nameField(),
-
-          SizedBox(
-            height: UserBloc.user!.schoolName != "" ? 5 : 0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 40,
-                child: Text(
-                  UserBloc.user!.schoolName,
-                  textScaleFactor: 1,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  softWrap: false,
-                  style: PeoplerTextStyle.normal.copyWith(
-                    fontSize: 14,
-                    color: _mode.blackAndWhiteConversion(),
-                  ),
-                ),
-              ),
-              /*_profileScreenComponents.schoolName(context),
-              UserBloc.user!.company.isEmpty || UserBloc.user!.currentJobName.isEmpty
-                  ? SizedBox.shrink()
-                  : const Text(" / "),
-              _profileScreenComponents.currentJob(context),
-              */
-            ],
-          ),
-          UserBloc.user!.schoolName != "" && UserBloc.user!.currentJobName != "" ? const SizedBox(height: 5) : const SizedBox.shrink(),
-//(UserBloc.user!.schoolName.isEmpty || UserBloc.user!.currentJobName.isEmpty ? "" : " / ") +UserBloc.user!.currentJobName
-          _titles(),
-          //_profileScreenComponents.companyName(),
-          UserBloc.user!.company != "" ? const SizedBox(height: 0) : const SizedBox.shrink(),
-          _profileScreenComponents.connections(context),
-          UserBloc.user!.connectionUserIDs.isNotEmpty ? const SizedBox(height: 5) : const SizedBox.shrink(),
-          _profileScreenComponents.profileEditButton(context),
-          const SizedBox(height: 10),
-          _profileScreenComponents.locationText(),
-          const SizedBox(height: 15),
-          _profileScreenComponents.biographyField(context, profileData.biography),
-          const SizedBox(height: 15),
-          _profileScreenComponents.activityList(context, UserBloc.myActivities),
-          const SizedBox(height: 10),
-          ProfileHobbyField(profileData: profileData),
-          //const SizedBox(height: 30),
-          //_profileScreenComponents.experiencesList(context),
-        ],
-      ),
-    );
   }
 
   Widget _titles() {
@@ -180,6 +197,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           */
         ],
       ),
+    );
+  }
+}
+
+class MyProfileScreenAppBar extends StatelessWidget {
+  MyProfileScreenAppBar({
+    Key? key,
+  }) : super(key: key);
+
+
+  final Mode _mode = locator<Mode>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      snap: true,
+      floating: true,
+      title: const PEOPLER_TITLE(),
+      leading: const DRAWER_MENU_ICON(),
+      centerTitle: true,
+      backgroundColor: _mode.bottomMenuBackground(),
+      shadowColor: Colors.transparent,
     );
   }
 }

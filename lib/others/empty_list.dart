@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/presentation/screens/SAVED/how_it_work.dart';
@@ -211,100 +210,92 @@ class EmptyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Mode _mode = locator<Mode>();
-    final screenHeight = MediaQuery.of(context).size.height;
 
     return ValueListenableBuilder(
         valueListenable: setTheme,
         builder: (context, x, y) {
-          return SizedBox(
-            height: emptyListType == EmptyListType.emptyChannelList ||
-                    emptyListType == EmptyListType.incomingRequest ||
-                    emptyListType == EmptyListType.outgoingRequest
-                ? screenHeight - 180
-                : screenHeight - 75,
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(20),
-                    child: isSVG
-                        ? SvgPicture.asset(
-                            "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".svg",
-                            fit: BoxFit.contain,
-                            width: 220,
-                            height: 220,
-                          )
-                        : Image.asset(
-                            "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".png",
-                            fit: BoxFit.contain,
-                            width: 220,
-                            height: 220,
-                          ),
+          return Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: isSVG
+                      ? SvgPicture.asset(
+                          "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".svg",
+                          fit: BoxFit.contain,
+                          width: 220,
+                          height: 220,
+                        )
+                      : Image.asset(
+                          "assets/empty_list_images/" + _imagePath(emptyListType: emptyListType) + ".png",
+                          fit: BoxFit.contain,
+                          width: 220,
+                          height: 220,
+                        ),
+                ),
+                Text(
+                  _title(emptyListType: emptyListType),
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1,
+                  style: PeoplerTextStyle.normal.copyWith(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: _mode.blackAndWhiteConversion(),
                   ),
-                  Text(
-                    _title(emptyListType: emptyListType),
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: _mode.blackAndWhiteConversion(),
-                    ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  _explanation(emptyListType: emptyListType),
+                  textAlign: TextAlign.center,
+                  textScaleFactor: 1,
+                  style: PeoplerTextStyle.normal.copyWith(
+                    fontSize: 16,
+                    color: _mode.blackAndWhiteConversion(),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    _explanation(emptyListType: emptyListType),
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1,
-                    style: PeoplerTextStyle.normal.copyWith(
-                      fontSize: 16,
-                      color: _mode.blackAndWhiteConversion(),
-                    ),
-                  ),
-                  ListView.builder(
-                    itemCount: _actionButtonText(emptyListType: emptyListType).length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext, index) {
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 0, top: 10),
-                            child: InkWell(
-                              onTap: _actionButtonFunction(emptyListType: emptyListType, context: context)[index],
-                              child: Container(
-                                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(999),
-                                  border: Border.all(width: 1, color: const Color(0xFF0353EF)),
-                                  color: Colors.transparent,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    _actionButtonText(emptyListType: emptyListType)[index],
-                                    textScaleFactor: 1,
-                                    style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
-                                  ),
+                ),
+                ListView.builder(
+                  itemCount: _actionButtonText(emptyListType: emptyListType).length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext, index) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 0, top: 10),
+                          child: InkWell(
+                            onTap: _actionButtonFunction(emptyListType: emptyListType, context: context)[index],
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              height: 30,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(999),
+                                border: Border.all(width: 1, color: const Color(0xFF0353EF)),
+                                color: Colors.transparent,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _actionButtonText(emptyListType: emptyListType)[index],
+                                  textScaleFactor: 1,
+                                  style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      );
-                    },
-                  )
-                ],
-              ),
+                        ),
+                      ],
+                    );
+                  },
+                )
+              ],
             ),
           );
         });

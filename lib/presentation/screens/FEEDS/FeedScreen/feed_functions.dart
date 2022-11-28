@@ -40,10 +40,6 @@ op_settings_icon(context) {
   }
 }
 
-op_peopler_title(context, ScrollController scrollController) {
-  scrollController.animateTo(10, duration: const Duration(seconds: 2), curve: Curves.easeInOutSine);
-  return;
-}
 
 op_message_icon(context) {
   FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);

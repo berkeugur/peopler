@@ -9,23 +9,22 @@ import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
-import 'package:peopler/core/constants/scroll_animation_activation.dart';
 import 'package:peopler/data/model/HobbyModels/hobbies.dart';
 import 'package:peopler/presentation/screens/GUEST_LOGIN/body.dart';
 import 'package:peopler/presentation/screens/SEARCH/save_button_provider.dart';
+import 'package:peopler/presentation/screens/SEARCH/seach_peoples_header.dart';
 import 'package:provider/provider.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/saved_event.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../others/classes/variables.dart';
 import '../../../data/model/saved_user.dart';
 import '../../../data/send_notification_service.dart';
 import '../../../data/services/db/firestore_db_service_users.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
+import '../../../others/empty_list.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
 import '../../../others/widgets/snack_bars.dart';
-import '../../../others/empty_list.dart';
 import '../PROFILE/OthersProfile/functions.dart';
 
 class CityTab extends StatefulWidget {
@@ -70,8 +69,6 @@ class CityTabState extends State<CityTab> {
     _cityBloc = BlocProvider.of<CityBloc>(context);
     _savedBloc = BlocProvider.of<SavedBloc>(context);
 
-    _searchPeopleListControllerCity = ScrollController();
-
     super.initState();
   }
 
@@ -86,120 +83,124 @@ class CityTabState extends State<CityTab> {
         builder: (context, x, y) {
           debugPrint("~~~~~~~~~~~~~city~~~~~~~~~~~~~~~~~~");
           debugPrint(Mode.isEnableDarkMode.toString());
-          return Container(
-            color: Mode().homeScreenScaffoldBackgroundColor(),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 0.0),
-              child: SizedBox(
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (ScrollNotification scrollNotification) => _listScrollListener(),
-                  child: Container(
-                    color: Mode().homeScreenScaffoldBackgroundColor(),
-                    child: RefreshIndicator(
-                      color: const Color(0xFF0353EF),
-                      displacement: 80.0,
-                      onRefresh: () async {
-                        /// Refresh users
-                        await _cityBloc.getRefreshIndicatorData(UserBloc.user!.city);
-                        List deneme = [];
-                        deneme.shuffle();
-                      },
-                      child: SingleChildScrollView(
+          return NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool? innerBoxIsScrolled) {
+              return <Widget>[
+                SliverOverlapAbsorber(
+                  // This widget takes the overlapping behavior of the SliverAppBar,
+                  // and redirects it to the SliverOverlapInjector below. If it is
+                  // missing, then it is possible for the nested "inner" scroll view
+                  // below to end up under the SliverAppBar even when the inner
+                  // scroll view thinks it has not been scrolled.
+                  // This is not necessary if the "headerSliverBuilder" only builds
+                  // widgets that do not overlap the next sliver.
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  sliver: MySearchScreenAppBar(),
+                ),
+              ];
+            },
+            body: Builder(
+              // This Builder is needed to provide a BuildContext that is "inside"
+              // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
+              // find the NestedScrollView.
+                builder: (BuildContext context) {
+                  _searchPeopleListControllerCity = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                  if (_searchPeopleListControllerCity.hasListeners == false) {
+                    _searchPeopleListControllerCity.addListener(_listScrollListener);
+                  }
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      /// Refresh users
+                      await _cityBloc.getRefreshIndicatorData(UserBloc.user!.city);
+                    },
+                    child: CustomScrollView(
+                      // The controller must be the inner controller of nested scroll view widget.
                         controller: _searchPeopleListControllerCity,
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          children: [
-                            BlocBuilder<CityBloc, CityState>(
-                              key: widget.showWidgetsKeyCity,
+                        slivers: <Widget>[
+                          SliverOverlapInjector(
+                            // This is the flip side of the SliverOverlapAbsorber above.
+                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                          ),
+                          BlocBuilder<CityBloc, CityState>(
+                            key: widget.showWidgetsKeyCity,
+                            bloc: _cityBloc,
+                            builder: (context, state) {
+                              if (state is InitialCityState) {
+                                return _initialUsersStateWidget();
+                              } else if (state is UsersNotExistCityState) {
+                                return _noUserExistsWidget();
+                              } else if (state is UsersLoadedCity1State) {
+                                loading = false;
+                                return _showUsers(widget.size);
+                              } else if (state is UsersLoadedCity2State) {
+                                loading = false;
+                                return _showUsers(widget.size);
+                              } else if (state is NoMoreUsersCityState) {
+                                return _showUsers(widget.size);
+                              } else if (state is NewUsersLoadingCityState) {
+                                return _showUsers(widget.size);
+                              } else {
+                                return const Text("Impossible");
+                              }
+                            },
+                          ),
+                          BlocBuilder<CityBloc, CityState>(
                               bloc: _cityBloc,
                               builder: (context, state) {
-                                if (state is InitialCityState) {
-                                  return _initialUsersStateWidget();
-                                } else if (state is UsersNotExistCityState) {
-                                  return _noUserExistsWidget();
-                                } else if (state is UsersLoadedCity1State) {
-                                  loading = false;
-                                  return _showUsers(widget.size);
-                                } else if (state is UsersLoadedCity2State) {
-                                  loading = false;
-                                  return _showUsers(widget.size);
-                                } else if (state is NoMoreUsersCityState) {
-                                  return _showUsers(widget.size);
-                                } else if (state is NewUsersLoadingCityState) {
-                                  return _showUsers(widget.size);
+                                if (state is NewUsersLoadingCityState) {
+                                  return _usersLoadingCircularButton();
                                 } else {
-                                  return const Text("Impossible");
+                                  return const SliverToBoxAdapter(child: SizedBox.shrink());
                                 }
-                              },
-                            ),
-                            BlocBuilder<CityBloc, CityState>(
-                                bloc: _cityBloc,
-                                builder: (context, state) {
-                                  if (state is NewUsersLoadingCityState) {
-                                    return _usersLoadingCircularButton();
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
-                                }),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+                              }),
+                        ]),
+                  );
+                })
+
+
+
+
+
           );
         });
   }
 
-  SizedBox _initialUsersStateWidget() {
-    return SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: const Center(
-          child: CircularProgressIndicator(),
-        ));
-  }
-
-  EmptyList _noUserExistsWidget() {
-    return const EmptyList(
-      emptyListType: EmptyListType.citySearch,
-      isSVG: false,
+  SliverToBoxAdapter _initialUsersStateWidget() {
+    return const SliverToBoxAdapter(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
-  Padding _usersLoadingCircularButton() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(children: const [
-        Expanded(flex: 5, child: SizedBox()),
-        Flexible(flex: 1, child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator())),
-        Expanded(flex: 5, child: SizedBox()),
-      ]),
+  SliverToBoxAdapter _noUserExistsWidget() {
+    return const SliverToBoxAdapter(
+      child: EmptyList(
+        emptyListType: EmptyListType.citySearch,
+        isSVG: false,
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _usersLoadingCircularButton() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(children: const [
+          Expanded(flex: 5, child: SizedBox()),
+          Flexible(flex: 1, child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator())),
+          Expanded(flex: 5, child: SizedBox()),
+        ]),
+      ),
     );
   }
 
   Widget _showUsers(Size _size) {
     int _listLength = CityBloc.allUserList.length;
     if (_size.width < 335) {
-      return ListView.builder(
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          padding: EdgeInsets.only(
-            top: 80,
-            left: _size.width > 320
-                ? 60
-                : _size.width > 280
-                    ? 45
-                    : 25,
-            right: _size.width > 320
-                ? 60
-                : _size.width > 280
-                    ? 45
-                    : 25,
-          ),
-          itemCount: _listLength,
-          itemBuilder: (BuildContext context, int index) {
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
@@ -219,14 +220,14 @@ class CityTabState extends State<CityTab> {
                 ],
               ),
             );
-          });
+          },
+          childCount: _listLength,
+        ),
+      );
     } else {
-      return ListView.builder(
-          shrinkWrap: true,
-          padding: const EdgeInsets.only(top: 80),
-          physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
-          itemCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
-          itemBuilder: (BuildContext context, int index) {
+      return SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
             int _leftSideIndex = index * 2;
             int _rightSideIndex = _leftSideIndex + 1;
 
@@ -275,7 +276,10 @@ class CityTabState extends State<CityTab> {
                 ],
               ),
             );
-          });
+          },
+          childCount: (_listLength % 2 == 0 ? _listLength / 2 : ((_listLength - 1) / 2) + 1).toInt(),
+        ),
+      );
     }
   }
 
@@ -586,21 +590,6 @@ class CityTabState extends State<CityTab> {
   }
 
   bool _listScrollListener() {
-    if (ScrollAnimationsConstants().isActive(context, _searchPeopleListControllerCity)) {
-      if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.forward) {
-        if (Variables.animatedSearchPeopleHeaderHeight.value != 80) {
-          Variables.animatedSearchPeopleHeaderHeight.value = 80;
-          // print("forward $ach ${MediaQuery.of(context).size.width}, ${MediaQuery.of(context).size.height}");
-          // print("textScaleFactor : ${MediaQuery.of(context).textScaleFactor}");
-        }
-      } else if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse) {
-        if (Variables.animatedSearchPeopleHeaderHeight.value != 0) {
-          Variables.animatedSearchPeopleHeaderHeight.value = 0;
-          // print("reverse $ach");
-        }
-      }
-    }
-
     var nextPageTrigger = 0.8 * _searchPeopleListControllerCity.position.maxScrollExtent;
 
     if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse &&

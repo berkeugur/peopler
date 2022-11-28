@@ -1,8 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:provider/provider.dart';
@@ -10,13 +8,34 @@ import '../../../../business_logic/blocs/LocationPermissionBloc/bloc.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../business_logic/blocs/CityBloc/bloc.dart';
-import '../../../business_logic/blocs/LocationBloc/bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../data/repository/location_repository.dart';
 import '../../../others/locator.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import 'city_nearby_buttons.dart';
+
+
+class MySearchScreenAppBar extends StatelessWidget {
+  MySearchScreenAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  final Mode _mode = locator<Mode>();
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      snap: true,
+      floating: true,
+      title: search_peoples_header(),
+      centerTitle: true,
+      backgroundColor: _mode.bottomMenuBackground(),
+      shadowColor: Colors.transparent,
+    );
+  }
+}
+
+
 
 class search_peoples_header extends StatelessWidget {
   search_peoples_header({Key? key}) : super(key: key);
@@ -26,8 +45,8 @@ class search_peoples_header extends StatelessWidget {
   final String _itemText1 = "Aynı Ortamımdaki";
   final String _itemText2 = "Aynı Şehrimdeki";
 
-  late final Size _size;
-  late final ThemeCubit _themeCubit;
+  late Size _size;
+  late ThemeCubit _themeCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -40,26 +59,21 @@ class search_peoples_header extends StatelessWidget {
       valueListenable: Variables.animatedSearchPeopleHeaderHeight,
       builder: (context, snapshot, _) {
         return BlocBuilder<ThemeCubit, bool>(
-            bloc: _themeCubit,
+            bloc:  _themeCubit,
             builder: (_, state) {
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 350),
-                height: Variables.animatedSearchPeopleHeaderHeight.value,
-                color: _mode.search_peoples_scaffold_background(),
-                child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: EdgeInsets.only(
-                      top: _size.width < 340 ? 35 : 30.0,
-                      bottom: 5.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        searchHeaderItem(true, _y, _itemText1, context),
-                        searchHeaderItem(false, _y, _itemText2, context),
-                      ],
-                    )),
-              );
+              return Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(
+                    top: _size.width < 340 ? 35 : 30.0,
+                    bottom: 5.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      searchHeaderItem(true, _y, _itemText1, context),
+                      searchHeaderItem(false, _y, _itemText2, context),
+                    ],
+                  ));
             });
       },
     );

@@ -7,12 +7,7 @@ import 'package:peopler/presentation/screens/SEARCH/city_tab.dart';
 import 'package:peopler/presentation/screens/SEARCH/nearby_tab.dart';
 import 'package:peopler/presentation/screens/SEARCH/seach_peoples_header.dart';
 import 'package:provider/provider.dart';
-import '../../../business_logic/blocs/CityBloc/bloc.dart';
-import '../../../business_logic/blocs/LocationBloc/bloc.dart';
-import '../../../business_logic/blocs/LocationPermissionBloc/bloc.dart';
-import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
-
 import 'city_nearby_buttons.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -76,8 +71,8 @@ class _SearchScreenState extends State<SearchScreen> {
               return BlocBuilder<ThemeCubit, bool>(
                   bloc: _themeCubit,
                   builder: (_, state) {
-                    return Stack(children: [
-                      _isNearby == true
+                    return SafeArea(
+                      child: _isNearby == true
                           ? NearbyTab(
                               screenHeight: screenHeight,
                               paddingTopSafeArea: paddingTopSafeArea,
@@ -94,14 +89,12 @@ class _SearchScreenState extends State<SearchScreen> {
                               size: _size,
                               showWidgetsKeyNearby: showWidgetsKeyNearby,
                               showWidgetsKeyCity: showWidgetsKeyCity),
-                      search_peoples_header(),
-                    ]);
+                    );
                   });
             }),
           );
         });
   }
 }
-
 
 // CityNearbyButtons

@@ -49,23 +49,29 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     List<MyFeed> shuffledList = [];
     List<MyFeed> kadinList;
     List<MyFeed> erkekList;
+    List<MyFeed> otherList;
 
     kadinList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Kadın');
     erkekList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Erkek');
+    otherList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Diğer');
 
     List<String> kadinListGender = kadinList.map((person) => 'K').toList();
     List<String> erkekListGender = erkekList.map((person) => 'E').toList();
-    List<String> shuffledListGender = [...kadinListGender, ...erkekListGender];
+    List<String> otherListGender = otherList.map((person) => 'O').toList();
+    List<String> shuffledListGender = [...kadinListGender, ...erkekListGender, ...otherListGender];
     shuffledListGender.shuffle();
 
     int kadinIndex = 0;
     int erkekIndex = 0;
+    int otherIndex = 0;
 
     for (String i in shuffledListGender) {
       if (i == 'K') {
         shuffledList.add(kadinList[kadinIndex++]);
-      } else {
+      } else if (i == 'E') {
         shuffledList.add(erkekList[erkekIndex++]);
+      } else if (i == 'O') {
+        shuffledList.add(otherList[otherIndex++]);
       }
     }
 
@@ -83,17 +89,16 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         _lastSelectedFeed = null;
         List<MyFeed> shuffledList = await getKadinAndErkekList();
 
-        // await Future.delayed(const Duration(seconds: 2));
-
-        if (shuffledList.isNotEmpty) {
-          _allFeedList.addAll(shuffledList);
-          if(state is FeedsLoaded1State) {
-            emit(FeedsLoaded2State());
-          } else {
-            emit(FeedsLoaded1State());
-          }
-        } else {
+        _allFeedList.addAll(shuffledList);
+        if(_allFeedList.isEmpty) {
           emit(FeedNotExistState());
+          return;
+        }
+
+        if(state is FeedsLoaded1State) {
+          emit(FeedsLoaded2State());
+        } else {
+          emit(FeedsLoaded1State());
         }
       } catch (e) {
         debugPrint("Blocta initial feed hata:" + e.toString());
@@ -106,8 +111,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
         _lastSelectedFeed = _allFeedList.last;
         List<MyFeed> shuffledList = await getKadinAndErkekList();
-
-        // await Future.delayed(const Duration(seconds: 2));
 
         if (shuffledList.isNotEmpty) {
           _allFeedList.addAll(shuffledList);
