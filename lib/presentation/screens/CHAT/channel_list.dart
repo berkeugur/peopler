@@ -29,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   static const double _imageSize = 50;
   Size? _size;
 
-  late ScrollController _scrollController;
+  late ScrollController _notificationScrollController;
 
   bool loading = false;
 
@@ -79,13 +79,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
                   // find the NestedScrollView.
                   builder: (BuildContext context) {
-                    _scrollController = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
-                    if (_scrollController.hasListeners == false) {
-                      _scrollController.addListener(_listScrollListener);
+                    _notificationScrollController =
+                        context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                    if (_notificationScrollController.hasListeners == false) {
+                      _notificationScrollController.addListener(_listScrollListener);
                     }
                     return CustomScrollView(
                       // The controller must be the inner controller of nested scroll view widget.
-                      controller: _scrollController,
+                      controller: _notificationScrollController,
                       slivers: <Widget>[
                         SliverOverlapInjector(
                           // This is the flip side of the SliverOverlapAbsorber above.
@@ -239,10 +240,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   bool _listScrollListener() {
     NewMessageCubit _newMessageCubit = BlocProvider.of<NewMessageCubit>(context);
-    var nextPageTrigger = 0.8 * _scrollController.positions.last.maxScrollExtent;
+    var nextPageTrigger = 0.8 * _notificationScrollController.positions.last.maxScrollExtent;
 
-    if (_scrollController.positions.last.axisDirection == AxisDirection.down &&
-        _scrollController.positions.last.pixels >= nextPageTrigger) {
+    if (_notificationScrollController.positions.last.axisDirection == AxisDirection.down &&
+        _notificationScrollController.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageCubit: _newMessageCubit));

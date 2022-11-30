@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
-import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
 import 'package:peopler/data/repository/chat_repository.dart';
 import 'package:peopler/data/services/db/firestore_db_service_users.dart';
 import '../../../data/model/chat.dart';
@@ -25,6 +24,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc() : super(InitialChatState()) {
     on<GetChatWithPaginationEvent>((event, emit) async {
       if (_hasMore == false) {
+        if (state is ChatNotExistState) {
+          return;
+        }
+
         emit(NoMoreChatsState());
       } else {
         if (_allChatList.isNotEmpty) {
@@ -33,7 +36,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         emit(ChatsLoadingState());
 
-        List<Chat> newChatList = await _chatRepository.getChatWithPagination(event.userID, _lastSelectedChat, _numberOfElements);
+        List<Chat> newChatList =
+            await _chatRepository.getChatWithPagination(event.userID, _lastSelectedChat, _numberOfElements);
 
         if (newChatList.length < _numberOfElements) {
           _hasMore = false;
@@ -41,8 +45,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         _allChatList.addAll(newChatList);
 
-        if(_allChatList.isNotEmpty) {
-          if(state is ChatsLoadedState1) {
+        if (_allChatList.isNotEmpty) {
+          if (state is ChatsLoadedState1) {
             emit(ChatsLoadedState2());
           } else {
             emit(ChatsLoadedState1());
@@ -53,47 +57,44 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         if (_newChatListenListener == false) {
           _newChatListenListener = true;
-          _streamSubscription = _chatRepository
-              .getChatWithStream(event.userID)
-              .listen((updatedChat) async {
+          _streamSubscription = _chatRepository.getChatWithStream(event.userID).listen((updatedChat) async {
+            if (updatedChat.isNotEmpty) {
+              MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(updatedChat[0].hostID);
+              updatedChat[0].hostUserName = _user!.displayName;
+              updatedChat[0].hostUserProfileUrl = _user.profileURL;
 
-                if(updatedChat.isNotEmpty) {
-                  MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(updatedChat[0].hostID);
-                  updatedChat[0].hostUserName = _user!.displayName;
-                  updatedChat[0].hostUserProfileUrl = _user.profileURL;
-
-                  /// Call another ChatBloc event named NewChatListenerEvent
-                  add(NewChatListenerEvent(updatedChat: updatedChat, newMessageCubit: event.newMessageCubit));
-                } else {
-                  add(TrigChatNotExistStateEvent());
-                }
+              /// Call another ChatBloc event named NewChatListenerEvent
+              add(NewChatListenerEvent(updatedChat: updatedChat, newMessageCubit: event.newMessageCubit));
+            } else {
+              add(TrigChatNotExistStateEvent());
+            }
           });
         }
       }
     });
 
     on<TrigChatNotExistStateEvent>((event, emit) async {
-        emit(ChatNotExistState());
+      emit(ChatNotExistState());
     });
 
     on<NewChatListenerEvent>((event, emit) async {
-        /// If there is a chat with updatedChat id, then remove it from _allChatList.
-        /// Since updatedChat is a list with only one element, we get the only element whose index is 0.
-        _allChatList.removeWhere((item) => item.hostID == event.updatedChat[0].hostID);
+      /// If there is a chat with updatedChat id, then remove it from _allChatList.
+      /// Since updatedChat is a list with only one element, we get the only element whose index is 0.
+      _allChatList.removeWhere((item) => item.hostID == event.updatedChat[0].hostID);
 
-        /// Since this event runs, related chat last message received for host will be true
-        await _chatRepository.updateIsLastMessageReceivedByHost(event.updatedChat[0].hostID, UserBloc.user!.userID, true);
+      /// Since this event runs, related chat last message received for host will be true
+      await _chatRepository.updateIsLastMessageReceivedByHost(event.updatedChat[0].hostID, UserBloc.user!.userID, true);
 
-        /// Insert updatedChat at the top of list
-        _allChatList.insert(0, event.updatedChat[0]);
+      /// Insert updatedChat at the top of list
+      _allChatList.insert(0, event.updatedChat[0]);
 
-        if(state is ChatsLoadedState1) {
-          emit(ChatsLoadedState2());
-        } else {
-          emit(ChatsLoadedState1());
-        }
+      if (state is ChatsLoadedState1) {
+        emit(ChatsLoadedState2());
+      } else {
+        emit(ChatsLoadedState1());
+      }
 
-        event.newMessageCubit.newMessageEvent();
+      event.newMessageCubit.newMessageEvent();
     });
 
     on<UpdateLastMessageSeenEvent>((event, emit) async {
@@ -103,7 +104,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     });
 
     on<CreateChatEvent>((event, emit) async {
-
       /// Create chat object for owner
       Chat _chat = Chat(
           hostID: event.hostUserID,
@@ -112,8 +112,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           isLastMessageSeenByHost: false,
           lastMessageCreatedAt: DateTime.now(),
           lastMessage: "",
-          numberOfMessagesThatIHaveNotOpened: 0
-      );
+          numberOfMessagesThatIHaveNotOpened: 0);
 
       await _chatRepository.createChat(UserBloc.user!.userID, _chat);
 
@@ -125,8 +124,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           isLastMessageSeenByHost: false,
           lastMessageCreatedAt: DateTime.now(),
           lastMessage: "",
-          numberOfMessagesThatIHaveNotOpened: 0
-      );
+          numberOfMessagesThatIHaveNotOpened: 0);
 
       await _chatRepository.createChat(event.hostUserID, _chat);
     });

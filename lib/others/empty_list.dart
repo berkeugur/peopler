@@ -85,28 +85,28 @@ List<Function()?> _actionButtonFunction({required EmptyListType emptyListType, r
     case EmptyListType.nearby:
       return [
         () {
-          print("go: Çevrenizi Keşfedin");
+          debugPrint("go: Çevrenizi Keşfedin");
         },
         () {
-          print("go: Sevdiklerinle Paylaş");
+          debugPrint("go: Sevdiklerinle Paylaş");
         }
       ];
     case EmptyListType.citySearch:
       return [
         () {
-          print("go: Çevrenizi Keşfedin");
+          debugPrint("go: Çevrenizi Keşfedin");
         },
         () {
-          print("go: Sevdiklerinle Paylaş");
+          debugPrint("go: Sevdiklerinle Paylaş");
         }
       ];
     case EmptyListType.emptyChannelList:
       return [
         () {
-          print("go: Çevrenizi Keşfedin");
+          debugPrint("go: Çevrenizi Keşfedin");
         },
         () {
-          print("go: Şehrinizi Keşfedin");
+          debugPrint("go: Şehrinizi Keşfedin");
         }
       ];
     case EmptyListType.emptyFeed:
@@ -116,33 +116,33 @@ List<Function()?> _actionButtonFunction({required EmptyListType emptyListType, r
     case EmptyListType.incomingRequest:
       return [
         () {
-          print("go: Çevrenizi Keşfedin");
+          debugPrint("go: Çevrenizi Keşfedin");
         },
         () {
-          print("go: Şehrinizi Keşfedin");
+          debugPrint("go: Şehrinizi Keşfedin");
         }
       ];
     case EmptyListType.outgoingRequest:
       return [
         () {
-          print("go: Çevrenizi Keşfedin");
+          debugPrint("go: Çevrenizi Keşfedin");
         },
         () {
-          print("go: Şehrinizi Keşfedin");
+          debugPrint("go: Şehrinizi Keşfedin");
         }
       ];
 
     case EmptyListType.saved:
       return [
         () {
-          print("go: Çevrenizi Keşfedin");
+          debugPrint("go: Çevrenizi Keşfedin");
         },
         () {
-          print("go: Şehrinizi Keşfedin");
+          debugPrint("go: Şehrinizi Keşfedin");
         },
         () {
           howItWork(context);
-          print("go: Nasıl Çalışır?");
+          debugPrint("go: Nasıl Çalışır?");
         }
       ];
     default:
@@ -264,34 +264,27 @@ class EmptyList extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, index) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 0, top: 10),
-                          child: InkWell(
-                            onTap: _actionButtonFunction(emptyListType: emptyListType, context: context)[index],
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(999),
-                                border: Border.all(width: 1, color: const Color(0xFF0353EF)),
-                                color: Colors.transparent,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _actionButtonText(emptyListType: emptyListType)[index],
-                                  textScaleFactor: 1,
-                                  style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
-                                ),
-                              ),
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 0, top: 10),
+                      child: InkWell(
+                        onTap: _actionButtonFunction(emptyListType: emptyListType, context: context)[index],
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            border: Border.all(width: 1, color: const Color(0xFF0353EF)),
+                            color: Colors.transparent,
+                          ),
+                          child: Center(
+                            child: Text(
+                              _actionButtonText(emptyListType: emptyListType)[index],
+                              textScaleFactor: 1,
+                              style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF0353EF), fontSize: 14),
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     );
                   },
                 )
