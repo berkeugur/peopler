@@ -43,10 +43,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
             decoration: BoxDecoration(
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: const Color(0xFF939393).withOpacity(0.3),
-                  blurRadius: 3.0,
+                  color: const Color(0xFF939393).withOpacity(0.1),
+                  blurRadius: 2.0,
                   spreadRadius: 0,
-                  offset: const Offset(0, -3),
+                  offset: const Offset(0, -4),
                 )
               ],
               color: _mode.bottomMenuBackground(),
