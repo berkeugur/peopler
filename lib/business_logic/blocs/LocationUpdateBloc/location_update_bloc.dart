@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,7 +7,6 @@ import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/my_work_manager.dart';
 import 'package:peopler/data/repository/location_repository.dart';
-import '../../../data/fcm_and_local_notifications.dart';
 import '../../../data/repository/saved_repository.dart';
 import '../../../others/locator.dart';
 import 'bloc.dart';
@@ -19,9 +17,9 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
   static Position? _position;
   static Position? get position => _position;
 
-  static bool _isTimerActive = false;
-
   static bool firstUpdate = false;
+
+  static Timer? _timer;
 
   static Future<String> updateLocationMethod() async {
     try {
@@ -46,7 +44,7 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
         return 'PositionNotGetState';
       }
 
-      if(UserBloc.user != null) {
+      if (UserBloc.user != null) {
         /// Update user location at database and secure storage (phone cache)
         bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
         if (isUpdated == false) {
@@ -91,7 +89,6 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
   }
 
   LocationUpdateBloc() : super(InitialState()) {
-
     on<UpdateLocationEvent>((event, emit) async {
       String methodState = await updateLocationMethod();
       if (methodState == 'PositionNotUpdatedState') {
@@ -111,66 +108,60 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
       await _savedRepository.refreshNumOfSendRequest();
     });
 
-
     ///--------------- TIMER - FOREGROUND ----------------------------//
     on<StartLocationUpdatesForeground>((event, emit) async {
-      if (_isTimerActive == false) {
-
+      if (_timer == null) {
         const storage = FlutterSecureStorage();
 
         if (UserBloc.user != null) {
-          await storage.write(
-              key: 'sharedUserID', value: UserBloc.user!.userID);
-          await storage.write(
-              key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
-          await storage.write(
-              key: 'sharedLongitude',
-              value: UserBloc.user!.longitude.toString());
+          await storage.write(key: 'sharedUserID', value: UserBloc.user!.userID);
+          await storage.write(key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
+          await storage.write(key: 'sharedLongitude', value: UserBloc.user!.longitude.toString());
         } else {
-          await storage.write(
-              key: 'sharedLatitude', value: UserBloc.guestUser!.latitude.toString());
-          await storage.write(
-              key: 'sharedLongitude',
-              value: UserBloc.guestUser!.longitude.toString());
+          await storage.write(key: 'sharedLatitude', value: UserBloc.guestUser!.latitude.toString());
+          await storage.write(key: 'sharedLongitude', value: UserBloc.guestUser!.longitude.toString());
         }
 
         add(UpdateLocationEvent());
 
-        Timer.periodic(
+        _timer = Timer.periodic(
           const Duration(minutes: 1),
-          (timer) {
+          (dummy) {
             debugPrint("Foreground update active");
-            _isTimerActive = true;
             add(UpdateLocationEvent());
 
-            if(UserBloc.entitlement != SubscriptionTypes.free) return;
-            if(UserBloc.user == null) return;
+            if (UserBloc.entitlement != SubscriptionTypes.free) return;
+            if (UserBloc.user == null) return;
 
             add(UpdateNumOfSendRequest());
           },
         );
-
       }
     });
 
     ///--------------- WORK MANAGER - BACKGROUND ----------------------------//
 
     on<StartLocationUpdatesBackground>((event, emit) async {
-        if (UserBloc.user != null) {
-          const storage = FlutterSecureStorage();
+      if (UserBloc.user != null) {
+        const storage = FlutterSecureStorage();
 
-          await storage.write(
-              key: 'sharedUserID', value: UserBloc.user!.userID);
-          await storage.write(
-              key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
-          await storage.write(
-              key: 'sharedLongitude', value: UserBloc.user!.longitude.toString());
+        await storage.write(key: 'sharedUserID', value: UserBloc.user!.userID);
+        await storage.write(key: 'sharedLatitude', value: UserBloc.user!.latitude.toString());
+        await storage.write(key: 'sharedLongitude', value: UserBloc.user!.longitude.toString());
 
-          /// Start work manager fetch location on background
-          MyWorkManager.fetchLocationBackground();
-        }
+        /// Start work manager fetch location on background
+        MyWorkManager.fetchLocationBackground();
+      }
     });
 
     ///---------------------------------------------------------//
+  }
+
+  @override
+  Future<void> close() async {
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+    super.close();
   }
 }

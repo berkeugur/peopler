@@ -6,16 +6,11 @@ import 'package:peopler/business_logic/blocs/UserBloc/user_state.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
-import 'package:peopler/presentation/screens/REGISTER/FAB_functions/completion_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Linkedin_FAB_functions/linkedin_completion_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Linkedin_FAB_functions/linkedin_next_page_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/city_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/Screens/email_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/gender_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/Screens/name_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/biography_screen.dart';
-import 'package:peopler/presentation/screens/REGISTER/FAB_functions/next_page_fab.dart';
-import 'package:peopler/presentation/screens/REGISTER/Screens/password_screen.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/profile_photo.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
@@ -79,8 +74,9 @@ class _LinkedinRegisterScreensState extends State<LinkedinRegisterScreens> {
               bloc: _userBloc,
               listener: (context, UserState state) {
                 if (state is SignedInNotVerifiedState) {
-                  _userBloc.add(waitFor15minutes());
-                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                  _userBloc.add(waitFor15minutes(context: context));
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                 } else if (state is InvalidEmailState) {
                   SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                 } else if (state is SigningInState) {

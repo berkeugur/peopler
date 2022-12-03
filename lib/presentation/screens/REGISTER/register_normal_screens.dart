@@ -101,8 +101,9 @@ class _RegisterScreensState extends State<RegisterScreens> {
               bloc: _userBloc,
               listener: (context, UserState state) {
                 if (state is SignedInNotVerifiedState) {
-                  _userBloc.add(waitFor15minutes());
-                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                  _userBloc.add(waitFor15minutes(context: context));
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                 } else if (state is InvalidEmailState) {
                   SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
                 } else if (state is SigningInState) {

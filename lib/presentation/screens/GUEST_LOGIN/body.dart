@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:restart_app/restart_app.dart';
-import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
@@ -40,8 +36,8 @@ class _GuestLoginScreenBodyState extends State<GuestLoginScreenBody> {
             fit: BoxFit.contain,
           ),
           text: "Giriş Yap",
-          onPressed: () {
-            Restart.restartApp();
+          onPressed: () async {
+            await Phoenix.rebirth(context);
             // UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
             // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
           },

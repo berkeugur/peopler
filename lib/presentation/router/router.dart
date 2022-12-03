@@ -10,7 +10,6 @@ import 'package:peopler/presentation/screens/LOGIN_REGISTER/ResetPasswordScreen/
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/VerificationScreen/verification_screen.dart';
 import 'package:peopler/presentation/screens/MAINTENANCE/maintenance_screen.dart';
 import '../../others/locator.dart';
-import '../screens/HOME/home_screen.dart';
 import '../screens/LOGIN_REGISTER/CreateProfileScreen/create_profile_screen.dart';
 import '../screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
 import '../screens/LOGIN_REGISTER/NameAndSurnameScreen/name_screen.dart';
