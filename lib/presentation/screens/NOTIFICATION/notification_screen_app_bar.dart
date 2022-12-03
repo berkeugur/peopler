@@ -75,13 +75,9 @@ class _BottomAppBar extends StatelessWidget {
       onTap: () => NotificationScreenFunctions().pushConnectionRequestPage(context),
       child: AnimatedContainer(
         decoration: BoxDecoration(
-          color: _mode.bottomMenuBackground(),
+          color: _mode.homeScreenScaffoldBackgroundColor(),
           boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: const Color(0xFFE3E2E2).withOpacity(0.6),
-                blurRadius: 1.5,
-                spreadRadius: 0.7,
-                offset: const Offset(0, 0))
+            BoxShadow(color: const Color(0xFFE3E2E2).withOpacity(0.6), blurRadius: 1.5, spreadRadius: 0.7, offset: const Offset(0, 0))
           ],
         ),
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
