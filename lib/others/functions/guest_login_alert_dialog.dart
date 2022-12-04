@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
-import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:restart_app/restart_app.dart';
 
 class GuestAlert {
   static dialog(context) {
@@ -30,8 +26,8 @@ class GuestAlert {
                     ),
                   )),
               TextButton(
-                  onPressed: () {
-                    Restart.restartApp();
+                  onPressed: () async {
+                    await Phoenix.rebirth(context);
                     // UserBloc _userBloc = BlocProvider.of(context);
                     // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
                   },

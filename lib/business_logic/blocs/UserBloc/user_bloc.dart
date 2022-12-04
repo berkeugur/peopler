@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:restart_app/restart_app.dart';
+import '../../../core/constants/navigation/navigation_constants.dart';
 import '../../../data/in_app_purchases.dart';
 import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
@@ -44,6 +44,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Timer? _timer;
 
+  Future<void> restartApp() async {
+    mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+  }
+
   Future<void> signedInUserPreparations() async {
     /// Get activities related to user
     myActivities = await _userRepository.getActivities(user!.userID);
@@ -60,14 +64,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         UserBloc.user!.fromPublicMap(updatedUser.toPublicMap());
       });
     }
-  }
-
-  Future<void> closeStreams() async {
-    await close();
-    await CityBloc.closeStreams();
-    await LocationBloc.closeStreams();
-    await NotificationBloc.closeStreams();
-    await ChatBloc.closeStreams();
   }
 
   Future initPurchaserInfoStream() async {
@@ -122,18 +118,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   UserBloc(this.mainKey) : super(InitialUserState()) {
-    on<signOutEvent>((event, emit) async {
-      try {
-        await closeStreams();
-        await _userRepository.deleteToken(user!.userID);
-        await _userRepository.signOut();
-        await Purchases.logOut();
-        Restart.restartApp();
-      } catch (e) {
-        debugPrint("Signed Out Basarisiz" + e.toString());
-      }
-    });
-
     on<initializeMyUserEvent>((event, emit) async {
       user = MyUser();
     });
@@ -159,7 +143,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         } else if (user?.isTheAccountConfirmed == false && _countDownFinishTime!.isBefore(DateTime.now())) {
           emit(SignedInNotVerifiedState());
         } else if (user?.isTheAccountConfirmed == false && _countDownFinishTime!.isAfter(DateTime.now())) {
-          add(waitFor15minutes());
+          add(waitFor15minutes(context: event.context));
           emit(SignedInState());
         } else {
           await signedInUserPreparations();
@@ -329,14 +313,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await signedInUserPreparations();
       emit(SignedInState());
 
-      _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+      _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) async {
         /// Check for isEmailVerified
         add(waitForVerificationEvent());
 
         /// Check for 15 minutes timed out
         DateTime _countDownFinishTime = user!.createdAt!.add(const Duration(minutes: 15));
         if (user?.isTheAccountConfirmed == false && _countDownFinishTime.isBefore(DateTime.now())) {
-          Restart.restartApp();
+          await restartApp();
         }
 
         /// If account is confirmed, then cancel timer
@@ -360,11 +344,31 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(SignedInState());
     });
 
+    on<signOutEvent>((event, emit) async {
+      try {
+        await closeStreams();
+        await _userRepository.deleteToken(user!.userID);
+        await _userRepository.signOut();
+        await Purchases.logOut();
+        await restartApp();
+      } catch (e) {
+        debugPrint("Signed Out Basarisiz: " + e.toString());
+      }
+    });
+
     on<deleteUser>((event, emit) async {
       await closeStreams();
       await _userRepository.deleteUser(user!, password: event.password);
-      Restart.restartApp();
+      await restartApp();
     });
+  }
+
+  Future<void> closeStreams() async {
+    await close();
+    await CityBloc.closeStreams();
+    await LocationBloc.closeStreams();
+    await NotificationBloc.closeStreams();
+    await ChatBloc.closeStreams();
   }
 
   @override

@@ -297,21 +297,26 @@ class FirestoreDBServiceUsers {
   }
 
   Future<bool?> isLikedOrDislikedByUser(String userID, String feedID) async {
-    // true: liked
-    // false: disliked
-    // null: nothing
-    DocumentSnapshot liked = await _firebaseDB.collection('users').doc(userID).collection('liked').doc(feedID).get();
+    try {
+      // true: liked
+      // false: disliked
+      // null: nothing
+      DocumentSnapshot liked = await _firebaseDB.collection('users').doc(userID).collection('liked').doc(feedID).get();
 
-    DocumentSnapshot disliked = await _firebaseDB.collection('users').doc(userID).collection('disliked').doc(feedID).get();
+      DocumentSnapshot disliked = await _firebaseDB.collection('users').doc(userID).collection('disliked').doc(feedID).get();
 
-    if (liked.data() != null) {
-      // If feedID exists on liked collection
-      return true;
-    } else {
-      // If feedID does not exist on disliked collection, then return null
-      if (disliked.data() == null) return null;
-      // If feedID does exist on disliked collection, then return false
-      return false;
+      if (liked.data() != null) {
+        // If feedID exists on liked collection
+        return true;
+      } else {
+        // If feedID does not exist on disliked collection, then return null
+        if (disliked.data() == null) return null;
+        // If feedID does exist on disliked collection, then return false
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return null;
     }
   }
 

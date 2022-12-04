@@ -34,7 +34,6 @@ import 'data/repository/user_repository.dart';
 import 'data/services/db/firebase_db_common.dart';
 import 'data/services/db/firestore_db_service_users.dart';
 import 'others/locator.dart';
-import 'others/strings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

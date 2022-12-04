@@ -1,21 +1,30 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 abstract class UserEvent extends Equatable {}
 
 class checkUserSignedInEvent extends UserEvent {
+  BuildContext context;
+
+  checkUserSignedInEvent({required this.context});
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+// TODO: implement props
+  List<Object> get props => [context];
 }
 
 class signOutEvent extends UserEvent {
+  BuildContext context;
+
+  signOutEvent({required this.context});
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+// TODO: implement props
+  List<Object> get props => [context];
 }
 
 class signInWithLinkedInEvent extends UserEvent {
@@ -55,13 +64,17 @@ class initializeMyUserEvent extends UserEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class waitForVerificationEvent extends UserEvent {
+class waitFor15minutes extends UserEvent {
+  BuildContext context;
+
+  waitFor15minutes({required this.context});
+
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+// TODO: implement props
+  List<Object> get props => [context];
 }
 
-class waitFor15minutes extends UserEvent {
+class waitForVerificationEvent extends UserEvent {
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
@@ -106,9 +119,10 @@ class SignInWithAppleEvent extends UserEvent {
 
 class deleteUser extends UserEvent {
   String? password;
-  deleteUser({this.password});
+  BuildContext? context;
+  deleteUser({this.password, this.context});
 
   @override
 // TODO: implement props
-  List<String?> get props => [password];
+  List<Object?> get props => [password, context];
 }

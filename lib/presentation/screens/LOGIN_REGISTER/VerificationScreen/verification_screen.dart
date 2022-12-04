@@ -8,7 +8,6 @@ import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../core/constants/navigation/navigation_constants.dart';
 import '../../../../core/system_ui_service.dart';
 import '../../../../data/repository/location_repository.dart';
-import '../../../../others/functions/image_picker_functions.dart';
 import '../../../../others/locator.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
@@ -18,7 +17,8 @@ class VerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-    final Timer timer = Timer.periodic(const Duration(seconds: 10), (Timer t) => _userBloc.add(waitForVerificationEvent()));
+    final Timer timer =
+        Timer.periodic(const Duration(seconds: 10), (Timer t) => _userBloc.add(waitForVerificationEvent()));
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -37,9 +37,11 @@ class VerificationScreen extends StatelessWidget {
                   /// Set theme mode before Home Screen
                   SystemUIService().setSystemUIforThemeMode();
 
-                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                 } else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                 }
               }
             },
@@ -68,13 +70,17 @@ class VerificationScreen extends StatelessWidget {
                             "Mail kutunu",
                             textScaleFactor: 1,
                             style: PeoplerTextStyle.normal.copyWith(
-                                color: const Color(0xFF0353EF), fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48, fontWeight: FontWeight.w300),
+                                color: const Color(0xFF0353EF),
+                                fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48,
+                                fontWeight: FontWeight.w300),
                           ),
                           Text(
                             "kontrol et!",
                             textScaleFactor: 1,
                             style: PeoplerTextStyle.normal.copyWith(
-                                color: const Color(0xFF000000), fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48, fontWeight: FontWeight.w300),
+                                color: const Color(0xFF000000),
+                                fontSize: screenWidth < 360 || screenHeight < 480 ? 36 : 48,
+                                fontWeight: FontWeight.w300),
                           ),
                         ],
                       ),
@@ -88,7 +94,8 @@ class VerificationScreen extends StatelessWidget {
                           child: Text(
                         "Mail adresine bir doğrulama bağlantısı gönderdik. Mail kutunu kontrol et ve bağlantıya tıklayarak profilini doğrula.\n\nProfilini doğruladıktan sonra uygulamaya doğrudan yönlendirileceksin.",
                         textScaleFactor: 1,
-                        style: PeoplerTextStyle.normal.copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
+                        style: PeoplerTextStyle.normal
+                            .copyWith(color: const Color(0xFF000000), fontSize: 16, fontWeight: FontWeight.w300),
                       )),
                     ),
                     const SizedBox(

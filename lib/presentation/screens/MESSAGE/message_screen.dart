@@ -173,7 +173,9 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
       duration: const Duration(milliseconds: 500),
       width: _size.width,
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(0.0, 0.75))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(0.0, 0.75))
+        ],
         color: _mode.enabledMenuItemBackground(),
       ),
       height: 50,
@@ -211,6 +213,7 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
                 textInputAction: TextInputAction.newline,
                 keyboardType: TextInputType.multiline,
                 maxLines: 99,
+                cursorColor: Colors.white,
                 minLines: 1,
                 maxLength: MaxLengthConstants.MESSAGE,
                 style: const TextStyle(color: Colors.white),

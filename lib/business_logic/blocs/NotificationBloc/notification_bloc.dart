@@ -21,7 +21,6 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   static StreamSubscription? _streamSubscription;
   static bool _newNotificationListenListener = false;
 
-
   NotificationBloc() : super(InitialNotificationState()) {
     on<GetInitialNotificationEvent>((event, emit) async {
       try {
@@ -31,14 +30,15 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         _notificationRepository.restartNotificationCache();
 
         _lastSelectedNotification = null;
-        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification);
-        if(newNotificationList.isNotEmpty) {
+        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(
+            UserBloc.user!.userID, _lastSelectedNotification);
+        if (newNotificationList.isNotEmpty) {
           _lastSelectedNotification = newNotificationList.last;
         }
 
         if (newNotificationList.isNotEmpty) {
           _allNotificationList.addAll(newNotificationList);
-          if(state is NotificationLoadedState1) {
+          if (state is NotificationLoadedState1) {
             emit(NotificationLoadedState2());
           } else {
             emit(NotificationLoadedState1());
@@ -52,17 +52,18 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           _streamSubscription = _notificationRepository
               .getNotificationWithStream(UserBloc.user!.userID)
               .listen((updatedNotification) async {
-
-            if(updatedNotification.isEmpty) {
+            if (updatedNotification.isEmpty) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+              add(NewNotificationListenerEvent(
+                  updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
               debugPrint("There is no new notification");
               return;
             }
 
-            if(updatedNotification[0].requestUserID == null) {
+            if (updatedNotification[0].requestUserID == null) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+              add(NewNotificationListenerEvent(
+                  updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
               debugPrint("Notification Type is not receive or transmit");
               return;
             }
@@ -73,11 +74,12 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             updatedNotification[0].requestBiography = _user.biography;
 
             /// Call another NotificationBloc event named NewNotificationListenerEvent
-            add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+            add(NewNotificationListenerEvent(
+                updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
           });
         }
       } catch (e) {
-        debugPrint("Blocta initial Notificationhata:" + e.toString());
+        debugPrint("Blocta initial Notification hata: " + e.toString());
       }
     });
 
@@ -85,14 +87,15 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       try {
         emit(NotificationsLoadingState());
 
-        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification);
-        if(newNotificationList.isNotEmpty) {
+        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(
+            UserBloc.user!.userID, _lastSelectedNotification);
+        if (newNotificationList.isNotEmpty) {
           _lastSelectedNotification = newNotificationList.last;
         }
 
         if (newNotificationList.isNotEmpty) {
           _allNotificationList.addAll(newNotificationList);
-          if(state is NotificationLoadedState1) {
+          if (state is NotificationLoadedState1) {
             emit(NotificationLoadedState2());
           } else {
             emit(NotificationLoadedState1());
@@ -109,11 +112,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       }
     });
 
-
-
     on<NewNotificationListenerEvent>((event, emit) async {
       /// If notification deleted and now there is no notifications
-      if(event.updatedNotification.isEmpty) {
+      if (event.updatedNotification.isEmpty) {
         emit(NotificationNotExistState());
         return;
       }
@@ -125,7 +126,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       /// Insert updatedNotification at the top of list
       _allNotificationList.insert(0, event.updatedNotification[0]);
 
-      if(state is NotificationLoadedState1) {
+      if (state is NotificationLoadedState1) {
         emit(NotificationLoadedState2());
       } else {
         emit(NotificationLoadedState1());
@@ -177,12 +178,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         }
       }
 
-      if(_allNotificationList.length < 5) {
+      if (_allNotificationList.length < 5) {
         add(GetMoreNotificationEvent());
       }
     });
   }
-
 
   @override
   Future<void> close() async {

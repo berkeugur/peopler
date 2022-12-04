@@ -44,6 +44,10 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
     super.initState();
 
     _controller = AnimationController(vsync: this);
+
+    if (UserBloc.user != null) {
+      _likedBloc.add(GetInitialLikedEvent(userID: UserBloc.user!.userID, feedID: widget.myFeed.feedID));
+    }
   }
 
   @override
@@ -55,9 +59,6 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     {
-      if (UserBloc.user != null) {
-        _likedBloc.add(GetInitialLikedEvent(userID: UserBloc.user!.userID, feedID: widget.myFeed.feedID));
-      }
       return ValueListenableBuilder(
           valueListenable: setTheme,
           builder: (context, x, y) {

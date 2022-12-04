@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-    _userBloc.add(checkUserSignedInEvent());
+    _userBloc.add(checkUserSignedInEvent(context: context));
 
     /// Start to listen awesome notifications clickable
     FCMAndLocalNotifications.listenNotification();
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, UserState state) {
         if (state is SignedInState) {
           Timer(const Duration(seconds: SplashScreen.splashScreenDuration), () async {
-           await Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
+            await Navigator.of(context).pushReplacementNamed(NavigationConstants.HOME_SCREEN);
           });
         } else if (state is SignedOutState) {
           Timer(const Duration(seconds: SplashScreen.splashScreenDuration), () async {
@@ -44,33 +44,32 @@ class _SplashScreenState extends State<SplashScreen> {
           });
         } else if (state is SignedInMissingInfoState) {
           Timer(const Duration(seconds: SplashScreen.splashScreenDuration), () async {
-           await Navigator.of(context).pushReplacementNamed(NavigationConstants.GENDER_SELECT_SCREEN);
+            await Navigator.of(context).pushReplacementNamed(NavigationConstants.GENDER_SELECT_SCREEN);
           });
         } else if (state is SignedInNotVerifiedState) {
           Timer(const Duration(seconds: SplashScreen.splashScreenDuration), () async {
             _userBloc.add(waitForVerificationEvent());
-           await Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);
+            await Navigator.of(context).pushReplacementNamed(NavigationConstants.VERIFY_SCREEN);
           });
         }
       },
-        child: Scaffold(
-          backgroundColor: const Color(0xFF0353EF),
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF0353EF),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Center(
+            child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: Image.asset(
+            "assets/peopler.png",
+            scale: 1,
           ),
-            body: Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: Image.asset(
-                    "assets/peopler.png",
-                    scale: 1,
-                  ),
-            )),
-          ),
+        )),
+      ),
     );
   }
 }

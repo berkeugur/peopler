@@ -6,7 +6,6 @@ import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:peopler/presentation/screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../data/repository/connectivity_repository.dart';
 import '../../../../data/services/remote_config/remote_config.dart';
@@ -400,7 +399,7 @@ class _EmailAndPasswordScreenState extends State<EmailAndPasswordScreen> {
         bloc: _userBloc,
         listener: (context, UserState state) async {
           if (state is SignedInNotVerifiedState) {
-            _userBloc.add(waitFor15minutes());
+            _userBloc.add(waitFor15minutes(context: context));
 
             /// Upload Profile Photo
             if (UserBloc.user?.profileURL == "") {

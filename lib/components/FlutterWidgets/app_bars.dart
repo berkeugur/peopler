@@ -41,10 +41,14 @@ class NOTIFICATION_TITLE extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 13.0, right: 10, top: 13),
+      padding: const EdgeInsets.only(bottom: 10.0, right: 10, top: 10),
       child: Text(
         "Bildirimler",
-        style: GoogleFonts.spartan(color: Mode().homeScreenTitleColor(), fontWeight: FontWeight.w800, fontSize: 32),
+        style: GoogleFonts.dmSans(
+          color: Mode().homeScreenTitleColor(),
+          fontWeight: FontWeight.w800,
+          fontSize: 24,
+        ),
       ),
     );
   }

@@ -90,12 +90,12 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         List<MyFeed> shuffledList = await getKadinAndErkekList();
 
         _allFeedList.addAll(shuffledList);
-        if(_allFeedList.isEmpty) {
+        if (_allFeedList.isEmpty) {
           emit(FeedNotExistState());
           return;
         }
 
-        if(state is FeedsLoaded1State) {
+        if (state is FeedsLoaded1State) {
           emit(FeedsLoaded2State());
         } else {
           emit(FeedsLoaded1State());
@@ -109,12 +109,12 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       try {
         emit(NewFeedsLoadingState());
 
-        _lastSelectedFeed = _allFeedList.last;
+        _lastSelectedFeed = _allFeedList.isNotEmpty ? _allFeedList.last : null;
         List<MyFeed> shuffledList = await getKadinAndErkekList();
 
         if (shuffledList.isNotEmpty) {
           _allFeedList.addAll(shuffledList);
-          if(state is FeedsLoaded1State) {
+          if (state is FeedsLoaded1State) {
             emit(FeedsLoaded2State());
           } else {
             emit(FeedsLoaded1State());
@@ -141,7 +141,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         event.myFeed.numberOfConnections = _user.connectionUserIDs.length;
 
         _allFeedList.insert(0, event.myFeed);
-        if(state is FeedsLoaded1State) {
+        if (state is FeedsLoaded1State) {
           emit(FeedsLoaded2State());
         } else {
           emit(FeedsLoaded1State());
@@ -157,10 +157,10 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       /// Therefore, EventRefreshingState not emitted inside Future function to prevent BlocBuilder-EventRefreshingState collide with RefreshIndicator indicator.
       emit(NewFeedsLoadingState());
       await getRefreshDataFuture();
-      if(allFeedList.isEmpty) {
+      if (allFeedList.isEmpty) {
         emit(FeedNotExistState());
       } else {
-        if(state is FeedsLoaded1State) {
+        if (state is FeedsLoaded1State) {
           emit(FeedsLoaded2State());
         } else {
           emit(FeedsLoaded1State());
@@ -173,10 +173,10 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     });
 
     on<TrigFeedNotExistStateEvent>((event, emit) async {
-      if(allFeedList.isEmpty) {
+      if (allFeedList.isEmpty) {
         emit(FeedNotExistState());
       } else {
-        if(state is FeedsLoaded1State) {
+        if (state is FeedsLoaded1State) {
           emit(FeedsLoaded2State());
         } else {
           emit(FeedsLoaded1State());

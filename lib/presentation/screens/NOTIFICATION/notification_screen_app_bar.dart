@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
-import '../../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/locator.dart';
@@ -24,7 +20,7 @@ class NotificationScreenFunctions {
   }
 
   void messageButton(context) {
-    print("pressed message button");
+    debugPrint("pressed message button");
   }
 
   String numberOfConnectionRequest() {
@@ -79,7 +75,7 @@ class _BottomAppBar extends StatelessWidget {
       onTap: () => NotificationScreenFunctions().pushConnectionRequestPage(context),
       child: AnimatedContainer(
         decoration: BoxDecoration(
-          color: _mode.bottomMenuBackground(),
+          color: _mode.homeScreenScaffoldBackgroundColor(),
           boxShadow: <BoxShadow>[
             BoxShadow(color: const Color(0xFFE3E2E2).withOpacity(0.6), blurRadius: 1.5, spreadRadius: 0.7, offset: const Offset(0, 0))
           ],
