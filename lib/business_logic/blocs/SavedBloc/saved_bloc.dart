@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:peopler/data/model/saved_user.dart';
 import 'package:peopler/data/repository/saved_repository.dart';
-
 import '../../../others/locator.dart';
 import '../UserBloc/user_bloc.dart';
 import 'bloc.dart';
@@ -16,6 +13,10 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
   List<SavedUser> get allRequestList => _allSavedUserList;
 
   SavedBloc() : super(InitialSavedState()) {
+    on<ResetSavedEvent>((event, emit) async {
+      emit(InitialSavedState());
+    });
+
     on<GetInitialSavedUsersEvent>((event, emit) async {
       try {
         emit(InitialSavedState());
@@ -26,8 +27,8 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         List<SavedUser> savedUserList = await _savedRepository.getSavedUsersWithPagination(event.myUserID, null);
 
         List<SavedUser> tempList = [...savedUserList];
-        for(SavedUser tempUser in  tempList){
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+        for (SavedUser tempUser in tempList) {
+          if (UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)) {
             savedUserList.removeWhere((item) => item.userID == tempUser.userID);
             await _savedRepository.deleteSavedUser(UserBloc.user!.userID, tempUser.userID);
           }
@@ -35,7 +36,7 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
 
         if (savedUserList.isNotEmpty) {
           _allSavedUserList.addAll(savedUserList);
-          if(state is UsersLoadedSaved1State) {
+          if (state is UsersLoadedSaved1State) {
             emit(UsersLoadedSaved2State());
           } else {
             emit(UsersLoadedSaved1State());
@@ -55,8 +56,8 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         List<SavedUser> savedUserList = await _savedRepository.getSavedUsersWithPagination(event.myUserID, _allSavedUserList.last);
 
         List<SavedUser> tempList = [...savedUserList];
-        for(SavedUser tempUser in  tempList){
-          if(UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)){
+        for (SavedUser tempUser in tempList) {
+          if (UserBloc.user!.receivedRequestUserIDs.contains(tempUser.userID)) {
             savedUserList.removeWhere((item) => item.userID == tempUser.userID);
             await _savedRepository.deleteSavedUser(UserBloc.user!.userID, tempUser.userID);
           }
@@ -66,7 +67,7 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
 
         if (savedUserList.isNotEmpty) {
           _allSavedUserList.addAll(savedUserList);
-          if(state is UsersLoadedSaved1State) {
+          if (state is UsersLoadedSaved1State) {
             emit(UsersLoadedSaved2State());
           } else {
             emit(UsersLoadedSaved1State());
@@ -90,12 +91,11 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         SavedUser savedUser = SavedUser();
         savedUser.userID = event.savedUser.userID;
 
+        UserBloc.user!.savedUserIDs.add(event.savedUser.userID);
         await _savedRepository.saveUser(event.myUserID, savedUser);
 
-        UserBloc.user!.savedUserIDs.add(event.savedUser.userID);
-
         _allSavedUserList.insert(0, savedUser);
-        if(state is UsersLoadedSaved1State) {
+        if (state is UsersLoadedSaved1State) {
           emit(UsersLoadedSaved2State());
         } else {
           emit(UsersLoadedSaved1State());
@@ -115,7 +115,7 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
         UserBloc.user!.savedUserIDs.remove(event.savedUser.userID);
         UserBloc.user!.transmittedRequestUserIDs.add(event.savedUser.userID);
 
-        if(UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest > 0) {
+        if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest > 0) {
           UserBloc.user!.numOfSendRequest -= 1;
           await _savedRepository.decrementNumOfSendRequest(myUser.userID);
         }
@@ -133,9 +133,19 @@ class SavedBloc extends Bloc<SavedEvent, SavedState> {
     });
 
     on<TrigUserNotExistSavedStateEvent>((event, emit) async {
-      if(_allSavedUserList.isEmpty) {
+      if (_allSavedUserList.isEmpty) {
         emit(UserNotExistSavedState());
       }
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+
+    /// Reset variables
+    _allSavedUserList = [];
+
+    /// set initial state
+    add(ResetSavedEvent());
   }
 }

@@ -25,10 +25,11 @@ class FirebaseStorageService {
   }
 
   deleteFolder(path) async {
-    await _firebaseStorage.ref(path).listAll().then((value) {
+    try {
+      var value = await _firebaseStorage.ref(path).listAll();
       _firebaseStorage.ref(value.items.first.fullPath).delete();
-    }).catchError((error) {
-      debugPrint("Firebase Storage delete error: $error");
-    });
+    } catch (e) {
+      debugPrint("Firebase Storage delete error: $e");
+    }
   }
 }

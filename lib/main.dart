@@ -73,28 +73,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FeedBloc feedBloc = FeedBloc();
+    SavedBloc savedBloc = SavedBloc();
+    CityBloc cityBloc = CityBloc();
+    LocationBloc locationBloc = LocationBloc();
+    LocationUpdateBloc locationUpdateBloc = LocationUpdateBloc();
+    NotificationBloc notificationBloc = NotificationBloc();
+    NotificationTransmittedBloc notificationTransmittedBloc = NotificationTransmittedBloc();
+    NotificationReceivedBloc notificationReceivedBloc = NotificationReceivedBloc();
+    ChatBloc chatBloc = ChatBloc();
+    PurchaseGetOfferBloc purchaseGetOfferBloc = PurchaseGetOfferBloc();
+    PurchaseMakePurchaseBloc purchaseMakePurchaseBloc = PurchaseMakePurchaseBloc();
+
+    UserBloc userBloc = UserBloc(mainKey, feedBloc, savedBloc, cityBloc, locationBloc, locationUpdateBloc,notificationBloc, notificationTransmittedBloc, notificationReceivedBloc, chatBloc, purchaseGetOfferBloc, purchaseMakePurchaseBloc);
+
     return ValueListenableBuilder(
       valueListenable: setTheme,
       builder: (context, x, y) {
         return MultiBlocProvider(
             providers: [
-              BlocProvider<FeedBloc>(create: (context) => FeedBloc()),
-              BlocProvider<SavedBloc>(create: (context) => SavedBloc()),
-              BlocProvider<CityBloc>(create: (context) => CityBloc()),
+              BlocProvider<FeedBloc>(create: (context) => feedBloc),
+              BlocProvider<SavedBloc>(create: (context) => savedBloc),
+              BlocProvider<CityBloc>(create: (context) => cityBloc),
               BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
-              BlocProvider<UserBloc>(create: (context) => UserBloc(mainKey)),
-              BlocProvider<LocationBloc>(create: (context) => LocationBloc()),
-              BlocProvider<LocationUpdateBloc>(create: (context) => LocationUpdateBloc()),
+              BlocProvider<UserBloc>(create: (context) => userBloc),
+              BlocProvider<LocationBloc>(create: (context) => locationBloc),
+              BlocProvider<LocationUpdateBloc>(create: (context) => locationUpdateBloc),
               BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
               BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
               BlocProvider<NewNotificationCubit>(create: (context) => NewNotificationCubit()),
               BlocProvider<NewMessageCubit>(create: (context) => NewMessageCubit()),
-              BlocProvider<NotificationTransmittedBloc>(create: (context) => NotificationTransmittedBloc()),
-              BlocProvider<NotificationReceivedBloc>(create: (context) => NotificationReceivedBloc()),
-              BlocProvider<NotificationBloc>(create: (context) => NotificationBloc()),
-              BlocProvider<ChatBloc>(create: (context) => ChatBloc()),
-              BlocProvider<PurchaseGetOfferBloc>(create: (context) => PurchaseGetOfferBloc()),
-              BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => PurchaseMakePurchaseBloc()),
+              BlocProvider<NotificationTransmittedBloc>(create: (context) => notificationTransmittedBloc),
+              BlocProvider<NotificationReceivedBloc>(create: (context) => notificationReceivedBloc),
+              BlocProvider<NotificationBloc>(create: (context) => notificationBloc),
+              BlocProvider<ChatBloc>(create: (context) => chatBloc),
+              BlocProvider<PurchaseGetOfferBloc>(create: (context) => purchaseGetOfferBloc),
+              BlocProvider<PurchaseMakePurchaseBloc>(create: (context) => purchaseMakePurchaseBloc),
             ],
             child: MaterialApp(
                 navigatorKey: mainKey,
@@ -367,7 +381,13 @@ Future<void> fakeFeedCreator() async {
   for (int i = 0; i < 200; i++) {
     MyFeed theFeed = MyFeed(userID: "fake0");
     theFeed.feedExplanation = i.toString();
-    theFeed.userGender = 'Erkek';
+    if (i < 100) {
+      theFeed.userGender = 'Kadın';
+    } else if (i < 150 && i > 100) {
+      theFeed.userGender = 'Erkek';
+    } else {
+      theFeed.userGender = 'Diğer';
+    }
 
     await _fe.createFeed(theFeed);
   }

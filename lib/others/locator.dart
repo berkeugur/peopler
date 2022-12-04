@@ -82,3 +82,21 @@ Future<void> setupLocator() async {
   /// Theme
   locator.registerLazySingleton(() => Mode());
 }
+
+Future<void> resetRepositories() async {
+  /// Repositories
+  locator.resetLazySingleton<UserRepository>();
+  locator.resetLazySingleton<FeedRepository>();
+  locator.resetLazySingleton<LocationRepository>();
+  locator.resetLazySingleton<CityRepository>();
+  locator.resetLazySingleton<ConnectivityRepository>();
+  locator.resetLazySingleton<ChatRepository>();
+  locator.resetLazySingleton<MessageRepository>();
+  locator.resetLazySingleton<SavedRepository>();
+  locator.resetLazySingleton<NotificationRepository>();
+
+  /// Purchase API,
+  locator.resetLazySingleton<PurchaseApi>();
+  final PurchaseApi _purchaseApi = locator<PurchaseApi>();
+  await _purchaseApi.init();
+}

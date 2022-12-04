@@ -4,10 +4,8 @@ import 'package:meta/meta.dart';
 
 import '../../../data/model/user.dart';
 
-
 @immutable
 abstract class CityEvent extends Equatable {}
-
 
 class GetInitialSearchUsersCityEvent extends CityEvent {
   final String city;
@@ -49,4 +47,9 @@ class NewUserListenerEvent extends CityEvent {
 
   @override
   List<Object> get props => [myUser, city];
+}
+
+class ResetCityEvent extends CityEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }

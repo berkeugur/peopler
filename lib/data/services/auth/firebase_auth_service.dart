@@ -4,7 +4,6 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../../others/strings.dart';
 import '../../model/user.dart';

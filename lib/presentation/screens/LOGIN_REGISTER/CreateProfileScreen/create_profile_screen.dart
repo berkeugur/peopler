@@ -12,7 +12,6 @@ import 'package:peopler/others/strings.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 import '../../../../core/system_ui_service.dart';
 import '../../../../data/repository/location_repository.dart';
-import '../../../../data/repository/user_repository.dart';
 import '../../../../others/classes/variables.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/functions/image_picker_functions.dart';

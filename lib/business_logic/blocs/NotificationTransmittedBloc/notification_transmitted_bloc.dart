@@ -14,6 +14,10 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
   Notifications? _lastSelectedTransmitted;
 
   NotificationTransmittedBloc() : super(InitialNotificationTransmittedState()) {
+    on<ResetNotificationTransmittedEvent>((event, emit) async {
+      emit(InitialNotificationTransmittedState());
+    });
+
     on<GetInitialDataTransmittedEvent>((event, emit) async {
       try {
         emit(InitialNotificationTransmittedState());
@@ -22,15 +26,16 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         _notificationRepository.restartTransmittedRequestCache();
 
         _lastSelectedTransmitted = null;
-        List<Notifications> _transmittedList = await _notificationRepository.getNotificationTransmittedWithPagination(UserBloc.user!.userID, _lastSelectedTransmitted);
-        if(_transmittedList.isNotEmpty) {
+        List<Notifications> _transmittedList =
+            await _notificationRepository.getNotificationTransmittedWithPagination(UserBloc.user!.userID, _lastSelectedTransmitted);
+        if (_transmittedList.isNotEmpty) {
           _lastSelectedTransmitted = _transmittedList.last;
         }
 
         /// If transmitted request is accepted, then do not show it in Incoming Requests screen, so remove them.
         List<Notifications> tempList = [..._transmittedList];
-        for(Notifications tempNotification in  tempList){
-          if(tempNotification.didAccepted == true){
+        for (Notifications tempNotification in tempList) {
+          if (tempNotification.didAccepted == true) {
             _transmittedList.removeWhere((item) => item.notificationID == tempNotification.notificationID);
           }
         }
@@ -39,7 +44,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         if (_transmittedList.isNotEmpty) {
           _allTransmittedList.addAll(_transmittedList);
-          if(state is NotificationTransmittedLoaded1State) {
+          if (state is NotificationTransmittedLoaded1State) {
             emit(NotificationTransmittedLoaded2State());
           } else {
             emit(NotificationTransmittedLoaded1State());
@@ -56,14 +61,15 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
       try {
         emit(NewNotificationTransmittedLoadingState());
 
-        List<Notifications> _transmittedList = await _notificationRepository.getNotificationTransmittedWithPagination(UserBloc.user!.userID, _lastSelectedTransmitted);
-        if(_transmittedList.isNotEmpty) {
+        List<Notifications> _transmittedList =
+            await _notificationRepository.getNotificationTransmittedWithPagination(UserBloc.user!.userID, _lastSelectedTransmitted);
+        if (_transmittedList.isNotEmpty) {
           _lastSelectedTransmitted = _transmittedList.last;
         }
 
         List<Notifications> tempList = [..._transmittedList];
-        for(Notifications tempNotification in  tempList){
-          if(tempNotification.didAccepted == true){
+        for (Notifications tempNotification in tempList) {
+          if (tempNotification.didAccepted == true) {
             _transmittedList.removeWhere((item) => item.notificationID == tempNotification.notificationID);
           }
         }
@@ -72,7 +78,7 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         if (_transmittedList.isNotEmpty) {
           _allTransmittedList.addAll(_transmittedList);
-          if(state is NotificationTransmittedLoaded1State) {
+          if (state is NotificationTransmittedLoaded1State) {
             emit(NotificationTransmittedLoaded2State());
           } else {
             emit(NotificationTransmittedLoaded1State());
@@ -94,10 +100,10 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
         UserBloc.user!.transmittedRequestUserIDs.remove(event.requestUserID);
         _allTransmittedList.removeWhere((element) => element.requestUserID == event.requestUserID);
 
-        if(_allTransmittedList.isEmpty) {
+        if (_allTransmittedList.isEmpty) {
           emit(NotificationTransmittedNotExistState());
         } else {
-          if(state is NotificationTransmittedLoaded1State) {
+          if (state is NotificationTransmittedLoaded1State) {
             emit(NotificationTransmittedLoaded2State());
           } else {
             emit(NotificationTransmittedLoaded1State());
@@ -106,12 +112,23 @@ class NotificationTransmittedBloc extends Bloc<NotificationTransmittedEvent, Not
 
         await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
 
-        if(_allTransmittedList.length < 5) {
+        if (_allTransmittedList.length < 5) {
           add(GetMoreDataTransmittedEvent());
         }
       } catch (e) {
         debugPrint("Blocta geri al error:" + e.toString());
       }
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+
+    /// Reset variables
+    _allTransmittedList = [];
+    _lastSelectedTransmitted = null;
+
+    /// set initial state
+    add(ResetNotificationTransmittedEvent());
   }
 }

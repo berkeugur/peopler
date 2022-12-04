@@ -14,7 +14,6 @@ import '../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../others/strings.dart';
 import '../presentation/screens/MESSAGE/message_screen.dart';
-import 'model/chat.dart';
 
 /// AWESOME NOTIFICATIONS
 Future<void> myBackgroundMessageHandler(RemoteMessage message) {

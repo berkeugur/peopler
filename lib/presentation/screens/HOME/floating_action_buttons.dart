@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:peopler/business_logic/blocs/FeedBloc/feed_bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
@@ -40,24 +39,19 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           return BlocBuilder<FloatingActionButtonCubit, bool>(
               bloc: _homeScreen,
               builder: (_, trig) {
-                if ((_homeScreen.currentTab == TabItem.feed) &&
-                    (_homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen)) {
+                if ((_homeScreen.currentTab == TabItem.feed) && (_homeScreen.currentScreen[TabItem.feed] == ScreenItem.feedScreen)) {
                   return _buildAddFeedFAB(context);
                 } else if (_homeScreen.currentTab == TabItem.notifications &&
                     _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
                   // return _buildNotificationDeleteFAB();
                   return _buildSavedFAB(context);
-                } else if (_homeScreen.currentTab == TabItem.search &&
-                    _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
+                } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchNearByScreen) {
                   return _buildSavedFAB(context);
-                } else if (_homeScreen.currentTab == TabItem.search &&
-                    _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
+                } else if (_homeScreen.currentTab == TabItem.search && _homeScreen.currentScreen[TabItem.search] == ScreenItem.searchCityScreen) {
                   return _buildSavedFAB(context);
-                } else if (_homeScreen.currentTab == TabItem.chat &&
-                    _homeScreen.currentScreen[TabItem.chat] == ScreenItem.chatScreen) {
+                } else if (_homeScreen.currentTab == TabItem.chat && _homeScreen.currentScreen[TabItem.chat] == ScreenItem.chatScreen) {
                   return _buildSavedFAB(context);
-                } else if (_homeScreen.currentTab == TabItem.profile &&
-                    _homeScreen.currentScreen[TabItem.profile] == ScreenItem.profileScreen) {
+                } else if (_homeScreen.currentTab == TabItem.profile && _homeScreen.currentScreen[TabItem.profile] == ScreenItem.profileScreen) {
                   return _buildSavedFAB(context);
                 } else {
                   return const SizedBox.shrink();
@@ -78,8 +72,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
           UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
           if (UserBloc.user != null) {
             _userBloc.mainKey.currentState?.push(
-              MaterialPageRoute(
-                  builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
+              MaterialPageRoute(builder: (context) => BlocProvider<FeedBloc>.value(value: _feedBloc, child: const FeedShareScreen())),
             );
           } else {
             showDialog(
@@ -105,9 +98,8 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                           )),
                       TextButton(
                           onPressed: () async {
-                            await Phoenix.rebirth(context);
-                            // UserBloc _userBloc = BlocProvider.of(context);
-                            // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+                            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                            await _userBloc.restartApp();
                           },
                           child: Text(
                             "Giriş Yap",
@@ -164,8 +156,7 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
             if (UserBloc.user != null) {
               UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
               _userBloc.mainKey.currentState?.push(
-                MaterialPageRoute(
-                    builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
+                MaterialPageRoute(builder: (context) => BlocProvider<SavedBloc>.value(value: _savedBloc, child: const SavedScreen())),
               );
             } else {
               showDialog(
@@ -191,7 +182,8 @@ class _MyFloatingActionButtonsState extends State<MyFloatingActionButtons> {
                             )),
                         TextButton(
                             onPressed: () async {
-                              await Phoenix.rebirth(context);
+                              UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                              await _userBloc.restartApp();
                             },
                             child: Text(
                               "Giriş Yap",

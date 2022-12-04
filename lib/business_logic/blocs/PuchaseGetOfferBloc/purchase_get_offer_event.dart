@@ -8,3 +8,8 @@ class GetInitialOfferEvent extends PurchaseGetOfferEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
+class ResetPurchaseGetOfferEvent extends PurchaseGetOfferEvent {
+  @override
+  List<Object> get props => [];
+}

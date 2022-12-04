@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
@@ -37,9 +38,8 @@ class _GuestLoginScreenBodyState extends State<GuestLoginScreenBody> {
           ),
           text: "Giriş Yap",
           onPressed: () async {
-            await Phoenix.rebirth(context);
-            // UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-            // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+            UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+            await _userBloc.restartApp();
           },
         ),
       ],

@@ -3,16 +3,13 @@ import 'package:flutter/cupertino.dart';
 import '../../../data/model/notifications.dart';
 import '../../cubits/NewNotificationCubit.dart';
 
-
 @immutable
 abstract class NotificationEvent extends Equatable {}
 
 class GetInitialNotificationEvent extends NotificationEvent {
   final NewNotificationCubit newNotificationCubit;
 
-  GetInitialNotificationEvent({
-    required this.newNotificationCubit
-  });
+  GetInitialNotificationEvent({required this.newNotificationCubit});
 
   @override
   List<Object> get props => [newNotificationCubit];
@@ -27,9 +24,7 @@ class NewNotificationListenerEvent extends NotificationEvent {
   final List<Notifications> updatedNotification;
   final NewNotificationCubit newNotificationCubit;
 
-  NewNotificationListenerEvent({
-    required this.updatedNotification, required this.newNotificationCubit
-  });
+  NewNotificationListenerEvent({required this.updatedNotification, required this.newNotificationCubit});
 
   @override
   List<Object> get props => [updatedNotification, newNotificationCubit];
@@ -61,7 +56,6 @@ class TrigNotificationsNotExistEvent extends NotificationEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
-
 class DeleteNotification extends NotificationEvent {
   final String notificationID;
 
@@ -73,4 +67,7 @@ class DeleteNotification extends NotificationEvent {
   List<Object> get props => [notificationID];
 }
 
-
+class ResetNotificationEvent extends NotificationEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}

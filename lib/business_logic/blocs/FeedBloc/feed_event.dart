@@ -40,3 +40,8 @@ class TrigFeedNotExistStateEvent extends FeedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
+class ResetFeedEvent extends FeedEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}

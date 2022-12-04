@@ -21,90 +21,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   static bool busy = false;
 
-  void findUnnecessaryUsersFromUserList() {
-    unnecessaryUsers = {};
-    unnecessaryUsers.add(UserBloc.user!.userID);
-    unnecessaryUsers.addAll(UserBloc.user!.savedUserIDs);
-    unnecessaryUsers.addAll(UserBloc.user!.transmittedRequestUserIDs);
-    unnecessaryUsers.addAll(UserBloc.user!.receivedRequestUserIDs);
-    unnecessaryUsers.addAll(UserBloc.user!.connectionUserIDs);
-    unnecessaryUsers.addAll(UserBloc.user!.whoBlockedYou);
-    unnecessaryUsers.addAll(UserBloc.user!.blockedUsers);
-  }
-
-  void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
-    /// Remove myself from list
-    userList.removeWhere((item) => item.userID == myUser.userID);
-
-    List<MyUser> tempList = [...userList];
-    for (MyUser tempUser in tempList) {
-      if (myUser.savedUserIDs.contains(tempUser.userID)) {
-        userList.removeWhere((item) => item.userID == tempUser.userID);
-      }
-
-      if (myUser.transmittedRequestUserIDs.contains(
-          tempUser.userID)) {
-        userList.removeWhere((item) => item.userID == tempUser.userID);
-      }
-
-      if (myUser.receivedRequestUserIDs.contains(
-          tempUser.userID)) {
-        userList.removeWhere((item) => item.userID == tempUser.userID);
-      }
-
-      if (myUser.connectionUserIDs.contains(tempUser.userID)) {
-        userList.removeWhere((item) => item.userID == tempUser.userID);
-      }
-
-      if (myUser.whoBlockedYou.contains(tempUser.userID)) {
-        userList.removeWhere((item) => item.userID == tempUser.userID);
-      }
-
-      if (myUser.blockedUsers.contains(tempUser.userID)) {
-        userList.removeWhere((item) => item.userID == tempUser.userID);
-      }
-    }
-  }
-
-  /// getRefreshDataFuture function is used in this Refresh Indicator function.
-  Future<void> getRefreshIndicatorData() async {
-    if(busy == true) return;
-    busy = true;
-
-    try {
-      int _latitude;
-      int _longitude;
-
-      if (UserBloc.user != null) {
-        _latitude = UserBloc.user!.latitude;
-        _longitude = UserBloc.user!.longitude;
-      } else {
-        _latitude = UserBloc.guestUser!.latitude;
-        _longitude = UserBloc.guestUser!.longitude;
-      }
-
-      allUserList = [];
-      _locationRepository.restartRepositoryCache();
-
-      findUnnecessaryUsersFromUserList();
-
-      List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_latitude, _longitude, unnecessaryUsers);
-
-      allUserList.addAll(userList);
-      add(TrigUsersNotExistSearchStateEvent());
-      busy = false;
-    } catch (e) {
-      debugPrint("Blocta refresh event hata:" + e.toString());
-      busy = false;
-    }
-  }
-
   LocationBloc() : super(InitialSearchState()) {
+    on<ResetLocationEvent>((event, emit) async {
+      emit(InitialSearchState());
+    });
+
     /******************************************************************************************/
     /**************************** NEARBY USERS ************************************************/
     /******************************************************************************************/
     on<GetInitialSearchUsersEvent>((event, emit) async {
-      if(busy == true) return;
+      if (busy == true) return;
       busy = true;
 
       try {
@@ -207,7 +133,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
         }
       }
 
-      if(allUserList.length < 5) {
+      if (allUserList.length < 5) {
         add(GetMoreSearchUsersEvent());
       }
     });
@@ -216,6 +142,99 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       removeUnnecessaryUsersFromUserList(allUserList, event.myUser);
       add(TrigUsersNotExistSearchStateEvent());
     });
+  }
+
+  void findUnnecessaryUsersFromUserList() {
+    unnecessaryUsers = {};
+    unnecessaryUsers.add(UserBloc.user!.userID);
+    unnecessaryUsers.addAll(UserBloc.user!.savedUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.transmittedRequestUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.receivedRequestUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.connectionUserIDs);
+    unnecessaryUsers.addAll(UserBloc.user!.whoBlockedYou);
+    unnecessaryUsers.addAll(UserBloc.user!.blockedUsers);
+  }
+
+  void removeUnnecessaryUsersFromUserList(List<MyUser> userList, MyUser myUser) {
+    /// Remove myself from list
+    userList.removeWhere((item) => item.userID == myUser.userID);
+
+    List<MyUser> tempList = [...userList];
+    for (MyUser tempUser in tempList) {
+      if (myUser.savedUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.transmittedRequestUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.receivedRequestUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.connectionUserIDs.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.whoBlockedYou.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+
+      if (myUser.blockedUsers.contains(tempUser.userID)) {
+        userList.removeWhere((item) => item.userID == tempUser.userID);
+      }
+    }
+  }
+
+  /// getRefreshDataFuture function is used in this Refresh Indicator function.
+  Future<void> getRefreshIndicatorData() async {
+    if (busy == true) return;
+    busy = true;
+
+    try {
+      int _latitude;
+      int _longitude;
+
+      if (UserBloc.user != null) {
+        _latitude = UserBloc.user!.latitude;
+        _longitude = UserBloc.user!.longitude;
+      } else {
+        _latitude = UserBloc.guestUser!.latitude;
+        _longitude = UserBloc.guestUser!.longitude;
+      }
+
+      allUserList = [];
+      _locationRepository.restartRepositoryCache();
+
+      findUnnecessaryUsersFromUserList();
+
+      List<MyUser> userList = await _locationRepository.queryUsersWithPagination(_latitude, _longitude, unnecessaryUsers);
+
+      allUserList.addAll(userList);
+      add(TrigUsersNotExistSearchStateEvent());
+      busy = false;
+    } catch (e) {
+      debugPrint("Blocta refresh event hata:" + e.toString());
+      busy = false;
+    }
+  }
+
+  void resetBloc() {
+    /// Close streams
+    closeStreams();
+
+    /// Reset variables
+    allUserList = [];
+    _streamSubscription = null;
+    _newUserListenListener = false;
+
+    unnecessaryUsers = {};
+
+    busy = false;
+
+    /// set initial state
+    add(ResetLocationEvent());
   }
 
   @override

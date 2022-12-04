@@ -2,6 +2,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/LocationUpdateBloc/location_update_bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationReceivedBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/notification_transmitted_bloc.dart';
+import 'package:peopler/business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/core/constants/enums/subscriptions_enum.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../../core/constants/navigation/navigation_constants.dart';
@@ -13,6 +19,7 @@ import '../../../others/locator.dart';
 import '../../../others/strings.dart';
 import '../ChatBloc/chat_bloc.dart';
 import '../CityBloc/city_bloc.dart';
+import '../FeedBloc/feed_bloc.dart';
 import '../LocationBloc/location_bloc.dart';
 import '../NotificationBloc/notification_bloc.dart';
 import 'bloc.dart';
@@ -26,6 +33,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   static MyUser? guestUser;
 
   final GlobalKey<NavigatorState> mainKey;
+  final FeedBloc feedBloc;
+  final SavedBloc savedBloc;
+  final CityBloc cityBloc;
+  final LocationBloc locationBloc;
+  final LocationUpdateBloc locationUpdateBloc;
+  final NotificationBloc notificationBloc;
+  final NotificationTransmittedBloc notificationTransmittedBloc;
+  final NotificationReceivedBloc notificationReceivedBloc;
+  final ChatBloc chatBloc;
+  final PurchaseGetOfferBloc purchaseGetOfferBloc;
+  final PurchaseMakePurchaseBloc purchaseMakePurchaseBloc;
 
   StreamSubscription? _streamSubscription;
   bool _userListener = false;
@@ -45,6 +63,39 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Timer? _timer;
 
   Future<void> restartApp() async {
+    feedBloc.resetBloc();
+    savedBloc.resetBloc();
+    cityBloc.resetBloc();
+    locationBloc.resetBloc();
+    locationUpdateBloc.resetBloc();
+    notificationBloc.resetBloc();
+    notificationTransmittedBloc.resetBloc();
+    notificationReceivedBloc.resetBloc();
+    chatBloc.resetBloc();
+    purchaseGetOfferBloc.resetBloc();
+    purchaseMakePurchaseBloc.resetBloc();
+
+    bool purchaseUserIsAnonymous = await Purchases.isAnonymous;
+    if (!purchaseUserIsAnonymous) {
+      await Purchases.logOut();
+    }
+    await resetRepositories();
+    await closeStreams();
+
+    myActivities = [];
+    user = null;
+    guestUser = null;
+
+    _streamSubscription = null;
+    _userListener = false;
+
+    revenueCatResult = null;
+    entitlement = SubscriptionTypes.free;
+
+    _timer = null;
+
+    add(ResetUserEvent());
+
     mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
   }
 
@@ -101,23 +152,34 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> uploadProfilePhoto(File? imageFile) async {
     if (imageFile != null) {
-      String downloadLink =
-          await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', imageFile);
+      String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', imageFile);
       await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
       user?.profileURL = downloadLink;
-    } else {
-      if (user?.gender == 'Kadın') {
-        user?.profileURL = Strings.defaultFemaleProfilePhotoUrl;
-      } else if (user?.gender == 'Erkek') {
-        user?.profileURL = Strings.defaultMaleProfilePhotoUrl;
-      } else {
-        user?.profileURL = Strings.defaultNonBinaryProfilePhotoUrl;
-      }
-      await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
+      return;
     }
+
+    if (user?.profileURL != "") {
+      return;
+    }
+
+    if (user?.gender == 'Kadın') {
+      user?.profileURL = Strings.defaultFemaleProfilePhotoUrl;
+    } else if (user?.gender == 'Erkek') {
+      user?.profileURL = Strings.defaultMaleProfilePhotoUrl;
+    } else {
+      user?.profileURL = Strings.defaultNonBinaryProfilePhotoUrl;
+    }
+    await _userRepository.updateProfilePhoto(user!.userID, user!.profileURL);
+    return;
   }
 
-  UserBloc(this.mainKey) : super(InitialUserState()) {
+  UserBloc(this.mainKey, this.feedBloc, this.savedBloc, this.cityBloc, this.locationBloc, this.locationUpdateBloc, this.notificationBloc,
+      this.notificationTransmittedBloc, this.notificationReceivedBloc, this.chatBloc, this.purchaseGetOfferBloc, this.purchaseMakePurchaseBloc)
+      : super(InitialUserState()) {
+    on<ResetUserEvent>((event, emit) async {
+      emit(InitialUserState());
+    });
+
     on<initializeMyUserEvent>((event, emit) async {
       user = MyUser();
     });
@@ -241,8 +303,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<createUserWithEmailAndPasswordEvent>((event, emit) async {
       try {
-        await Future.delayed(const Duration(microseconds: 100));
-
         emit(SigningInState());
         MyUser? tempUser = await _userRepository.createUserWithEmailAndPassword(event.email, event.password);
         user!.userID = tempUser!.userID;
@@ -346,10 +406,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<signOutEvent>((event, emit) async {
       try {
-        await closeStreams();
         await _userRepository.deleteToken(user!.userID);
         await _userRepository.signOut();
-        await Purchases.logOut();
         await restartApp();
       } catch (e) {
         debugPrint("Signed Out Basarisiz: " + e.toString());
@@ -357,22 +415,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
 
     on<deleteUser>((event, emit) async {
-      await closeStreams();
-      await _userRepository.deleteUser(user!, password: event.password);
-      await restartApp();
+      try {
+        await closeStreams();
+        await _userRepository.deleteUser(user!, password: event.password);
+        await restartApp();
+      } catch (e) {
+        debugPrint("Delete User Basarisiz: " + e.toString());
+      }
     });
   }
 
   Future<void> closeStreams() async {
-    await close();
-    await CityBloc.closeStreams();
-    await LocationBloc.closeStreams();
-    await NotificationBloc.closeStreams();
-    await ChatBloc.closeStreams();
-  }
-
-  @override
-  Future<void> close() async {
     if (_streamSubscription != null) {
       _streamSubscription?.cancel();
     }
@@ -380,6 +433,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (_timer != null) {
       _timer?.cancel();
     }
+  }
+
+  @override
+  Future<void> close() async {
     super.close();
+    await closeStreams();
   }
 }

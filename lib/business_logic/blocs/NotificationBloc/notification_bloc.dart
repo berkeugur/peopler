@@ -22,6 +22,10 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   static bool _newNotificationListenListener = false;
 
   NotificationBloc() : super(InitialNotificationState()) {
+    on<ResetNotificationEvent>((event, emit) async {
+      emit(InitialNotificationState());
+    });
+
     on<GetInitialNotificationEvent>((event, emit) async {
       try {
         emit(InitialNotificationState());
@@ -30,8 +34,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         _notificationRepository.restartNotificationCache();
 
         _lastSelectedNotification = null;
-        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(
-            UserBloc.user!.userID, _lastSelectedNotification);
+        List<Notifications> newNotificationList =
+            await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification);
         if (newNotificationList.isNotEmpty) {
           _lastSelectedNotification = newNotificationList.last;
         }
@@ -49,21 +53,17 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
         if (_newNotificationListenListener == false) {
           _newNotificationListenListener = true;
-          _streamSubscription = _notificationRepository
-              .getNotificationWithStream(UserBloc.user!.userID)
-              .listen((updatedNotification) async {
+          _streamSubscription = _notificationRepository.getNotificationWithStream(UserBloc.user!.userID).listen((updatedNotification) async {
             if (updatedNotification.isEmpty) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(
-                  updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
               debugPrint("There is no new notification");
               return;
             }
 
             if (updatedNotification[0].requestUserID == null) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(
-                  updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
               debugPrint("Notification Type is not receive or transmit");
               return;
             }
@@ -74,8 +74,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             updatedNotification[0].requestBiography = _user.biography;
 
             /// Call another NotificationBloc event named NewNotificationListenerEvent
-            add(NewNotificationListenerEvent(
-                updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+            add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
           });
         }
       } catch (e) {
@@ -87,8 +86,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       try {
         emit(NotificationsLoadingState());
 
-        List<Notifications> newNotificationList = await _notificationRepository.getNotificationWithPagination(
-            UserBloc.user!.userID, _lastSelectedNotification);
+        List<Notifications> newNotificationList =
+            await _notificationRepository.getNotificationWithPagination(UserBloc.user!.userID, _lastSelectedNotification);
         if (newNotificationList.isNotEmpty) {
           _lastSelectedNotification = newNotificationList.last;
         }
@@ -182,6 +181,20 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         add(GetMoreNotificationEvent());
       }
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+    closeStreams();
+
+    /// Reset variables
+    _allNotificationList = [];
+    _lastSelectedNotification = null;
+    _streamSubscription = null;
+    _newNotificationListenListener = false;
+
+    /// set initial state
+    add(ResetNotificationEvent());
   }
 
   @override

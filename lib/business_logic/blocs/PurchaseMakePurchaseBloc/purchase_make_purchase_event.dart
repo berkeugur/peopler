@@ -15,3 +15,7 @@ class MakePurchaseEvent extends PurchaseMakePurchaseEvent {
   List<Object?> get props => [package];
 }
 
+class ResetMakePurchaseEvent extends PurchaseMakePurchaseEvent {
+  @override
+  List<Object> get props => [];
+}

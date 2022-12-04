@@ -16,69 +16,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   List<MyFeed> get allFeedList => _allFeedList;
   MyFeed? _lastSelectedFeed;
 
-  /// This future mechanism used for both RefreshIndicator onPressed method and home button click refresh.
-  /// Since refreshIndicator widget works with Future functions, a Future function in bloc
-  /// is created. However, when home button is clicked, event mechanism
-  /// should work.
-  Future<void> getRefreshDataFuture() async {
-    try {
-      _feedRepository.restartFeedCache();
-
-      _lastSelectedFeed = null;
-      List<MyFeed> shuffledList = await getKadinAndErkekList();
-
-      _allFeedList = [];
-      _allFeedList.addAll(shuffledList);
-    } catch (e) {
-      debugPrint("Blocta refresh event hata:" + e.toString());
-    }
-  }
-
-  /// getRefreshDataFuture function is used in this Refresh Indicator function.
-  Future<void> getRefreshIndicatorData() async {
-    try {
-      await getRefreshDataFuture();
-      add(TrigFeedNotExistStateEvent());
-    } catch (e) {
-      debugPrint("Blocta refresh event hata:" + e.toString());
-    }
-  }
-
-  /// getRefreshDataFuture function is used in this Refresh Indicator function.
-  Future<List<MyFeed>> getKadinAndErkekList() async {
-    List<MyFeed> shuffledList = [];
-    List<MyFeed> kadinList;
-    List<MyFeed> erkekList;
-    List<MyFeed> otherList;
-
-    kadinList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Kadın');
-    erkekList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Erkek');
-    otherList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Diğer');
-
-    List<String> kadinListGender = kadinList.map((person) => 'K').toList();
-    List<String> erkekListGender = erkekList.map((person) => 'E').toList();
-    List<String> otherListGender = otherList.map((person) => 'O').toList();
-    List<String> shuffledListGender = [...kadinListGender, ...erkekListGender, ...otherListGender];
-    shuffledListGender.shuffle();
-
-    int kadinIndex = 0;
-    int erkekIndex = 0;
-    int otherIndex = 0;
-
-    for (String i in shuffledListGender) {
-      if (i == 'K') {
-        shuffledList.add(kadinList[kadinIndex++]);
-      } else if (i == 'E') {
-        shuffledList.add(erkekList[erkekIndex++]);
-      } else if (i == 'O') {
-        shuffledList.add(otherList[otherIndex++]);
-      }
-    }
-
-    return shuffledList;
-  }
-
   FeedBloc() : super(InitialFeedState()) {
+    on<ResetFeedEvent>((event, emit) async {
+      emit(InitialFeedState());
+    });
+
     on<GetInitialDataEvent>((event, emit) async {
       try {
         emit(InitialFeedState());
@@ -183,5 +125,78 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         }
       }
     });
+  }
+
+  /// This future mechanism used for both RefreshIndicator onPressed method and home button click refresh.
+  /// Since refreshIndicator widget works with Future functions, a Future function in bloc
+  /// is created. However, when home button is clicked, event mechanism
+  /// should work.
+  Future<void> getRefreshDataFuture() async {
+    try {
+      _feedRepository.restartFeedCache();
+
+      _lastSelectedFeed = null;
+      List<MyFeed> shuffledList = await getKadinAndErkekList();
+
+      _allFeedList = [];
+      _allFeedList.addAll(shuffledList);
+    } catch (e) {
+      debugPrint("Blocta refresh event hata:" + e.toString());
+    }
+  }
+
+  /// getRefreshDataFuture function is used in this Refresh Indicator function.
+  Future<void> getRefreshIndicatorData() async {
+    try {
+      await getRefreshDataFuture();
+      add(TrigFeedNotExistStateEvent());
+    } catch (e) {
+      debugPrint("Blocta refresh event hata:" + e.toString());
+    }
+  }
+
+  /// getRefreshDataFuture function is used in this Refresh Indicator function.
+  Future<List<MyFeed>> getKadinAndErkekList() async {
+    List<MyFeed> shuffledList = [];
+    List<MyFeed> kadinList;
+    List<MyFeed> erkekList;
+    List<MyFeed> otherList;
+
+    kadinList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Kadın');
+    erkekList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Erkek');
+    otherList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Diğer');
+
+    List<String> kadinListGender = kadinList.map((person) => 'K').toList();
+    List<String> erkekListGender = erkekList.map((person) => 'E').toList();
+    List<String> otherListGender = otherList.map((person) => 'O').toList();
+    List<String> shuffledListGender = [...kadinListGender, ...erkekListGender, ...otherListGender];
+    shuffledListGender.shuffle();
+
+    int kadinIndex = 0;
+    int erkekIndex = 0;
+    int otherIndex = 0;
+
+    for (String i in shuffledListGender) {
+      if (i == 'K') {
+        shuffledList.add(kadinList[kadinIndex++]);
+      } else if (i == 'E') {
+        shuffledList.add(erkekList[erkekIndex++]);
+      } else if (i == 'O') {
+        shuffledList.add(otherList[otherIndex++]);
+      }
+    }
+
+    return shuffledList;
+  }
+
+  void resetBloc() {
+    /// Close streams
+
+    /// Reset variables
+    _allFeedList = [];
+    _lastSelectedFeed = null;
+
+    /// set initial state
+    add(ResetFeedEvent());
   }
 }

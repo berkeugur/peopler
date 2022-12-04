@@ -21,74 +21,11 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
 
   static Timer? _timer;
 
-  static Future<String> updateLocationMethod() async {
-    try {
-      LocationPermission _permission = await _locationRepository.checkPermissions();
-      if (!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
-        /// For debug purposes
-        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("not while in use nor always");
-        return 'PositionNotGetState';
-      }
-
-      bool locationStatus = await _locationRepository.checkLocationSetting();
-      if (locationStatus == false) {
-        /// For debug purposes
-        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("location setting is closed");
-        return 'PositionNotGetState';
-      }
-
-      _position = await _locationRepository.getCurrentPosition();
-      if (_position == null) {
-        /// For debug purposes
-        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be get");
-        return 'PositionNotGetState';
-      }
-
-      if (UserBloc.user != null) {
-        /// Update user location at database and secure storage (phone cache)
-        bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
-        if (isUpdated == false) {
-          /// For debug purposes
-          /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
-          return 'PositionNotUpdatedState';
-        }
-
-        /// Obtain shared preferences.
-        const storage = FlutterSecureStorage();
-        Map<String, String> allValues = await storage.readAll();
-
-        UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
-        UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
-
-        /// For debug purposes
-        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
-      } else {
-        bool isUpdated = await _locationRepository.updateGuestUserLocation(_position!);
-        if (isUpdated == false) {
-          /// For debug purposes
-          /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
-          return 'PositionNotUpdatedState';
-        }
-
-        /// Obtain shared preferences.
-        const storage = FlutterSecureStorage();
-        Map<String, String> allValues = await storage.readAll();
-
-        UserBloc.guestUser?.latitude = int.parse(allValues['sharedLatitude']!);
-        UserBloc.guestUser?.longitude = int.parse(allValues['sharedLongitude']!);
-
-        /// For debug purposes
-        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
-      }
-
-      return 'PositionUpdatedState';
-    } catch (e) {
-      debugPrint("Blocta location update hata:" + e.toString());
-      return 'Error';
-    }
-  }
-
   LocationUpdateBloc() : super(InitialState()) {
+    on<ResetLocationUpdateEvent>((event, emit) async {
+      emit(InitialState());
+    });
+
     on<UpdateLocationEvent>((event, emit) async {
       String methodState = await updateLocationMethod();
       if (methodState == 'PositionNotUpdatedState') {
@@ -157,11 +94,95 @@ class LocationUpdateBloc extends Bloc<LocationUpdateEvent, LocationUpdateState> 
     ///---------------------------------------------------------//
   }
 
+  static Future<String> updateLocationMethod() async {
+    try {
+      LocationPermission _permission = await _locationRepository.checkPermissions();
+      if (!(_permission == LocationPermission.whileInUse || _permission == LocationPermission.always)) {
+        /// For debug purposes
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("not while in use nor always");
+        return 'PositionNotGetState';
+      }
+
+      bool locationStatus = await _locationRepository.checkLocationSetting();
+      if (locationStatus == false) {
+        /// For debug purposes
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("location setting is closed");
+        return 'PositionNotGetState';
+      }
+
+      _position = await _locationRepository.getCurrentPosition();
+      if (_position == null) {
+        /// For debug purposes
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be get");
+        return 'PositionNotGetState';
+      }
+
+      if (UserBloc.user != null) {
+        /// Update user location at database and secure storage (phone cache)
+        bool isUpdated = await _locationRepository.updateUserLocationAtDatabase(_position!);
+        if (isUpdated == false) {
+          /// For debug purposes
+          /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
+          return 'PositionNotUpdatedState';
+        }
+
+        /// Obtain shared preferences.
+        const storage = FlutterSecureStorage();
+        Map<String, String> allValues = await storage.readAll();
+
+        UserBloc.user?.latitude = int.parse(allValues['sharedLatitude']!);
+        UserBloc.user?.longitude = int.parse(allValues['sharedLongitude']!);
+
+        /// For debug purposes
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
+      } else {
+        bool isUpdated = await _locationRepository.updateGuestUserLocation(_position!);
+        if (isUpdated == false) {
+          /// For debug purposes
+          /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position cannot be updated, firestore problem");
+          return 'PositionNotUpdatedState';
+        }
+
+        /// Obtain shared preferences.
+        const storage = FlutterSecureStorage();
+        Map<String, String> allValues = await storage.readAll();
+
+        UserBloc.guestUser?.latitude = int.parse(allValues['sharedLatitude']!);
+        UserBloc.guestUser?.longitude = int.parse(allValues['sharedLongitude']!);
+
+        /// For debug purposes
+        /// FCMAndLocalNotifications.showNotificationForDebugPurposes("Position updated ${_position.toString()}");
+      }
+
+      return 'PositionUpdatedState';
+    } catch (e) {
+      debugPrint("Blocta location update hata:" + e.toString());
+      return 'Error';
+    }
+  }
+
+  void resetBloc() {
+    /// Close streams
+    closeStreams();
+
+    /// Reset variables
+    _position = null;
+    firstUpdate = false;
+    _timer = null;
+
+    /// set initial state
+    add(ResetLocationUpdateEvent());
+  }
+
   @override
   Future<void> close() async {
+    await closeStreams();
+    await super.close();
+  }
+
+  static Future<void> closeStreams() async {
     if (_timer != null) {
       _timer?.cancel();
     }
-    super.close();
   }
 }

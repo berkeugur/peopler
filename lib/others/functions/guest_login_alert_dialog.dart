@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
+
+import '../../business_logic/blocs/UserBloc/user_bloc.dart';
 
 class GuestAlert {
   static dialog(context) {
@@ -27,9 +29,8 @@ class GuestAlert {
                   )),
               TextButton(
                   onPressed: () async {
-                    await Phoenix.rebirth(context);
-                    // UserBloc _userBloc = BlocProvider.of(context);
-                    // _userBloc.mainKey.currentState?.pushNamedAndRemoveUntil(NavigationConstants.WELCOME, (Route<dynamic> route) => false);
+                    UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+                    await _userBloc.restartApp();
                   },
                   child: Text(
                     "Giriş Yap",
