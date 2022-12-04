@@ -114,16 +114,14 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                       printf("deneme çalıştı");
                                       debugPrint("asdasd");
 
-                                      await showPicker(context, stateSetter: setState)
-                                          .then((value) => FocusScope.of(context).unfocus());
+                                      await showPicker(context, stateSetter: setState).then((value) => FocusScope.of(context).unfocus());
                                     },
                                     child: CircleAvatar(
                                       radius: 55,
                                       backgroundColor: const Color(0xFF8E9BB4),
                                       child: (UserBloc.user?.profileURL != null) && (UserBloc.user?.profileURL != '')
                                           ? CachedNetworkImage(
-                                              imageUrl:
-                                                  UserBloc.user?.profileURL ?? Strings.defaultNonBinaryProfilePhotoUrl,
+                                              imageUrl: UserBloc.user?.profileURL ?? Strings.defaultNonBinaryProfilePhotoUrl,
                                               progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
                                                   borderRadius: BorderRadius.circular(999),
                                                   child: CircularProgressIndicator(value: downloadProgress.progress)),
@@ -225,19 +223,16 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               _userBloc.add(updateUserInfoForLinkedInEvent());
 
               final LocationRepository _locationRepository = locator<LocationRepository>();
-              LocationPermission _permission =
-                  await _locationRepository.checkPermissions().onError((error, stackTrace) => printf(error));
+              LocationPermission _permission = await _locationRepository.checkPermissions().onError((error, stackTrace) => printf(error));
               if (_permission == LocationPermission.always) {
                 /// Set theme mode before Home Screen
                 SystemUIService().setSystemUIforThemeMode();
 
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
               } else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
               }
-            } else if (_userBloc.state == SignedOutState()) {
+            } else {
               Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);
             }
           } else if (UserBloc.user?.city == "" && bioController.text.isEmpty) {
@@ -291,8 +286,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 0.0),
                                 child: Container(
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   height: 350,
                                   width: MediaQuery.of(context).size.width - 40,
                                   child: Column(
@@ -335,9 +329,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                             return Container(
                                               margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                                               decoration: BoxDecoration(
-                                                color: UserBloc.user?.city == items[index]
-                                                    ? const Color(0xFF0353EF)
-                                                    : Colors.white,
+                                                color: UserBloc.user?.city == items[index] ? const Color(0xFF0353EF) : Colors.white,
                                                 borderRadius: BorderRadius.circular(15),
                                               ),
                                               child: Padding(
@@ -365,10 +357,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                       items[index],
                                                       textScaleFactor: 1,
                                                       style: UserBloc.user!.city == items[index]
-                                                          ? const TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight: FontWeight.bold,
-                                                              color: Color(0xFF000B21))
+                                                          ? const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF000B21))
                                                           : const TextStyle(fontSize: 18),
                                                     ),
                                                   ),
@@ -387,8 +376,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 child: Container(
                                   height: 50,
                                   width: MediaQuery.of(context).size.width,
-                                  decoration:
-                                      BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
                                   child: TextButton(
                                     child: const Text(
                                       "Vazgeç",
@@ -410,10 +398,8 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
             child: Text(
               UserBloc.user?.city != "" ? UserBloc.user?.city ?? "null" : " Yaşadığın yer neresi?",
               textScaleFactor: 1,
-              style: PeoplerTextStyle.normal.copyWith(
-                  color: const Color(0xFFFFFFFF),
-                  fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16,
-                  fontWeight: FontWeight.w300),
+              style: PeoplerTextStyle.normal
+                  .copyWith(color: const Color(0xFFFFFFFF), fontSize: screenWidth < 360 || screenHeight < 670 ? 12 : 16, fontWeight: FontWeight.w300),
             )),
       ),
     );

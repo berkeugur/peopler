@@ -278,10 +278,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
         if (user == null) {
           emit(SignErrorState());
-        } else {
-          await signedInUserPreparations();
-          emit(SignedInState());
+          return;
         }
+
+        if (user?.isTheAccountConfirmed == false) {
+          emit(SignedInNotVerifiedState());
+          return;
+        }
+
+        await signedInUserPreparations();
+        emit(SignedInState());
+        return;
       } on FirebaseAuthException catch (e) {
         switch (e.code) {
           case "invalid-email":
