@@ -8,6 +8,10 @@ class PurchaseGetOfferBloc extends Bloc<PurchaseGetOfferEvent, PurchaseGetOfferS
   final PurchaseApi _purchaseApi = locator<PurchaseApi>();
 
   PurchaseGetOfferBloc() : super(InitialPurchaseGetOfferState()) {
+    on<ResetPurchaseGetOfferEvent>((event, emit) async {
+      emit(InitialPurchaseGetOfferState());
+    });
+
     on<GetInitialOfferEvent>((event, emit) async {
       try {
         PurchaseApi.currentOffering = await _purchaseApi.fetchCurrentOffer();
@@ -18,5 +22,14 @@ class PurchaseGetOfferBloc extends Bloc<PurchaseGetOfferEvent, PurchaseGetOfferS
         debugPrint("purchase get offer not found" + e.toString());
       }
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+
+    /// Reset variables
+
+    /// set initial state
+    add(ResetPurchaseGetOfferEvent());
   }
 }

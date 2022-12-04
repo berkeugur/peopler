@@ -65,3 +65,7 @@ class TrigUserNotExistSavedStateEvent extends SavedEvent {
   List<Object> get props => [];
 }
 
+class ResetSavedEvent extends SavedEvent {
+  @override
+  List<Object> get props => [];
+}

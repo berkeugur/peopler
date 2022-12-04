@@ -8,14 +8,18 @@ import 'bloc.dart';
 
 class PurchaseMakePurchaseBloc extends Bloc<PurchaseMakePurchaseEvent, PurchaseMakePurchaseState> {
   final PurchaseApi _purchaseApi = locator<PurchaseApi>();
-  
+
   PurchaseMakePurchaseBloc() : super(InitialPurchaseMakePurchaseState()) {
+    on<ResetMakePurchaseEvent>((event, emit) async {
+      emit(InitialPurchaseMakePurchaseState());
+    });
+
     on<MakePurchaseEvent>((event, emit) async {
-      if(event.package == null) {
+      if (event.package == null) {
         emit(PurchaseMakePurchaseNotFoundState());
         return;
       }
-      
+
       try {
         await _purchaseApi.makePurchases(event.package!);
         emit(PurchaseMakePurchaseLoadedState());
@@ -23,14 +27,23 @@ class PurchaseMakePurchaseBloc extends Bloc<PurchaseMakePurchaseEvent, PurchaseM
         var errorCode = PurchasesErrorHelper.getErrorCode(e);
         if (errorCode == PurchasesErrorCode.purchaseCancelledError) {
           debugPrint("Purchase was cancelled.");
-        } else if(errorCode == PurchasesErrorCode.productAlreadyPurchasedError) {
+        } else if (errorCode == PurchasesErrorCode.productAlreadyPurchasedError) {
           debugPrint("This product is already active for the user.");
         } else {
           debugPrint(e.message);
         }
 
         emit(PurchaseMakePurchaseNotFoundState());
-      } 
+      }
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+
+    /// Reset variables
+
+    /// set initial state
+    add(ResetMakePurchaseEvent());
   }
 }

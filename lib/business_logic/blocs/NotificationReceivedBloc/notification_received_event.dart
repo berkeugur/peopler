@@ -38,3 +38,8 @@ class ClickNotAcceptEvent extends NotificationReceivedEvent {
   @override
   List<Object> get props => [requestUserID, index];
 }
+
+class ResetNotificationReceivedEvent extends NotificationReceivedEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}

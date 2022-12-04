@@ -18,6 +18,10 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
   final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
   NotificationReceivedBloc() : super(InitialNotificationReceivedState()) {
+    on<ResetNotificationReceivedEvent>((event, emit) async {
+      emit(InitialNotificationReceivedState());
+    });
+
     on<GetInitialDataReceivedEvent>((event, emit) async {
       try {
         emit(InitialNotificationReceivedState());
@@ -26,8 +30,9 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
         _notificationRepository.restartReceivedRequestCache();
 
         _lastSelectedReceived = null;
-        List<Notifications> receivedList = await _notificationRepository.getNotificationReceivedWithPagination(UserBloc.user!.userID, _lastSelectedReceived);
-        if(receivedList.isNotEmpty) {
+        List<Notifications> receivedList =
+            await _notificationRepository.getNotificationReceivedWithPagination(UserBloc.user!.userID, _lastSelectedReceived);
+        if (receivedList.isNotEmpty) {
           _lastSelectedReceived = receivedList.last;
         }
 
@@ -35,7 +40,7 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
 
         if (receivedList.isNotEmpty) {
           _allReceivedList.addAll(receivedList);
-          if(state is NotificationReceivedLoaded1State) {
+          if (state is NotificationReceivedLoaded1State) {
             emit(NotificationReceivedLoaded2State());
           } else {
             emit(NotificationReceivedLoaded1State());
@@ -52,8 +57,9 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
       try {
         emit(NewNotificationReceivedLoadingState());
 
-        List<Notifications> receivedList = await _notificationRepository.getNotificationReceivedWithPagination(UserBloc.user!.userID, _lastSelectedReceived);
-        if(receivedList.isNotEmpty) {
+        List<Notifications> receivedList =
+            await _notificationRepository.getNotificationReceivedWithPagination(UserBloc.user!.userID, _lastSelectedReceived);
+        if (receivedList.isNotEmpty) {
           _lastSelectedReceived = receivedList.last;
         }
 
@@ -61,7 +67,7 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
 
         if (receivedList.isNotEmpty) {
           _allReceivedList.addAll(receivedList);
-          if(state is NotificationReceivedLoaded1State) {
+          if (state is NotificationReceivedLoaded1State) {
             emit(NotificationReceivedLoaded2State());
           } else {
             emit(NotificationReceivedLoaded1State());
@@ -84,10 +90,10 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
 
         /// Send request user a notification that I have accepted his/her connection request
         String? _token = await _firestoreDBServiceUsers.getToken(event.requestUserID);
-        if(_token == null) return;
+        if (_token == null) return;
 
-        await _sendNotificationService.sendNotification(Strings.receiveRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
-
+        await _sendNotificationService.sendNotification(
+            Strings.receiveRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
       } catch (e) {
         debugPrint("Blocta get more data ClickAcceptEvent hata:" + e.toString());
       }
@@ -98,18 +104,29 @@ class NotificationReceivedBloc extends Bloc<NotificationReceivedEvent, Notificat
         UserBloc.user!.receivedRequestUserIDs.remove(event.requestUserID);
         _allReceivedList.removeAt(event.index);
 
-        if(_allReceivedList.isEmpty) {
+        if (_allReceivedList.isEmpty) {
           emit(NotificationReceivedNotExistState());
         }
 
         await _notificationRepository.deleteNotification(UserBloc.user!.userID, event.requestUserID);
 
-        if(_allReceivedList.length < 5) {
+        if (_allReceivedList.length < 5) {
           add(GetMoreDataReceivedEvent());
         }
       } catch (e) {
         debugPrint("Blocta get more data ClickNotAcceptEvent hata:" + e.toString());
       }
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+
+    /// Reset variables
+    _allReceivedList = [];
+    _lastSelectedReceived = null;
+
+    /// set initial state
+    add(ResetNotificationReceivedEvent());
   }
 }

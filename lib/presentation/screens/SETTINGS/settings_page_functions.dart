@@ -1,13 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/profile/report_bottom_sheet.dart';
 import '../../../business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/functions.dart';
-
-import '../../../core/constants/navigation/navigation_constants.dart';
 
 ///op = On Pressed
 // ignore: non_constant_identifier_names
@@ -73,9 +70,9 @@ op_change_password(context) {
   }
 }
 
-op_delete_account(BuildContext context) {
-  UserBloc _userBloc = BlocProvider.of(context);
-  _userBloc.add(deleteUser());
+op_delete_account(BuildContext context) async {
+  UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+  await _userBloc.restartApp();
 }
 
 op_suggestion_or_complaint() {

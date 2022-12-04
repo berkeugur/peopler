@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 
 import '../../../data/model/user.dart';
 
-
 @immutable
 abstract class LocationEvent extends Equatable {}
 
@@ -36,4 +35,9 @@ class NewUserListenerEvent extends LocationEvent {
 
   @override
   List<Object> get props => [myUser];
+}
+
+class ResetLocationEvent extends LocationEvent {
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }

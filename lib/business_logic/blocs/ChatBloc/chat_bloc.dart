@@ -22,6 +22,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   static bool _hasMore = true;
 
   ChatBloc() : super(InitialChatState()) {
+    on<ResetChatEvent>((event, emit) async {
+      emit(InitialChatState());
+    });
+
     on<GetChatWithPaginationEvent>((event, emit) async {
       if (_hasMore == false) {
         if (state is ChatNotExistState) {
@@ -36,8 +40,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
         emit(ChatsLoadingState());
 
-        List<Chat> newChatList =
-            await _chatRepository.getChatWithPagination(event.userID, _lastSelectedChat, _numberOfElements);
+        List<Chat> newChatList = await _chatRepository.getChatWithPagination(event.userID, _lastSelectedChat, _numberOfElements);
 
         if (newChatList.length < _numberOfElements) {
           _hasMore = false;
@@ -128,6 +131,21 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       await _chatRepository.createChat(event.hostUserID, _chat);
     });
+  }
+
+  void resetBloc() {
+    /// Close streams
+    closeStreams();
+
+    /// Reset variables
+    _allChatList.clear();
+    _lastSelectedChat = null;
+    _streamSubscription = null;
+    _newChatListenListener = false;
+    _hasMore = true;
+
+    /// set initial state
+    add(ResetChatEvent());
   }
 
   @override

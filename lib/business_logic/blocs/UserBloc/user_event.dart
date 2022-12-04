@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 abstract class UserEvent extends Equatable {}
@@ -125,4 +123,10 @@ class deleteUser extends UserEvent {
   @override
 // TODO: implement props
   List<Object?> get props => [password, context];
+}
+
+class ResetUserEvent extends UserEvent {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
 }
