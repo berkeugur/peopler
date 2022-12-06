@@ -21,7 +21,7 @@ class FirebaseAuthService {
     }
   }
 
-  MyUser? _userFromFirebase(User? user) {
+  MyUser? _userFromFirebase(User? user, {String? displayName}) {
     if (user == null) {
       return null;
     } else {
@@ -31,6 +31,7 @@ class FirebaseAuthService {
       _myUser.isTheAccountConfirmed = user.emailVerified;
       _myUser.profileURL = user.photoURL ?? '';
       _myUser.displayName = user.displayName ?? '';
+      if (displayName != null) _myUser.displayName = displayName;
       return _myUser;
     }
   }
@@ -151,7 +152,8 @@ class FirebaseAuthService {
 
       UserCredential result = await _firebaseAuth.signInWithCredential(oauthCredential);
       User? user = result.user;
-      return _userFromFirebase(user);
+      String displayName = "${appleCredential.givenName} ${appleCredential.familyName}";
+      return _userFromFirebase(user, displayName: displayName);
     } on FirebaseAuthException {
       rethrow;
     } catch (e) {
