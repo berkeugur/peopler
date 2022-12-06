@@ -102,6 +102,7 @@ class PeoplerDialogs {
     );
   }
 
+/*
   Future showAYSBgLocationDecline(
     BuildContext context,
   ) async {
@@ -194,6 +195,7 @@ class PeoplerDialogs {
       ),
     );
   }
+  */
 
   loadingDialogFullScreen({required BuildContext context, List<String>? loadingTexts}) {
     showDialog(

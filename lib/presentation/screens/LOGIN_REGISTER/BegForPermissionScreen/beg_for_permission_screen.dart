@@ -19,14 +19,6 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
   @override
   void initState() {
     super.initState();
-
-    Timer(const Duration(milliseconds: 200), () async {
-      final LocationRepository _locationRepository = locator<LocationRepository>();
-      LocationPermission _permission = await _locationRepository.checkPermissions();
-      if (_permission != LocationPermission.whileInUse && _permission != LocationPermission.always) {
-        _locationRepository.requestPermission();
-      }
-    });
   }
 
   @override
@@ -61,8 +53,7 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                 Text(
                   "Bu uygulama kapalı olsa bile aynı ortamındaki insanları görüntüleyebilmen için ve onların da seni görüntüleyebilmesi için konum bilgini kullanır. \nTam konumun kimse ile paylaşılmaz.\n\nİzin veriyor musunuz? ",
                   textScaleFactor: 1,
-                  style: PeoplerTextStyle.normal
-                      .copyWith(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
+                  style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white),
                 ),
               ],
             ),
@@ -78,45 +69,25 @@ class _BegForPermissionScreenState extends State<BegForPermissionScreen> {
                     //borderRadius: BorderRadius.circular(99),
                     onTap: () async {
                       final LocationRepository _locationRepository = locator<LocationRepository>();
-                      _locationRepository.openPermissionSettings();
+                      LocationPermission _permission = await _locationRepository.checkPermissions();
+                      if (_permission != LocationPermission.whileInUse && _permission != LocationPermission.always) {
+                        await _locationRepository.requestPermission();
+                      }
 
                       /// Set theme mode before Home Screen
                       SystemUIService().setSystemUIforThemeMode();
 
-                      /// We use delay here because when user clicked this button, he/she will be redirected to permission settings first.
-                      await Future.delayed(const Duration(seconds: 3));
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                     },
                     child: Container(
                       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(99)),
                       //color: Colors.purple,
                       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                       child: Text(
-                        "İzin Ver",
+                        "Devam",
                         // "Bu adımı atla",
                         textScaleFactor: 1,
-                        style: PeoplerTextStyle.normal
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF0353EF)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox.square(
-                    dimension: 10,
-                  ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(99),
-                    onTap: () async {
-                      await PeoplerDialogs().showAYSBgLocationDecline(context);
-                    },
-                    child: Container(
-                      //color: Colors.purple,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      child: Text(
-                        "Şimdi Değil",
-                        textScaleFactor: 1,
-                        style: PeoplerTextStyle.normal
-                            .copyWith(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                        style: PeoplerTextStyle.normal.copyWith(fontSize: 16, fontWeight: FontWeight.w600, color: const Color(0xFF0353EF)),
                       ),
                     ),
                   ),
