@@ -152,7 +152,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> uploadProfilePhoto(File? imageFile) async {
     if (imageFile != null) {
-      String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', imageFile);
+      String downloadLink =
+          await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', imageFile);
       await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
       user?.profileURL = downloadLink;
       return;
@@ -173,8 +174,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     return;
   }
 
-  UserBloc(this.mainKey, this.feedBloc, this.savedBloc, this.cityBloc, this.locationBloc, this.locationUpdateBloc, this.notificationBloc,
-      this.notificationTransmittedBloc, this.notificationReceivedBloc, this.chatBloc, this.purchaseGetOfferBloc, this.purchaseMakePurchaseBloc)
+  UserBloc(
+      this.mainKey,
+      this.feedBloc,
+      this.savedBloc,
+      this.cityBloc,
+      this.locationBloc,
+      this.locationUpdateBloc,
+      this.notificationBloc,
+      this.notificationTransmittedBloc,
+      this.notificationReceivedBloc,
+      this.chatBloc,
+      this.purchaseGetOfferBloc,
+      this.purchaseMakePurchaseBloc)
       : super(InitialUserState()) {
     on<ResetUserEvent>((event, emit) async {
       emit(InitialUserState());
@@ -423,6 +435,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     on<deleteUser>((event, emit) async {
       try {
+        emit(DeletingState());
         await closeStreams();
         await _userRepository.deleteUser(user!, password: event.password);
         await restartApp();
