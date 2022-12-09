@@ -207,6 +207,17 @@ class PeoplerAppBars {
   }
 
   // ignore: non_constant_identifier_names
+  MY_PROFILE({Function()? function}) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      leading: DRAWER_MENU_ICON(),
+      centerTitle: true,
+      title: PEOPLER_TITLE(),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
   CONNECTION_REQ(void Function()? function) {
     return AppBar(
       leading: _BACK_BUTTON(function: function),
