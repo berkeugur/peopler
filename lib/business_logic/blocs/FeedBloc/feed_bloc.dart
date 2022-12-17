@@ -14,7 +14,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
   List<MyFeed> _allFeedList = [];
   List<MyFeed> get allFeedList => _allFeedList;
-  MyFeed? _lastSelectedFeed;
 
   FeedBloc() : super(InitialFeedState()) {
     on<ResetFeedEvent>((event, emit) async {
@@ -28,7 +27,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         _allFeedList = [];
         _feedRepository.restartFeedCache();
 
-        _lastSelectedFeed = null;
         List<MyFeed> shuffledList = await getKadinAndErkekList();
 
         _allFeedList.addAll(shuffledList);
@@ -51,7 +49,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       try {
         emit(NewFeedsLoadingState());
 
-        _lastSelectedFeed = _allFeedList.isNotEmpty ? _allFeedList.last : null;
         List<MyFeed> shuffledList = await getKadinAndErkekList();
 
         if (shuffledList.isNotEmpty) {
@@ -150,7 +147,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     try {
       _feedRepository.restartFeedCache();
 
-      _lastSelectedFeed = null;
       List<MyFeed> shuffledList = await getKadinAndErkekList();
 
       _allFeedList = [];
@@ -177,9 +173,9 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     List<MyFeed> erkekList;
     List<MyFeed> otherList;
 
-    kadinList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Kadın');
-    erkekList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Erkek');
-    otherList = await _feedRepository.getFeedWithPagination(_lastSelectedFeed, 'Diğer');
+    kadinList = await _feedRepository.getFeedWithPagination('Kadın');
+    erkekList = await _feedRepository.getFeedWithPagination('Erkek');
+    otherList = await _feedRepository.getFeedWithPagination('Diğer');
 
     List<String> kadinListGender = kadinList.map((person) => 'K').toList();
     List<String> erkekListGender = erkekList.map((person) => 'E').toList();
@@ -209,7 +205,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
     /// Reset variables
     _allFeedList = [];
-    _lastSelectedFeed = null;
 
     /// set initial state
     add(ResetFeedEvent());

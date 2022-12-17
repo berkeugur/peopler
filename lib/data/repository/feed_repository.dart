@@ -20,18 +20,28 @@ class FeedRepository {
   bool _hasMoreErkek = true;
   bool _hasMoreOther = true;
 
-  Future<List<MyFeed>> getFeedWithPagination(MyFeed? lastFeedListElement, String gender) async {
+  MyFeed? lastFeedListElementKadin;
+  MyFeed? lastFeedListElementErkek;
+  MyFeed? lastFeedListElementDiger;
+
+  Future<List<MyFeed>> getFeedWithPagination(String gender) async {
     int _numberOfElementsWillBeSelected = (gender == 'Kadın') ? (_numberOfElementsWomen) : (_numberOfElementsMen);
+
+    List<MyFeed> feedList = [];
 
     if (gender == 'Kadın') {
       if (_hasMoreKadin == false) return [];
-    } else if (gender == 'Erkek'){
+      feedList = await _firestoreDBServiceFeeds.getFeedWithPagination(lastFeedListElementKadin, _numberOfElementsWillBeSelected, gender);
+      if (feedList.isNotEmpty) lastFeedListElementKadin = feedList.last;
+    } else if (gender == 'Erkek') {
       if (_hasMoreErkek == false) return [];
-    } else if (gender == 'Diğer'){
+      feedList = await _firestoreDBServiceFeeds.getFeedWithPagination(lastFeedListElementErkek, _numberOfElementsWillBeSelected, gender);
+      if (feedList.isNotEmpty) lastFeedListElementErkek = feedList.last;
+    } else if (gender == 'Diğer') {
       if (_hasMoreOther == false) return [];
+      feedList = await _firestoreDBServiceFeeds.getFeedWithPagination(lastFeedListElementDiger, _numberOfElementsWillBeSelected, gender);
+      if (feedList.isNotEmpty) lastFeedListElementDiger = feedList.last;
     }
-
-    List<MyFeed> feedList = await _firestoreDBServiceFeeds.getFeedWithPagination(lastFeedListElement, _numberOfElementsWillBeSelected, gender);
 
     if (feedList.length < _numberOfElementsWillBeSelected) {
       if (gender == 'Kadın') {
@@ -52,7 +62,7 @@ class FeedRepository {
 
       // DİKKAT
       // remove deleted users
-      if(_user == null) {
+      if (_user == null) {
         deletedUserIDs.add(feedList[index].userID);
         continue;
       }
@@ -62,13 +72,12 @@ class FeedRepository {
       feedList[index].numberOfConnections = _user.connectionUserIDs.length;
     }
 
-    for(String deletedUserID in deletedUserIDs) {
+    for (String deletedUserID in deletedUserIDs) {
       feedList.removeWhere((element) => element.userID == deletedUserID);
     }
 
     return feedList;
   }
-
 
   Future<bool> deleteFeed(String userID, String feedID) async {
     try {
@@ -107,8 +116,8 @@ class FeedRepository {
       /// Read Feed and Return
       if (_result == false) return null;
       return await _firestoreDBServiceFeeds.readFeed(myFeed.feedID);
-    } catch(e) {
-     return null;
+    } catch (e) {
+      return null;
     }
   }
 
@@ -116,5 +125,9 @@ class FeedRepository {
     _hasMoreErkek = true;
     _hasMoreKadin = true;
     _hasMoreOther = true;
+
+    lastFeedListElementKadin = null;
+    lastFeedListElementErkek = null;
+    lastFeedListElementDiger = null;
   }
 }
