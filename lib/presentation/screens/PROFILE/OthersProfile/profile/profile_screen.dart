@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +20,7 @@ import 'package:peopler/data/model/report.dart';
 import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/components/FlutterWidgets/drawer.dart';
+import 'package:peopler/others/swipedetector.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen_components.dart';
 import 'package:peopler/presentation/screens/PROFILE/OthersProfile/functions.dart';
@@ -84,14 +87,19 @@ class _OthersProfileScreenState extends State<OthersProfileScreen> with TickerPr
               create: (context) => _otherUserBloc,
               child: Builder(builder: (BuildContext context) {
                 return ScaffoldMessenger(
-                  child: Scaffold(
-                    appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
-                      function: () async {
-                        await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
-                      },
+                  child: SwipeDetector(
+                    onSwipeRight: () {
+                      popOtherUserScreen(context);
+                    },
+                    child: Scaffold(
+                      appBar: PeoplerAppBars(context: context).OTHER_PROFILE(
+                        function: () async {
+                          await ReportOrBlockUser(context: context, otherUserBloc: _otherUserBloc, controller: _controller);
+                        },
+                      ),
+                      backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
+                      body: _buildBody(),
                     ),
-                    backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-                    body: _buildBody(),
                   ),
                 );
               }),

@@ -275,7 +275,7 @@ class _ExplanationState extends State<Explanation> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Şehrimdekiler bölümünde şehrinizdeki diğer insanlarla bağlantı kurabilirsinzi.\n\n",
+            "Şehrimdekiler bölümünde şehrinizdeki diğer insanlarla bağlantı kurabilirsiniz.\n\n",
             style: PeoplerTextStyle.normal.copyWith(
               fontSize: 14,
               color: Mode().homeScreenTitleColor(),

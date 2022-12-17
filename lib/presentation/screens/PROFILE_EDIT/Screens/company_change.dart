@@ -126,7 +126,7 @@ class Explanation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Mesleğinizi paylaşabilirsiniz..\n\n",
+            "Çalıştığınız şirketi paylaşabilirsiniz.\n\n",
             style: PeoplerTextStyle.normal.copyWith(
               fontSize: 14,
               color: Mode().homeScreenTitleColor(),

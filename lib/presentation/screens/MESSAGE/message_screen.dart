@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
+import 'package:peopler/others/swipedetector.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../data/model/chat.dart';
 import '../../../data/model/message.dart';
@@ -104,56 +105,61 @@ class _MessageScreenState extends State<MessageScreen> with TickerProviderStateM
               create: (context) => _messageBloc,
               child: Builder(
                 builder: (BuildContext context) {
-                  return Scaffold(
-                    backgroundColor: Mode.isEnableDarkMode == true ? const Color(0xFF000B21) : const Color(0xFFF0F4F5),
-                    body: SafeArea(
-                      child: Column(
-                        children: [
-                          messageScreenTopMenu(context, _controller, _messageBloc.currentChat?.hostID ?? "null host"),
-                          MessageScreenBody(
-                            messageListController: messageListController,
-                          ),
-                          message_input_field(context, messageListController),
-                          Offstage(
-                            offstage: !emojiShowing,
-                            child: SizedBox(
-                              height: 250,
-                              child: EmojiPicker(
-                                  textEditingController: messageController,
-                                  onEmojiSelected: (Category? category, Emoji emoji) {
-                                    _onEmojiSelected(emoji);
-                                  },
-                                  onBackspacePressed: _onBackspacePressed,
-                                  config: Config(
-                                      columns: 7,
-                                      // Issue: https://github.com/flutter/flutter/issues/28894
-                                      emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
-                                      verticalSpacing: 0,
-                                      horizontalSpacing: 0,
-                                      gridPadding: EdgeInsets.zero,
-                                      initCategory: Category.RECENT,
-                                      bgColor: const Color(0xFFF2F2F2),
-                                      indicatorColor: Colors.blue,
-                                      iconColor: Colors.grey,
-                                      iconColorSelected: Colors.blue,
-                                      backspaceColor: Colors.blue,
-                                      skinToneDialogBgColor: Colors.white,
-                                      skinToneIndicatorColor: Colors.grey,
-                                      enableSkinTones: true,
-                                      showRecentsTab: true,
-                                      recentsLimit: 28,
-                                      replaceEmojiOnLimitExceed: false,
-                                      noRecents: const Text(
-                                        'No Recents',
-                                        style: TextStyle(fontSize: 20, color: Colors.black26),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      tabIndicatorAnimDuration: kTabScrollDuration,
-                                      categoryIcons: const CategoryIcons(),
-                                      buttonMode: ButtonMode.MATERIAL)),
+                  return SwipeDetector(
+                    onSwipeRight: () {
+                      popMessageScreen(context, _messageBloc.currentChat!.hostID);
+                    },
+                    child: Scaffold(
+                      backgroundColor: Mode.isEnableDarkMode == true ? const Color(0xFF000B21) : const Color(0xFFF0F4F5),
+                      body: SafeArea(
+                        child: Column(
+                          children: [
+                            messageScreenTopMenu(context, _controller, _messageBloc.currentChat?.hostID ?? "null host"),
+                            MessageScreenBody(
+                              messageListController: messageListController,
                             ),
-                          ),
-                        ],
+                            message_input_field(context, messageListController),
+                            Offstage(
+                              offstage: !emojiShowing,
+                              child: SizedBox(
+                                height: 250,
+                                child: EmojiPicker(
+                                    textEditingController: messageController,
+                                    onEmojiSelected: (Category? category, Emoji emoji) {
+                                      _onEmojiSelected(emoji);
+                                    },
+                                    onBackspacePressed: _onBackspacePressed,
+                                    config: Config(
+                                        columns: 7,
+                                        // Issue: https://github.com/flutter/flutter/issues/28894
+                                        emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+                                        verticalSpacing: 0,
+                                        horizontalSpacing: 0,
+                                        gridPadding: EdgeInsets.zero,
+                                        initCategory: Category.RECENT,
+                                        bgColor: const Color(0xFFF2F2F2),
+                                        indicatorColor: Colors.blue,
+                                        iconColor: Colors.grey,
+                                        iconColorSelected: Colors.blue,
+                                        backspaceColor: Colors.blue,
+                                        skinToneDialogBgColor: Colors.white,
+                                        skinToneIndicatorColor: Colors.grey,
+                                        enableSkinTones: true,
+                                        showRecentsTab: true,
+                                        recentsLimit: 28,
+                                        replaceEmojiOnLimitExceed: false,
+                                        noRecents: const Text(
+                                          'No Recents',
+                                          style: TextStyle(fontSize: 20, color: Colors.black26),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        tabIndicatorAnimDuration: kTabScrollDuration,
+                                        categoryIcons: const CategoryIcons(),
+                                        buttonMode: ButtonMode.MATERIAL)),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
