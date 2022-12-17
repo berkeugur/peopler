@@ -103,8 +103,7 @@ class CityTabState extends State<CityTab> {
                 // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
                 // find the NestedScrollView.
                 builder: (BuildContext context) {
-              _searchPeopleListControllerCity =
-                  context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+              _searchPeopleListControllerCity = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
               if (_searchPeopleListControllerCity.hasListeners == false) {
                 _searchPeopleListControllerCity.addListener(_listScrollListener);
               }
@@ -315,8 +314,7 @@ class CityTabState extends State<CityTab> {
                             showYouNeedToLogin(context);
                             return;
                           }
-                          openOthersProfile(
-                              context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect);
+                          openOthersProfile(context, CityBloc.allUserList[index].userID, SendRequestButtonStatus.connect);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
@@ -327,8 +325,7 @@ class CityTabState extends State<CityTab> {
                               CachedNetworkImage(
                             imageUrl: CityBloc.allUserList[index].profileURL,
                             progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-                                borderRadius: BorderRadius.circular(999),
-                                child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
                             errorWidget: (context, url, error) => const Icon(Icons.error),
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
@@ -417,8 +414,7 @@ class CityTabState extends State<CityTab> {
                           textScaleFactor: 1,
                           maxLines: 3,
                           //_size.width * 0.038 < 15 ? 3 : _size.width * 0.038 <20  ? 2:1,
-                          style: const TextStyle(
-                              height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
+                          style: const TextStyle(height: 1.1, color: Color(0xFF9C9C9C), fontWeight: FontWeight.normal, fontSize: 15),
                         ),
                       ),
                       const SizedBox(
@@ -456,21 +452,17 @@ class CityTabState extends State<CityTab> {
                             bool _isSaved = Provider.of<SaveButton>(context).isSaved;
                             return InkWell(
                               onTap: () async {
-                                if (UserBloc.entitlement == SubscriptionTypes.free &&
-                                    UserBloc.user!.numOfSendRequest < 1) {
+                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest < 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                   return;
                                 }
 
-                                if (UserBloc.entitlement == SubscriptionTypes.free &&
-                                    UserBloc.user!.numOfSendRequest == 1) {
+                                if (UserBloc.entitlement == SubscriptionTypes.free && UserBloc.user!.numOfSendRequest == 1) {
                                   showNumOfConnectionRequestsConsumed(context);
                                 }
 
-                                final SendNotificationService _sendNotificationService =
-                                    locator<SendNotificationService>();
-                                final FirestoreDBServiceUsers _firestoreDBServiceUsers =
-                                    locator<FirestoreDBServiceUsers>();
+                                final SendNotificationService _sendNotificationService = locator<SendNotificationService>();
+                                final FirestoreDBServiceUsers _firestoreDBServiceUsers = locator<FirestoreDBServiceUsers>();
 
                                 SavedUser _savedUser = SavedUser();
                                 _savedUser.userID = CityBloc.allUserList[index].userID;
@@ -481,8 +473,7 @@ class CityTabState extends State<CityTab> {
                                 _savedUser.biography = CityBloc.allUserList[index].biography;
                                 _savedUser.hobbies = CityBloc.allUserList[index].hobbies;
 
-                                _savedBloc
-                                    .add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
+                                _savedBloc.add(ClickSendRequestButtonEvent(myUser: UserBloc.user!, savedUser: _savedUser));
 
                                 if (UserBloc.entitlement == SubscriptionTypes.free) {
                                   showRestNumOfConnectionRequests(context);
@@ -494,8 +485,8 @@ class CityTabState extends State<CityTab> {
                                 String? _token = await _firestoreDBServiceUsers.getToken(_savedUser.userID);
 
                                 if (_token != null) {
-                                  _sendNotificationService.sendNotification(Strings.sendRequest, _token, "",
-                                      UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
+                                  _sendNotificationService.sendNotification(
+                                      Strings.sendRequest, _token, "", UserBloc.user!.displayName, UserBloc.user!.profileURL, UserBloc.user!.userID);
                                 }
 
                                 widget.showWidgetsKeyNearby.currentState?.setState(() {});
@@ -506,8 +497,7 @@ class CityTabState extends State<CityTab> {
                                   width: 104,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
+                                    border: Border.all(width: 1, color: _mode.disabledBottomMenuItemAssetColor() as Color),
                                     color: Colors.transparent,
                                     //Colors.purple,
                                     borderRadius: const BorderRadius.all(Radius.circular(999)),
@@ -581,11 +571,7 @@ class CityTabState extends State<CityTab> {
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
         boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: const Color(0xFF939393).withOpacity(0.6),
-              blurRadius: 2.0,
-              spreadRadius: 0,
-              offset: const Offset(-1.0, 0.75))
+          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
         ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
@@ -600,10 +586,10 @@ class CityTabState extends State<CityTab> {
   }
 
   bool _listScrollListener() {
-    var nextPageTrigger = 0.8 * _searchPeopleListControllerCity.position.maxScrollExtent;
+    var nextPageTrigger = 0.8 * _searchPeopleListControllerCity.positions.last.maxScrollExtent;
 
-    if (_searchPeopleListControllerCity.position.userScrollDirection == ScrollDirection.reverse &&
-        _searchPeopleListControllerCity.position.pixels >= nextPageTrigger) {
+    if (_searchPeopleListControllerCity.positions.last.axisDirection == AxisDirection.down &&
+        _searchPeopleListControllerCity.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _cityBloc.add(GetMoreSearchUsersCityEvent(city: UserBloc.user!.city));

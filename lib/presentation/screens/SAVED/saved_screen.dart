@@ -481,9 +481,9 @@ class _SavedScreenState extends State<SavedScreen> {
   }
 
   bool _listScrollListener() {
-    var nextPageTrigger = 0.8 * _savedListController.position.maxScrollExtent;
+    var nextPageTrigger = 0.8 * _savedListController.positions.last.maxScrollExtent;
 
-    if (_savedListController.position.userScrollDirection == ScrollDirection.reverse && _savedListController.position.pixels >= nextPageTrigger) {
+    if (_savedListController.positions.last.axisDirection == AxisDirection.down && _savedListController.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _savedBloc.add(GetMoreSavedUsersEvent(myUserID: UserBloc.user!.userID));

@@ -525,9 +525,9 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
   }
 
   bool _listScrollListener() {
-    var nextPageTrigger = 0.8 * _scrollController.position.maxScrollExtent;
+    var nextPageTrigger = 0.8 * _scrollController.positions.last.maxScrollExtent;
 
-    if (_scrollController.position.userScrollDirection == ScrollDirection.reverse && _scrollController.position.pixels >= nextPageTrigger) {
+    if (_scrollController.positions.last.axisDirection == AxisDirection.down && _scrollController.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
         _notificationReceivedBloc.add(GetMoreDataReceivedEvent());
