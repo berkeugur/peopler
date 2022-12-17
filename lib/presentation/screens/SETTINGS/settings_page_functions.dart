@@ -73,6 +73,7 @@ op_change_password(context) {
 op_delete_account(BuildContext context) async {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   _userBloc.add(deleteUser());
+  Navigator.of(context).pop();
 }
 
 op_suggestion_or_complaint() {

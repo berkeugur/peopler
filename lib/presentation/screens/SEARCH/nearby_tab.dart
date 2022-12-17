@@ -134,10 +134,12 @@ class _NearbyTabState extends State<NearbyTab> {
                                   SystemUIService().setSystemUIforThemeMode();
                                   return SliverToBoxAdapter(child: SearchingCase());
                                 } else if (state is UsersNotExistSearchState) {
-                                  return const SliverToBoxAdapter(
-                                    child: EmptyList(
-                                      emptyListType: EmptyListType.nearby,
-                                      isSVG: false,
+                                  return const SliverFillRemaining(
+                                    child: Center(
+                                      child: EmptyList(
+                                        emptyListType: EmptyListType.nearby,
+                                        isSVG: false,
+                                      ),
                                     ),
                                   );
                                 } else if (state is UsersLoadedSearch1State) {

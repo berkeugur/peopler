@@ -26,13 +26,11 @@ class ResetPasswordSentState extends UserState {
   List<Object> get props => [];
 }
 
-
 class SignedInMissingInfoState extends UserState {
   @override
   // TODO: implement props
   List<Object> get props => [];
 }
-
 
 class SignedInNotVerifiedState extends UserState {
   @override
@@ -82,3 +80,8 @@ class WeakPasswordState extends UserState {
   List<Object> get props => [];
 }
 
+class DeletingState extends UserState {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

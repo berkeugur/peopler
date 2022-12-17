@@ -61,7 +61,9 @@ class ProfileScreenComponentsMyProfile {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             decoration: BoxDecoration(
               color: Mode().homeScreenScaffoldBackgroundColor(),
-              boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))],
+              boxShadow: <BoxShadow>[
+                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+              ],
             ),
             child: Text(
               biography,
@@ -178,16 +180,16 @@ class ProfileScreenComponentsMyProfile {
                                     ),
                                   ),
                                   imageUrl: photos.first,
-                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                                      ClipRRect(borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                  progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
+                                      borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
                                   errorWidget: (context, url, error) => const Icon(Icons.error),
                                 ),
                               ),
                             ),
                           ),
                           InkWell(
-                            onTap: () => PeoplerGallery()
-                                .openGallery(context: context, images: ["assets/profile_banners/banner1.png"], currentIndex: 0, isNetworkImage: false),
+                            onTap: () => PeoplerGallery().openGallery(
+                                context: context, images: ["assets/profile_banners/banner1.png"], currentIndex: 0, isNetworkImage: false),
                             child: Container(
                               height: _photoHeight,
                               width: _photoWidth,
@@ -310,7 +312,9 @@ class ProfileScreenComponentsMyProfile {
                               child: Center(
                                 child: TextButton(
                                   onPressed: () {
-                                    _itemCount.value == _numberOfPhoto + 1 ? _itemCount.value = photos.length + 1 : _itemCount.value = _numberOfPhoto + 1;
+                                    _itemCount.value == _numberOfPhoto + 1
+                                        ? _itemCount.value = photos.length + 1
+                                        : _itemCount.value = _numberOfPhoto + 1;
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -341,7 +345,9 @@ class ProfileScreenComponentsMyProfile {
                                   child: Center(
                                     child: TextButton(
                                       onPressed: () {
-                                        _itemCount.value == _numberOfPhoto + 1 ? _itemCount.value = photos.length + 1 : _itemCount.value = _numberOfPhoto + 1;
+                                        _itemCount.value == _numberOfPhoto + 1
+                                            ? _itemCount.value = photos.length + 1
+                                            : _itemCount.value = _numberOfPhoto + 1;
                                       },
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -366,7 +372,8 @@ class ProfileScreenComponentsMyProfile {
                                     ),
                                   ))
                               : InkWell(
-                                  onTap: () => PeoplerGallery().openGallery(context: context, images: photos, currentIndex: index, isNetworkImage: true),
+                                  onTap: () =>
+                                      PeoplerGallery().openGallery(context: context, images: photos, currentIndex: index, isNetworkImage: true),
                                   child: Container(
                                     height: _photoHeight,
                                     width: _photoWidth,
@@ -392,7 +399,8 @@ class ProfileScreenComponentsMyProfile {
                                         ),
                                         imageUrl: photos[index],
                                         progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-                                            borderRadius: BorderRadius.circular(7.5), child: LinearProgressIndicator(value: downloadProgress.progress)),
+                                            borderRadius: BorderRadius.circular(7.5),
+                                            child: LinearProgressIndicator(value: downloadProgress.progress)),
                                         errorWidget: (context, url, error) => const Icon(Icons.error),
                                       ),
                                     ),
@@ -628,9 +636,7 @@ class ProfileScreenComponentsMyProfile {
                       //i use +1 because last index for less more see more widget
                       itemCount: numberOfActivity.value,
                       shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                        parent: NeverScrollableScrollPhysics(),
-                      ),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         if (index == numberOfActivity.value - 1) {
                           return InkWell(
@@ -706,7 +712,8 @@ class ProfileScreenComponentsMyProfile {
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                  BoxShadow(
+                                      color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
@@ -724,7 +731,8 @@ class ProfileScreenComponentsMyProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                BoxShadow(
+                                    color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -736,14 +744,14 @@ class ProfileScreenComponentsMyProfile {
                                     Text(
                                       profileData.pplName!,
                                       textScaleFactor: 1,
-                                      style:
-                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
+                                      style: PeoplerTextStyle.normal
+                                          .copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.w600),
                                     ),
                                     Text(
                                       " " + activityText(index, UserBloc.myActivities),
                                       textScaleFactor: 1,
-                                      style:
-                                          PeoplerTextStyle.normal.copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
+                                      style: PeoplerTextStyle.normal
+                                          .copyWith(fontSize: 14, color: _mode.blackAndWhiteConversion(), fontWeight: FontWeight.normal),
                                     ),
                                   ],
                                 ),
@@ -815,16 +823,15 @@ class ProfileScreenComponentsMyProfile {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
                           child: Text("Hiç hobiniz bulunmuyor.\nHobilerinizi ekleyerek profilinizi tamamlayabilirsiniz.",
                               textScaleFactor: 1,
-                              style: PeoplerTextStyle.normal.copyWith(fontSize: 16, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w300))),
+                              style: PeoplerTextStyle.normal
+                                  .copyWith(fontSize: 16, color: Mode().blackAndWhiteConversion(), fontWeight: FontWeight.w300))),
                     )
                   : ListView.builder(
                       scrollDirection: Axis.vertical,
                       //i use +1 because last index for less more see more widget
                       itemCount: numberOfExperience.value,
                       shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                        parent: NeverScrollableScrollPhysics(),
-                      ),
+                      physics: const NeverScrollableScrollPhysics(parent: BouncingScrollPhysics()),
                       itemBuilder: (context, index) {
                         if (profileData.hobbies.length > numberOfExperience.value && index == numberOfExperience.value - 1) {
                           return InkWell(
@@ -836,6 +843,7 @@ class ProfileScreenComponentsMyProfile {
                                     return StatefulBuilder(builder: (context, setStateEditHobbyBottomSheet) {
                                       return ListView.builder(
                                           itemCount: UserBloc.user!.hobbies.length,
+                                          physics: NeverScrollableScrollPhysics(),
                                           itemBuilder: (BuildContext context, int index) {
                                             return ListTile(
                                               leading: MediaQuery.of(context).size.width < 320
@@ -853,7 +861,8 @@ class ProfileScreenComponentsMyProfile {
                                                               )),
                                                           child: CircleAvatar(
                                                             backgroundColor: const Color(0xFF0353EF),
-                                                            child: Text("ppl$index", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
+                                                            child: Text("ppl$index",
+                                                                textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(fontSize: 12)),
                                                           ),
                                                         ),
                                                         Container(
@@ -869,7 +878,8 @@ class ProfileScreenComponentsMyProfile {
                                                       ],
                                                     ),
                                               title: Text("123ş",
-                                                  textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                                                  textScaleFactor: 1,
+                                                  style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                               subtitle: Text(
                                                 "123222",
                                                 textScaleFactor: 1,
@@ -879,29 +889,14 @@ class ProfileScreenComponentsMyProfile {
                                           });
                                     });
                                   });
-                              /*
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                         AllExperienceList(profileData: profileData, myActivities: myActivities)),
-                              );
-
-                               */
-
-                              /*
-                        numberOfExperience.value == minNumberOfExperience+1
-                            ? numberOfExperience.value = profileData.experiences.length+1
-                            : numberOfExperience.value = minNumberOfExperience+1;
-                        print("çalıştı .........");
-                         */
                             },
                             child: Container(
                               padding: const EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
                                 color: _mode.bottomMenuBackground(),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                  BoxShadow(
+                                      color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                                 ],
                                 //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                               ),
@@ -919,7 +914,8 @@ class ProfileScreenComponentsMyProfile {
                             decoration: BoxDecoration(
                               color: _mode.bottomMenuBackground(),
                               boxShadow: <BoxShadow>[
-                                BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
+                                BoxShadow(
+                                    color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 0.5, spreadRadius: 0, offset: const Offset(0, 0))
                               ],
                               //border: Border.symmetric(horizontal: BorderSide(color: _mode.blackAndWhiteConversion() as Color,width: 0.2, style: BorderStyle.solid,))
                             ),
@@ -965,8 +961,8 @@ class ProfileScreenComponentsMyProfile {
                                     Text(
                                       HobbyModel.fromJson(profileData.hobbies[index]).subtitles?.first.subtitle ?? "null",
                                       textScaleFactor: 1,
-                                      style:
-                                          PeoplerTextStyle.normal.copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
+                                      style: PeoplerTextStyle.normal
+                                          .copyWith(color: _mode.blackAndWhiteConversion(), fontSize: 16, fontWeight: FontWeight.w600),
                                     ),
                                     Row(
                                       children: [
@@ -1010,7 +1006,8 @@ class ProfileScreenComponentsMyProfile {
                       return AlertDialog(
                         contentPadding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                         backgroundColor: Mode().homeScreenScaffoldBackgroundColor(),
-                        title: Text("Yeni Hobi Ekle", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                        title: Text("Yeni Hobi Ekle",
+                            textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                         content: AnimatedContainer(
                           margin: EdgeInsets.zero,
                           duration: _duration,
@@ -1027,7 +1024,8 @@ class ProfileScreenComponentsMyProfile {
                                   items: Hobby().hobbiesNameList().map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                                      child: Text(value,
+                                          textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     );
                                   }).toList(),
                                   onChanged: (String? newValue) {
@@ -1045,7 +1043,8 @@ class ProfileScreenComponentsMyProfile {
                                   }).map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                                      child: Text(value,
+                                          textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     );
                                   }).toList(),
                                   onChanged: (String? newStartYearValue) {
@@ -1058,11 +1057,24 @@ class ProfileScreenComponentsMyProfile {
                                   dropdownColor: Mode().homeScreenScaffoldBackgroundColor(),
                                   hint: Text(selectedStartMonth == null ? "Başladığınız ayı seçin" : selectedStartMonth.toString(),
                                       textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
-                                  items: <String>["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
-                                      .map((String value) {
+                                  items: <String>[
+                                    "Ocak",
+                                    "Şubat",
+                                    "Mart",
+                                    "Nisan",
+                                    "Mayıs",
+                                    "Haziran",
+                                    "Temmuz",
+                                    "Ağustos",
+                                    "Eylül",
+                                    "Ekim",
+                                    "Kasım",
+                                    "Aralık"
+                                  ].map((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
-                                      child: Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                                      child: Text(value,
+                                          textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                     );
                                   }).toList(),
                                   onChanged: (String? newStartMonthValue) {
@@ -1082,8 +1094,8 @@ class ProfileScreenComponentsMyProfile {
                                     }).map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
-                                        child:
-                                            Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                                        child: Text(value,
+                                            textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                       );
                                     }).toList(),
                                     onChanged: (String? newFinishYearValue) {
@@ -1115,8 +1127,8 @@ class ProfileScreenComponentsMyProfile {
                                     ].map((String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
-                                        child:
-                                            Text(value, textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                                        child: Text(value,
+                                            textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                                       );
                                     }).toList(),
                                     onChanged: (String? newFinishMonthValue) {
@@ -1231,7 +1243,10 @@ class ProfileScreenComponentsMyProfile {
                                   addHobbyWithJustStartDate(context, selectedHobbyName, selectedStartYear, selectedStartMonth);
                                   //print("başlangıç tarihini ekle bitiş tarihine şu anda yaz");
                                 } else if (getFinishDate().difference(getStartDate()).inDays < 0) {
-                                  if (selectedStartYear != null && selectedStartMonth != null && selectedFinishYear != null && selectedFinishMonth != null) {
+                                  if (selectedStartYear != null &&
+                                      selectedStartMonth != null &&
+                                      selectedFinishYear != null &&
+                                      selectedFinishMonth != null) {
                                     SnackBars(context: context).simple("Boşlukları Doldurunuz");
 
                                     print("bitiş tarihi başlangıç tarihinden yeni olamaz");
@@ -1319,7 +1334,8 @@ class ProfileScreenComponentsMyProfile {
                                 color: Mode().blackAndWhiteConversion(),
                               ),
                             ),
-                            title: Text("5s2252", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
+                            title:
+                                Text("5s2252", textScaleFactor: 1, style: PeoplerTextStyle.normal.copyWith(color: Mode().blackAndWhiteConversion())),
                             subtitle: Text(
                               "5588dsd",
                               textScaleFactor: 1,
@@ -1506,7 +1522,9 @@ class ProfileScreenComponentsMyProfile {
       width: _size,
       margin: EdgeInsets.only(left: marginLeft),
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))],
+        boxShadow: <BoxShadow>[
+          BoxShadow(color: const Color(0xFF939393).withOpacity(0.6), blurRadius: 2.0, spreadRadius: 0, offset: const Offset(-1.0, 0.75))
+        ],
         borderRadius: const BorderRadius.all(Radius.circular(999)),
         color: Colors.white, //Colors.orange,
       ),

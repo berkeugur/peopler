@@ -160,19 +160,21 @@ class CityTabState extends State<CityTab> {
     );
   }
 
-  SliverToBoxAdapter _initialUsersStateWidget() {
-    return const SliverToBoxAdapter(
+  SliverFillRemaining _initialUsersStateWidget() {
+    return const SliverFillRemaining(
       child: Center(
         child: CircularProgressIndicator(),
       ),
     );
   }
 
-  SliverToBoxAdapter _noUserExistsWidget() {
-    return const SliverToBoxAdapter(
-      child: EmptyList(
-        emptyListType: EmptyListType.citySearch,
-        isSVG: false,
+  SliverFillRemaining _noUserExistsWidget() {
+    return const SliverFillRemaining(
+      child: Center(
+        child: EmptyList(
+          emptyListType: EmptyListType.citySearch,
+          isSVG: false,
+        ),
       ),
     );
   }

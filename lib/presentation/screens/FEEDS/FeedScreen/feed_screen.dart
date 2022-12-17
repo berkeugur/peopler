@@ -172,13 +172,11 @@ class FeedScreenState extends State<FeedScreen> {
     );
   }
 
-  SliverToBoxAdapter _initialFeedsStateWidget() {
-    return SliverToBoxAdapter(
-        child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: const Center(
-              child: CircularProgressIndicator(),
-            )));
+  SliverFillRemaining _initialFeedsStateWidget() {
+    return const SliverFillRemaining(
+        child: Center(
+      child: CircularProgressIndicator(),
+    ));
   }
 
   SliverToBoxAdapter _noFeedExistsWidget() {
