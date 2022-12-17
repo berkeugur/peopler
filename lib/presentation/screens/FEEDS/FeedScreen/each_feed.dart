@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
 import 'package:peopler/business_logic/blocs/LikedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/send_req_button_status_enum.dart';
@@ -123,28 +124,43 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID) || (UserBloc.user == null)
+                                      (UserBloc.user == null)
                                           ? const SizedBox.shrink()
-                                          : IconButton(
-                                              onPressed: () {
-                                                tripleDotOnPressed(
-                                                  context,
-                                                  widget.myFeed.feedID,
-                                                  widget.myFeed.feedExplanation,
-                                                  widget.myFeed.userID,
-                                                  widget.myFeed.userDisplayName,
-                                                  widget.myFeed.userGender,
-                                                  widget.myFeed.createdAt,
-                                                  widget.myFeed.userPhotoUrl,
-                                                  _controller,
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.more_vert_outlined,
-                                                color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
-                                                size: 25,
-                                              ),
-                                            )
+                                          : (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID)
+                                              ? IconButton(
+                                                onPressed: () {
+                                                  tripleDotOnDeleteFeedPressed(
+                                                    context,
+                                                    widget.myFeed.feedID,
+                                                    _controller,
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  Icons.more_vert_outlined,
+                                                  color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
+                                                  size: 25,
+                                                ),
+                                              )
+                                              : IconButton(
+                                                  onPressed: () {
+                                                    tripleDotOnPressed(
+                                                      context,
+                                                      widget.myFeed.feedID,
+                                                      widget.myFeed.feedExplanation,
+                                                      widget.myFeed.userID,
+                                                      widget.myFeed.userDisplayName,
+                                                      widget.myFeed.userGender,
+                                                      widget.myFeed.createdAt,
+                                                      widget.myFeed.userPhotoUrl,
+                                                      _controller,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.more_vert_outlined,
+                                                    color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
+                                                    size: 25,
+                                                  ),
+                                                )
                                     ],
                                   )
                                 ],

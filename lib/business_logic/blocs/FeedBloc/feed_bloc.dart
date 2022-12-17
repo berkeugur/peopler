@@ -93,6 +93,21 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       }
     });
 
+    on<RemoveMyFeedEvent>((event, emit) async {
+      try {
+        emit(NewFeedsLoadingState());
+
+        _allFeedList.removeWhere((element) => element.feedID == event.myfeedID);
+        if (state is FeedsLoaded1State) {
+          emit(FeedsLoaded2State());
+        } else {
+          emit(FeedsLoaded1State());
+        }
+      } catch (e) {
+        debugPrint("Blocta remove my feed hata:" + e.toString());
+      }
+    });
+
     /// This event mechanism is used for HomeButton click to scrollToTop and refresh
     on<GetRefreshDataEvent>((event, emit) async {
       /// Since refresh indicator just wait for finishing future function, state mechanism does not work for it

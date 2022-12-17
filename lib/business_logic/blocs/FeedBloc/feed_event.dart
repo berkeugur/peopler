@@ -31,6 +31,17 @@ class AddMyFeedEvent extends FeedEvent {
   List<Object> get props => [myFeed];
 }
 
+class RemoveMyFeedEvent extends FeedEvent {
+  final String myfeedID;
+  RemoveMyFeedEvent({
+    required this.myfeedID,
+  });
+
+  @override
+  List<Object> get props => [myfeedID];
+}
+
+
 class TrigNewFeedsLoadingStateEvent extends FeedEvent {
   @override
   List<Object?> get props => throw UnimplementedError();

@@ -1,12 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/app/animations_constants.dart';
-import 'package:peopler/core/constants/navigation/navigation_constants.dart';
-import 'package:peopler/data/repository/location_repository.dart';
-import 'package:peopler/others/locator.dart';
 
 class PeoplerDialogs {
   Future showSuccessfulDialog(BuildContext ctx, AnimationController controller) async => await showDialog(

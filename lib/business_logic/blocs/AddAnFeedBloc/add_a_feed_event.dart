@@ -6,7 +6,6 @@ import '../../../data/model/feed.dart';
 abstract class AddFeedEvent extends Equatable {}
 
 class AddAFeedEvent extends AddFeedEvent {
-
   final MyFeed myFeed;
 
   AddAFeedEvent({
@@ -15,4 +14,15 @@ class AddAFeedEvent extends AddFeedEvent {
 
   @override
   List<Object> get props => [myFeed];
+}
+
+class RemoveAFeedEvent extends AddFeedEvent {
+  final String myFeedID;
+
+  RemoveAFeedEvent({
+    required this.myFeedID,
+  });
+
+  @override
+  List<Object> get props => [myFeedID];
 }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_bloc.dart';
+import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_event.dart';
+import 'package:peopler/business_logic/blocs/AddAnFeedBloc/add_a_feed_state.dart';
 import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
@@ -12,6 +15,7 @@ import 'package:peopler/data/model/user.dart';
 import 'package:peopler/others/functions/guest_login_alert_dialog.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/SETTINGS/settings.dart';
+import '../../../../business_logic/blocs/FeedBloc/bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../data/services/db/firebase_db_report.dart';
@@ -40,14 +44,13 @@ op_settings_icon(context) {
   }
 }
 
-
 op_message_icon(context) {
   FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
   _homeScreen.navigatorKeys[TabItem.chat]!.currentState!.pushNamed(NavigationConstants.CHAT_SCREEN);
 }
 
-tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, String userID, String userDisplayName, String userGender, DateTime createdAt,
-    String userPhotoUrl, AnimationController animationController) {
+tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, String userID, String userDisplayName, String userGender,
+    DateTime createdAt, String userPhotoUrl, AnimationController animationController) {
   showModalBottomSheet(
       context: context,
       backgroundColor: const Color(0xFF0353EF),
@@ -106,6 +109,48 @@ tripleDotOnPressed(BuildContext context, String feedId, String feedExplanation, 
               },
             ),
           ],
+        );
+      });
+}
+
+tripleDotOnDeleteFeedPressed(BuildContext context, String feedId, AnimationController animationController) {
+  showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF0353EF),
+      builder: (context) {
+        return BlocProvider<AddFeedBloc>(
+          create: (context) => AddFeedBloc(),
+          child: Builder(builder: (context) {
+            return BlocListener<AddFeedBloc, AddFeedState>(
+              listener: (BuildContext context, state) {
+                if (state is FeedRemoveSuccessfulState) {
+                  PeoplerDialogs().showSuccessfulDialog(context, animationController);
+                  FeedBloc feedBloc = BlocProvider.of<FeedBloc>(context);
+                  feedBloc.add(RemoveMyFeedEvent(myfeedID: feedId));
+                  animationController.clearListeners();
+                  Navigator.of(context).pop();
+                } else if (state is FeedRemoveErrorState) {
+                  animationController.clearListeners();
+                  Navigator.of(context).pop();
+                }
+              },
+              child: ListTile(
+                leading: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Feed\'i Sil',
+                  textScaleFactor: 1,
+                  style: PeoplerTextStyle.normal.copyWith(fontSize: 14, color: Colors.white),
+                ),
+                onTap: () {
+                  AddFeedBloc addFeedBloc = BlocProvider.of<AddFeedBloc>(context);
+                  addFeedBloc.add(RemoveAFeedEvent(myFeedID: feedId));
+                },
+              ),
+            );
+          }),
         );
       });
 }

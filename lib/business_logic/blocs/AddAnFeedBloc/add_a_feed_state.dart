@@ -21,6 +21,16 @@ class FeedCreateErrorState extends AddFeedState {
   List<Object> get props => [];
 }
 
+class FeedRemoveErrorState extends AddFeedState {
+  @override
+  List<Object> get props => [];
+}
+
+class FeedRemoveSuccessfulState extends AddFeedState {
+  @override
+  List<Object> get props => [];
+}
+
 class FeedCreateSuccessfulState extends AddFeedState {
   final MyFeed myFeed;
   const FeedCreateSuccessfulState({required this.myFeed});

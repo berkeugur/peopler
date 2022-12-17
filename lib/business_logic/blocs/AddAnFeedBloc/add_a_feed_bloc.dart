@@ -34,5 +34,18 @@ class AddFeedBloc extends Bloc<AddFeedEvent, AddFeedState> {
         debugPrint("Bloctaki add an event hata:" + e.toString());
       }
     });
+
+    on<RemoveAFeedEvent>((event, emit) async {
+      try {
+        emit(LoadingState());
+
+        await _eventRepository.deleteFeed(UserBloc.user!.userID, event.myFeedID);
+
+        emit(FeedRemoveSuccessfulState());
+      } catch (e) {
+        emit(FeedRemoveErrorState());
+        debugPrint("Bloctaki remove feed hata:" + e.toString());
+      }
+    });
   }
 }
