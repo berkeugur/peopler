@@ -119,7 +119,6 @@ class FirestoreDBServiceUsers {
     }
   }
 
-
   ///******************************************* CITY OPERATIONS ***************************/
   ///******************************************* CITY OPERATIONS ***************************/
   /// ****************************************** CITY OPERATIONS ***************************/
@@ -369,7 +368,6 @@ class FirestoreDBServiceUsers {
 
     return _allUsers;
   }
-
 
   /// *************** Saved Screen Functions **********************/
 
@@ -664,15 +662,14 @@ class FirestoreDBServiceUsers {
   }
 
   Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
-    var snapShot =
-        _firebaseDB
-            .collection('users')
-            .doc(currentUserID)
-            .collection("notifications")
-            .where('notificationVisible', isEqualTo: true)
-            .orderBy("createdAt", descending: true)
-            .limit(1)
-            .snapshots();
+    var snapShot = _firebaseDB
+        .collection('users')
+        .doc(currentUserID)
+        .collection("notifications")
+        .where('notificationVisible', isEqualTo: true)
+        .orderBy("createdAt", descending: true)
+        .limit(1)
+        .snapshots();
 
     return snapShot.map(
         // Convert Stream<docs> to Stream<List<Object>>
@@ -756,6 +753,3 @@ class FirestoreDBServiceUsers {
     }
   }
 }
-
-
-

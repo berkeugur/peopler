@@ -5,9 +5,9 @@ import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/enums/screen_item_enum.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
+import '../../../../business_logic/blocs/NewNotificationBloc/new_notification_bloc.dart';
 import '../../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
-import '../../../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import 'incoming_connection_requests.dart';
@@ -61,10 +61,10 @@ class _ConnectionRequestScreenState extends State<ConnectionRequestScreen> {
     return Padding(
         padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         child: PeoplerAppBars(context: context).CONNECTION_REQ(() {
-          NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+          NewNotificationBloc _newNotificationBloc = BlocProvider.of<NewNotificationBloc>(context);
           NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
 
-          _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
+          _notificationBloc.add(GetInitialNotificationEvent(newNotificationBloc: _newNotificationBloc, context: context));
 
           final FloatingActionButtonCubit _homeScreen = BlocProvider.of<FloatingActionButtonCubit>(context);
           _homeScreen.currentScreen = {_homeScreen.currentTab: ScreenItem.notificationScreen};

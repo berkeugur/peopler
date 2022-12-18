@@ -7,12 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NewMessageBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
-import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
-import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/model/user.dart';
@@ -26,6 +25,7 @@ import 'business_logic/blocs/CityBloc/city_bloc.dart';
 import 'business_logic/blocs/FeedBloc/feed_bloc.dart';
 import 'business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dart';
 import 'business_logic/blocs/LocationUpdateBloc/location_update_bloc.dart';
+import 'business_logic/blocs/NewNotificationBloc/new_notification_bloc.dart';
 import 'business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import 'business_logic/blocs/NotificationReceivedBloc/notification_received_bloc.dart';
 import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
@@ -85,7 +85,8 @@ class MyApp extends StatelessWidget {
     PurchaseGetOfferBloc purchaseGetOfferBloc = PurchaseGetOfferBloc();
     PurchaseMakePurchaseBloc purchaseMakePurchaseBloc = PurchaseMakePurchaseBloc();
 
-    UserBloc userBloc = UserBloc(mainKey, feedBloc, savedBloc, cityBloc, locationBloc, locationUpdateBloc,notificationBloc, notificationTransmittedBloc, notificationReceivedBloc, chatBloc, purchaseGetOfferBloc, purchaseMakePurchaseBloc);
+    UserBloc userBloc = UserBloc(mainKey, feedBloc, savedBloc, cityBloc, locationBloc, locationUpdateBloc, notificationBloc,
+        notificationTransmittedBloc, notificationReceivedBloc, chatBloc, purchaseGetOfferBloc, purchaseMakePurchaseBloc);
 
     return ValueListenableBuilder(
       valueListenable: setTheme,
@@ -101,8 +102,8 @@ class MyApp extends StatelessWidget {
               BlocProvider<LocationUpdateBloc>(create: (context) => locationUpdateBloc),
               BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
               BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
-              BlocProvider<NewNotificationCubit>(create: (context) => NewNotificationCubit()),
-              BlocProvider<NewMessageCubit>(create: (context) => NewMessageCubit()),
+              BlocProvider<NewNotificationBloc>(create: (context) => NewNotificationBloc()),
+              BlocProvider<NewMessageBloc>(create: (context) => NewMessageBloc()),
               BlocProvider<NotificationTransmittedBloc>(create: (context) => notificationTransmittedBloc),
               BlocProvider<NotificationReceivedBloc>(create: (context) => notificationReceivedBloc),
               BlocProvider<NotificationBloc>(create: (context) => notificationBloc),

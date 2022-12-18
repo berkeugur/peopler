@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/NewMessageBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'package:peopler/data/repository/chat_repository.dart';
 import 'package:peopler/data/services/db/firestore_db_service_users.dart';
 import '../../../data/model/chat.dart';
 import '../../../data/model/user.dart';
 import '../../../others/locator.dart';
+import '../../cubits/FloatingActionButtonCubit.dart';
 import 'bloc.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
@@ -67,7 +69,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               updatedChat[0].hostUserProfileUrl = _user.profileURL;
 
               /// Call another ChatBloc event named NewChatListenerEvent
-              add(NewChatListenerEvent(updatedChat: updatedChat, newMessageCubit: event.newMessageCubit));
+              add(NewChatListenerEvent(updatedChat: updatedChat, newMessageBloc: event.newMessageBloc, context: event.context));
             } else {
               add(TrigChatNotExistStateEvent());
             }
@@ -97,7 +99,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatsLoadedState1());
       }
 
-      event.newMessageCubit.newMessageEvent();
+      FloatingActionButtonCubit homeScreen = BlocProvider.of(event.context);
+      event.newMessageBloc.add(NewMessageReceivedEvent(homeScreen: homeScreen));
     });
 
     on<UpdateLastMessageSeenEvent>((event, emit) async {

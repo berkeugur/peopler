@@ -1,18 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../data/model/notifications.dart';
-import '../../cubits/NewNotificationCubit.dart';
+import '../NewNotificationBloc/new_notification_bloc.dart';
 
 @immutable
 abstract class NotificationEvent extends Equatable {}
 
 class GetInitialNotificationEvent extends NotificationEvent {
-  final NewNotificationCubit newNotificationCubit;
+  final NewNotificationBloc newNotificationBloc;
+  final BuildContext context;
 
-  GetInitialNotificationEvent({required this.newNotificationCubit});
+  GetInitialNotificationEvent({required this.newNotificationBloc, required this.context});
 
   @override
-  List<Object> get props => [newNotificationCubit];
+  List<Object> get props => [newNotificationBloc, context];
 }
 
 class GetMoreNotificationEvent extends NotificationEvent {
@@ -22,12 +23,13 @@ class GetMoreNotificationEvent extends NotificationEvent {
 
 class NewNotificationListenerEvent extends NotificationEvent {
   final List<Notifications> updatedNotification;
-  final NewNotificationCubit newNotificationCubit;
+  final NewNotificationBloc newNotificationBloc;
+  final BuildContext context;
 
-  NewNotificationListenerEvent({required this.updatedNotification, required this.newNotificationCubit});
+  NewNotificationListenerEvent({required this.updatedNotification, required this.newNotificationBloc, required this.context});
 
   @override
-  List<Object> get props => [updatedNotification, newNotificationCubit];
+  List<Object> get props => [updatedNotification, newNotificationBloc, context];
 }
 
 class ClickAcceptEvent extends NotificationEvent {

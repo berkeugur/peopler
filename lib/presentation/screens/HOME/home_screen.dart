@@ -5,6 +5,7 @@ import 'package:move_to_background/move_to_background.dart';
 import 'package:peopler/business_logic/blocs/CityBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NewMessageBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
 import 'dart:io' show Platform;
@@ -13,12 +14,11 @@ import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import 'package:peopler/data/fcm_and_local_notifications.dart';
 import 'package:peopler/others/swipedetector.dart';
 import 'package:peopler/presentation/router/chat_tab.dart';
-import 'package:preload_page_view/preload_page_view.dart';
+import '../../../business_logic/blocs/NewNotificationBloc/bloc.dart';
 import '../../../business_logic/blocs/NotificationReceivedBloc/bloc.dart';
 import '../../../business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import '../../../business_logic/blocs/PuchaseGetOfferBloc/bloc.dart';
 import '../../../business_logic/blocs/SavedBloc/bloc.dart';
-import '../../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../core/constants/enums/screen_item_enum.dart';
 import '../../../data/repository/location_repository.dart';
@@ -48,6 +48,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final CityBloc _cityBloc;
   late final PurchaseGetOfferBloc _purchaseGetOfferBloc;
   late final SavedBloc _savedBloc;
+  late final NewMessageBloc _newMessageBloc;
 
   @override
   void initState() {
@@ -62,6 +63,9 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (UserBloc.user != null) {
       _savedBloc.add(GetInitialSavedUsersEvent(myUserID: UserBloc.user!.userID));
       FCMAndLocalNotifications().initializeFCMNotifications(context);
+
+      _newMessageBloc = BlocProvider.of<NewMessageBloc>(context);
+      _newMessageBloc.add(CheckIfThereIsNewMessage(homeScreen: _homeScreen));
     }
 
     /// Get offerings
@@ -88,7 +92,6 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               return;
                             }
 
-                            TabItem _oldTab = _homeScreen.currentTab;
                             if (_homeScreen.currentTab == TabItem.feed) {
                               _homeScreen.currentTab = TabItem.notifications;
                             } else if (_homeScreen.currentTab == TabItem.notifications) {
@@ -106,7 +109,6 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               return;
                             }
 
-                            TabItem _oldTab = _homeScreen.currentTab;
                             if (_homeScreen.currentTab == TabItem.notifications) {
                               _homeScreen.currentTab = TabItem.feed;
                             } else if (_homeScreen.currentTab == TabItem.search) {
@@ -164,13 +166,13 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return;
     }
 
-    /// When both currentTab and clicked tab are Notification tab button, and screen is mai notification screen
+    /// When both currentTab and clicked tab are Notification tab button, and screen is main notification screen
     if (_oldTab == TabItem.notifications &&
         TabItem.values[index] == TabItem.notifications &&
         _homeScreen.currentScreen[TabItem.notifications] == ScreenItem.notificationScreen) {
-      NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+      NewNotificationBloc _newNotificationBloc = BlocProvider.of<NewNotificationBloc>(context);
       NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-      _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
+      _notificationBloc.add(GetInitialNotificationEvent(newNotificationBloc: _newNotificationBloc, context: context));
       return;
     }
 

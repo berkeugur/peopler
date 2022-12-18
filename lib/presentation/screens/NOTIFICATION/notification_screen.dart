@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
+import 'package:peopler/business_logic/blocs/NewNotificationBloc/bloc.dart';
 import '../../../business_logic/blocs/NotificationBloc/bloc.dart';
 import '../../../business_logic/cubits/ThemeCubit.dart';
 import '../../../others/empty_list.dart';
@@ -19,16 +19,16 @@ class NotificationScreenState extends State<NotificationScreen> {
   late final NotificationBloc _notificationBloc;
 
   bool loading = false;
-  late final NewNotificationCubit _newNotificationCubit;
+  late final NewNotificationBloc _newNotificationBloc;
 
   @override
   void initState() {
     super.initState();
 
-    _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+    _newNotificationBloc = BlocProvider.of<NewNotificationBloc>(context);
 
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _notificationBloc.add(GetInitialNotificationEvent(newNotificationCubit: _newNotificationCubit));
+    _notificationBloc.add(GetInitialNotificationEvent(newNotificationBloc: _newNotificationBloc, context: context));
   }
 
   @override
@@ -58,8 +58,7 @@ class NotificationScreenState extends State<NotificationScreen> {
                 // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
                 // find the NestedScrollView.
                 builder: (BuildContext context) {
-                  notificationsScreenScrollController =
-                      context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                  notificationsScreenScrollController = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
                   if (notificationsScreenScrollController.hasListeners == false) {
                     notificationsScreenScrollController.addListener(_listScrollListener);
                   }
