@@ -466,11 +466,6 @@ class _InComingConnectionRequestListState extends State<InComingConnectionReques
     Notifications _currentItem = _notificationReceivedBloc.allReceivedList[index];
     return InkWell(
       onTap: () {
-        if (UserBloc.entitlement == SubscriptionTypes.free) {
-          showGeriAlWarning(context);
-          return;
-        }
-
         _notificationReceivedBloc.add(ClickNotAcceptEvent(requestUserID: _currentItem.requestUserID!, index: index));
 
         NotificationBloc _notificationBloc = BlocProvider.of<NotificationBloc>(context);

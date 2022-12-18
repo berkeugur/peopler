@@ -36,6 +36,7 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         findUnnecessaryUsersFromUserList();
 
         List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, unnecessaryUsers);
+        userList.shuffle();
 
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
@@ -65,6 +66,8 @@ class CityBloc extends Bloc<CityEvent, CityState> {
         findUnnecessaryUsersFromUserList();
 
         List<MyUser> userList = await _cityRepository.queryUsersCityWithPagination(event.city, unnecessaryUsers);
+        userList.shuffle();
+
         if (userList.isNotEmpty) {
           allUserList.addAll(userList);
           if (state is UsersLoadedCity1State) {
