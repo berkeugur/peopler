@@ -24,6 +24,7 @@ import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/empty_list.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
+import '../../../others/widgets/cached_network_error_image.dart';
 import '../../../others/widgets/snack_bars.dart';
 import '../PROFILE/OthersProfile/functions.dart';
 
@@ -326,7 +327,7 @@ class CityTabState extends State<CityTab> {
                             imageUrl: CityBloc.allUserList[index].profileURL,
                             progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
                                 borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(CityBloc.allUserList[index].gender),
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,

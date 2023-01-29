@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -55,6 +56,7 @@ void main() async {
 
   await setupLocator();
 
+  // await addFieldToEveryone();
   // await updatePhotoUrl();
   // await fakeUserCreator();
   // await fakeUserDelete();
@@ -253,6 +255,30 @@ List<String> profilePhoto = [
   '15JLNezREptTwbYRPG8EsJDLOSiNo3Ui6',
   '18sDb8tg16LTvFBtjb4hyHuueqvjP4mEw',
 ];
+
+Future<void> addFieldToEveryone() async {
+  final UserRepository _userRepository = locator<UserRepository>();
+  final FirebaseFirestore _firebaseDB = FirebaseFirestore.instance;
+
+  QuerySnapshot _querySnapshot;
+
+  _querySnapshot = await _firebaseDB.collection('users').get();
+
+  List<MyUser> _allUsers = [];
+  for (DocumentSnapshot snap in _querySnapshot.docs) {
+    Map<String, dynamic> _currentOldUser = snap.data() as Map<String, dynamic>;
+
+    /// New Fields - start
+    _currentOldUser["newNotification"] = false;
+    _currentOldUser["newMessage"] = false;
+    _currentOldUser["lastNotificationCreatedAt"] = DateTime.now();
+    _currentOldUser["lastMessageCreatedAt"] = DateTime.now();
+
+    /// New Fields - End
+
+    await _firebaseDB.collection('users').doc(_currentOldUser["userID"]).update(_currentOldUser);
+  }
+}
 
 Future<void> updateAllFakeUserPhotos() async {
   for (int i = 0; i < 36; i++) {

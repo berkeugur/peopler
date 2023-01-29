@@ -10,10 +10,10 @@ class Chat {
   /// Below fields does not exists in Firestore, get them through /users collection
   String hostUserProfileUrl = "";
   String hostUserName = "";
+  String hostGender = "";
 
   Chat(
-      {
-      required this.hostID,
+      {required this.hostID,
       required this.isLastMessageFromMe,
       required this.isLastMessageReceivedByHost,
       required this.isLastMessageSeenByHost,
@@ -34,8 +34,7 @@ class Chat {
   }
 
   Chat.fromMap(Map<String, dynamic> map)
-      :
-        hostID = map['hostID'],
+      : hostID = map['hostID'],
         isLastMessageFromMe = map['isLastMessageFromMe'],
         isLastMessageReceivedByHost = map['isLastMessageReceivedByHost'],
         isLastMessageSeenByHost = map['isLastMessageSeenByHost'],

@@ -14,6 +14,8 @@ import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screen_services/report_service.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
 
+import '../../../others/widgets/cached_network_error_image.dart';
+
 class BlockedUsersScreen extends StatefulWidget {
   const BlockedUsersScreen({Key? key}) : super(key: key);
 
@@ -47,7 +49,8 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
         if (json != null) {
           printf("kullanıcı bilgileri çekildi \nblockedUserData: ${Variables.blockedUsersData.value.toString().length}");
           Variables.blockedUsersData.value.add(json);
-          printf("${json.toString().length} verileri blockedUsersData ya eklendi \nblockedUserData: ${Variables.blockedUsersData.value.toString().length}");
+          printf(
+              "${json.toString().length} verileri blockedUsersData ya eklendi \nblockedUserData: ${Variables.blockedUsersData.value.toString().length}");
         } else {
           printf("kullanıcı bilgileri null ");
         }
@@ -191,10 +194,11 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> with TickerProv
                                     height: 50,
                                     width: 50,
                                     child: CachedNetworkImage(
-                                      imageUrl: data["profileURL"] ?? 'https://www.clipartmax.com/png/middle/296-2969961_no-image-user-profile-icon.png',
+                                      imageUrl: data["profileURL"],
                                       progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-                                          borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          borderRadius: BorderRadius.circular(999),
+                                          child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                      errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(data["gender"]),
                                       imageBuilder: (context, imageProvider) => Container(
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,

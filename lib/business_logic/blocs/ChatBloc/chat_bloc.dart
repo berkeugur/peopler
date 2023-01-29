@@ -67,6 +67,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(updatedChat[0].hostID);
               updatedChat[0].hostUserName = _user!.displayName;
               updatedChat[0].hostUserProfileUrl = _user.profileURL;
+              updatedChat[0].hostGender = _user.gender;
 
               /// Call another ChatBloc event named NewChatListenerEvent
               add(NewChatListenerEvent(updatedChat: updatedChat, newMessageBloc: event.newMessageBloc, context: event.context));

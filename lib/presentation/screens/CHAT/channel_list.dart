@@ -13,6 +13,7 @@ import '../../../components/FlutterWidgets/text_style.dart';
 import '../../../data/model/chat.dart';
 import '../../../others/empty_list.dart';
 import '../../../others/locator.dart';
+import '../../../others/widgets/cached_network_error_image.dart';
 import '../MESSAGE/message_screen.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -139,6 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Chat currentChat = _chatBloc.allChatList[index];
 
           String _image = currentChat.hostUserProfileUrl;
+          String _gender = currentChat.hostGender;
           String _nameSurname = currentChat.hostUserName;
           String _lastMassage = currentChat.lastMessage;
           bool _isNewMessage = currentChat.numberOfMessagesThatIHaveNotOpened == 0 ? false : true;
@@ -189,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildProfilePhoto(_image),
+                  _buildProfilePhoto(_image, _gender),
                   _buildNameAndLastMessage(_nameSurname, _lastMassage, _isNewMessage),
                   _buildDateAndNumberOfNewMessages(_channelListItemDate, _numberOfNewMessage)
                 ],
@@ -247,7 +249,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return true;
   }
 
-  Container _buildProfilePhoto(String _image) {
+  Container _buildProfilePhoto(String _image, String gender) {
     return Container(
         height: _imageSize,
         width: _imageSize,
@@ -256,7 +258,7 @@ class _ChatScreenState extends State<ChatScreen> {
           imageUrl: _image,
           progressIndicatorBuilder: (context, url, downloadProgress) =>
               ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(gender),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,

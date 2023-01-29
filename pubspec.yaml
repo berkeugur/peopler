@@ -107,6 +107,7 @@ flutter:
     - ic_launcher.png
     - vector1.png
     - vector2.png
+    - assets/images/default_profile_images/
     - assets/images/onboardingscreen/
     - assets/images/splashScreen/1.jpg
     - assets/images/svg_icons/

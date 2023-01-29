@@ -17,6 +17,7 @@ import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
 import '../../../others/locator.dart';
 import 'package:peopler/presentation/screens/SAVED/saved_screen_header.dart';
+import '../../../others/widgets/cached_network_error_image.dart';
 import '../PROFILE/OthersProfile/functions.dart';
 
 class SavedScreen extends StatefulWidget {
@@ -311,7 +312,7 @@ class _SavedScreenState extends State<SavedScreen> {
                             imageUrl: _savedBloc.allRequestList[index].profileURL,
                             progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
                                 borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(_savedBloc.allRequestList[index].gender),
                             imageBuilder: (context, imageProvider) => Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,

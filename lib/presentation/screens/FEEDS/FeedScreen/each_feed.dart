@@ -18,6 +18,7 @@ import '../../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../others/locator.dart';
 import '../../../../others/strings.dart';
+import '../../../../others/widgets/cached_network_error_image.dart';
 import '../../../../others/widgets/snack_bars.dart';
 
 import '../../PROFILE/OthersProfile/functions.dart';
@@ -128,19 +129,19 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
                                           ? const SizedBox.shrink()
                                           : (UserBloc.user != null && widget.myFeed.userID == UserBloc.user!.userID)
                                               ? IconButton(
-                                                onPressed: () {
-                                                  tripleDotOnDeleteFeedPressed(
-                                                    context,
-                                                    widget.myFeed.feedID,
-                                                    _controller,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  Icons.more_vert_outlined,
-                                                  color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
-                                                  size: 25,
-                                                ),
-                                              )
+                                                  onPressed: () {
+                                                    tripleDotOnDeleteFeedPressed(
+                                                      context,
+                                                      widget.myFeed.feedID,
+                                                      _controller,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.more_vert_outlined,
+                                                    color: _mode.blackAndWhiteConversion()?.withOpacity(0.6),
+                                                    size: 25,
+                                                  ),
+                                                )
                                               : IconButton(
                                                   onPressed: () {
                                                     tripleDotOnPressed(
@@ -357,7 +358,7 @@ class _eachFeedWidgetState extends State<eachFeedWidget> with TickerProviderStat
           imageUrl: widget.myFeed.userPhotoUrl,
           progressIndicatorBuilder: (context, url, downloadProgress) =>
               ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(widget.myFeed.userGender),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,

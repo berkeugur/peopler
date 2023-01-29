@@ -15,6 +15,7 @@ import '../../../data/in_app_purchases.dart';
 import '../../../data/model/activity.dart';
 import '../../../data/model/user.dart';
 import '../../../data/repository/user_repository.dart';
+import '../../../others/functions/download_image.dart';
 import '../../../others/locator.dart';
 import '../../../others/strings.dart';
 import '../ChatBloc/chat_bloc.dart';
@@ -151,6 +152,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Future<void> uploadProfilePhoto(File? imageFile) async {
+    // Image is chosen
     if (imageFile != null) {
       String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', imageFile);
       await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
@@ -158,10 +160,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       return;
     }
 
+    // Linkedin image exists
     if (user?.profileURL != "") {
+      // Download Linkedin Image
+      File downloadedImage = await downloadImage(user!.profileURL);
+
+      // Save it to firebase storage
+      String downloadLink = await _userRepository.uploadFile(user!.userID, 'profile_photo', 'profile_photo.png', downloadedImage);
+      await _userRepository.updateProfilePhoto(user!.userID, downloadLink);
+      user?.profileURL = downloadLink;
       return;
     }
 
+    // Image is not chosen and not Linkedin
     if (user?.gender == 'Kadın') {
       user?.profileURL = Strings.defaultFemaleProfilePhotoUrl;
     } else if (user?.gender == 'Erkek') {
