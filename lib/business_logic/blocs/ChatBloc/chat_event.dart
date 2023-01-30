@@ -1,29 +1,31 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../data/model/chat.dart';
-import '../../cubits/NewMessageCubit.dart';
+import '../NewMessageBloc/new_message_bloc.dart';
 
 @immutable
 abstract class ChatEvent extends Equatable {}
 
 class GetChatWithPaginationEvent extends ChatEvent {
   final String userID;
-  final NewMessageCubit newMessageCubit;
+  final NewMessageBloc newMessageBloc;
+  final BuildContext context;
 
-  GetChatWithPaginationEvent({required this.userID, required this.newMessageCubit});
+  GetChatWithPaginationEvent({required this.userID, required this.newMessageBloc, required this.context});
 
   @override
-  List<Object> get props => [userID, newMessageCubit];
+  List<Object> get props => [userID, newMessageBloc];
 }
 
 class NewChatListenerEvent extends ChatEvent {
   final List<Chat> updatedChat;
-  final NewMessageCubit newMessageCubit;
+  final NewMessageBloc newMessageBloc;
+  final BuildContext context;
 
-  NewChatListenerEvent({required this.updatedChat, required this.newMessageCubit});
+  NewChatListenerEvent({required this.updatedChat, required this.newMessageBloc, required this.context});
 
   @override
-  List<Object> get props => [updatedChat, newMessageCubit];
+  List<Object> get props => [updatedChat, newMessageBloc];
 }
 
 class UpdateLastMessageSeenEvent extends ChatEvent {

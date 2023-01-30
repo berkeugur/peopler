@@ -5,6 +5,7 @@ import '../../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/classes/responsive_size.dart';
 import '../../../../../others/locator.dart';
+import '../../../../../others/widgets/cached_network_error_image.dart';
 import '../feed_share_functions.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 
@@ -22,7 +23,7 @@ Padding profilePhotoAndName(context) {
             imageUrl: UserBloc.user!.profileURL,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(UserBloc.user!.gender),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,

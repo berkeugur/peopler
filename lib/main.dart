@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,12 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peopler/business_logic/blocs/LocationBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NewMessageBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/NotificationTransmittedBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/PurchaseMakePurchaseBloc/bloc.dart';
 import 'package:peopler/business_logic/blocs/SavedBloc/bloc.dart';
 import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
-import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
-import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/data/model/feed.dart';
 import 'package:peopler/data/model/user.dart';
@@ -26,6 +26,7 @@ import 'business_logic/blocs/CityBloc/city_bloc.dart';
 import 'business_logic/blocs/FeedBloc/feed_bloc.dart';
 import 'business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dart';
 import 'business_logic/blocs/LocationUpdateBloc/location_update_bloc.dart';
+import 'business_logic/blocs/NewNotificationBloc/new_notification_bloc.dart';
 import 'business_logic/blocs/NotificationBloc/notification_bloc.dart';
 import 'business_logic/blocs/NotificationReceivedBloc/notification_received_bloc.dart';
 import 'business_logic/blocs/PuchaseGetOfferBloc/purchase_get_offer_bloc.dart';
@@ -55,6 +56,7 @@ void main() async {
 
   await setupLocator();
 
+  // await addFieldToEveryone();
   // await updatePhotoUrl();
   // await fakeUserCreator();
   // await fakeUserDelete();
@@ -85,7 +87,8 @@ class MyApp extends StatelessWidget {
     PurchaseGetOfferBloc purchaseGetOfferBloc = PurchaseGetOfferBloc();
     PurchaseMakePurchaseBloc purchaseMakePurchaseBloc = PurchaseMakePurchaseBloc();
 
-    UserBloc userBloc = UserBloc(mainKey, feedBloc, savedBloc, cityBloc, locationBloc, locationUpdateBloc,notificationBloc, notificationTransmittedBloc, notificationReceivedBloc, chatBloc, purchaseGetOfferBloc, purchaseMakePurchaseBloc);
+    UserBloc userBloc = UserBloc(mainKey, feedBloc, savedBloc, cityBloc, locationBloc, locationUpdateBloc, notificationBloc,
+        notificationTransmittedBloc, notificationReceivedBloc, chatBloc, purchaseGetOfferBloc, purchaseMakePurchaseBloc);
 
     return ValueListenableBuilder(
       valueListenable: setTheme,
@@ -101,8 +104,8 @@ class MyApp extends StatelessWidget {
               BlocProvider<LocationUpdateBloc>(create: (context) => locationUpdateBloc),
               BlocProvider<LocationPermissionBloc>(create: (context) => LocationPermissionBloc()),
               BlocProvider<FloatingActionButtonCubit>(create: (context) => FloatingActionButtonCubit()),
-              BlocProvider<NewNotificationCubit>(create: (context) => NewNotificationCubit()),
-              BlocProvider<NewMessageCubit>(create: (context) => NewMessageCubit()),
+              BlocProvider<NewNotificationBloc>(create: (context) => NewNotificationBloc()),
+              BlocProvider<NewMessageBloc>(create: (context) => NewMessageBloc()),
               BlocProvider<NotificationTransmittedBloc>(create: (context) => notificationTransmittedBloc),
               BlocProvider<NotificationReceivedBloc>(create: (context) => notificationReceivedBloc),
               BlocProvider<NotificationBloc>(create: (context) => notificationBloc),
@@ -252,6 +255,30 @@ List<String> profilePhoto = [
   '15JLNezREptTwbYRPG8EsJDLOSiNo3Ui6',
   '18sDb8tg16LTvFBtjb4hyHuueqvjP4mEw',
 ];
+
+Future<void> addFieldToEveryone() async {
+  final UserRepository _userRepository = locator<UserRepository>();
+  final FirebaseFirestore _firebaseDB = FirebaseFirestore.instance;
+
+  QuerySnapshot _querySnapshot;
+
+  _querySnapshot = await _firebaseDB.collection('users').get();
+
+  List<MyUser> _allUsers = [];
+  for (DocumentSnapshot snap in _querySnapshot.docs) {
+    Map<String, dynamic> _currentOldUser = snap.data() as Map<String, dynamic>;
+
+    /// New Fields - start
+    _currentOldUser["newNotification"] = false;
+    _currentOldUser["newMessage"] = false;
+    _currentOldUser["lastNotificationCreatedAt"] = DateTime.now();
+    _currentOldUser["lastMessageCreatedAt"] = DateTime.now();
+
+    /// New Fields - End
+
+    await _firebaseDB.collection('users').doc(_currentOldUser["userID"]).update(_currentOldUser);
+  }
+}
 
 Future<void> updateAllFakeUserPhotos() async {
   for (int i = 0; i < 36; i++) {

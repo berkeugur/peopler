@@ -277,6 +277,14 @@ class UserRepository {
     return await _firestoreDBServiceUsers.deleteToken(userID);
   }
 
+  Future<DateTime?> getLastMessageCreatedAtFromChats(String userID) async {
+    return await _firestoreDBServiceChat.getLastMessageCreatedAt(userID);
+  }
+
+  Future<DateTime?> getLastNotificationFromNotifications(String userID) async {
+    return await _firestoreDBServiceChat.getLastNotificationCreatedAt(userID);
+  }
+
   Future<void> deleteUser(MyUser myUser, {String? password}) async {
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + myUser.userID + "/activities");
     await _firestoreDBServiceCommon.deleteNestedSubCollections("users/" + myUser.userID + "/notifications");

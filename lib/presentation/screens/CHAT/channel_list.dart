@@ -7,12 +7,13 @@ import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 import '../../../business_logic/blocs/ChatBloc/chat_bloc.dart';
 import '../../../business_logic/blocs/ChatBloc/chat_event.dart';
 import '../../../business_logic/blocs/ChatBloc/chat_state.dart';
+import '../../../business_logic/blocs/NewMessageBloc/new_message_bloc.dart';
 import '../../../business_logic/blocs/UserBloc/user_bloc.dart';
-import '../../../business_logic/cubits/NewMessageCubit.dart';
 import '../../../components/FlutterWidgets/text_style.dart';
 import '../../../data/model/chat.dart';
 import '../../../others/empty_list.dart';
 import '../../../others/locator.dart';
+import '../../../others/widgets/cached_network_error_image.dart';
 import '../MESSAGE/message_screen.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -39,8 +40,8 @@ class _ChatScreenState extends State<ChatScreen> {
     _chatBloc = ChatBloc();
 
     if (UserBloc.user != null) {
-      NewMessageCubit _newMessageCubit = BlocProvider.of<NewMessageCubit>(context);
-      _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageCubit: _newMessageCubit));
+      NewMessageBloc _newMessageBloc = BlocProvider.of<NewMessageBloc>(context);
+      _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageBloc: _newMessageBloc, context: context));
     }
   }
 
@@ -79,8 +80,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   // the NestedScrollView, so that sliverOverlapAbsorberHandleFor() can
                   // find the NestedScrollView.
                   builder: (BuildContext context) {
-                    _notificationScrollController =
-                        context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
+                    _notificationScrollController = context.findAncestorStateOfType<NestedScrollViewState>()!.innerController;
                     if (_notificationScrollController.hasListeners == false) {
                       _notificationScrollController.addListener(_listScrollListener);
                     }
@@ -140,6 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Chat currentChat = _chatBloc.allChatList[index];
 
           String _image = currentChat.hostUserProfileUrl;
+          String _gender = currentChat.hostGender;
           String _nameSurname = currentChat.hostUserName;
           String _lastMassage = currentChat.lastMessage;
           bool _isNewMessage = currentChat.numberOfMessagesThatIHaveNotOpened == 0 ? false : true;
@@ -156,11 +157,7 @@ class _ChatScreenState extends State<ChatScreen> {
             } else if (_subtractDay >= 1 && _subtractDay < 2) {
               return "Dün";
             } else {
-              return _lastMessageDate.day.toString() +
-                  "." +
-                  _lastMessageDate.month.toString() +
-                  "." +
-                  _lastMessageDate.year.toString();
+              return _lastMessageDate.day.toString() + "." + _lastMessageDate.month.toString() + "." + _lastMessageDate.year.toString();
             }
           }
 
@@ -184,8 +181,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       offset: const Offset(0, 0),
                     )
                   ],
-                  color: Mode()
-                      .homeScreenScaffoldBackgroundColor(), //_isNewMessage == true ? Colors.white : Colors.transparent,
+                  color: Mode().homeScreenScaffoldBackgroundColor(), //_isNewMessage == true ? Colors.white : Colors.transparent,
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(0),
                     bottomRight: Radius.circular(_borderRadius),
@@ -195,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildProfilePhoto(_image),
+                  _buildProfilePhoto(_image, _gender),
                   _buildNameAndLastMessage(_nameSurname, _lastMassage, _isNewMessage),
                   _buildDateAndNumberOfNewMessages(_channelListItemDate, _numberOfNewMessage)
                 ],
@@ -239,31 +235,30 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   bool _listScrollListener() {
-    NewMessageCubit _newMessageCubit = BlocProvider.of<NewMessageCubit>(context);
+    NewMessageBloc _newMessageBloc = BlocProvider.of<NewMessageBloc>(context);
     var nextPageTrigger = 0.8 * _notificationScrollController.positions.last.maxScrollExtent;
 
     if (_notificationScrollController.positions.last.axisDirection == AxisDirection.down &&
         _notificationScrollController.positions.last.pixels >= nextPageTrigger) {
       if (loading == false) {
         loading = true;
-        _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageCubit: _newMessageCubit));
+        _chatBloc.add(GetChatWithPaginationEvent(userID: UserBloc.user!.userID, newMessageBloc: _newMessageBloc, context: context));
       }
     }
 
     return true;
   }
 
-  Container _buildProfilePhoto(String _image) {
+  Container _buildProfilePhoto(String _image, String gender) {
     return Container(
         height: _imageSize,
         width: _imageSize,
         margin: const EdgeInsets.only(right: 15, left: 10),
         child: CachedNetworkImage(
           imageUrl: _image,
-          progressIndicatorBuilder: (context, url, downloadProgress) => ClipRRect(
-              borderRadius: BorderRadius.circular(999),
-              child: CircularProgressIndicator(value: downloadProgress.progress)),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
+          errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(gender),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -298,8 +293,7 @@ class _ChatScreenState extends State<ChatScreen> {
             textScaleFactor: 1,
             style: PeoplerTextStyle.normal.copyWith(
               fontSize: 14,
-              color:
-                  _isNewMessage != true ? const Color.fromARGB(255, 204, 203, 203) : Mode().blackAndWhiteConversion(),
+              color: _isNewMessage != true ? const Color.fromARGB(255, 204, 203, 203) : Mode().blackAndWhiteConversion(),
             ),
           ),
         ],

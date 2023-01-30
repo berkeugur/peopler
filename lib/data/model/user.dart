@@ -26,6 +26,10 @@ class MyUser {
   List<String> transmittedRequestUserIDs = [];
   List<String> blockedUsers = [];
   List<String> whoBlockedYou = [];
+  bool newNotification = false;
+  bool newMessage = false;
+  DateTime? lastNotificationCreatedAt;
+  DateTime? lastMessageCreatedAt;
 
   /// Firebase Rules private fields
   String email = "";
@@ -63,6 +67,10 @@ class MyUser {
       'transmittedRequestUserIDs': transmittedRequestUserIDs,
       'blockedUsers': blockedUsers,
       'whoBlockedYou': whoBlockedYou,
+      'newNotification': newNotification,
+      'newMessage': newMessage,
+      'lastNotificationCreatedAt': lastNotificationCreatedAt ?? DateTime.now(),
+      'lastMessageCreatedAt': lastMessageCreatedAt ?? DateTime.now(),
     };
   }
 
@@ -97,6 +105,18 @@ class MyUser {
     transmittedRequestUserIDs = map['transmittedRequestUserIDs'].map<String>((data) => data.toString()).toList();
     blockedUsers = map['blockedUsers'].map<String>((data) => data.toString()).toList();
     whoBlockedYou = map['whoBlockedYou'].map<String>((data) => data.toString()).toList();
+    newNotification = map['newNotification'] as bool;
+    newMessage = map['newMessage'] as bool;
+    lastNotificationCreatedAt = map['lastNotificationCreatedAt'].runtimeType == DateTime
+        ? map['lastNotificationCreatedAt']
+        : map['lastNotificationCreatedAt'].runtimeType == Timestamp
+            ? (map['lastNotificationCreatedAt'] as Timestamp).toDate()
+            : map['lastNotificationCreatedAt'].toDate();
+    lastMessageCreatedAt = map['lastMessageCreatedAt'].runtimeType == DateTime
+        ? map['lastMessageCreatedAt']
+        : map['lastMessageCreatedAt'].runtimeType == Timestamp
+            ? (map['lastMessageCreatedAt'] as Timestamp).toDate()
+            : map['lastMessageCreatedAt'].toDate();
   }
 
   Map<String, dynamic> toPrivateMap() {

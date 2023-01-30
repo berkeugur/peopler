@@ -1,7 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,11 +7,7 @@ import 'package:peopler/components/FlutterWidgets/dialogs.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/app/app_constants.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
-import 'package:peopler/others/classes/variables.dart';
 import 'package:peopler/presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
-
-import '../../business_logic/blocs/NotificationBloc/notification_bloc.dart';
-import '../../business_logic/cubits/NewNotificationCubit.dart';
 import '../../presentation/screens/FEEDS/FeedScreen/feed_functions.dart';
 
 class PEOPLER_TITLE extends StatelessWidget {

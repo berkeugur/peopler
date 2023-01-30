@@ -19,6 +19,7 @@ import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_functions.dar
 import 'package:peopler/presentation/screens/FEEDS/FeedScreen/feed_screen.dart';
 import 'package:peopler/presentation/screens/HOME/home_screen.dart';
 import 'package:peopler/presentation/screens/SUBSCRIPTIONS/subscriptions_functions.dart';
+import '../../others/widgets/cached_network_error_image.dart';
 import '../../presentation/screens/PROFILE/MyProfile/ProfileScreen/profile_screen.dart';
 import '../../presentation/screens/SETTINGS/settings.dart';
 
@@ -487,7 +488,7 @@ class _MenuPageState extends State<MenuPage> {
             imageUrl: profileData!.profileURL,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+            errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(profileData.gender),
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,

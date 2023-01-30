@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peopler/business_logic/blocs/NewNotificationBloc/new_message_event.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/bloc.dart';
+import 'package:peopler/business_logic/cubits/FloatingActionButtonCubit.dart';
 import 'package:peopler/data/services/db/firestore_db_service_users.dart';
 import '../../../data/model/notifications.dart';
 import '../../../data/model/user.dart';
@@ -56,14 +58,16 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           _streamSubscription = _notificationRepository.getNotificationWithStream(UserBloc.user!.userID).listen((updatedNotification) async {
             if (updatedNotification.isEmpty) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+              add(NewNotificationListenerEvent(
+                  updatedNotification: updatedNotification, newNotificationBloc: event.newNotificationBloc, context: event.context));
               debugPrint("There is no new notification");
               return;
             }
 
             if (updatedNotification[0].requestUserID == null) {
               /// Call another NotificationBloc event named NewNotificationListenerEvent
-              add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+              add(NewNotificationListenerEvent(
+                  updatedNotification: updatedNotification, newNotificationBloc: event.newNotificationBloc, context: event.context));
               debugPrint("Notification Type is not receive or transmit");
               return;
             }
@@ -74,7 +78,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             updatedNotification[0].requestBiography = _user.biography;
 
             /// Call another NotificationBloc event named NewNotificationListenerEvent
-            add(NewNotificationListenerEvent(updatedNotification: updatedNotification, newNotificationCubit: event.newNotificationCubit));
+            add(NewNotificationListenerEvent(
+                updatedNotification: updatedNotification, newNotificationBloc: event.newNotificationBloc, context: event.context));
           });
         }
       } catch (e) {
@@ -131,7 +136,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         emit(NotificationLoadedState1());
       }
 
-      event.newNotificationCubit.newNotificationEvent();
+      FloatingActionButtonCubit homeScreen = BlocProvider.of(event.context);
+      event.newNotificationBloc.add(NewNotificationReceivedEvent(homeScreen: homeScreen));
     });
 
     on<ClickAcceptEvent>((event, emit) async {

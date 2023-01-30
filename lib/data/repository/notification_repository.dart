@@ -18,7 +18,8 @@ class NotificationRepository {
   Future<List<Notifications>> getNotificationTransmittedWithPagination(String myUserID, Notifications? lastElement) async {
     if (_hasMoreTransmitted == false) return [];
 
-    List<Notifications> requestList = await _firestoreDBServiceUsers.getRequestsWithPagination(myUserID, lastElement, _numberOfElements, 'TransmittedRequest');
+    List<Notifications> requestList =
+        await _firestoreDBServiceUsers.getRequestsWithPagination(myUserID, lastElement, _numberOfElements, 'TransmittedRequest');
 
     if (requestList.length < _numberOfElements) {
       _hasMoreTransmitted = false;
@@ -28,12 +29,12 @@ class NotificationRepository {
 
     List<String> deletedUserIDs = [];
 
-    for (int index=0; index < requestList.length; index++) {
+    for (int index = 0; index < requestList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(requestList[index].requestUserID!);
 
       // DİKKAT
       // remove deleted users
-      if(_user == null) {
+      if (_user == null) {
         deletedUserIDs.add(requestList[index].requestUserID!);
         await _userRepository.removeConnection(myUserID, requestList[index].requestUserID!);
         continue;
@@ -44,7 +45,7 @@ class NotificationRepository {
       requestList[index].requestBiography = _user.biography;
     }
 
-    for(String deletedUserID in deletedUserIDs) {
+    for (String deletedUserID in deletedUserIDs) {
       requestList.removeWhere((element) => element.requestUserID == deletedUserID);
     }
 
@@ -54,7 +55,8 @@ class NotificationRepository {
   Future<List<Notifications>> getNotificationReceivedWithPagination(String myUserID, Notifications? lastElement) async {
     if (_hasMoreReceived == false) return [];
 
-    List<Notifications> requestList = await _firestoreDBServiceUsers.getRequestsWithPagination(myUserID, lastElement, _numberOfElements, 'ReceivedRequest');
+    List<Notifications> requestList =
+        await _firestoreDBServiceUsers.getRequestsWithPagination(myUserID, lastElement, _numberOfElements, 'ReceivedRequest');
 
     if (requestList.length < _numberOfElements) {
       _hasMoreReceived = false;
@@ -64,12 +66,12 @@ class NotificationRepository {
 
     List<String> deletedUserIDs = [];
 
-    for (int index=0; index < requestList.length; index++) {
+    for (int index = 0; index < requestList.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(requestList[index].requestUserID!);
 
       // DİKKAT
       // remove deleted users
-      if(_user == null) {
+      if (_user == null) {
         deletedUserIDs.add(requestList[index].requestUserID!);
         await _userRepository.removeConnection(myUserID, requestList[index].requestUserID!);
         continue;
@@ -80,7 +82,7 @@ class NotificationRepository {
       requestList[index].requestBiography = _user.biography;
     }
 
-    for(String deletedUserID in deletedUserIDs) {
+    for (String deletedUserID in deletedUserIDs) {
       requestList.removeWhere((element) => element.requestUserID == deletedUserID);
     }
 
@@ -100,12 +102,12 @@ class NotificationRepository {
 
     List<String> deletedUserIDs = [];
 
-    for (int index=0; index < _allNotifications.length; index++) {
+    for (int index = 0; index < _allNotifications.length; index++) {
       MyUser? _user = await _firestoreDBServiceUsers.readUserRestricted(_allNotifications[index].requestUserID!);
 
       // DİKKAT
       // remove deleted users
-      if(_user == null) {
+      if (_user == null) {
         deletedUserIDs.add(_allNotifications[index].requestUserID!);
         await _userRepository.removeConnection(myUserID, _allNotifications[index].requestUserID!);
         continue;
@@ -116,7 +118,7 @@ class NotificationRepository {
       _allNotifications[index].requestBiography = _user.biography;
     }
 
-    for(String deletedUserID in deletedUserIDs) {
+    for (String deletedUserID in deletedUserIDs) {
       _allNotifications.removeWhere((element) => element.requestUserID == deletedUserID);
     }
 
@@ -126,7 +128,6 @@ class NotificationRepository {
   Stream<List<Notifications>> getNotificationWithStream(String currentUserID) {
     return _firestoreDBServiceUsers.getNotificationWithStream(currentUserID);
   }
-
 
   // When the "Accept" button is clicked, this function run
   Future<void> acceptConnectionRequest(String myUserID, String requestUserID) async {

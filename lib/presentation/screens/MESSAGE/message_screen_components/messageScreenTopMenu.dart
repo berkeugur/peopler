@@ -7,6 +7,7 @@ import 'package:peopler/business_logic/blocs/MessageBloc/bloc.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import '../../../../../others/classes/dark_light_mode_controller.dart';
 import '../../../../../others/locator.dart';
+import '../../../../others/widgets/cached_network_error_image.dart';
 import '../../SETTINGS/settings_page_functions.dart';
 import '../message_screen_functions.dart';
 
@@ -93,7 +94,7 @@ InkWell _buildProfilePhoto(double _imageSize, context) {
           imageUrl: _messageBloc.currentChat!.hostUserProfileUrl,
           progressIndicatorBuilder: (context, url, downloadProgress) =>
               ClipRRect(borderRadius: BorderRadius.circular(999), child: CircularProgressIndicator(value: downloadProgress.progress)),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorWidget: (context, url, error) => cachedNetworkErrorImageWidget(_messageBloc.currentChat!.hostGender),
           imageBuilder: (context, imageProvider) => Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:peopler/business_logic/blocs/LocationPermissionBloc/location_permission_bloc.dart';
-import 'package:peopler/business_logic/cubits/NewMessageCubit.dart';
-import 'package:peopler/business_logic/cubits/NewNotificationCubit.dart';
+import 'package:peopler/business_logic/blocs/NewMessageBloc/bloc.dart';
+import 'package:peopler/business_logic/blocs/NewNotificationBloc/new_message_event.dart';
+import 'package:peopler/business_logic/blocs/NewNotificationBloc/new_notification_state.dart';
 import 'package:peopler/business_logic/cubits/ThemeCubit.dart';
 import 'package:peopler/core/constants/enums/tab_item_enum.dart';
 import '../../../business_logic/blocs/LocationPermissionBloc/location_permission_event.dart';
+import '../../../business_logic/blocs/NewNotificationBloc/new_notification_bloc.dart';
 import '../../../business_logic/cubits/FloatingActionButtonCubit.dart';
 import '../../../others/classes/variables.dart';
 import '../../../others/classes/dark_light_mode_controller.dart';
@@ -137,7 +139,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
   }
 
   InkWell _buildChatBottomIcon(double _menuItemHeight, double _menuItemWidth) {
-    NewMessageCubit _newMessageCubit = BlocProvider.of<NewMessageCubit>(context);
+    NewMessageBloc _newMessageBloc = BlocProvider.of<NewMessageBloc>(context);
 
     int index = TabItem.chat.index;
     return InkWell(
@@ -147,7 +149,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           _homeScreen.currentTab = TabItem.chat;
         });
 
-        _newMessageCubit.messageSeenEvent();
+        _newMessageBloc.add(MessageSeenEvent());
       },
       child: Stack(children: [
         AnimatedContainer(
@@ -172,10 +174,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
             ),
           ),
         ),
-        BlocBuilder<NewMessageCubit, bool>(
-          bloc: _newMessageCubit,
+        BlocBuilder<NewMessageBloc, NewMessageState>(
+          bloc: _newMessageBloc,
           builder: (_, state) {
-            if (state == true) {
+            if (state is NewMessageTrueState) {
               return const Positioned(
                 top: 2.5,
                 right: 10.5,
@@ -191,7 +193,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
   }
 
   InkWell _buildNotificationBottomIcon(double _menuItemHeight, double _menuItemWidth) {
-    NewNotificationCubit _newNotificationCubit = BlocProvider.of<NewNotificationCubit>(context);
+    NewNotificationBloc _newNotificationCubit = BlocProvider.of<NewNotificationBloc>(context);
 
     int index = TabItem.notifications.index;
     return InkWell(
@@ -201,7 +203,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
           _homeScreen.currentTab = TabItem.notifications;
         });
 
-        _newNotificationCubit.notificationSeenEvent();
+        _newNotificationCubit.add(NotificationSeenEvent());
       },
       child: Stack(children: [
         AnimatedContainer(
@@ -226,10 +228,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> with Tick
             ),
           ),
         ),
-        BlocBuilder<NewNotificationCubit, bool>(
+        BlocBuilder<NewNotificationBloc, NewNotificationState>(
           bloc: _newNotificationCubit,
           builder: (_, state) {
-            if (state == true) {
+            if (state is NewNotificationTrueState) {
               return const Positioned(
                 top: 2.5,
                 right: 10.5,
