@@ -1,9 +1,6 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:peopler/components/FlutterWidgets/text_style.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
-import 'package:peopler/core/notifiers/register_notifiers.dart';
 
 Widget registerDisplayName({
   required BuildContext context,
