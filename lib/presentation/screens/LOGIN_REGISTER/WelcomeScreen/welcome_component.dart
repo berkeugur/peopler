@@ -158,56 +158,60 @@ Center continueText(context) {
     child: Padding(
       padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
       child: RichText(
-        text: TextSpan(children: [
-          TextSpan(
-            text: "Devam Et'e dokunarak ",
-            style: TextStyle(
-              color: Colors.grey[200],
-              fontWeight: FontWeight.w300,
-              fontFamily: "Rubik",
-              fontStyle: FontStyle.normal,
-              fontSize: 15.0,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "Devam Et'e dokunarak ",
+              style: TextStyle(
+                color: Colors.grey[200],
+                fontWeight: FontWeight.w300,
+                fontFamily: "Rubik",
+                fontStyle: FontStyle.normal,
+                fontSize: 15.0,
+              ),
             ),
-          ),
-          TextSpan(
-            style: const TextStyle(
-              color: Color(0xFFFFFFFF),
-              fontWeight: FontWeight.w500,
-              fontFamily: "Rubik",
-              fontStyle: FontStyle.italic,
-              fontSize: 16.0,
-              decoration: TextDecoration.underline,
+            TextSpan(
+              style: const TextStyle(
+                color: Color(0xFFFFFFFF),
+                fontWeight: FontWeight.w500,
+                fontFamily: "Rubik",
+                fontStyle: FontStyle.italic,
+                fontSize: 16.0,
+                decoration: TextDecoration.underline,
+              ),
+              text: "kullanım",
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  show_privacy_policy(context);
+                },
             ),
-            text: "kullanım",
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                show_privacy_policy(context);
-              },
-          ),
-          TextSpan(
-            text: " ",
-            style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.w300, fontFamily: "Rubik", fontStyle: FontStyle.normal, fontSize: 15.0),
-          ),
-          TextSpan(
-            style: const TextStyle(
-              color: Color(0xFFFFFFFF),
-              fontWeight: FontWeight.w500,
-              fontFamily: "Rubik",
-              fontStyle: FontStyle.italic,
-              fontSize: 16.0,
-              decoration: TextDecoration.underline,
+            TextSpan(
+              text: " ",
+              style:
+                  TextStyle(color: Colors.grey[200], fontWeight: FontWeight.w300, fontFamily: "Rubik", fontStyle: FontStyle.normal, fontSize: 15.0),
             ),
-            text: "şartlarımızı",
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                show_privacy_policy(context);
-              },
-          ),
-          TextSpan(
-            text: " kabul ediyorsun.",
-            style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.w300, fontFamily: "Rubik", fontStyle: FontStyle.normal, fontSize: 15.0),
-          ),
-        ]),
+            TextSpan(
+              style: const TextStyle(
+                color: Color(0xFFFFFFFF),
+                fontWeight: FontWeight.w500,
+                fontFamily: "Rubik",
+                fontStyle: FontStyle.italic,
+                fontSize: 16.0,
+                decoration: TextDecoration.underline,
+              ),
+              text: "şartlarımızı",
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  show_privacy_policy(context);
+                },
+            ),
+            TextSpan(
+              text: " kabul ediyorsun.",
+              style:
+                  TextStyle(color: Colors.grey[200], fontWeight: FontWeight.w300, fontFamily: "Rubik", fontStyle: FontStyle.normal, fontSize: 15.0),
+            ),
+          ],
+        ),
       ),
     ),
   );
