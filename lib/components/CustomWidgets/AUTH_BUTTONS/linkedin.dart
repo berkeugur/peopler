@@ -72,6 +72,7 @@ class LinkedinButton {
         borderRadius: BorderRadius.circular(99),
         onTap: onTap,
         child: Container(
+          height: 50,
           padding: const EdgeInsets.symmetric(
             vertical: 12.5,
             horizontal: 20,
@@ -119,7 +120,7 @@ class LinkedinButton {
                     "Linkedin ile Devam Et",
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
-                    style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 15),
+                    style: PeoplerTextStyle.normal.copyWith(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

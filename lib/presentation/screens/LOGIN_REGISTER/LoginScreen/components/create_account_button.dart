@@ -18,15 +18,15 @@ class CreateNewAccountButton extends StatelessWidget {
               text: "Hesabınız yok mu? ",
               style: GoogleFonts.dmSans(
                 color: Colors.grey[600],
-                fontWeight: FontWeight.w500,
-                fontSize: 15.0,
+                fontWeight: FontWeight.w600,
+                fontSize: 16.0,
               ),
             ),
             TextSpan(
               style: GoogleFonts.dmSans(
                 color: const Color(0xFF0353EF),
                 fontWeight: FontWeight.w600,
-                fontSize: 15.0,
+                fontSize: 16.0,
               ),
               text: "Hesap Oluşturun",
               recognizer: TapGestureRecognizer()

@@ -78,6 +78,7 @@ class LoginButton extends StatelessWidget {
                 await signInFunction(context: context);
               },
               child: AnimatedContainer(
+                height: 50,
                 duration: const Duration(milliseconds: 2100),
                 width: value == true ? 0 : null,
                 padding: const EdgeInsets.symmetric(
@@ -109,6 +110,7 @@ class LoginButton extends StatelessWidget {
             return InkWell(
               onTap: () {},
               child: AnimatedContainer(
+                height: 50,
                 duration: const Duration(milliseconds: 2100),
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,

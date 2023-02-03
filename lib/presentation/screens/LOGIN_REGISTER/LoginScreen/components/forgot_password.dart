@@ -19,7 +19,7 @@ class ForgotPasswordButton extends StatelessWidget {
         textScaleFactor: 1,
         style: PeoplerTextStyle.normal.copyWith(
           color: const Color(0xFF0353EF),
-          fontSize: 15,
+          fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
       ),
