@@ -91,9 +91,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                       fontSize: screenWidth < 360 || screenHeight < 670 ? 24 : 36,
                                       fontWeight: FontWeight.w300),
                                 ),
-                                SizedBox(
-                                  height: screenHeight < 630 ? 30 : 60,
-                                ),
+                                SizedBox(height: 30),
                                 Center(
                                   child: Text(
                                     "Profil fotoğrafını seç",
@@ -160,7 +158,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   ),
                                 ),
                                 const SizedBox(
-                                  height: 50,
+                                  height: 30,
                                 ),
                                 Center(
                                   child: Text(
@@ -356,7 +354,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                                     child: Text(
                                                       items[index],
                                                       textScaleFactor: 1,
-                                                      style: UserBloc.user!.city == items[index]
+                                                      style: UserBloc.user?.city == items[index]
                                                           ? const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF000B21))
                                                           : const TextStyle(fontSize: 18),
                                                     ),

@@ -1,1 +1,1 @@
-enum GenderTypes { male, female, other }
+enum GenderTypes { male, female, other, nospecify }

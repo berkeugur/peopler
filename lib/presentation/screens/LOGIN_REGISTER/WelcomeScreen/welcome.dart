@@ -10,6 +10,7 @@ import 'package:peopler/core/system_ui_service.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_normal_screens.dart';
 import '../../../../business_logic/blocs/UserBloc/bloc.dart';
 import '../../../../core/constants/navigation/navigation_constants.dart';
 
@@ -43,15 +44,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           /// Set theme mode before Home Screen
           SystemUIService().setSystemUIforThemeMode();
 
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+          Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
         } else if (state is SignedInMissingInfoState) {
           if (UserBloc.user?.displayName == null || UserBloc.user?.displayName == '') {
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(NavigationConstants.NAME_SCREEN, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.NAME_SCREEN, (Route<dynamic> route) => false);
           } else {
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
           }
         }
       },
@@ -94,7 +92,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const LinkedinRegisterScreens(),
+                            builder: (context) => const RegisterScreens(),
                           ));
                         },
                         child: const Text("yeni kayıt ekranları")),

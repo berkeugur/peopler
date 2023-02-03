@@ -32,8 +32,8 @@ Widget registerProfilePhoto({
         ),
         Center(
           child: InkWell(
-            onTap: () {
-              showPicker(context, stateSetter: stateSetter);
+            onTap: () async {
+              await showPicker(context, stateSetter: stateSetter);
             },
             child: CircleAvatar(
               radius: 55,
