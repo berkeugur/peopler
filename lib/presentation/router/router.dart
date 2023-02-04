@@ -9,6 +9,7 @@ import 'package:peopler/presentation/screens/LOGIN_REGISTER/LinkedInLoginScreen/
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/ResetPasswordScreen/reset_password.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/VerificationScreen/verification_screen.dart';
 import 'package:peopler/presentation/screens/MAINTENANCE/maintenance_screen.dart';
+import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
 import '../../others/locator.dart';
 import '../screens/LOGIN_REGISTER/CreateProfileScreen/create_profile_screen.dart';
 import '../screens/LOGIN_REGISTER/LoginScreen/login_screen.dart';
@@ -59,6 +60,8 @@ class LoginRouter {
         return MaterialPageRoute(builder: (_) => const EmailAndPasswordScreen());
       case NavigationConstants.LINKEDIN_LOGIN_SCREEN:
         return MaterialPageRoute(builder: (_) => const LinkedInPage());
+      case NavigationConstants.CONTINUE_WITH_LINKEDIN:
+        return MaterialPageRoute(builder: (_) => const LinkedinRegisterScreens());
 
       default:
         debugPrint('ERROR: Login Router unknown route');

@@ -16,4 +16,5 @@ class NavigationConstants {
   static const EMAIL_AND_PASSWORD_SCREEN = '/emailAndPasswordScreen';
   static const CHAT_SCREEN = '/chat';
   static const INVITATIONS = '/invitations';
+  static const CONTINUE_WITH_LINKEDIN = '/linkedinRegisterScreens';
 }

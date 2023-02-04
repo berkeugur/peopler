@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_bloc.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_event.dart';
 import 'package:peopler/business_logic/blocs/UserBloc/user_state.dart';
 import 'package:peopler/components/FlutterWidgets/app_bars.dart';
 import 'package:peopler/components/FlutterWidgets/snack_bars.dart';
 import 'package:peopler/core/constants/enums/gender_types_enum.dart';
+import 'package:peopler/core/system_ui_service.dart';
+import 'package:peopler/others/locator.dart';
+import 'package:peopler/presentation/screens/CONNECTIONS/connections_service.dart';
 import 'package:peopler/presentation/screens/REGISTER/Linkedin_FAB_functions/linkedin_completion_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Linkedin_FAB_functions/linkedin_next_page_fab.dart';
 import 'package:peopler/presentation/screens/REGISTER/Screens/city_screen.dart';
@@ -15,6 +19,8 @@ import 'package:peopler/presentation/screens/REGISTER/Screens/profile_photo.dart
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import '../../../core/constants/navigation/navigation_constants.dart';
+import '../../../data/repository/location_repository.dart';
+import '../../../others/functions/image_picker_functions.dart';
 
 class LinkedinRegisterScreens extends StatefulWidget {
   const LinkedinRegisterScreens({Key? key}) : super(key: key);
@@ -70,39 +76,47 @@ class _LinkedinRegisterScreensState extends State<LinkedinRegisterScreens> {
 
     return Scaffold(
       floatingActionButton: currentPageValue.value == pages.length - 1
-          ? BlocListener<UserBloc, UserState>(
-              bloc: _userBloc,
-              listener: (context, UserState state) {
-                if (state is SignedInNotVerifiedState) {
-                  _userBloc.add(waitFor15minutes(context: context));
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
-                } else if (state is InvalidEmailState) {
-                  SnackBars(context: context).simple("E posta adresiniz istenilen biçimde değil!");
-                } else if (state is SigningInState) {
-                  debugPrint("SIGNING IN");
-                } else if (state is UserNotFoundState) {
-                  SnackBars(context: context).simple("Böyle bir e posta adresi kayıtlı değil veya silinmiş olabilir!");
-                } else if (state is EmailAlreadyInUseState) {
-                  SnackBars(context: context).simple(
-                      "${UserBloc.user?.email ?? "email"} zaten kullanılıyor. \n\nSizin ise lütfen giriş yapın. \n\nSizin değil ise lütfen destek@peopler.app adresine durumu bildiren bir e-posta atın.");
+          ? FloatingActionButton.extended(
+              onPressed: () async {
+                UserBloc.user?.gender = getGenderText(selectedGender.value);
+                UserBloc.user?.city = selecetCity.value!;
+
+                UserBloc.user?.biography = biographyController.text;
+                if (UserBloc.user?.city != "" && biographyController.text.isNotEmpty) {
+                  UserBloc.user?.biography = biographyController.text;
+
+                  if (_userBloc.state == SignedInMissingInfoState()) {
+                    UserBloc.user?.missingInfo = false;
+
+                    /// Upload profile photo if user has chosen, or default photo
+                    await _userBloc.uploadProfilePhoto(image);
+
+                    _userBloc.add(updateUserInfoForLinkedInEvent());
+
+                    final LocationRepository _locationRepository = locator<LocationRepository>();
+                    LocationPermission _permission = await _locationRepository.checkPermissions().onError((error, stackTrace) => printf(error));
+                    if (_permission == LocationPermission.always) {
+                      /// Set theme mode before Home Screen
+                      SystemUIService().setSystemUIforThemeMode();
+
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
+                    } else {
+                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
+                    }
+                  } else {
+                    Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);
+                  }
+                } else if (UserBloc.user?.city == "" && biographyController.text.isEmpty) {
+                  SnackBars(context: context).simple("Boşlukları Doldurunuz");
+                } else if (UserBloc.user?.city == "" && biographyController.text.isNotEmpty) {
+                  SnackBars(context: context).simple("Şehir seçmeniz gerekiyor.");
+                } else if (UserBloc.user?.city != "" && biographyController.text.isEmpty) {
+                  SnackBars(context: context).simple("Biyografi alanını doldurunuz!");
                 }
               },
-              child: FloatingActionButton.extended(
-                onPressed: () async {
-                  await linkedinCompletionFABFuncion(
-                    context,
-                    _pageController,
-                    currentPageValue,
-                    selectedGender,
-                    biographyController,
-                    selecetCity,
-                    _userBloc,
-                  );
-                },
-                label: const Text("Tamamla"),
-                icon: const Icon(Icons.done),
-              ))
+              label: const Text("Tamamla"),
+              icon: const Icon(Icons.done),
+            )
           : FloatingActionButton(
               onPressed: () async {
                 await linkedinNextPageFABFunction(

@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
           });
         } else if (state is SignedInMissingInfoState) {
           Timer(const Duration(seconds: SplashScreen.splashScreenDuration), () async {
-            await Navigator.of(context).pushReplacementNamed(NavigationConstants.GENDER_SELECT_SCREEN);
+            await Navigator.of(context).pushReplacementNamed(NavigationConstants.CONTINUE_WITH_LINKEDIN);
           });
         } else if (state is SignedInNotVerifiedState) {
           Timer(const Duration(seconds: SplashScreen.splashScreenDuration), () async {

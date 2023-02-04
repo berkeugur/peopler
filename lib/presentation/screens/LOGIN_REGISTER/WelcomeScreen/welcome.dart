@@ -49,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           if (UserBloc.user?.displayName == null || UserBloc.user?.displayName == '') {
             Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.NAME_SCREEN, (Route<dynamic> route) => false);
           } else {
-            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.GENDER_SELECT_SCREEN, (Route<dynamic> route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.CONTINUE_WITH_LINKEDIN, (Route<dynamic> route) => false);
           }
         }
       },
@@ -92,7 +92,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const RegisterScreens(),
+                            builder: (context) => const LinkedinRegisterScreens(),
                           ));
                         },
                         child: const Text("yeni kayıt ekranları")),
