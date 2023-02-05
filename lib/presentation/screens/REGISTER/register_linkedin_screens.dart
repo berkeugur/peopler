@@ -80,31 +80,25 @@ class _LinkedinRegisterScreensState extends State<LinkedinRegisterScreens> {
               onPressed: () async {
                 UserBloc.user?.gender = getGenderText(selectedGender.value);
                 UserBloc.user?.city = selecetCity.value!;
-
                 UserBloc.user?.biography = biographyController.text;
+
                 if (UserBloc.user?.city != "" && biographyController.text.isNotEmpty) {
-                  UserBloc.user?.biography = biographyController.text;
+                  UserBloc.user?.missingInfo = false;
 
-                  if (_userBloc.state == SignedInMissingInfoState()) {
-                    UserBloc.user?.missingInfo = false;
+                  /// Upload profile photo if user has chosen, or default photo
+                  await _userBloc.uploadProfilePhoto(image);
 
-                    /// Upload profile photo if user has chosen, or default photo
-                    await _userBloc.uploadProfilePhoto(image);
+                  _userBloc.add(updateUserInfoForLinkedInEvent());
 
-                    _userBloc.add(updateUserInfoForLinkedInEvent());
+                  final LocationRepository _locationRepository = locator<LocationRepository>();
+                  LocationPermission _permission = await _locationRepository.checkPermissions().onError((error, stackTrace) => printf(error));
+                  if (_permission == LocationPermission.always) {
+                    /// Set theme mode before Home Screen
+                    SystemUIService().setSystemUIforThemeMode();
 
-                    final LocationRepository _locationRepository = locator<LocationRepository>();
-                    LocationPermission _permission = await _locationRepository.checkPermissions().onError((error, stackTrace) => printf(error));
-                    if (_permission == LocationPermission.always) {
-                      /// Set theme mode before Home Screen
-                      SystemUIService().setSystemUIforThemeMode();
-
-                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
-                    } else {
-                      Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
-                    }
+                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.HOME_SCREEN, (Route<dynamic> route) => false);
                   } else {
-                    Navigator.pushNamed(context, NavigationConstants.EMAIL_AND_PASSWORD_SCREEN);
+                    Navigator.of(context).pushNamedAndRemoveUntil(NavigationConstants.BEG_FOR_PERMISSION_SCREEN, (Route<dynamic> route) => false);
                   }
                 } else if (UserBloc.user?.city == "" && biographyController.text.isEmpty) {
                   SnackBars(context: context).simple("Boşlukları Doldurunuz");
