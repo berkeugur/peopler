@@ -104,9 +104,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - ic_launcher.png
-    - vector1.png
-    - vector2.png
     - assets/images/default_profile_images/
     - assets/images/onboardingscreen/
     - assets/images/splashScreen/1.jpg

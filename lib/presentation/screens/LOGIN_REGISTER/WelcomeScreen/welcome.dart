@@ -7,6 +7,7 @@ import 'package:peopler/core/constants/app_platform.dart';
 import 'package:peopler/core/constants/length/max_length_constants.dart';
 import 'package:peopler/core/constants/visibility/widget_visibility.dart';
 import 'package:peopler/core/system_ui_service.dart';
+import 'package:peopler/presentation/screens/LOGIN_REGISTER/VerificationScreen/verification_screen.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_component.dart';
 import 'package:peopler/presentation/screens/LOGIN_REGISTER/WelcomeScreen/welcome_functions.dart';
 import 'package:peopler/presentation/screens/REGISTER/register_linkedin_screens.dart';
@@ -92,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const RegisterScreens(),
+                            builder: (context) => const VerificationScreen(),
                           ));
                         },
                         child: const Text("yeni kayıt ekranları")),

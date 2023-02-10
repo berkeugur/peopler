@@ -279,6 +279,29 @@ class PeoplerAppBars {
     );
   }
 
+  // ignore: non_constant_identifier_names
+  AppBar get VERIFY_EMAIL {
+    return AppBar(
+      leading: _BACK_BUTTON(color: Colors.white),
+      title: _TITLE(title: "PROFİLİNİ DOĞRULA", color: Colors.white),
+      //backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).primaryColor,
+      shadowColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      actions: [
+        IconButton(
+            onPressed: () {
+              PeoplerDialogs().showContanctInfo(context);
+            },
+            icon: const Icon(
+              Icons.help,
+              color: Colors.white,
+            ))
+      ],
+    );
+  }
+
   GALLERY() {
     return AppBar(
       leading: _BACK_BUTTON(

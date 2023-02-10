@@ -3,6 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:peopler/others/classes/dark_light_mode_controller.dart';
 
 class SystemUIService {
+  static void get setTopBlueBottomWhite {
+    Future.delayed(const Duration(milliseconds: 100), (() {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.dark.copyWith(
+          systemNavigationBarIconBrightness: Brightness.light,
+          statusBarColor: const Color(0xFF0353EF),
+          systemNavigationBarColor: const Color(0xFFFFFFFF),
+          statusBarIconBrightness: Brightness.light,
+        ),
+      );
+    }));
+  }
+
   setSystemUIforThemeMode() async {
     /// Dark Mode
     if (Mode.isEnableDarkMode) {
