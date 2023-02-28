@@ -19,11 +19,11 @@ void main() async {
   List<String> mailList = [];
 
   var data = await FirebaseFirestore.instance.collection("waitinglist").get();
-  data.docs.forEach((element) {
+  for (var element in data.docs) {
     if (!mailList.contains(element.data()["email"])) {
       mailList.add(element.data()["email"]);
     }
-  });
+  }
   print(mailList);
   // await fakeUserCreator();
   // await updateAllFakeUserPhotos();

@@ -93,7 +93,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     child: OutlinedButton(
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const VerificationScreen(),
+                            builder: (context) => const RegisterScreens(),
                           ));
                         },
                         child: const Text("yeni kayıt ekranları")),

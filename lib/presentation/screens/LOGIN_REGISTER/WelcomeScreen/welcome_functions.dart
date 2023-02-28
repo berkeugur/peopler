@@ -9,6 +9,7 @@ import '../../../../business_logic/blocs/UserBloc/user_bloc.dart';
 import '../../../../business_logic/blocs/UserBloc/user_event.dart';
 import '../../../../data/repository/connectivity_repository.dart';
 import '../../../../others/locator.dart';
+import '../../REGISTER/register_normal_screens.dart';
 
 void show_privacy_policy(BuildContext context) {
   bool _isloading = false;
@@ -120,7 +121,9 @@ void continueWithLinkedinButtonOnPressed(BuildContext context) async {
 void continueWithUniversityEmailOnPressed(BuildContext context) {
   UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   _userBloc.add(initializeMyUserEvent());
-  Navigator.of(context).pushNamed(NavigationConstants.NAME_SCREEN);
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => RegisterScreens(),
+  ));
 }
 
 void continueWithAppleOnPressed(BuildContext context) {
